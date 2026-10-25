@@ -273,7 +273,6 @@ body {
     color: white; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 13px; overflow: hidden;
-    flex-shrink: 0;
 }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .user-chip span { font-size: 13px; font-weight: 600; }
@@ -3583,7 +3582,6 @@ body {
             document.getElementById('chatInput').focus();
 
             document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
-            // Ntibyoroshye kuhitamo item runaka hano kuko turakoresha inyuguti. Reka tubikore hanyuma.
 
             const messagesEl = document.getElementById('chatMessages');
             if (!messagesEl) return;
