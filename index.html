@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-maskable.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/favicon-maskable.png">
+    
     <script>
         (function() {
             try {
@@ -252,6 +255,14 @@ body {
     position: relative;
 }
 .icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+.icon-btn .badge {
+    position: absolute; top: -4px; right: -4px;
+    background: var(--danger); color: white;
+    font-size: 10px; font-weight: 800;
+    min-width: 18px; height: 18px; padding: 0 5px;
+    border-radius: 50px; display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--bg-card);
+}
 .user-chip {
     display: flex; align-items: center; gap: 10px;
     padding: 6px 14px 6px 6px; background: var(--bg);
@@ -262,7 +273,6 @@ body {
     color: white; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 13px; overflow: hidden;
-    flex-shrink: 0;
 }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .user-chip span { font-size: 13px; font-weight: 600; }
@@ -628,175 +638,185 @@ body {
 .grade-badge.grade-F { background: rgba(239,68,68,0.15); color: #ef4444; }
 
 /* ============================================
-   TABLE CARD (for pending/students/teachers/users/grades)
-   ============================================ */
-.table-card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden; margin-bottom: 24px;
-}
-.table-header {
-    padding: 18px 22px; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 10px;
-}
-.table-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-.table-title i { color: var(--primary); }
-.table-wrapper { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 14px 18px; text-align: left; font-size: 13.5px; }
-th { background: var(--bg); font-weight: 700; color: var(--text-secondary); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-tr { border-bottom: 1px solid var(--border); transition: var(--transition); }
-tr:hover { background: var(--bg); }
-tr:last-child { border-bottom: none; }
-
-.row-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
-.row-avatar {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--gradient-1); color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-}
-.member-cell-row { display: flex; align-items: center; gap: 12px; }
-.row-info .name { font-weight: 600; font-size: 13.5px; }
-.row-info .id { font-size: 11.5px; color: var(--text-secondary); }
-.class-badge {
-    display: inline-block; padding: 4px 10px; border-radius: 8px;
-    background: rgba(56, 189, 248, 0.12); color: var(--primary);
-    font-size: 11.5px; font-weight: 700;
-}
-.dept-badge {
-    display: inline-block; padding: 4px 10px; border-radius: 8px;
-    font-size: 11.5px; font-weight: 700;
-    background: rgba(100, 116, 139, 0.12); color: var(--text-secondary);
-}
-.dept-badge.science { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
-.dept-badge.arts { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
-.dept-badge.commerce { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-.dept-badge.technical { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-.section-title {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 17px; font-weight: 700; margin-bottom: 16px;
-    padding-bottom: 10px; border-bottom: 2px solid var(--border);
-}
-.section-title i { color: var(--primary); }
-
-/* ============================================
-   PDF VIEWER (FULLSCREEN)
-   ============================================ */
-.pdf-viewer-wrap {
-    position: fixed; inset: 0; z-index: 10001;
-    background: #0f172a; display: none;
-    flex-direction: column;
-}
-.pdf-viewer-wrap.active { display: flex; }
-.pdf-viewer-bar {
-    background: var(--bg-card); border-bottom: 1px solid var(--border);
-    padding: 12px 18px; display: flex; align-items: center;
-    gap: 14px; flex-wrap: wrap; flex-shrink: 0;
-}
-.pdf-viewer-bar .pdf-title-wrap {
-    flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
-}
-.pdf-viewer-bar .pdf-title-wrap i { font-size: 20px; color: var(--danger); flex-shrink: 0; }
-.pdf-viewer-bar .pdf-title-text { min-width: 0; }
-.pdf-viewer-bar .pdf-title-text h4 {
-    font-size: 14px; font-weight: 800; margin: 0;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.pdf-viewer-bar .pdf-title-text p {
-    font-size: 11.5px; color: var(--text-secondary);
-    margin: 2px 0 0; white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-}
-.pdf-viewer-frame-wrap { flex: 1; background: #525659; overflow: auto; }
-.pdf-viewer-frame-wrap iframe {
-    width: 100%; height: 100%; border: none; display: block;
-}
-        /* ============================================
-   RESPONSIVE (MOBILE & TABLET) - FIXED
+   RESPONSIVE
    ============================================ */
 @media (max-width: 900px) {
-    /* Kora buto ya menu iboneke */
-    .menu-toggle { 
-        display: flex; 
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Hindura sidebar kugira ngo ibe "drawer" (ifunga kandi ifunguke) */
+    .menu-toggle { display: flex; }
     .sidebar {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0;
-        bottom: 0 !important;
-        width: 260px; /* Aho ugiye kugera */
-        height: 100vh;
-        z-index: 9999 !important; /* Ijye hejuru y'ibindi bintu byose */
-        transform: translateX(-100%); /* Ihishe ibumoso */
-        transition: transform 0.3s ease-in-out;
-        box-shadow: 2px 0 20px rgba(0,0,0,0.2);
-        padding-top: 20px;
-        background: var(--bg-card);
+        position: fixed; left: 0; top: 71px; bottom: 0;
+        z-index: 99; transform: translateX(-100%);
+        box-shadow: var(--shadow-lg);
     }
-
-    /* Iyo sidebar ifungutse (.open) */
-    .sidebar.open { 
-        transform: translateX(0); 
-    }
-
-    /* Ongeraho umwijima (backdrop) iyo sidebar ifungutse */
-    .sidebar.open::after {
-        content: '';
-        position: fixed;
-        top: 0; 
-        left: 260px; /* Iburyo bwa sidebar */
-        right: 0; 
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: -1;
-    }
-
-    /* Hindura layout kugira ngo main itarengere sidebar */
-    .layout {
-        display: block;
-        min-height: calc(100vh - 71px);
-    }
-
-    .main {
-        padding: 16px;
-        width: 100%;
-    }
-
-    /* Header kuri telefone */
-    .header {
-        padding: 12px 16px;
-    }
+    .sidebar.open { transform: translateX(0); }
+    .main { padding: 20px; }
 }
-
-/* Kuri telefone nto cyane */
 @media (max-width: 600px) {
-    .logo span { display: none; } /* Hisha izina, sigaza icon gusa */
-    .user-chip span { display: none; } /* Hisha izina ry'umukoresha */
-    .stats-grid { grid-template-columns: 1fr; }
+    .header { padding: 12px 16px; }
+    .logo span { display: none; }
+    .user-chip span { display: none; }
+    .main { padding: 14px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
     .saved-card { flex-direction: column; align-items: stretch; }
-    .saved-actions { justify-content: flex-start; }
-    .saved-actions .btn { flex: 1; text-align: center; }
-    
-    /* Kuri table */
-    .table-card { 
-        overflow-x: auto !important; 
-        width: 100% !important; 
-    }
-    .table-card table { 
-        min-width: 700px !important; 
-    }
+    .qr-actions { grid-template-columns: 1fr; }
+    .table-card { overflow-x: auto !important; width: 100% !important; }
+    .table-card table { min-width: 600px !important; }
+}
+@media (max-width: 480px) {
+    .auth-card { padding: 32px 24px; border-radius: 24px; }
+    .auth-logo .icon { width: 70px; height: 70px; font-size: 32px; }
+    .auth-logo h1 { font-size: 22px; }
 }
 
-/* Kuri tablet */
-@media (min-width: 601px) and (max-width: 900px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
+/* ============================================
+   UTILITY
+   ============================================ */
+.fa-spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.hidden-input { display: none !important; }
+
+/* ============================================
+   MEMBER WELCOME
+   ============================================ */
+.member-welcome-header { margin-bottom: 24px; animation: welcomeSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.member-welcome-title { font-size: 30px; font-weight: 900; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; line-height: 1.3; margin: 0; }
+.welcome-wave { display: inline-block; font-size: 34px; animation: waveHand 2.5s ease-in-out infinite; transform-origin: 70% 70%; }
+@keyframes waveHand { 0%, 60%, 100% { transform: rotate(0deg); } 10%, 30% { transform: rotate(20deg); } 20% { transform: rotate(-10deg); } }
+.welcome-name { background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #06b6d4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShine 3s ease-in-out infinite; font-weight: 900; }
+@keyframes gradientShine { 0%, 100% { background-position: 0% center; } 50% { background-position: 100% center; } }
+.welcome-subtitle { color: var(--text-secondary); font-size: 14px; margin-top: 8px; animation: fadeSlideUp 1s ease-out 0.3s both; }
+@keyframes welcomeSlideIn { from { opacity: 0; transform: translateX(-40px) scale(0.95); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================
+   NOTICE
+   ============================================ */
+.readonly-notice {
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-left: 4px solid #38bdf8;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    display: flex; align-items: center; gap: 10px;
 }
-</style>
+.readonly-notice i { color: #38bdf8; font-size: 16px; }
+
+/* ============================================
+   MEMBER PROFILE CARD
+   ============================================ */
+.member-profile-card {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(14, 165, 233, 0.05));
+    border: 1.5px solid rgba(56, 189, 248, 0.3);
+    border-radius: var(--radius); padding: 24px; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.member-profile-photo {
+    width: 90px; height: 90px; border-radius: 50%;
+    object-fit: cover; border: 4px solid white;
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4); flex-shrink: 0;
+}
+.member-profile-avatar {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--gradient-1); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 800;
+    border: 4px solid white;
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
+    flex-shrink: 0;
+}
+.member-profile-info { flex: 1; min-width: 200px; }
+.member-profile-info h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.member-profile-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); }
+.member-profile-meta span { display: flex; align-items: center; gap: 5px; }
+
+/* ============================================
+   CHAT (PRIVATE)
+   ============================================ */
+.chat-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; height: calc(100vh - 180px); min-height: 500px; }
+.chat-sidebar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow-y: auto; display: flex; flex-direction: column; }
+.chat-sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.chat-sidebar-header i { color: var(--primary); }
+.chat-search { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+.chat-search input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-family: inherit; outline: none; }
+.chat-list { flex: 1; overflow-y: auto; padding: 8px; }
+.chat-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: var(--transition); margin-bottom: 4px; }
+.chat-item:hover { background: var(--bg); }
+.chat-item.active { background: rgba(56, 189, 248, 0.1); }
+.chat-item-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; overflow: hidden; flex-shrink: 0; }
+.chat-item-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-item-info { flex: 1; min-width: 0; }
+.chat-item-name { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;}
+.chat-item-preview { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.chat-main { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; }
+.chat-main-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.chat-main-header h3 { font-size: 16px; font-weight: 800; }
+.chat-main-header p { font-size: 12px; color: var(--text-secondary); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: var(--bg); }
+.chat-message { display: flex; gap: 10px; max-width: 70%; animation: messageFadeIn 0.3s ease; }
+@keyframes messageFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.chat-message.mine { margin-left: auto; flex-direction: row-reverse; }
+.chat-message-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; flex-shrink: 0; }
+.chat-message-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-message-bubble { background: var(--bg-card); padding: 10px 14px; border-radius: 14px; border-top-left-radius: 4px; box-shadow: var(--shadow); max-width: 100%; }
+.chat-message.mine .chat-message-bubble { background: var(--gradient-1); color: white; border-top-left-radius: 14px; border-top-right-radius: 4px; }
+.chat-message-sender { font-size: 11px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+.chat-message.mine .chat-message-sender { color: rgba(255, 255, 255, 0.8); }
+.chat-message-text { font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+.chat-message-time { font-size: 10.5px; opacity: 0.6; margin-top: 4px; }
+.chat-input-bar { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; background: var(--bg-card); }
+.chat-input-bar input { flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 50px; background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; outline: none; transition: var(--transition); }
+.chat-input-bar input:focus { border-color: var(--primary); background: var(--bg-card); }
+.chat-input-bar button { width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--gradient-1); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: var(--transition); flex-shrink: 0; }
+.chat-input-bar button:hover { transform: scale(1.08); }
+.chat-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); text-align: center; padding: 40px; }
+.chat-empty i { font-size: 60px; opacity: 0.3; margin-bottom: 16px; }
+.chat-empty h3 { font-size: 17px; color: var(--text); margin-bottom: 6px; }
+
+@media (max-width: 768px) {
+    .chat-layout { grid-template-columns: 1fr !important; height: calc(100vh - 150px) !important; }
+    .chat-sidebar { display: none !important; }
+    .chat-main { height: 100% !important; width: 100% !important; }
+    .chat-message { max-width: 85%; }
+}
+
+/* ============================================
+   GRADE TABLE
+   ============================================ */
+.grade-subject-cell { font-weight: 700; font-size: 14px; }
+.grade-marks { font-weight: 800; font-size: 15px; color: var(--primary); }
+.grade-card {
+    background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(14,165,233,0.05));
+    border: 1.5px solid rgba(56,189,248,0.25);
+    border-radius: var(--radius); padding: 18px 20px;
+    transition: var(--transition);
+}
+.grade-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.grade-card .grade-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.grade-card .grade-meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ============================================
+   PHOTO GRID
+   ============================================ */
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
+.photo-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; transition: var(--transition);
+}
+.photo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.photo-card img { width: 100%; height: 180px; object-fit: cover; }
+.photo-card .photo-info { padding: 12px 14px; }
+.photo-card .photo-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+
+/* ============================================
+   CHARTS
+   ============================================ */
+.chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 24px; }
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.chart-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.chart-title i { color: var(--primary); }
+    </style>
 </head>
 <body>
 
@@ -852,6 +872,10 @@ tr:last-child { border-bottom: none; }
                 </div>
             </div>
             <div class="header-right">
+                <button class="icon-btn" onclick="switchPage('chat', null)" title="Ubutumwa">
+                    <i class="fas fa-comments"></i>
+                    <span class="badge" id="chatBadge" style="display:none;">0</span>
+                </button>
                 <button class="icon-btn" onclick="toggleTheme()" title="Dark/Light">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
@@ -915,6 +939,12 @@ tr:last-child { border-bottom: none; }
                 </div>
                 <div class="nav-item admin-only" onclick="switchPage('reports', this)">
                     <i class="fas fa-chart-line"></i><span>Raporo</span>
+                </div>
+                
+                <div class="nav-label">Itsinda</div>
+                <div class="nav-item" onclick="switchPage('chat', this)">
+                    <i class="fas fa-comments"></i><span>Ubutumwa</span>
+                    <span class="count danger" id="sidebarChatCount" style="display:none;">0</span>
                 </div>
                 
                 <div class="nav-label super-admin-only" style="display: none;">Super Admin</div>
@@ -1003,13 +1033,17 @@ tr:last-child { border-bottom: none; }
                     </div>
 
                     <div class="member-profile-card" id="studentProfileCard"></div>
-                    <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer"></div>
+                    <!-- Buto yo Kwishyura Amasomo -->
+                    <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer">
+                        <!-- Iyi code izahindurwa na JavaScript bitewe n'uko subscription imeze -->
+                    </div>
                     
                     <div class="section-title" style="margin-top: 30px;">
                         <i class="fas fa-book"></i>
                         <span>Amasomo Yawe (Notes)</span>
                     </div>
                     <div class="saved-list" id="studentDashboardNotesList"></div>
+
                 </div>
 
                 <!-- ============ STUDENT GRADES ============ -->
@@ -1314,7 +1348,6 @@ tr:last-child { border-bottom: none; }
                                         <th>Grade</th>
                                         <th>Umwarimu</th>
                                         <th>Itariki</th>
-                                        <th>Ubwoko</th>
                                         <th>Ibikorwa</th>
                                     </tr>
                                 </thead>
@@ -1429,6 +1462,50 @@ tr:last-child { border-bottom: none; }
                         <div>
                             <h1>📈 Raporo</h1>
                             <p>Kora raporo z'abanyeshuri</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============ CHAT ============ -->
+                <div class="page" id="page-chat">
+                    <div class="page-header">
+                        <div>
+                            <h1>💬 Ubutumwa</h1>
+                            <p>Vugana n'abandi bakoresha</p>
+                        </div>
+                    </div>
+                    <div class="chat-layout">
+                        <div class="chat-sidebar">
+                            <div class="chat-sidebar-header">
+                                <i class="fas fa-comments"></i>
+                                <span>Abakoresha</span>
+                            </div>
+                            <div class="chat-search">
+                                <input type="text" id="chatSearchInput" placeholder="Shakisha umuntu..." oninput="renderChatUsers()">
+                            </div>
+                            <div class="chat-list" id="chatList">
+                                <!-- Chat list izuzuzwa na JavaScript -->
+                            </div>
+                        </div>
+                        <div class="chat-main" id="chatMain">
+                            <div class="chat-main-header">
+                                <div class="chat-item-avatar" style="background: var(--gradient-2);"><i class="fas fa-user"></i></div>
+                                <div>
+                                    <h3 id="chatHeaderTitle">Hitamo umuntu</h3>
+                                    <p id="chatHeaderSubtitle">Vugana n'umuntu</p>
+                                </div>
+                            </div>
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="chat-empty">
+                                    <i class="fas fa-comments"></i>
+                                    <h3>Nta butumwa</h3>
+                                    <p>Hitamo umuntu kugira ngo utangire</p>
+                                </div>
+                            </div>
+                            <div class="chat-input-bar">
+                                <input type="text" id="chatInput" placeholder="Andika ubutumwa..." onkeypress="if(event.key==='Enter') sendChatMessage()" disabled>
+                                <button onclick="sendChatMessage()" disabled><i class="fas fa-paper-plane"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1656,15 +1733,6 @@ tr:last-child { border-bottom: none; }
             </div>
             <div class="form-group"><label>Isomo <span>*</span></label><input type="text" class="form-control" id="gradeSubject" placeholder="Urugero: Mathematics"></div>
             <div class="form-group">
-                <label>Ubwoko bw'Amanota <span>*</span></label>
-                <select class="form-control" id="gradeType">
-                    <option value="exam">📝 Exam (Isuzuma)</option>
-                    <option value="test">🧪 Test (Ikizamini)</option>
-                    <option value="quiz">❓ Quiz</option>
-                    <option value="assignment">📚 Assignment</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label>Igihembwe <span>*</span></label>
                 <select class="form-control" id="gradeTerm">
                     <option value="Term1">Term 1</option>
@@ -1865,13 +1933,20 @@ tr:last-child { border-bottom: none; }
         
         let newStudentPhoto = null;
         let editingPhoto = null;
+        let currentRestoreStudentId = null;
         
         let deptChartInstance = null;
         let myGradesChartInstance = null;
         
+        let chatMessages = [];
+        let chatUnsubscribe = null;
+        let unreadListener = null;
+        
+        let currentChatType = 'private'; 
+        let currentChatUserId = null; 
+
+        // Variables for Notes
         let currentNoteFile = null;
-        let currentPdfUrl = null;
-        let currentPdfTitle = null;
 
         // ============================================
         // HELPERS
@@ -1917,50 +1992,6 @@ tr:last-child { border-bottom: none; }
             div.textContent = String(text);
             return div.innerHTML;
         }
-
-        // ============================================
-        // PDF VIEWER & DOWNLOAD (FIXED FOR LOCAL & MOBILE)
-        // ============================================
-        window.viewPdf = function(url, title, subject, level) {
-            if (!url) { showToast('Nta file ibonetse', 'error'); return; }
-            currentPdfUrl = url;
-            currentPdfTitle = title || 'Isomo';
-            
-            // Kuri local cyangwa mobile, gukoresha window.open ni byo byoroshye kandi ntibikoresha iframe
-            const meta = [subject, level].filter(Boolean).join(' • ');
-            
-            // Koresha Google Docs Viewer gusa niba ari PDF
-            let viewUrl = url;
-            if (url.toLowerCase().endsWith('.pdf')) {
-                 // Koresha Google Docs viewer kugirana ngo zifunguke neza muri browser zose
-                 viewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
-            }
-            
-            // Fungura muri tab nshya (nibyo byoroshye kuri phone na PC)
-            window.open(viewUrl, '_blank');
-        };
-
-        window.downloadPdfDirect = function(url, title) {
-            if (!url) return;
-            
-            // Kuri mobile na PC, gukoresha ubu buryo bworoshye
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            // Kuri Cloudinary, koresha fl_attachment kugirango ibone ko ari download
-            if (url.includes('cloudinary.com')) {
-                // Hindura URL ngo ibasire download
-                let downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
-                a.href = downloadUrl;
-            } else {
-                a.download = title || 'isomo.pdf';
-            }
-            
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showToast('⏳ Gukurura byatangiye...', 'info');
-        };
 
         // ============================================
         // CLOUDINARY UPLOAD
@@ -2061,6 +2092,8 @@ tr:last-child { border-bottom: none; }
 
         window.forceLogout = async function() {
             if (!confirm('Urabyemeza ko ushaka gusohoka?')) return;
+            if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
+            if (unreadListener) { try { unreadListener(); } catch(e) {} }
             try {
                 if (currentUser) {
                     await updateDoc(doc(db, 'users', currentUser.uid), { isOnline: false, lastSeen: serverTimestamp() });
@@ -2240,6 +2273,8 @@ tr:last-child { border-bottom: none; }
                 renderStudents();
                 renderPhotosPage();
             }
+            
+            try { startUnreadListener(); } catch(e) {}
         }
 
         // ============================================
@@ -2391,6 +2426,7 @@ tr:last-child { border-bottom: none; }
             if (page === 'profile') updateProfileUI();
             if (page === 'notes') renderNotes();
             if (page === 'notes-payments') renderNotesPayments();
+            if (page === 'chat') initChatPage();
             
             if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2761,16 +2797,6 @@ tr:last-child { border-bottom: none; }
             return 'F';
         }
 
-        function getGradeTypeLabel(type) {
-            const labels = {
-                exam: { icon: '📝', text: 'Exam' },
-                test: { icon: '🧪', text: 'Test' },
-                quiz: { icon: '❓', text: 'Quiz' },
-                assignment: { icon: '📚', text: 'Assignment' }
-            };
-            return labels[type] || labels.exam;
-        }
-
         window.renderGrades = function() {
             const tbody = document.getElementById('gradesBody');
             if (!tbody) return;
@@ -2798,7 +2824,6 @@ tr:last-child { border-bottom: none; }
                 const studentName = s ? s.name : g.studentName || '-';
                 const levelLabel = s ? s.level : '-';
                 const grade = calculateGrade(g.marks);
-                const typeInfo = getGradeTypeLabel(g.type || 'exam');
                 return `<tr>
                     <td><strong>${studentName}</strong></td>
                     <td>${g.subject}</td>
@@ -2808,7 +2833,6 @@ tr:last-child { border-bottom: none; }
                     <td><span class="grade-badge grade-${grade}">${grade}</span></td>
                     <td>${g.teacher || '-'}</td>
                     <td>${formatDate(g.date)}</td>
-                    <td><span class="class-badge" style="background:rgba(139,92,246,0.12);color:#8b5cf6;">${typeInfo.icon} ${typeInfo.text}</span></td>
                     <td><button class="action-btn delete" onclick="deleteGrade('${g.id}')"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             }).join('');
@@ -2821,7 +2845,6 @@ tr:last-child { border-bottom: none; }
                 select.innerHTML += `<option value="${s.id}">${s.name} (${s.studentId || ''})</option>`;
             });
             document.getElementById('gradeSubject').value = '';
-            document.getElementById('gradeType').value = 'exam';
             document.getElementById('gradeTerm').value = 'Term1';
             document.getElementById('gradeMarks').value = '';
             document.getElementById('gradeTeacher').value = '';
@@ -2832,7 +2855,6 @@ tr:last-child { border-bottom: none; }
         window.addGrade = async function() {
             const studentId = document.getElementById('gradeStudentId').value;
             const subject = document.getElementById('gradeSubject').value.trim();
-            const type = document.getElementById('gradeType').value;
             const term = document.getElementById('gradeTerm').value;
             const marks = parseFloat(document.getElementById('gradeMarks').value);
             const teacher = document.getElementById('gradeTeacher').value.trim();
@@ -2851,7 +2873,6 @@ tr:last-child { border-bottom: none; }
                     studentId, 
                     studentName: s.name,
                     subject, 
-                    type,
                     term, 
                     marks, 
                     maxMarks: 100,
@@ -2878,7 +2899,7 @@ tr:last-child { border-bottom: none; }
         };
 
         // ============================================
-        // NOTES (AMASOMO) — ADMIN
+        // NOTES (AMASOMO)
         // ============================================
         window.openAddNoteModal = function() {
             currentNoteFile = null;
@@ -2906,6 +2927,7 @@ tr:last-child { border-bottom: none; }
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turazamura...';
             
             try {
+                // Upload file kuri Cloudinary (raw upload kuri PDF/Word)
                 const fileUrl = await uploadToCloudinary(currentNoteFile, true);
                 const ext = currentNoteFile.name.split('.').pop().toLowerCase();
                 let fileType = 'other';
@@ -2913,6 +2935,7 @@ tr:last-child { border-bottom: none; }
                 else if (ext === 'doc' || ext === 'docx') fileType = 'word';
                 else if (ext === 'txt') fileType = 'text';
                 
+                // Bika muri Firestore
                 await addDoc(collection(db, 'notes'), {
                     title, subject, level, description,
                     fileUrl, fileType, fileName: currentNoteFile.name,
@@ -2970,9 +2993,8 @@ tr:last-child { border-bottom: none; }
                         </div>
                     </div>
                     <div class="saved-actions">
-                        <button class="action-btn view" title="Reba" onclick="viewPdf('${n.fileUrl}', '${escapeHtml(n.title).replace(/'/g, "\\'")}', '${escapeHtml(n.subject||'').replace(/'/g, "\\'")}', '${escapeHtml(n.level||'').replace(/'/g, "\\'")}')"><i class="fas fa-eye"></i></button>
-                        <button class="action-btn pdf" title="Kurura" onclick="downloadPdfDirect('${n.fileUrl}', '${escapeHtml(n.title).replace(/'/g, "\\'")}')"><i class="fas fa-download"></i></button>
-                        <button class="action-btn delete" title="Siba" onclick="deleteNote('${n.id}')"><i class="fas fa-trash"></i></button>
+                        <a href="${n.fileUrl}" target="_blank" class="action-btn view" title="Reba / Kurura"><i class="fas fa-download"></i></a>
+                        <button class="action-btn delete" onclick="deleteNote('${n.id}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             }).join('');
@@ -3054,20 +3076,23 @@ tr:last-child { border-bottom: none; }
                 const payment = notesPayments.find(p => p.id === id);
                 if (!payment) return;
 
+                // 1. Hindura status y'ubwishyu muri notesPayments
                 await updateDoc(doc(db, 'notesPayments', id), {
                     status: 'confirmed',
                     confirmedAt: serverTimestamp()
                 });
                 
+                // 2. Hindura subscription status ya umunyeshuri
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'active',
                     subscriptionStartDate: serverTimestamp(),
-                    subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000)
+                    subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000) // 14 days = 2 weeks
                 });
 
                 showToast('✅ Amasomo yafunguriwe uyu munyeshuri!', 'success');
                 await loadAllData();
                 renderNotesPayments();
+                renderMyNotes();
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
@@ -3091,13 +3116,11 @@ tr:last-child { border-bottom: none; }
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
-        // ============================================
-        // STUDENT: MY NOTES (WITH VIEW + DOWNLOAD)
-        // ============================================
         window.renderMyNotes = function() {
             const list = document.getElementById('myNotesList');
             if (!list) return;
             
+            // Reba niba umunyeshuri yishyuye (afite subscription active)
             const m = students.find(x => x.id === currentUserData.studentId);
             const hasSubscription = m && m.subscriptionStatus === 'active';
             
@@ -3122,17 +3145,9 @@ tr:last-child { border-bottom: none; }
                 
                 let actionHtml = '';
                 if (hasSubscription) {
-                    const titleEsc = escapeHtml(n.title).replace(/'/g, "\\'");
-                    const subjectEsc = escapeHtml(n.subject||'').replace(/'/g, "\\'");
-                    const levelEsc = escapeHtml(n.level||'').replace(/'/g, "\\'");
-                    
                     actionHtml = `
-                        <button class="btn btn-primary btn-sm" onclick="viewPdf('${n.fileUrl}', '${titleEsc}', '${subjectEsc}', '${levelEsc}')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                        <button class="btn btn-success btn-sm" onclick="downloadPdfDirect('${n.fileUrl}', '${titleEsc}')">
-                            <i class="fas fa-download"></i> Download
-                        </button>
+                        <a href="${n.fileUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right:4px;"><i class="fas fa-eye"></i> View</a>
+                        <a href="${n.fileUrl}" download="${n.fileName || 'file.pdf'}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
                     `;
                 } else {
                     actionHtml = `
@@ -3199,23 +3214,21 @@ tr:last-child { border-bottom: none; }
             document.getElementById('studentWelcomeGreeting').innerHTML = `<i class="fas fa-sun" style="color:#f59e0b;"></i> Umunsi mwiza wa kazi`;
             document.getElementById('studentWelcomeDate').textContent = `${daysRw[now.getDay()]}, ${now.getDate()} ${monthsRw[now.getMonth()]} ${now.getFullYear()}`;
             
+            // Ongeraho subscription status
             renderSubscriptionStatus(m);
             
+            // Recent Notes (abona gusa niba yishyuye)
             const myNotesList = document.getElementById('studentDashboardNotesList');
             const hasSubscription = m.subscriptionStatus === 'active';
             
             if (!hasSubscription) {
                 myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-lock"></i></div><h3>Nturabona Amasomo</h3><p>Wishyure mbere kugira ngo ubone amasomo yawe.</p></div>`;
             } else {
-                const myNotes = notes.slice(0, 3);
+                const myNotes = notes.slice(0, 3); // Abona 3 za mbere
                 if (myNotes.length === 0) {
                     myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo ufite ubu</h3></div>`;
                 } else {
-                    myNotesList.innerHTML = myNotes.map(n => {
-                        const titleEsc = escapeHtml(n.title).replace(/'/g, "\\'");
-                        const subjectEsc = escapeHtml(n.subject||'').replace(/'/g, "\\'");
-                        const levelEsc = escapeHtml(n.level||'').replace(/'/g, "\\'");
-                        return `
+                    myNotesList.innerHTML = myNotes.map(n => `
                         <div class="saved-card">
                             <div class="saved-info">
                                 <h3><i class="fas fa-book"></i> ${n.title}</h3>
@@ -3224,17 +3237,16 @@ tr:last-child { border-bottom: none; }
                                 </div>
                             </div>
                             <div class="saved-actions">
-                                <button class="btn btn-primary btn-sm" onclick="viewPdf('${n.fileUrl}', '${titleEsc}', '${subjectEsc}', '${levelEsc}')"><i class="fas fa-eye"></i> View</button>
-                                <button class="btn btn-success btn-sm" onclick="downloadPdfDirect('${n.fileUrl}', '${titleEsc}')"><i class="fas fa-download"></i> Download</button>
+                                <a href="${n.fileUrl}" target="_blank" class="btn btn-primary" style="padding: 8px 16px;"><i class="fas fa-download"></i> Kurura</a>
                             </div>
                         </div>
-                    `}).join('');
+                    `).join('');
                 }
             }
         };
 
         // ============================================
-        // SUBSCRIPTION
+        // SUBSCRIPTION (KWISHYURA AMASOMO)
         // ============================================
         window.renderSubscriptionStatus = function(m) {
             const container = document.getElementById('subscriptionStatusContainer');
@@ -3291,6 +3303,9 @@ tr:last-child { border-bottom: none; }
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turaohereza...';
 
             try {
+                const date = new Date().toISOString().split('T')[0];
+                
+                // 1. Bika nk'ubwishyu butegereje (muri notesPayments)
                 await addDoc(collection(db, 'notesPayments'), {
                     studentId: m.id,
                     studentName: m.name,
@@ -3303,6 +3318,7 @@ tr:last-child { border-bottom: none; }
                     createdAt: serverTimestamp(),
                 });
                 
+                // 2. Hindura status ya subscription muri students kuri 'pending'
                 await updateDoc(doc(db, 'students', studentId), {
                     subscriptionStatus: 'pending'
                 });
@@ -3323,7 +3339,7 @@ tr:last-child { border-bottom: none; }
         };
 
         // ============================================
-        // STUDENT MY GRADES — WITH TESTS
+        // STUDENT MY GRADES
         // ============================================
         window.renderMyGrades = function() {
             if (currentUserData?.role !== 'student') return;
@@ -3337,29 +3353,22 @@ tr:last-child { border-bottom: none; }
                 document.getElementById('myAvgMarks').textContent = '0';
                 document.getElementById('myBestGrade').textContent = '-';
                 document.getElementById('myOverallGrade').textContent = '-';
-                const ctx = document.getElementById('myGradesChart')?.getContext('2d');
-                if (ctx) {
-                    if (myGradesChartInstance) myGradesChartInstance.destroy();
-                    myGradesChartInstance = new Chart(ctx, { type: 'bar', data: { labels: [], datasets: [] }, options: { responsive: true } });
-                }
                 return;
             }
             
-            const avg = Math.round(myGrades.reduce((sum, g) => sum + Number(g.marks), 0) / myGrades.length);
+            const avg = Math.round(myGrades.reduce((sum, g) => sum + g.marks, 0) / myGrades.length);
             document.getElementById('myAvgMarks').textContent = avg;
             
-            const bestMarks = Math.max(...myGrades.map(g => Number(g.marks)));
+            const bestMarks = Math.max(...myGrades.map(g => g.marks));
             document.getElementById('myBestGrade').textContent = bestMarks;
             document.getElementById('myOverallGrade').textContent = calculateGrade(avg);
             
             document.getElementById('myGradesList').innerHTML = myGrades.map(g => {
                 const grade = calculateGrade(g.marks);
-                const typeInfo = getGradeTypeLabel(g.type || 'exam');
-                const typeBadge = `<span class="class-badge" style="background:rgba(139,92,246,0.12);color:#8b5cf6;margin-left:6px;">${typeInfo.icon} ${typeInfo.text}</span>`;
                 return `<div class="grade-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
                         <div>
-                            <div class="grade-title">${g.subject} ${typeBadge}</div>
+                            <div class="grade-title">${g.subject}</div>
                             <div class="grade-meta">
                                 <span><i class="fas fa-calendar"></i> ${formatDate(g.date)}</span>
                                 <span><i class="fas fa-tag"></i> ${g.term}</span>
@@ -3380,20 +3389,16 @@ tr:last-child { border-bottom: none; }
                 myGradesChartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: myGrades.map(g => g.subject + ' (' + (getGradeTypeLabel(g.type || 'exam').text) + ')'),
+                        labels: myGrades.map(g => g.subject),
                         datasets: [{ 
                             label: 'Amanota', 
-                            data: myGrades.map(g => Number(g.marks)), 
+                            data: myGrades.map(g => g.marks), 
                             backgroundColor: 'rgba(56,189,248,0.8)',
                             borderRadius: 12,
                             barThickness: 50
                         }]
                     },
-                    options: { 
-                        responsive: true, 
-                        plugins: { legend: { display: false } }, 
-                        scales: { y: { beginAtZero: true, max: 100 } } 
-                    }
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
                 });
             }
         };
@@ -3499,8 +3504,196 @@ tr:last-child { border-bottom: none; }
         };
 
         // ============================================
-        // SETTINGS
+        // CHAT (PRIVATE)
         // ============================================
+        window.initChatPage = function() {
+            renderChatUsers();
+            const chatInputBar = document.querySelector('.chat-input-bar');
+            if (chatInputBar) {
+                chatInputBar.querySelector('input').disabled = true;
+                chatInputBar.querySelector('button').disabled = true;
+            }
+            document.getElementById('chatHeaderTitle').textContent = 'Hitamo umuntu';
+            document.getElementById('chatHeaderSubtitle').textContent = 'Vugana n\'umuntu';
+            document.getElementById('chatMessages').innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i><h3>Nta butumwa</h3><p>Hitamo umuntu kugira ngo utangire</p></div>`;
+        };
+
+        window.renderChatUsers = function() {
+            const chatList = document.getElementById('chatList');
+            if (!chatList) return;
+            
+            const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
+            
+            let allUsers = [];
+            users.forEach(u => {
+                if (u.uid !== currentUser.uid) {
+                    allUsers.push({ id: u.uid, name: u.name, photo: u.photo, role: u.role, type: 'staff' });
+                }
+            });
+            students.forEach(s => {
+                if (s.uid && s.uid !== currentUser.uid && s.status === 'active') {
+                    allUsers.push({ id: s.uid, name: s.name, photo: s.photo, role: 'student', type: 'student' });
+                }
+            });
+
+            const uniqueUsers = [];
+            const map = new Map();
+            for (const item of allUsers) {
+                if (!map.has(item.id)) {
+                    map.set(item.id, true);
+                    uniqueUsers.push(item);
+                }
+            }
+
+            let filteredUsers = uniqueUsers;
+            if (search) {
+                filteredUsers = uniqueUsers.filter(u => (u.name||'').toLowerCase().includes(search));
+            }
+            
+            filteredUsers.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+            if (filteredUsers.length === 0) {
+                chatList.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">Nta muntu wabonetse</div>`;
+                return;
+            }
+
+            chatList.innerHTML = filteredUsers.map(u => {
+                const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarHtml = u.photo ? `<img src="${u.photo}">` : initials;
+                const roleIcon = u.type === 'student' ? '🎓' : '🛡️';
+                return `<div class="chat-item" onclick="openPrivateChat('${u.id}', '${u.name.replace(/'/g, "\\'")}', '${u.photo || ''}')">
+                    <div class="chat-item-avatar">${avatarHtml}</div>
+                    <div class="chat-item-info">
+                        <div class="chat-item-name">${roleIcon} ${u.name}</div>
+                        <div class="chat-item-preview">Kanda kugira ngo uvugane</div>
+                    </div>
+                </div>`;
+            }).join('');
+        };
+
+        window.openPrivateChat = async function(userId, userName, userPhoto) {
+            if (!userId) return;
+            currentChatUserId = userId;
+
+            document.getElementById('chatHeaderTitle').textContent = userName;
+            document.getElementById('chatHeaderSubtitle').textContent = 'Ubutumwa bwite';
+            document.getElementById('chatInput').disabled = false;
+            document.querySelector('.chat-input-bar button').disabled = false;
+            document.getElementById('chatInput').focus();
+
+            document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
+
+            const messagesEl = document.getElementById('chatMessages');
+            if (!messagesEl) return;
+
+            if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+            
+            messagesEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);"><i class="fas fa-spinner fa-spin"></i> Turazana...</div>`;
+
+            const q = query(
+                collection(db, 'privateChats'),
+                where('participants', 'array-contains', currentUser.uid),
+                orderBy('createdAt', 'asc'),
+                limit(100)
+            );
+
+            chatUnsubscribe = onSnapshot(q, (snap) => {
+                chatMessages = [];
+                snap.forEach(d => {
+                    const data = d.data();
+                    if (data.participants.includes(userId)) {
+                        chatMessages.push({ id: d.id, ...data });
+                    }
+                });
+                renderPrivateChatMessages(userName, userPhoto);
+            }, (error) => {
+                messagesEl.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i><h3>Ikibazo</h3><p>${error.message}</p></div>`;
+            });
+        };
+
+        function renderPrivateChatMessages(otherUserName, otherUserPhoto) {
+            const messagesEl = document.getElementById('chatMessages');
+            if (!messagesEl) return;
+            
+            if (chatMessages.length === 0) {
+                messagesEl.innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i><h3>Nta butumwa</h3><p>Tangira kuvuga na ${otherUserName}</p></div>`;
+                return;
+            }
+
+            const myUid = currentUser?.uid || 'unknown';
+            messagesEl.innerHTML = chatMessages.map(msg => {
+                const isMine = msg.fromUid === myUid;
+                const date = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
+                const timeStr = `${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
+                const initials = (msg.fromName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarHtml = msg.fromPhoto ? `<img src="${msg.fromPhoto}">` : initials;
+                return `<div class="chat-message ${isMine ? 'mine' : ''}">
+                    <div class="chat-message-avatar">${avatarHtml}</div>
+                    <div>
+                        ${!isMine ? `<div class="chat-message-sender">${msg.fromName || 'Unknown'}</div>` : ''}
+                        <div class="chat-message-bubble">
+                            <div class="chat-message-text">${escapeHtml(msg.message || '')}</div>
+                            <div class="chat-message-time">${timeStr}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        window.sendChatMessage = async function() {
+            const input = document.getElementById('chatInput');
+            if (!input) return;
+            const message = input.value.trim();
+            if (!message) return;
+            if (!currentUser) { showToast('❌ Ntabwo winjiye', 'error'); return; }
+            if (!currentChatUserId) { showToast('❌ Hitamo umuntu mbere', 'warning'); return; }
+            
+            input.value = '';
+            try {
+                await addDoc(collection(db, 'privateChats'), {
+                    participants: [currentUser.uid, currentChatUserId],
+                    message: message,
+                    fromUid: currentUser.uid,
+                    fromName: currentUserData?.name || 'Unknown',
+                    fromPhoto: currentUserData?.photo || null,
+                    readBy: [currentUser.uid],
+                    createdAt: serverTimestamp()
+                });
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+                input.value = message;
+            }
+        };
+
+        window.startUnreadListener = function() {
+            if (!currentUser) return;
+            const myUid = currentUser.uid;
+            if (unreadListener) { try { unreadListener(); } catch(e) {} }
+            const q = query(collection(db, 'privateChats'), orderBy('createdAt', 'desc'), limit(100));
+            unreadListener = onSnapshot(q, (snap) => {
+                try {
+                    let count = 0;
+                    snap.forEach(d => {
+                        const data = d.data();
+                        const readBy = Array.isArray(data.readBy) ? data.readBy : [];
+                        if (data.fromUid !== myUid && !readBy.includes(myUid) && data.participants.includes(myUid)) count++;
+                    });
+                    const badge = document.getElementById('chatBadge');
+                    const sb = document.getElementById('sidebarChatCount');
+                    if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'flex' : 'none'; }
+                    if (sb) { sb.textContent = count; sb.style.display = count > 0 ? 'flex' : 'none'; }
+                } catch (e) {}
+            });
+        };
+
+        // ============================================
+        // REPORTS
+        // ============================================
+        window.initReportsPage = function() {
+            // Empty page as requested
+        };
+
         window.saveSettings = async function() {
             const schoolName = document.getElementById('schoolName').value.trim();
             try { 
