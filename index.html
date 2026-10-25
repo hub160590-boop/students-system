@@ -273,6 +273,7 @@ body {
     color: white; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 13px; overflow: hidden;
+    flex-shrink: 0;
 }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .user-chip span { font-size: 13px; font-weight: 600; }
@@ -1929,6 +1930,7 @@ body {
         let teachers = [];
         let grades = [];
         let notes = [];
+        let notesPayments = [];
         
         let newStudentPhoto = null;
         let editingPhoto = null;
@@ -1941,12 +1943,11 @@ body {
         let chatUnsubscribe = null;
         let unreadListener = null;
         
-        let currentChatType = 'private'; // Changed to private by default
-        let currentChatUserId = null; // ID of the user we are chatting with
+        let currentChatType = 'private'; 
+        let currentChatUserId = null; 
 
         // Variables for Notes
         let currentNoteFile = null;
-        let notesPayments = [];
 
         // ============================================
         // HELPERS
@@ -1979,6 +1980,11 @@ body {
                 if (isNaN(dt.getTime())) return '-';
                 return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
             } catch(e) { return '-'; }
+        };
+
+        window.formatMoney = function(n) {
+            if (!n && n !== 0) return '0 RWF';
+            return Number(n).toLocaleString('en-US') + ' RWF';
         };
 
         function escapeHtml(text) {
@@ -3009,7 +3015,7 @@ body {
         // NOTES PAYMENTS (ADMIN)
         // ============================================
         window.renderNotesPayments = async function() {
-            await loadAllData(); // Reload data to get newest payments
+            await loadAllData();
             const list = document.getElementById('notesPaymentsList');
             if (!list) return;
             
@@ -3078,12 +3084,7 @@ body {
                 });
                 
                 // 2. Hindura subscription status ya umunyeshuri
-                // Hano turakoresha `studentUid` kuko twabikoze muri code (twebwe turabika `studentId: currentUserData.uid`)
-                // Ariko muri Firestore, `studentId` iri muri `students` ni document ID, atari UID. 
-                // Tugiye gushakisha umunyeshuri dukoresheje iyo document ID.
-                // Tugiye kubona document ye hanyuma tuyihindure.
-                
-                await updateDoc(doc(db, 'students', payment.studentId), { // Hano `studentId` ni document ID (nk'uko twabikoze muri `submitSubscriptionPayment`)
+                await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'active',
                     subscriptionStartDate: serverTimestamp(),
                     subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000) // 14 days = 2 weeks
@@ -3092,7 +3093,7 @@ body {
                 showToast('✅ Amasomo yafunguriwe uyu munyeshuri!', 'success');
                 await loadAllData();
                 renderNotesPayments();
-                renderMyNotes(); // refresh student view if admin is viewing their own notes
+                renderMyNotes();
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
@@ -3107,7 +3108,6 @@ body {
                     rejectedAt: serverTimestamp()
                 });
                 
-                // Subiza status ya subscription kuri inactive
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'inactive'
                 });
@@ -3125,29 +3125,17 @@ body {
             const m = students.find(x => x.id === currentUserData.studentId);
             const hasSubscription = m && m.subscriptionStatus === 'active';
             
-            // Niba atishyuye, ntabwo abona amasomo.
-            if (!hasSubscription) {
-                list.innerHTML = `<div class="empty-state">
-                    <div class="icon"><i class="fas fa-lock" style="color:var(--danger); opacity:1;"></i></div>
-                    <h3 style="color:var(--danger);">Nturabona Amasomo</h3>
-                    <p style="margin-bottom: 16px;">Kugira ngo ubone View na Download y'amasomo yose, wishyure 1,000 RWF.</p>
-                    <button class="btn btn-primary" onclick="switchPage('my-dashboard', null)">Subira ku Dashboard Kwishyura</button>
-                </div>`;
-                return;
-            }
-            
-            // Niba yishyuye, abona amasomo YOSE ari muri sisitemu (ntabwo abona ayo ku rwego rwe gusa).
             const lf = document.getElementById('myNotesFilterLevel')?.value || '';
             const st = document.getElementById('myNotesSearch')?.value.toLowerCase().trim() || '';
             
-            let filtered = [...notes]; // Abona byose
+            let filtered = [...notes]; 
             if (lf) filtered = filtered.filter(n => n.level === lf);
             if (st) filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(st) || (n.subject||'').toLowerCase().includes(st));
             
             filtered.sort((a, b) => (b.createdAt?.toDate?.() || 0) - (a.createdAt?.toDate?.() || 0));
             
             if (filtered.length === 0) {
-                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo ufite ubu</h3><p>Umwarimu azayashyiraho vuba</p></div>`;
+                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo arahari</h3></div>`;
                 return;
             }
             
@@ -3156,18 +3144,30 @@ body {
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
                 
+                let actionHtml = '';
+                if (hasSubscription) {
+                    actionHtml = `
+                        <a href="${n.fileUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right:4px;"><i class="fas fa-eye"></i> View</a>
+                        <a href="${n.fileUrl}" download="${n.fileName || 'file.pdf'}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
+                    `;
+                } else {
+                    actionHtml = `
+                        <button class="btn btn-warning btn-sm" onclick="openSubscriptionModal()"><i class="fas fa-lock"></i> Fungura (Wishyure)</button>
+                    `;
+                }
+                
                 return `<div class="saved-card">
                     <div class="saved-info">
                         <h3><i class="fas ${fileIcon}"></i> ${n.title}</h3>
                         <div class="saved-meta">
                             <span><i class="fas fa-book"></i> ${n.subject}</span>
                             <span><i class="fas fa-calendar"></i> ${dateStr}</span>
+                            <span><i class="fas fa-layer-group"></i> ${n.level}</span>
                             ${n.description ? `<span><i class="fas fa-info-circle"></i> ${n.description}</span>` : ''}
                         </div>
                     </div>
                     <div class="saved-actions">
-                        <a href="${n.fileUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right:4px;"><i class="fas fa-eye"></i> View</a>
-                        <a href="${n.fileUrl}" download="${n.fileName || 'file.pdf'}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
+                        ${actionHtml}
                     </div>
                 </div>`;
             }).join('');
@@ -3509,7 +3509,6 @@ body {
         // ============================================
         window.initChatPage = function() {
             renderChatUsers();
-            // Hide input bar by default
             const chatInputBar = document.querySelector('.chat-input-bar');
             if (chatInputBar) {
                 chatInputBar.querySelector('input').disabled = true;
@@ -3527,20 +3526,17 @@ body {
             const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
             
             let allUsers = [];
-            // Ongeraho Admin n'Abarimu (users)
             users.forEach(u => {
-                if (u.uid !== currentUser.uid) { // Ntibone we ubwe
+                if (u.uid !== currentUser.uid) {
                     allUsers.push({ id: u.uid, name: u.name, photo: u.photo, role: u.role, type: 'staff' });
                 }
             });
-            // Ongeraho Abanyeshuri (students)
             students.forEach(s => {
-                if (s.uid && s.uid !== currentUser.uid && s.status === 'active') { // Ntibone we ubwe
+                if (s.uid && s.uid !== currentUser.uid && s.status === 'active') {
                     allUsers.push({ id: s.uid, name: s.name, photo: s.photo, role: 'student', type: 'student' });
                 }
             });
 
-            // Removes duplicates by ID (niba umunyeshuri ari muri users kandi ari muri students)
             const uniqueUsers = [];
             const map = new Map();
             for (const item of allUsers) {
@@ -3580,14 +3576,12 @@ body {
             if (!userId) return;
             currentChatUserId = userId;
 
-            // Update header
             document.getElementById('chatHeaderTitle').textContent = userName;
             document.getElementById('chatHeaderSubtitle').textContent = 'Ubutumwa bwite';
             document.getElementById('chatInput').disabled = false;
             document.querySelector('.chat-input-bar button').disabled = false;
             document.getElementById('chatInput').focus();
 
-            // Highlight chat item (optional)
             document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
             // Ntibyoroshye kuhitamo item runaka hano kuko turakoresha inyuguti. Reka tubikore hanyuma.
 
@@ -3598,8 +3592,6 @@ body {
             
             messagesEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);"><i class="fas fa-spinner fa-spin"></i> Turazana...</div>`;
 
-            // Firestore query for private messages
-            // Iyi code isaba ko hari collection yitwa 'privateChats' ifite field 'participants' (array) irimo [currentUser.uid, userId]
             const q = query(
                 collection(db, 'privateChats'),
                 where('participants', 'array-contains', currentUser.uid),
@@ -3607,16 +3599,12 @@ body {
                 limit(100)
             );
 
-            // Tugiye kubika ubutumwa hano
-            let allPrivateMsgs = [];
-
             chatUnsubscribe = onSnapshot(q, (snap) => {
-                allPrivateMsgs = [];
+                chatMessages = [];
                 snap.forEach(d => {
                     const data = d.data();
-                    // Reba niba uyu ubutumwa ari hagati y'abantu babiri (currentUser na uwo tuvugana)
                     if (data.participants.includes(userId)) {
-                        allPrivateMsgs.push({ id: d.id, ...data });
+                        chatMessages.push({ id: d.id, ...data });
                     }
                 });
                 renderPrivateChatMessages(userName, userPhoto);
@@ -3629,22 +3617,6 @@ body {
             const messagesEl = document.getElementById('chatMessages');
             if (!messagesEl) return;
             
-            if (chatMessages.length === 0) { // Hano twakoresha `chatMessages` nk'ububiko rusange. Ntibikwiye. Dore uko bikwiye:
-                // Niba twifashishije `chatMessages` muri `onSnapshot`, tuzayikoresha hano.
-            }
-
-            // Reka dukoreshe variable yihariye
-            const msgs = [];
-            // Tuzayikura mu gihe cya `onSnapshot` hanyuma tuyikoreshe hano
-            // Kuko `onSnapshot` iri hejuru iduha `allPrivateMsgs`, tuzayikoresha.
-            // Ariko `renderPrivateChatMessages` ntijyanye na `allPrivateMsgs`. 
-            // Tugiye guhindura uburyo bwo kubika ubutumwa.
-
-            // Icy'ingenzi: Reka dukoreshe `chatMessages` nk'ububiko bw'ubutumwa bwose bwa private
-            // Tuzayikura muri `onSnapshot` hanyuma tuyikoreshe hano.
-            // Niba `chatMessages` ari imwe, tuzayikoresha.
-
-            // Niba `chatMessages` irimo ubutumwa, turabuyerekana.
             if (chatMessages.length === 0) {
                 messagesEl.innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i><h3>Nta butumwa</h3><p>Tangira kuvuga na ${otherUserName}</p></div>`;
                 return;
@@ -3652,12 +3624,23 @@ body {
 
             const myUid = currentUser?.uid || 'unknown';
             messagesEl.innerHTML = chatMessages.map(msg => {
-                // Reba niba uyu ubutumwa ari hagati yacu
-                if (!msg.participants.includes(otherUserName)) return ''; // Hano ni ikosa. `otherUserName` ni izina, atari UID.
-                // Reka dukoreshe UID.
-                // Tuzahindura `openPrivateChat` kugira ngo ibike UID.
-                return ''; // Tuzabikora mu buryo bworoshye.
+                const isMine = msg.fromUid === myUid;
+                const date = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
+                const timeStr = `${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
+                const initials = (msg.fromName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarHtml = msg.fromPhoto ? `<img src="${msg.fromPhoto}">` : initials;
+                return `<div class="chat-message ${isMine ? 'mine' : ''}">
+                    <div class="chat-message-avatar">${avatarHtml}</div>
+                    <div>
+                        ${!isMine ? `<div class="chat-message-sender">${msg.fromName || 'Unknown'}</div>` : ''}
+                        <div class="chat-message-bubble">
+                            <div class="chat-message-text">${escapeHtml(msg.message || '')}</div>
+                            <div class="chat-message-time">${timeStr}</div>
+                        </div>
+                    </div>
+                </div>`;
             }).join('');
+            messagesEl.scrollTop = messagesEl.scrollHeight;
         }
 
         window.sendChatMessage = async function() {
@@ -3683,6 +3666,27 @@ body {
                 showToast('❌ ' + error.message, 'error');
                 input.value = message;
             }
+        };
+
+        window.startUnreadListener = function() {
+            if (!currentUser) return;
+            const myUid = currentUser.uid;
+            if (unreadListener) { try { unreadListener(); } catch(e) {} }
+            const q = query(collection(db, 'privateChats'), orderBy('createdAt', 'desc'), limit(100));
+            unreadListener = onSnapshot(q, (snap) => {
+                try {
+                    let count = 0;
+                    snap.forEach(d => {
+                        const data = d.data();
+                        const readBy = Array.isArray(data.readBy) ? data.readBy : [];
+                        if (data.fromUid !== myUid && !readBy.includes(myUid) && data.participants.includes(myUid)) count++;
+                    });
+                    const badge = document.getElementById('chatBadge');
+                    const sb = document.getElementById('sidebarChatCount');
+                    if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'flex' : 'none'; }
+                    if (sb) { sb.textContent = count; sb.style.display = count > 0 ? 'flex' : 'none'; }
+                } catch (e) {}
+            });
         };
 
         // ============================================
