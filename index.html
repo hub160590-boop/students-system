@@ -712,6 +712,90 @@ tr:last-child { border-bottom: none; }
 .pdf-viewer-frame-wrap iframe {
     width: 100%; height: 100%; border: none; display: block;
 }
+        /* ============================================
+   RESPONSIVE (MOBILE & TABLET) - FIXED
+   ============================================ */
+@media (max-width: 900px) {
+    /* Kora buto ya menu iboneke */
+    .menu-toggle { 
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Hindura sidebar kugira ngo ibe "drawer" (ifunga kandi ifunguke) */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0;
+        bottom: 0 !important;
+        width: 260px; /* Aho ugiye kugera */
+        height: 100vh;
+        z-index: 9999 !important; /* Ijye hejuru y'ibindi bintu byose */
+        transform: translateX(-100%); /* Ihishe ibumoso */
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+        padding-top: 20px;
+        background: var(--bg-card);
+    }
+
+    /* Iyo sidebar ifungutse (.open) */
+    .sidebar.open { 
+        transform: translateX(0); 
+    }
+
+    /* Ongeraho umwijima (backdrop) iyo sidebar ifungutse */
+    .sidebar.open::after {
+        content: '';
+        position: fixed;
+        top: 0; 
+        left: 260px; /* Iburyo bwa sidebar */
+        right: 0; 
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    /* Hindura layout kugira ngo main itarengere sidebar */
+    .layout {
+        display: block;
+        min-height: calc(100vh - 71px);
+    }
+
+    .main {
+        padding: 16px;
+        width: 100%;
+    }
+
+    /* Header kuri telefone */
+    .header {
+        padding: 12px 16px;
+    }
+}
+
+/* Kuri telefone nto cyane */
+@media (max-width: 600px) {
+    .logo span { display: none; } /* Hisha izina, sigaza icon gusa */
+    .user-chip span { display: none; } /* Hisha izina ry'umukoresha */
+    .stats-grid { grid-template-columns: 1fr; }
+    .saved-card { flex-direction: column; align-items: stretch; }
+    .saved-actions { justify-content: flex-start; }
+    .saved-actions .btn { flex: 1; text-align: center; }
+    
+    /* Kuri table */
+    .table-card { 
+        overflow-x: auto !important; 
+        width: 100% !important; 
+    }
+    .table-card table { 
+        min-width: 700px !important; 
+    }
+}
+
+/* Kuri tablet */
+@media (min-width: 601px) and (max-width: 900px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
