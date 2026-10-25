@@ -186,20 +186,11 @@
         }
 
         @keyframes slideUp {
-            from { 
-                transform: translateY(60px) scale(0.95); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
+            from { transform: translateY(60px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        .header { 
-            text-align: center; 
-            margin-bottom: 32px; 
-        }
+        .header { text-align: center; margin-bottom: 32px; }
 
         .header .logo-wrap {
             position: relative;
@@ -256,805 +247,239 @@
             background-clip: text;
         }
 
-        .header p { 
-            color: var(--text-secondary); 
-            font-size: 14.5px;
-            font-weight: 500;
-        }
+        .header p { color: var(--text-secondary); font-size: 14.5px; font-weight: 500; }
 
-        .form-group { 
-            margin-bottom: 20px; 
-            animation: fadeInUp 0.5s ease backwards;
-        }
-
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(15px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
+        .form-group { margin-bottom: 20px; animation: fadeInUp 0.5s ease backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13.5px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text);
-            letter-spacing: -0.2px;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13.5px; font-weight: 700; margin-bottom: 10px;
+            color: var(--text); letter-spacing: -0.2px;
         }
 
-        .form-group label i {
-            font-size: 14px;
-            color: var(--primary);
-            width: 20px;
-        }
-
-        .form-group label span { 
-            color: var(--danger); 
-            margin-left: auto;
-            font-size: 16px;
-        }
+        .form-group label i { font-size: 14px; color: var(--primary); width: 20px; }
+        .form-group label span { color: var(--danger); margin-left: auto; font-size: 16px; }
 
         .form-control {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            background: #f8fafc;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 600;
+            width: 100%; padding: 16px 20px;
+            border: 2px solid var(--border); border-radius: var(--radius);
+            background: #f8fafc; color: var(--text);
+            font-family: inherit; font-size: 15px; font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .form-control::placeholder {
-            color: #94a3b8;
-            font-weight: 500;
-        }
-
+        .form-control::placeholder { color: #94a3b8; font-weight: 500; }
         .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.12);
+            outline: none; border-color: var(--primary);
+            background: white; box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.12);
             transform: translateY(-1px);
         }
 
         select.form-control {
-            cursor: pointer;
-            appearance: none;
+            cursor: pointer; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 12 8'%3E%3Cpath fill='%236366f1' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
-            padding-right: 50px;
+            background-repeat: no-repeat; background-position: right 20px center; padding-right: 50px;
         }
 
-        .level-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
+        .level-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .level-btn {
-            padding: 14px 4px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            background: #f8fafc;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
+            padding: 14px 4px; border: 2px solid var(--border); border-radius: var(--radius);
+            background: #f8fafc; color: var(--text); font-family: inherit;
+            font-size: 13px; font-weight: 800; cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            text-align: center; position: relative; overflow: hidden;
         }
-
-        .level-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .level-btn span {
-            position: relative;
-            z-index: 1;
-            display: block;
-        }
-
-        .level-btn .level-icon {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        .level-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
+        .level-btn::before { content: ''; position: absolute; inset: 0; background: var(--gradient-1); opacity: 0; transition: opacity 0.3s; }
+        .level-btn span { position: relative; z-index: 1; display: block; }
+        .level-btn .level-icon { display: block; font-size: 18px; margin-bottom: 4px; }
+        .level-btn:hover { border-color: var(--primary); transform: translateY(-3px); }
         .level-btn.selected {
-            background: var(--gradient-1);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
-            transform: translateY(-3px) scale(1.02);
+            background: var(--gradient-1); color: white; border-color: transparent;
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4); transform: translateY(-3px) scale(1.02);
         }
-
-        .level-btn.selected::before {
-            opacity: 1;
-        }
+        .level-btn.selected::before { opacity: 1; }
 
         .photo-upload {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 28px 20px;
-            border: 2.5px dashed var(--border);
-            border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(139, 92, 246, 0.03));
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; gap: 16px;
+            padding: 28px 20px; border: 2.5px dashed var(--border);
+            border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(139, 92, 246, 0.03));
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 24px; position: relative; overflow: hidden;
         }
+        .photo-upload::before { content: ''; position: absolute; inset: 0; background: var(--gradient-1); opacity: 0; transition: opacity 0.3s; }
+        .photo-upload > * { position: relative; z-index: 1; }
+        .photo-upload:hover { border-color: var(--primary); border-style: solid; transform: translateY(-2px); box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15); }
+        .photo-upload:hover::before { opacity: 0.03; }
+        .photo-upload:active { transform: scale(0.98); }
 
-        .photo-upload::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .photo-upload > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .photo-upload:hover { 
-            border-color: var(--primary);
-            border-style: solid;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15);
-        }
-
-        .photo-upload:hover::before {
-            opacity: 0.03;
-        }
-
-        .photo-upload:active { 
-            transform: scale(0.98); 
-        }
-
-        .photo-preview {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 
-                0 15px 40px rgba(99, 102, 241, 0.4),
-                0 0 0 3px var(--primary);
-            animation: photoAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes photoAppear {
-            from { transform: scale(0.6); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        .photo-preview { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4), 0 0 0 3px var(--primary); animation: photoAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes photoAppear { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .photo-placeholder {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            background: var(--gradient-1);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.35);
-            animation: iconBounce 3s ease-in-out infinite;
-            position: relative;
+            width: 130px; height: 130px; border-radius: 50%;
+            background: var(--gradient-1); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; box-shadow: 0 15px 40px rgba(99, 102, 241, 0.35);
+            animation: iconBounce 3s ease-in-out infinite; position: relative;
         }
-
         .photo-placeholder::after {
-            content: '+';
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 36px;
-            height: 36px;
-            background: white;
-            color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 800;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            border: 3px solid var(--primary);
+            content: '+'; position: absolute; bottom: 8px; right: 8px;
+            width: 36px; height: 36px; background: white; color: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 800; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); border: 3px solid var(--primary);
         }
+        @keyframes iconBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
-        @keyframes iconBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        .photo-upload-text { 
-            font-size: 13.5px; 
-            color: var(--text-secondary); 
-            text-align: center;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .photo-upload-text strong { 
-            display: block; 
-            color: var(--primary); 
-            margin-bottom: 6px; 
-            font-size: 15px; 
-            font-weight: 800;
-            letter-spacing: -0.3px;
-        }
+        .photo-upload-text { font-size: 13.5px; color: var(--text-secondary); text-align: center; font-weight: 500; line-height: 1.5; }
+        .photo-upload-text strong { display: block; color: var(--primary); margin-bottom: 6px; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; }
 
         .btn {
-            width: 100%;
-            padding: 18px 24px;
-            border: none;
-            border-radius: var(--radius);
-            font-family: inherit;
-            font-size: 16.5px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            width: 100%; padding: 18px 24px; border: none; border-radius: var(--radius);
+            font-family: inherit; font-size: 16.5px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            letter-spacing: -0.3px;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: -0.3px; position: relative; overflow: hidden;
         }
-
-        .btn-primary { 
-            background: var(--gradient-1); 
-            color: white;
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
-            margin-top: 8px;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-        }
-
-        .btn-primary:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-3px); 
-            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.55); 
-        }
-
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:disabled { 
-            opacity: 0.7; 
-            cursor: not-allowed; 
-            transform: none;
-        }
+        .btn-primary { background: var(--gradient-1); color: white; box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4); margin-top: 8px; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); transition: left 0.6s; }
+        .btn-primary:hover:not(:disabled)::before { left: 100%; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(99, 102, 241, 0.55); }
+        .btn-primary:active:not(:disabled) { transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
         .error-message {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
-            color: var(--danger);
-            padding: 16px 18px;
-            border-radius: var(--radius);
-            font-size: 13.5px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            border-left: 4px solid var(--danger);
-            animation: errorShake 0.5s ease;
+            color: var(--danger); padding: 16px 18px; border-radius: var(--radius);
+            font-size: 13.5px; font-weight: 600; margin-bottom: 20px;
+            display: none; align-items: center; gap: 12px;
+            border-left: 4px solid var(--danger); animation: errorShake 0.5s ease;
         }
-
         .error-message.active { display: flex; }
-
-        @keyframes errorShake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-5px); }
-            80% { transform: translateX(5px); }
-        }
-
-        .error-message i {
-            font-size: 20px;
-            flex-shrink: 0;
-        }
+        @keyframes errorShake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+        .error-message i { font-size: 20px; flex-shrink: 0; }
 
         .school-title-banner {
-            position: relative;
-            width: 100%;
-            padding: 28px 16px;
-            margin-bottom: 24px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-            background-size: 200% 200%;
-            animation: gradientMove 6s ease infinite;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 130px;
+            position: relative; width: 100%; padding: 28px 16px; margin-bottom: 24px;
+            border-radius: 20px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 200%; animation: gradientMove 6s ease infinite;
+            overflow: hidden; box-shadow: 0 15px 40px rgba(99, 102, 241, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+            display: flex; align-items: center; justify-content: center; min-height: 130px;
         }
-
-        @keyframes gradientMove {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
+        @keyframes gradientMove { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         .school-title-banner::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
             pointer-events: none;
         }
-
         .school-title-text {
-            position: relative;
-            z-index: 5;
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            color: white;
-            text-align: center;
-            line-height: 1.2;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-            animation: titleFloat 3s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-            max-width: 100%;
-            padding: 0 8px;
+            position: relative; z-index: 5; font-size: 24px; font-weight: 900;
+            letter-spacing: -0.5px; color: white; text-align: center; line-height: 1.2;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); animation: titleFloat 3s ease-in-out infinite;
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px; max-width: 100%; padding: 0 8px;
         }
-
-        .school-title-text .word {
-            display: inline-block;
-            animation: wordBounce 2s ease-in-out infinite;
-        }
-
+        .school-title-text .word { display: inline-block; animation: wordBounce 2s ease-in-out infinite; }
         .school-title-text .word:nth-child(1) { animation-delay: 0s; }
         .school-title-text .word:nth-child(2) { animation-delay: 0.2s; }
         .school-title-text .word:nth-child(3) { animation-delay: 0.4s; }
         .school-title-text .word:nth-child(4) { animation-delay: 0.6s; }
         .school-title-text .word:nth-child(5) { animation-delay: 0.8s; }
         .school-title-text .word:nth-child(6) { animation-delay: 1s; }
-
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes wordBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-4px) rotate(-1deg); }
-            75% { transform: translateY(-4px) rotate(1deg); }
-        }
+        @keyframes titleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes wordBounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-4px) rotate(-1deg); } 75% { transform: translateY(-4px) rotate(1deg); } }
 
         .school-title-subtitle {
-            position: relative;
-            z-index: 5;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            text-align: center;
-            margin-top: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: subtitlePulse 3s ease-in-out infinite;
+            position: relative; z-index: 5; font-size: 12px; font-weight: 600;
+            color: rgba(255, 255, 255, 0.9); text-align: center; margin-top: 8px;
+            letter-spacing: 2px; text-transform: uppercase; animation: subtitlePulse 3s ease-in-out infinite;
         }
-
-        @keyframes subtitlePulse {
-            0%, 100% { opacity: 0.7; letter-spacing: 2px; }
-            50% { opacity: 1; letter-spacing: 3px; }
-        }
+        @keyframes subtitlePulse { 0%, 100% { opacity: 0.7; letter-spacing: 2px; } 50% { opacity: 1; letter-spacing: 3px; } }
 
         .choice-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: none; align-items: flex-end; justify-content: center;
+            z-index: 1000; animation: fadeIn 0.3s ease;
         }
-
         .choice-modal.active { display: flex; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .choice-sheet {
-            background: white;
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            padding: 12px 24px 32px;
-            width: 100%;
-            max-width: 500px;
-            animation: slideUpSheet 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
+            background: white; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 12px 24px 32px; width: 100%; max-width: 500px;
+            animation: slideUpSheet 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
         }
-
-        @keyframes slideUpSheet {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .sheet-handle {
-            width: 44px;
-            height: 5px;
-            background: #cbd5e1;
-            border-radius: 3px;
-            margin: 0 auto 20px;
-        }
-
-        .choice-title {
-            font-size: 20px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 8px;
-            color: var(--text);
-            letter-spacing: -0.5px;
-        }
-
-        .choice-subtitle {
-            font-size: 13.5px;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 24px;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .choice-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-
+        @keyframes slideUpSheet { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .sheet-handle { width: 44px; height: 5px; background: #cbd5e1; border-radius: 3px; margin: 0 auto 20px; }
+        .choice-title { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 8px; color: var(--text); letter-spacing: -0.5px; }
+        .choice-subtitle { font-size: 13.5px; color: var(--text-secondary); text-align: center; margin-bottom: 24px; font-weight: 500; line-height: 1.5; }
+        .choice-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
         .choice-option {
-            padding: 24px 16px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding: 24px 16px; border: 2px solid var(--border); border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #f8fafc, #ffffff); cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); text-align: center; position: relative; overflow: hidden;
         }
+        .choice-option > * { position: relative; z-index: 1; }
+        .choice-option:hover { border-color: var(--primary); transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2); }
+        .choice-option .opt-icon { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; transition: transform 0.3s; }
+        .choice-option.camera .opt-icon { background: var(--gradient-1); box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); }
+        .choice-option.gallery .opt-icon { background: var(--gradient-2); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+        .choice-option:hover .opt-icon { transform: scale(1.1) rotate(-5deg); }
+        .choice-option h4 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.3px; }
+        .choice-option p { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; }
+        .choice-cancel { width: 100%; padding: 16px; border: none; border-radius: var(--radius); background: #f1f5f9; color: var(--text-secondary); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; letter-spacing: -0.2px; }
+        .choice-cancel:hover { background: #e2e8f0; color: var(--text); transform: translateY(-2px); }
 
-        .choice-option > * {
-            position: relative;
-            z-index: 1;
+        /* SUCCESS POPUP MODAL */
+        .success-modal {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px); display: none; align-items: center;
+            justify-content: center; z-index: 2000; padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
-
-        .choice-option:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
-        }
-
-        .choice-option .opt-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 14px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: white;
-            transition: transform 0.3s;
-        }
-
-        .choice-option.camera .opt-icon { 
-            background: var(--gradient-1);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .choice-option.gallery .opt-icon { 
-            background: var(--gradient-2);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-        }
-
-        .choice-option:hover .opt-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .choice-option h4 {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 4px;
-            letter-spacing: -0.3px;
-        }
-
-        .choice-option p {
-            font-size: 12.5px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .choice-cancel {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: var(--radius);
-            background: #f1f5f9;
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: -0.2px;
-        }
-
-        .choice-cancel:hover {
-            background: #e2e8f0;
-            color: var(--text);
-            transform: translateY(-2px);
-        }
-
-        .success-screen { 
-            display: none; 
-            text-align: center; 
-            padding: 20px 0;
-        }
-
-        .success-screen.active { 
-            display: block; 
-            animation: successIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes successIn {
-            from { transform: scale(0.7); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .success-icon {
-            width: 130px;
-            height: 130px;
-            background: var(--gradient-2);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 65px;
-            margin: 0 auto 24px;
-            box-shadow: 
-                0 25px 60px rgba(16, 185, 129, 0.5),
-                0 0 0 15px rgba(16, 185, 129, 0.1);
-            animation: successBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .success-modal.active { display: flex; }
+        .success-modal-content {
+            background: white; border-radius: var(--radius-lg); padding: 40px 32px;
+            text-align: center; max-width: 400px; width: 100%;
+            animation: popBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
         }
-
-        @keyframes successBounce {
-            0% { transform: scale(0) rotate(-180deg); }
-            60% { transform: scale(1.2) rotate(10deg); }
-            100% { transform: scale(1) rotate(0); }
+        @keyframes popBounce { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .success-icon-big {
+            width: 100px; height: 100px; margin: 0 auto 20px;
+            background: var(--gradient-2); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 50px; color: white; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+            animation: successBounce 0.8s ease infinite alternate;
         }
+        @keyframes successBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
-        .success-screen h2 { 
-            font-size: 30px; 
-            font-weight: 800; 
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-            background: var(--gradient-2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .success-screen > p { 
-            color: var(--text-secondary); 
-            font-size: 14.5px; 
-            margin-bottom: 28px;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-
-        .member-card {
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            text-align: left;
-            border: 2px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .member-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            flex-shrink: 0;
-        }
-
-        .member-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--gradient-1);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 26px;
-            border: 4px solid white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            flex-shrink: 0;
-        }
-
-        .member-info { flex: 1; min-width: 0; }
-
-        .member-name { 
-            font-size: 19px; 
-            font-weight: 800; 
-            margin-bottom: 8px;
-            letter-spacing: -0.4px;
-        }
-
-        .member-details { 
-            font-size: 13px; 
-            color: var(--text-secondary); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 6px;
-            font-weight: 500;
-        }
-
-        .member-details span { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-
-        .member-details i {
-            color: var(--primary);
-            font-size: 13px;
-            width: 16px;
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
-            padding: 18px;
-            border-radius: var(--radius);
-            font-size: 13.5px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-align: left;
-            border-left: 4px solid var(--primary);
-            font-weight: 600;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .info-box i { 
-            font-size: 24px; 
-            flex-shrink: 0;
-        }
+        .success-modal h2 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+        .success-modal p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+        .success-modal .btn { width: 100%; padding: 14px; background: var(--gradient-1); color: white; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .success-modal .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4); }
 
         @media (max-width: 480px) {
-            body { 
-                padding: 12px; 
-                align-items: flex-start;
-                padding-top: 20px;
-                padding-bottom: 20px;
-            }
-
-            .container { 
-                padding: 32px 24px; 
-                border-radius: var(--radius-lg);
-            }
-
+            body { padding: 12px; align-items: flex-start; padding-top: 20px; padding-bottom: 20px; }
+            .container { padding: 32px 24px; border-radius: var(--radius-lg); }
             .header .logo-wrap { width: 80px; height: 80px; }
             .header .icon { width: 80px; height: 80px; font-size: 36px; border-radius: 24px; }
             .header h1 { font-size: 24px; }
-            
-            .photo-preview, .photo-placeholder { 
-                width: 110px; 
-                height: 110px; 
-                font-size: 40px; 
-            }
-
-            .photo-placeholder::after {
-                width: 30px;
-                height: 30px;
-                font-size: 18px;
-            }
-
-            .success-icon { 
-                width: 110px; 
-                height: 110px; 
-                font-size: 55px; 
-            }
-
+            .photo-preview, .photo-placeholder { width: 110px; height: 110px; font-size: 40px; }
+            .photo-placeholder::after { width: 30px; height: 30px; font-size: 18px; }
+            .success-icon { width: 110px; height: 110px; font-size: 55px; }
             .success-screen h2 { font-size: 26px; }
-
-            .level-btn { 
-                padding: 12px 2px; 
-                font-size: 11.5px; 
-            }
-
-            .level-btn .level-icon {
-                font-size: 16px;
-            }
-
-            .choice-option {
-                padding: 20px 12px;
-            }
-
-            .choice-option .opt-icon {
-                width: 56px;
-                height: 56px;
-                font-size: 24px;
-            }
-
+            .level-btn { padding: 12px 2px; font-size: 11.5px; }
+            .level-btn .level-icon { font-size: 16px; }
+            .choice-option { padding: 20px 12px; }
+            .choice-option .opt-icon { width: 56px; height: 56px; font-size: 24px; }
             .school-title-banner { min-height: 110px; padding: 22px 12px; border-radius: 16px; }
             .school-title-text { font-size: 18px; gap: 6px 8px; }
             .school-title-subtitle { font-size: 10px; letter-spacing: 1.2px; margin-top: 6px; }
         }
 
         .fa-spin { animation: spin 1s linear infinite; }
-
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -1163,48 +588,72 @@
                 <input type="text" class="form-control" id="regParentPhone" placeholder="0788123456" maxlength="20">
             </div>
 
-            <!-- UMWAKA (LEVEL) -->
+            <!-- URUHARE RWO KWIGA (LEVEL OF STUDY) -->
             <div class="form-group">
-                <label><i class="fas fa-graduation-cap"></i> Umwaka wawe <span>*</span></label>
-                <div class="level-selector" id="levelSelector">
-                    <button type="button" class="level-btn" onclick="selectLevel('Year1', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 1 (S1)</span>
-                    </button>
-                    <button type="button" class="level-btn" onclick="selectLevel('Year2', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 2 (S2)</span>
-                    </button>
-                    <button type="button" class="level-btn" onclick="selectLevel('Year3', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 3 (S3)</span>
-                    </button>
-                    <button type="button" class="level-btn" onclick="selectLevel('Year4', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 4 (S4)</span>
-                    </button>
-                    <button type="button" class="level-btn" onclick="selectLevel('Year5', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 5 (S5)</span>
-                    </button>
-                    <button type="button" class="level-btn" onclick="selectLevel('Year6', this)">
-                        <span class="level-icon">📚</span>
-                        <span>Year 6 (S6)</span>
-                    </button>
-                </div>
-                <input type="hidden" id="regLevel" value="">
+                <label><i class="fas fa-university"></i> Urwego wiga <span>*</span></label>
+                <select class="form-control" id="regStudyLevel" onchange="handleStudyLevelChange()">
+                    <option value="">-- Hitamo urwego --</option>
+                    <option value="university">🎓 University (Kaminuza)</option>
+                    <option value="secondary">📚 Secondary School (Ayisumbuye)</option>
+                </select>
             </div>
 
-            <!-- ISHAMI (DEPARTMENT) -->
-            <div class="form-group">
-                <label><i class="fas fa-layer-group"></i> Ishami ryawe <span>*</span></label>
-                <select class="form-control" id="regDepartment">
-                    <option value="">-- Hitamo ishami ryawe --</option>
-                    <option value="Science">🔬 Science (MPC/PCB)</option>
-                    <option value="Arts">🎨 Arts (HEG/MEG)</option>
-                    <option value="Commerce">💼 Commerce</option>
-                    <option value="Technical">🔧 Technical (TVL)</option>
-                </select>
+            <!-- KURI UNIVERSITY: KAMINUZA, ISHURI, ISOMO -->
+            <div id="universityFields" style="display: none;">
+                <div class="form-group">
+                    <label><i class="fas fa-building"></i> Kaminuza (University) <span>*</span></label>
+                    <select class="form-control" id="regUniversity" onchange="handleUniversityChange()">
+                        <option value="">-- Hitamo Kaminuza --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-school"></i> Ishuri (Faculty/School) <span>*</span></label>
+                    <select class="form-control" id="regFaculty" onchange="handleFacultyChange()">
+                        <option value="">-- Hitamo Ishuri --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-book-open"></i> Isomo (Program) <span>*</span></label>
+                    <select class="form-control" id="regDepartment">
+                        <option value="">-- Hitamo Isomo --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KURI SECONDARY: UMWAKA (S1-S6) -->
+            <div id="secondaryFields" style="display: none;">
+                <div class="form-group">
+                    <label><i class="fas fa-graduation-cap"></i> Umwaka wawe <span>*</span></label>
+                    <div class="level-selector" id="levelSelector">
+                        <button type="button" class="level-btn" onclick="selectLevel('S1', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S1</span>
+                        </button>
+                        <button type="button" class="level-btn" onclick="selectLevel('S2', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S2</span>
+                        </button>
+                        <button type="button" class="level-btn" onclick="selectLevel('S3', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S3</span>
+                        </button>
+                        <button type="button" class="level-btn" onclick="selectLevel('S4', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S4</span>
+                        </button>
+                        <button type="button" class="level-btn" onclick="selectLevel('S5', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S5</span>
+                        </button>
+                        <button type="button" class="level-btn" onclick="selectLevel('S6', this)">
+                            <span class="level-icon">📚</span>
+                            <span>S6</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="regLevel" value="">
+                </div>
             </div>
 
             <!-- SUBMIT -->
@@ -1212,27 +661,6 @@
                 <i class="fas fa-check-circle"></i>
                 <span>IYANDIKISHE</span>
             </button>
-        </div>
-
-        <!-- SUCCESS SCREEN -->
-        <div class="success-screen" id="successScreen">
-            <div class="success-icon">
-                <i class="fas fa-check"></i>
-            </div>
-            <h2>Wakiriwe! 🎉</h2>
-            <p>Wiyandikishije neza. Tegereza kwemezwa na Admin.</p>
-
-            <div class="member-card" id="successMemberCard"></div>
-
-            <div class="info-box">
-                <i class="fas fa-info-circle"></i>
-                <span>Uzajya winjira na <strong>email</strong> na <strong>ijambo ry'ibanga</strong> wakoresheje nyuma y'uko Admin akwemeza.</span>
-            </div>
-
-            <a href="index.html" class="btn btn-primary" style="text-decoration: none; margin-top: 0;">
-                <i class="fas fa-home"></i>
-                <span>Subira Ahabanza</span>
-            </a>
         </div>
 
     </div>
@@ -1261,6 +689,20 @@
         </div>
     </div>
 
+    <!-- SUCCESS POPUP MODAL -->
+    <div class="success-modal" id="successModal">
+        <div class="success-modal-content">
+            <div class="success-icon-big">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>🎉 Urakoze Cyane!</h2>
+            <p>Wiyandikishije neza muri sisitemu. <br><br> <strong>Konti yawe iri mu maboko y'Admin</strong>. Igihe izaba yemejwe, uzajya winjira ukoresheje email na ijambo ry'ibanga wakoresheje.</p>
+            <button class="btn" onclick="closeSuccessAndGoHome()">
+                <i class="fas fa-home"></i> Subira Ahabanza
+            </button>
+        </div>
+    </div>
+
     <script type="module">
         // ============================================
         // FIREBASE IMPORTS
@@ -1274,16 +716,17 @@
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
         // ============================================
-        // FIREBASE CONFIG — HINDURA IYI!
+        // FIREBASE CONFIG
         // ============================================
-       const firebaseConfig = {
-  apiKey: "AIzaSyDUhTzkU02VrFLLDrld3tBML-j9wo9UrmQ",
-  authDomain: "students-system-66d62.firebaseapp.com",
-  projectId: "students-system-66d62",
-  storageBucket: "students-system-66d62.firebasestorage.app",
-  messagingSenderId: "870493079374",
-  appId: "1:870493079374:web:505ce5f2fa7f0f51d0c01f"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUhTzkU02VrFLLDrld3tBML-j9wo9UrmQ",
+            authDomain: "students-system-66d62.firebaseapp.com",
+            projectId: "students-system-66d62",
+            storageBucket: "students-system-66d62.firebasestorage.app",
+            messagingSenderId: "870493079374",
+            appId: "1:870493079374:web:505ce5f2fa7f0f51d0c01f"
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
@@ -1299,10 +742,86 @@
         let selectedLevel = null;
 
         // ============================================
+        // DATA: UNIVERSITIES, FACULTIES, DEPARTMENTS
+        // ============================================
+        const universityData = {
+            "EAUR (East African University Rwanda)": {
+                "School of Education": [
+                    "Mathematics and Computer Science",
+                    "Mathematics and Physics",
+                    "History and Geography",
+                    "Biology and Chemistry"
+                ],
+                "School of Business Administration and Management Studies": [
+                    "Accounting",
+                    "Finance",
+                    "Marketing",
+                    "Procurement",
+                    "Human Resource Management",
+                    "Economics",
+                    "Credit Management",
+                    "Leisure, Tourism and Hotel Management"
+                ],
+                "School of Mass Communication": [
+                    "Mass Communication"
+                ],
+                "School of Film Making and Film Production": [
+                    "Film Making and Production"
+                ],
+                "School of Industrial Art and Design": [
+                    "Industrial and Fine Arts",
+                    "Industrial Design (Visual Communication)",
+                    "Industrial Design (Fashion Design)"
+                ],
+                "School of Hospitality and Leisure and Tourism Management": [
+                    "Leisure, Tourism and Hotel Management"
+                ]
+            },
+            "INES Ruhengeri (Institute of Applied Sciences)": {
+                "Faculty of Applied Sciences": ["Computer Science", "Information Technology", "Biotechnology", "Environmental Science"],
+                "Faculty of Economics and Management": ["Accounting", "Finance", "Business Administration"],
+                "Faculty of Law": ["Law"],
+                "Faculty of Education": ["Mathematics & Physics", "Biology & Chemistry", "Languages (Kinyarwanda, English, French)"]
+            },
+            "University of Rwanda (UR)": {
+                "College of Science and Technology (CST)": ["Computer Science", "Software Engineering", "Civil Engineering", "Electrical Engineering", "Mathematics"],
+                "College of Medicine and Health Sciences (CMHS)": ["General Medicine", "Nursing", "Pharmacy", "Dentistry"],
+                "College of Business and Economics (CBE)": ["Accounting", "Finance", "Economics", "Business Administration"],
+                "College of Arts and Social Sciences (CASS)": ["Sociology", "Psychology", "History", "Languages"]
+            },
+            "University of Kigali (UoK)": {
+                "Faculty of Business": ["Accounting", "Finance", "Marketing"],
+                "Faculty of Law": ["Law"],
+                "Faculty of ICT": ["Information Technology", "Computer Science"]
+            },
+            "University of Lay Adventists of Kigali (UNILAK)": {
+                "Faculty of Law": ["Law"],
+                "Faculty of Economics": ["Accounting", "Finance", "Business Administration"],
+                "Faculty of ICT": ["Computer Science", "Information Technology"]
+            },
+            "Catholic University of Rwanda (CUR)": {
+                "Faculty of Law": ["Law"],
+                "Faculty of Economics": ["Accounting", "Business Administration"],
+                "Faculty of Arts": ["Languages", "Social Sciences"]
+            },
+            "Kigali Independent University (ULK)": {
+                "Faculty of Law": ["Law"],
+                "Faculty of Economics": ["Accounting", "Finance", "Business Administration"],
+                "Faculty of Social Sciences": ["Sociology", "Psychology"],
+                "Faculty of ICT": ["Computer Science", "Information Technology"]
+            },
+            "Rwanda Polytechnic (RP)": {
+                "Faculty of ICT": ["Software Development", "Networking"],
+                "Faculty of Engineering": ["Civil Engineering", "Mechanical Engineering", "Electrical Engineering"]
+            }
+        };
+
+        // ============================================
         // INIT
         // ============================================
         window.addEventListener('DOMContentLoaded', async () => {
             await loadSchoolName();
+            populateUniversities(); // Kujaza universities ako kanya
             
             setTimeout(() => {
                 document.getElementById('loadingScreen').classList.add('hidden');
@@ -1356,8 +875,63 @@
         }
 
         // ============================================
-        // LEVEL SELECTOR
+        // SMART DROPDOWNS (CASCADING)
         // ============================================
+        function populateUniversities() {
+            const uniSelect = document.getElementById('regUniversity');
+            uniSelect.innerHTML = '<option value="">-- Hitamo Kaminuza --</option>';
+            Object.keys(universityData).forEach(uni => {
+                uniSelect.innerHTML += `<option value="${uni}">${uni}</option>`;
+            });
+        }
+
+        window.handleStudyLevelChange = function() {
+            const level = document.getElementById('regStudyLevel').value;
+            const uniFields = document.getElementById('universityFields');
+            const secFields = document.getElementById('secondaryFields');
+
+            if (level === 'university') {
+                uniFields.style.display = 'block';
+                secFields.style.display = 'none';
+                document.getElementById('regLevel').value = ''; // Reset
+            } else if (level === 'secondary') {
+                uniFields.style.display = 'none';
+                secFields.style.display = 'block';
+            } else {
+                uniFields.style.display = 'none';
+                secFields.style.display = 'none';
+            }
+        };
+
+        window.handleUniversityChange = function() {
+            const uni = document.getElementById('regUniversity').value;
+            const facultySelect = document.getElementById('regFaculty');
+            const deptSelect = document.getElementById('regDepartment');
+
+            facultySelect.innerHTML = '<option value="">-- Hitamo Ishuri --</option>';
+            deptSelect.innerHTML = '<option value="">-- Hitamo Isomo --</option>';
+
+            if (uni && universityData[uni]) {
+                Object.keys(universityData[uni]).forEach(faculty => {
+                    facultySelect.innerHTML += `<option value="${faculty}">${faculty}</option>`;
+                });
+            }
+        };
+
+        window.handleFacultyChange = function() {
+            const uni = document.getElementById('regUniversity').value;
+            const faculty = document.getElementById('regFaculty').value;
+            const deptSelect = document.getElementById('regDepartment');
+
+            deptSelect.innerHTML = '<option value="">-- Hitamo Isomo --</option>';
+
+            if (uni && faculty && universityData[uni] && universityData[uni][faculty]) {
+                universityData[uni][faculty].forEach(dept => {
+                    deptSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                });
+            }
+        };
+
         window.selectLevel = function(level, btn) {
             selectedLevel = level;
             document.getElementById('regLevel').value = level;
@@ -1471,32 +1045,44 @@
             const birthday = document.getElementById('regBirthday').value;
             const parentName = document.getElementById('regParentName').value.trim();
             const parentPhone = document.getElementById('regParentPhone').value.trim();
-            const level = document.getElementById('regLevel').value;
-            const department = document.getElementById('regDepartment').value;
+            
+            const studyLevel = document.getElementById('regStudyLevel').value;
+            let finalLevel = "";
+            let finalDepartment = "";
+
+            // VALIDATION Y'URUHARE (LOGIC)
+            if (!studyLevel) { showError('Hitamo urwego wiga (University cyangwa Secondary)'); return; }
+
+            if (studyLevel === 'university') {
+                const uni = document.getElementById('regUniversity').value;
+                const faculty = document.getElementById('regFaculty').value;
+                const dept = document.getElementById('regDepartment').value;
+                
+                if (!uni) { showError('Hitamo Kaminuza'); return; }
+                if (!faculty) { showError('Hitamo Ishuri (Faculty)'); return; }
+                if (!dept) { showError('Hitamo Isomo (Program)'); return; }
+                
+                finalLevel = "University";
+                // Tubika Kaminuza, Ishuri na Isomo hamwe
+                finalDepartment = `${uni} - ${faculty} (${dept})`;
+            } else {
+                const level = document.getElementById('regLevel').value;
+                if (!level) { showError('Hitamo umwaka wawe (S1-S6)'); return; }
+                finalLevel = level;
+                finalDepartment = "Secondary";
+            }
+
             const btn = document.getElementById('submitBtn');
             
-            console.log('🔵 submitRegistration yahamagawe');
-            console.log('Name:', name);
-            console.log('Email:', email);
-            console.log('Level:', level);
-            console.log('Department:', department);
-            console.log('Birthday:', birthday);
-            
-            // ===== VALIDATION =====
+            // ===== VALIDATION Y'IBINDI =====
             if (!name) { showError('Shyiramo amazina yawe'); return; }
             if (name.length < 3) { showError('Amazina agomba kuba nibura 3'); return; }
-            
             if (!email) { showError('Shyiramo email yawe'); return; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Email ntariyo'); return; }
-            
             if (!password) { showError('Shyiramo ijambo ry\'ibanga'); return; }
             if (password.length < 6) { showError('Ijambo ry\'ibanga rigomba kuba nibura 6'); return; }
-            
             if (!number) { showError('Shyiramo nimero yawe'); return; }
             if (number.length < 5) { showError('Nimero ni ngufi cyane'); return; }
-            
-            if (!level) { showError('Hitamo umwaka wawe'); return; }
-            if (!department) { showError('Hitamo ishami ryawe'); return; }
             
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turabika...</span>';
@@ -1505,27 +1091,20 @@
                 // 1. Upload photo
                 let photoURL = null;
                 if (photoFile) {
-                    console.log('📸 Uploading photo...');
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turazamura ifoto...</span>';
                     photoURL = await uploadToCloudinary(photoFile);
-                    console.log('✅ Photo uploaded:', photoURL);
                 }
                 
                 // 2. Create Auth account
-                console.log('🔐 Creating Auth account...');
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turakora account...</span>';
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                console.log('✅ Auth user created:', user.uid);
                 
                 try {
                     await updateProfile(user, { displayName: name, photoURL: photoURL });
-                } catch (e) {
-                    console.log('⚠️ updateProfile failed:', e.message);
-                }
+                } catch (e) {}
                 
-                // 3. Write to Firestore (students collection)
-                console.log('📝 Writing to Firestore (students)...');
+                // 3. Write to Firestore
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turabika...</span>';
                 const studentNumber = `STU-${Date.now().toString().slice(-4)}`;
                 
@@ -1534,8 +1113,8 @@
                     email: email,
                     name: name,
                     number: number,
-                    level: level,
-                    department: department,
+                    level: finalLevel,
+                    department: finalDepartment, // Hano hari izina rya Kaminuza, Ishuri na Isomo
                     studentId: studentNumber,
                     photo: photoURL,
                     photoSource: 'cloudinary',
@@ -1551,13 +1130,11 @@
                 if (birthday) studentData.birthday = birthday;
                 
                 await addDoc(collection(db, 'students'), studentData);
-                console.log('✅ Firestore write OK');
                 
                 // 4. Sign out
                 await signOut(auth);
-                console.log('✅ Signed out');
                 
-                // 5. Confetti + Success
+                // 5. Confetti + POPUP SUCCESS
                 confetti({
                     particleCount: 200,
                     spread: 100,
@@ -1566,58 +1143,33 @@
                 });
                 
                 document.getElementById('formScreen').style.display = 'none';
-                
-                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                const photoHtml = photoURL 
-                    ? `<img src="${photoURL}" class="member-photo" alt="${name}">`
-                    : `<div class="member-avatar">${initials}</div>`;
-                
-                document.getElementById('successMemberCard').innerHTML = `
-                    ${photoHtml}
-                    <div class="member-info">
-                        <div class="member-name">${name}</div>
-                        <div class="member-details">
-                            <span><i class="fas fa-hashtag"></i> ${studentNumber}</span>
-                            <span><i class="fas fa-envelope"></i> ${email}</span>
-                            <span><i class="fas fa-id-card"></i> ${number}</span>
-                            <span><i class="fas fa-graduation-cap"></i> ${level}</span>
-                            <span><i class="fas fa-layer-group"></i> ${department}</span>
-                            ${birthday ? `<span><i class="fas fa-birthday-cake"></i> ${new Date(birthday).toLocaleDateString('rw-RW')}</span>` : ''}
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('successScreen').classList.add('active');
+                document.getElementById('successModal').classList.add('active');
                 
                 if (navigator.vibrate) {
                     navigator.vibrate([100, 50, 100, 50, 200]);
                 }
                 
             } catch (error) {
-                console.error('❌ Registration error:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-                
                 let errorMsg = 'Ikibazo cyabaye. Ongera ugerageze.';
-                
-                if (error.code === 'auth/email-already-in-use') {
-                    errorMsg = 'Email isanzwe ikoreshwa. Koresha indi cyangwa winjire.';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMsg = 'Email ntariyo';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMsg = 'Ijambo ry\'ibanga ni ngufi cyane (nibura 6)';
-                } else if (error.code === 'auth/network-request-failed') {
-                    errorMsg = 'Interineti ntiboneka';
-                } else if (error.code === 'permission-denied') {
-                    errorMsg = 'Nta ruhushya rwo kwandika. Reba Firestore Rules.';
-                } else if (error.message) {
-                    errorMsg = error.message;
-                }
+                if (error.code === 'auth/email-already-in-use') errorMsg = 'Email isanzwe ikoreshwa. Koresha indi cyangwa winjire.';
+                else if (error.code === 'auth/invalid-email') errorMsg = 'Email ntariyo';
+                else if (error.code === 'auth/weak-password') errorMsg = 'Ijambo ry\'ibanga ni ngufi cyane (nibura 6)';
+                else if (error.code === 'auth/network-request-failed') errorMsg = 'Interineti ntiboneka';
+                else if (error.code === 'permission-denied') errorMsg = 'Nta ruhushya rwo kwandika. Reba Firestore Rules.';
+                else if (error.message) errorMsg = error.message;
                 
                 showError(errorMsg);
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> <span>IYANDIKISHE</span>';
             }
+        };
+
+        // ============================================
+        // CLOSE SUCCESS MODAL
+        // ============================================
+        window.closeSuccessAndGoHome = function() {
+            document.getElementById('successModal').classList.remove('active');
+            window.location.href = 'index.html'; 
         };
 
         // ============================================
