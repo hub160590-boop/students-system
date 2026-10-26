@@ -502,6 +502,7 @@ body {
     outline: none; border-color: var(--primary); background: var(--bg-card);
     box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
 }
+textarea.form-control { resize: vertical; min-height: 100px; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
 .photo-upload {
     display: flex; flex-direction: column; align-items: center;
@@ -732,56 +733,6 @@ body {
 .member-profile-meta span { display: flex; align-items: center; gap: 5px; }
 
 /* ============================================
-   CHAT (PRIVATE)
-   ============================================ */
-.chat-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; height: calc(100vh - 180px); min-height: 500px; }
-.chat-sidebar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow-y: auto; display: flex; flex-direction: column; }
-.chat-sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.chat-sidebar-header i { color: var(--primary); }
-.chat-search { padding: 10px 16px; border-bottom: 1px solid var(--border); }
-.chat-search input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-family: inherit; outline: none; }
-.chat-list { flex: 1; overflow-y: auto; padding: 8px; }
-.chat-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: var(--transition); margin-bottom: 4px; }
-.chat-item:hover { background: var(--bg); }
-.chat-item.active { background: rgba(56, 189, 248, 0.1); }
-.chat-item-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; overflow: hidden; flex-shrink: 0; }
-.chat-item-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-item-info { flex: 1; min-width: 0; }
-.chat-item-name { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;}
-.chat-item-preview { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-.chat-main { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; }
-.chat-main-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.chat-main-header h3 { font-size: 16px; font-weight: 800; }
-.chat-main-header p { font-size: 12px; color: var(--text-secondary); }
-.chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: var(--bg); }
-.chat-message { display: flex; gap: 10px; max-width: 70%; animation: messageFadeIn 0.3s ease; }
-@keyframes messageFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.chat-message.mine { margin-left: auto; flex-direction: row-reverse; }
-.chat-message-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; flex-shrink: 0; }
-.chat-message-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-message-bubble { background: var(--bg-card); padding: 10px 14px; border-radius: 14px; border-top-left-radius: 4px; box-shadow: var(--shadow); max-width: 100%; }
-.chat-message.mine .chat-message-bubble { background: var(--gradient-1); color: white; border-top-left-radius: 14px; border-top-right-radius: 4px; }
-.chat-message-sender { font-size: 11px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
-.chat-message.mine .chat-message-sender { color: rgba(255, 255, 255, 0.8); }
-.chat-message-text { font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
-.chat-message-time { font-size: 10.5px; opacity: 0.6; margin-top: 4px; }
-.chat-input-bar { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; background: var(--bg-card); }
-.chat-input-bar input { flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 50px; background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; outline: none; transition: var(--transition); }
-.chat-input-bar input:focus { border-color: var(--primary); background: var(--bg-card); }
-.chat-input-bar button { width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--gradient-1); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: var(--transition); flex-shrink: 0; }
-.chat-input-bar button:hover { transform: scale(1.08); }
-.chat-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); text-align: center; padding: 40px; }
-.chat-empty i { font-size: 60px; opacity: 0.3; margin-bottom: 16px; }
-.chat-empty h3 { font-size: 17px; color: var(--text); margin-bottom: 6px; }
-
-@media (max-width: 768px) {
-    .chat-layout { grid-template-columns: 1fr !important; height: calc(100vh - 150px) !important; }
-    .chat-sidebar { display: none !important; }
-    .chat-main { height: 100% !important; width: 100% !important; }
-    .chat-message { max-width: 85%; }
-}
-
-/* ============================================
    GRADE TABLE
    ============================================ */
 .grade-subject-cell { font-weight: 700; font-size: 14px; }
@@ -816,6 +767,136 @@ body {
 .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .chart-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 .chart-title i { color: var(--primary); }
+
+/* ============================================
+   ANNOUNCEMENTS
+   ============================================ */
+.announcement-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+.announcement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+}
+.announcement-card.priority-urgent {
+    border-left: 5px solid var(--danger);
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.06), transparent);
+}
+.announcement-card.priority-high {
+    border-left: 5px solid var(--warning);
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.06), transparent);
+}
+.announcement-card.priority-normal {
+    border-left: 5px solid var(--primary);
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.06), transparent);
+}
+.announcement-card.priority-low {
+    border-left: 5px solid var(--text-secondary);
+}
+.announcement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.announcement-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 200px;
+}
+.announcement-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
+}
+.priority-badge {
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+.priority-badge.urgent { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.priority-badge.high { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.priority-badge.normal { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+.priority-badge.low { background: rgba(100, 116, 139, 0.15); color: #64748b; }
+.announcement-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+.announcement-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.announcement-content {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.announcement-image {
+    max-width: 100%;
+    max-height: 350px;
+    border-radius: 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border);
+}
+.announcement-image:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+.announcement-file {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition);
+    margin-top: 8px;
+}
+.announcement-file:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.announcement-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
     </style>
 </head>
 <body>
@@ -872,9 +953,9 @@ body {
                 </div>
             </div>
             <div class="header-right">
-                <button class="icon-btn" onclick="switchPage('chat', null)" title="Ubutumwa">
-                    <i class="fas fa-comments"></i>
-                    <span class="badge" id="chatBadge" style="display:none;">0</span>
+                <button class="icon-btn" onclick="switchPage('announcements', null)" title="Amatangazo">
+                    <i class="fas fa-bullhorn"></i>
+                    <span class="badge" id="announcementBadge" style="display:none;">0</span>
                 </button>
                 <button class="icon-btn" onclick="toggleTheme()" title="Dark/Light">
                     <i class="fas fa-moon" id="themeIcon"></i>
@@ -897,11 +978,13 @@ body {
                 <div class="nav-item student-only" onclick="switchPage('my-dashboard', this)" style="display: none;">
                     <i class="fas fa-home"></i><span>Ahabanza</span>
                 </div>
-                <div class="nav-item student-only" onclick="switchPage('my-grades', this)" style="display: none;">
-                    <i class="fas fa-chart-bar"></i><span>Amanota Yanjye</span>
-                </div>
                 <div class="nav-item student-only" onclick="switchPage('my-notes', this)" style="display: none;">
                     <i class="fas fa-book"></i><span>Amasomo Yanjye</span>
+                </div>
+                
+                <div class="nav-item" onclick="switchPage('announcements', this)">
+                    <i class="fas fa-bullhorn"></i><span>Amatangazo</span>
+                    <span class="count" id="sidebarAnnouncementCount" style="display:none;">0</span>
                 </div>
                 
                 <div class="nav-item admin-only" onclick="openQRRegisterModal()">
@@ -939,12 +1022,6 @@ body {
                 </div>
                 <div class="nav-item admin-only" onclick="switchPage('reports', this)">
                     <i class="fas fa-chart-line"></i><span>Raporo</span>
-                </div>
-                
-                <div class="nav-label">Itsinda</div>
-                <div class="nav-item" onclick="switchPage('chat', this)">
-                    <i class="fas fa-comments"></i><span>Ubutumwa</span>
-                    <span class="count danger" id="sidebarChatCount" style="display:none;">0</span>
                 </div>
                 
                 <div class="nav-label super-admin-only" style="display: none;">Super Admin</div>
@@ -1039,6 +1116,12 @@ body {
                     </div>
                     
                     <div class="section-title" style="margin-top: 30px;">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Amatangazo aheruka</span>
+                    </div>
+                    <div class="saved-list" id="studentDashboardAnnouncementsList"></div>
+
+                    <div class="section-title" style="margin-top: 30px;">
                         <i class="fas fa-book"></i>
                         <span>Amasomo Yawe (Notes)</span>
                     </div>
@@ -1046,55 +1129,35 @@ body {
 
                 </div>
 
-                <!-- ============ STUDENT GRADES ============ -->
-                <div class="page" id="page-my-grades">
+                <!-- ============ ANNOUNCEMENTS PAGE ============ -->
+                <div class="page" id="page-announcements">
                     <div class="page-header">
                         <div>
-                            <h1>📊 Amanota Yanjye</h1>
-                            <p>Reba amanota yawe mu masomo atandukanye</p>
+                            <h1>📢 Amatangazo</h1>
+                            <p>Reba amatangazo yose y'ishuri</p>
+                        </div>
+                        <button class="btn btn-primary admin-only" onclick="openAddAnnouncementModal()">
+                            <i class="fas fa-plus"></i> Tangaza
+                        </button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="filter-group" style="width: 100%;">
+                            <select class="filter-select" id="announcementsFilterPriority" onchange="renderAnnouncements()">
+                                <option value="">📌 Prioritе: Bose</option>
+                                <option value="urgent">🔴 Urgent</option>
+                                <option value="high">🟠 High</option>
+                                <option value="normal">🔵 Normal</option>
+                                <option value="low">⚪ Low</option>
+                            </select>
+                            <div class="search-box" style="flex:1;">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="announcementsSearch" placeholder="Shakisha itangazo..." oninput="renderAnnouncements()">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="readonly-notice">
-                        <i class="fas fa-eye"></i>
-                        <span>Iyi ni <strong>amanota yawe</strong> — ureba gusa. Vugana n'umwarimu niba hari ikibazo.</span>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card success">
-                            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                            <div class="stat-value" id="myAvgMarks">0</div>
-                            <div class="stat-label">Amanota Impuzandengo</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-book"></i></div>
-                            <div class="stat-value" id="mySubjectsCount">0</div>
-                            <div class="stat-label">Amasomo</div>
-                        </div>
-                        <div class="stat-card warning">
-                            <div class="stat-icon"><i class="fas fa-medal"></i></div>
-                            <div class="stat-value" id="myBestGrade">-</div>
-                            <div class="stat-label">Amanota Meza</div>
-                        </div>
-                        <div class="stat-card purple">
-                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                            <div class="stat-value" id="myOverallGrade">-</div>
-                            <div class="stat-label">Grade Rusange</div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title"><i class="fas fa-chart-bar"></i> Amanota ku Masomo</div>
-                        </div>
-                        <canvas id="myGradesChart" height="100"></canvas>
-                    </div>
-
-                    <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-list"></i>
-                        <span>Amanota Yose</span>
-                    </div>
-                    <div class="saved-list" id="myGradesList"></div>
+                    <div id="announcementsList"></div>
                 </div>
 
                 <!-- ============ STUDENT MY NOTES PAGE ============ -->
@@ -1466,50 +1529,6 @@ body {
                     </div>
                 </div>
 
-                <!-- ============ CHAT ============ -->
-                <div class="page" id="page-chat">
-                    <div class="page-header">
-                        <div>
-                            <h1>💬 Ubutumwa</h1>
-                            <p>Vugana n'abandi bakoresha</p>
-                        </div>
-                    </div>
-                    <div class="chat-layout">
-                        <div class="chat-sidebar">
-                            <div class="chat-sidebar-header">
-                                <i class="fas fa-comments"></i>
-                                <span>Abakoresha</span>
-                            </div>
-                            <div class="chat-search">
-                                <input type="text" id="chatSearchInput" placeholder="Shakisha umuntu..." oninput="renderChatUsers()">
-                            </div>
-                            <div class="chat-list" id="chatList">
-                                <!-- Chat list izuzuzwa na JavaScript -->
-                            </div>
-                        </div>
-                        <div class="chat-main" id="chatMain">
-                            <div class="chat-main-header">
-                                <div class="chat-item-avatar" style="background: var(--gradient-2);"><i class="fas fa-user"></i></div>
-                                <div>
-                                    <h3 id="chatHeaderTitle">Hitamo umuntu</h3>
-                                    <p id="chatHeaderSubtitle">Vugana n'umuntu</p>
-                                </div>
-                            </div>
-                            <div class="chat-messages" id="chatMessages">
-                                <div class="chat-empty">
-                                    <i class="fas fa-comments"></i>
-                                    <h3>Nta butumwa</h3>
-                                    <p>Hitamo umuntu kugira ngo utangire</p>
-                                </div>
-                            </div>
-                            <div class="chat-input-bar">
-                                <input type="text" id="chatInput" placeholder="Andika ubutumwa..." onkeypress="if(event.key==='Enter') sendChatMessage()" disabled>
-                                <button onclick="sendChatMessage()" disabled><i class="fas fa-paper-plane"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- ============ PROFILE ============ -->
                 <div class="page" id="page-profile">
                     <div class="page-header">
@@ -1803,6 +1822,50 @@ body {
         </div>
     </div>
 
+    <!-- Add Announcement Modal -->
+    <div class="modal-overlay" id="addAnnouncementModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-bullhorn"></i> Tangaza Itangazo</h3>
+                <button class="close-btn" onclick="closeModal('addAnnouncementModal')"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="form-group">
+                <label>Umutwe w'Itangazo <span>*</span></label>
+                <input type="text" class="form-control" id="annTitle" placeholder="Urugero: Ikizamini kizabaho ejo">
+            </div>
+            
+            <div class="form-group">
+                <label>Ibisobanuro <span>*</span></label>
+                <textarea class="form-control" id="annContent" placeholder="Andika ibisobanuro by'itangazo..." rows="5"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Priorité <span>*</span></label>
+                <select class="form-control" id="annPriority">
+                    <option value="normal">🔵 Normal</option>
+                    <option value="urgent">🔴 Urgent</option>
+                    <option value="high">🟠 High</option>
+                    <option value="low">⚪ Low</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Ifoto (Optional)</label>
+                <div class="photo-upload" onclick="document.getElementById('annImageInput').click()">
+                    <div id="annImagePreviewContainer"><div class="photo-placeholder">📷</div></div>
+                    <div class="photo-upload-text"><strong>Kanda hano wongeremo ifoto</strong> JPG, PNG (max 5MB)</div>
+                </div>
+                <input type="file" id="annImageInput" accept="image/*" class="hidden-input" onchange="previewAnnImage(event)">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('addAnnouncementModal')">Hagarika</button>
+                <button class="btn btn-primary" id="saveAnnBtn" onclick="saveAnnouncement()"><i class="fas fa-paper-plane"></i> Tangaza</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Admin -->
     <div class="modal-overlay" id="addAdminModal">
         <div class="modal">
@@ -1888,13 +1951,13 @@ body {
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { 
             getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, 
-            query, orderBy, where, serverTimestamp, setDoc, getDoc, onSnapshot,
-            limit, arrayUnion
+            query, orderBy, where, serverTimestamp, setDoc, getDoc,
+            limit
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
         import { 
-            getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+            getAuth, signInWithEmailAndPassword, 
             signOut, onAuthStateChanged, updateProfile, updatePassword, 
-            EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail
+            EmailAuthProvider, reauthenticateWithCredential
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
         // ============================================
@@ -1930,23 +1993,14 @@ body {
         let grades = [];
         let notes = [];
         let notesPayments = [];
+        let announcements = [];
+        let announcementsUnsubscribe = null;
         
         let newStudentPhoto = null;
         let editingPhoto = null;
-        let currentRestoreStudentId = null;
-        
         let deptChartInstance = null;
-        let myGradesChartInstance = null;
-        
-        let chatMessages = [];
-        let chatUnsubscribe = null;
-        let unreadListener = null;
-        
-        let currentChatType = 'private'; 
-        let currentChatUserId = null; 
-
-        // Variables for Notes
         let currentNoteFile = null;
+        let newAnnImage = null;
 
         // ============================================
         // HELPERS
@@ -1981,6 +2035,15 @@ body {
             } catch(e) { return '-'; }
         };
 
+        window.formatDateTime = function(d) {
+            if (!d) return '-';
+            try {
+                const dt = new Date(d);
+                if (isNaN(dt.getTime())) return '-';
+                return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+            } catch(e) { return '-'; }
+        };
+
         window.formatMoney = function(n) {
             if (!n && n !== 0) return '0 RWF';
             return Number(n).toLocaleString('en-US') + ' RWF';
@@ -1991,6 +2054,17 @@ body {
             const div = document.createElement('div');
             div.textContent = String(text);
             return div.innerHTML;
+        }
+
+        function timeAgo(date) {
+            if (!date) return '-';
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000);
+            if (diff < 60) return 'Ubu';
+            if (diff < 3600) return `${Math.floor(diff / 60)} min ishize`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)} amasaha ashize`;
+            if (diff < 604800) return `${Math.floor(diff / 86400)} iminsi ishize`;
+            return formatDate(date);
         }
 
         // ============================================
@@ -2049,6 +2123,18 @@ body {
             showToast('✅ File yatoranyijwe: ' + file.name, 'success');
         };
 
+        window.previewAnnImage = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast('Ifoto ni nini cyane (Max 5MB)', 'warning'); event.target.value = ''; return; }
+            newAnnImage = file;
+            const reader = new FileReader();
+            reader.onload = (e) => { 
+                document.getElementById('annImagePreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" style="width:120px;height:120px;border-radius:12px;">`; 
+            };
+            reader.readAsDataURL(file);
+        };
+
         // ============================================
         // THEME
         // ============================================
@@ -2092,8 +2178,7 @@ body {
 
         window.forceLogout = async function() {
             if (!confirm('Urabyemeza ko ushaka gusohoka?')) return;
-            if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
-            if (unreadListener) { try { unreadListener(); } catch(e) {} }
+            if (announcementsUnsubscribe) { try { announcementsUnsubscribe(); } catch(e) {} }
             try {
                 if (currentUser) {
                     await updateDoc(doc(db, 'users', currentUser.uid), { isOnline: false, lastSeen: serverTimestamp() });
@@ -2233,6 +2318,12 @@ body {
                 notesPayments = [];
                 np.forEach(d => notesPayments.push({ id: d.id, ...d.data() }));
             } catch(e) { notesPayments = []; }
+
+            try {
+                const a = await getDocs(query(collection(db, 'announcements'), orderBy('createdAt', 'desc')));
+                announcements = [];
+                a.forEach(d => announcements.push({ id: d.id, ...d.data() }));
+            } catch(e) { announcements = []; }
         }
 
         async function enterApp() {
@@ -2245,7 +2336,6 @@ body {
             if (ls) { ls.classList.add('hidden'); ls.style.display = 'none'; }
             
             const role = currentUserData?.role;
-            const isAdmin = role === 'admin' || role === 'super_admin';
             const isSuperAdmin = role === 'super_admin';
             const isStudent = role === 'student';
             
@@ -2274,7 +2364,37 @@ body {
                 renderPhotosPage();
             }
             
-            try { startUnreadListener(); } catch(e) {}
+            try { startAnnouncementsListener(); } catch(e) {}
+        }
+
+        // ============================================
+        // ANNOUNCEMENTS LISTENER
+        // ============================================
+        function startAnnouncementsListener() {
+            if (announcementsUnsubscribe) { try { announcementsUnsubscribe(); } catch(e) {} }
+            const q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(50));
+            announcementsUnsubscribe = onSnapshot(q, (snap) => {
+                announcements = [];
+                snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
+                updateAnnouncementBadge();
+                const currentPage = document.querySelector('.page.active');
+                if (currentPage && currentPage.id === 'page-announcements') renderAnnouncements();
+                if (currentUserData?.role === 'student' && currentPage && currentPage.id === 'page-my-dashboard') renderMyDashboard();
+            }, (error) => {
+                console.warn('Announcements listener error:', error);
+            });
+        }
+
+        function updateAnnouncementBadge() {
+            const recent = announcements.filter(a => {
+                if (!a.createdAt) return false;
+                const date = a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+                return (Date.now() - date.getTime()) < 7 * 24 * 60 * 60 * 1000; // 7 days
+            });
+            const badge = document.getElementById('announcementBadge');
+            const sb = document.getElementById('sidebarAnnouncementCount');
+            if (badge) { badge.textContent = recent.length; badge.style.display = recent.length > 0 ? 'flex' : 'none'; }
+            if (sb) { sb.textContent = recent.length; sb.style.display = recent.length > 0 ? 'flex' : 'none'; }
         }
 
         // ============================================
@@ -2419,17 +2539,136 @@ body {
             if (page === 'teachers') renderTeachers();
             if (page === 'grades') renderGrades();
             if (page === 'my-dashboard') renderMyDashboard();
-            if (page === 'my-grades') renderMyGrades();
             if (page === 'my-notes') renderMyNotes();
             if (page === 'departments') renderDepartmentsPage();
             if (page === 'photos') renderPhotosPage();
             if (page === 'profile') updateProfileUI();
             if (page === 'notes') renderNotes();
             if (page === 'notes-payments') renderNotesPayments();
-            if (page === 'chat') initChatPage();
+            if (page === 'announcements') renderAnnouncements();
             
             if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ============================================
+        // ANNOUNCEMENTS
+        // ============================================
+        window.openAddAnnouncementModal = function() {
+            if (currentUserData?.role === 'student') { showToast('Ntushobora gutangaza', 'error'); return; }
+            newAnnImage = null;
+            document.getElementById('annTitle').value = '';
+            document.getElementById('annContent').value = '';
+            document.getElementById('annPriority').value = 'normal';
+            document.getElementById('annImageInput').value = '';
+            document.getElementById('annImagePreviewContainer').innerHTML = '<div class="photo-placeholder">📷</div>';
+            document.getElementById('addAnnouncementModal').classList.add('active');
+        };
+
+        window.saveAnnouncement = async function() {
+            const title = document.getElementById('annTitle').value.trim();
+            const content = document.getElementById('annContent').value.trim();
+            const priority = document.getElementById('annPriority').value;
+            
+            if (!title || !content) { showToast('Uzuza umutwe n\'ibisobanuro', 'warning'); return; }
+            
+            const btn = document.getElementById('saveAnnBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turaohereza...';
+            
+            try {
+                let imageUrl = null;
+                if (newAnnImage) {
+                    imageUrl = await uploadToCloudinary(newAnnImage);
+                }
+                
+                await addDoc(collection(db, 'announcements'), {
+                    title,
+                    content,
+                    priority,
+                    imageUrl,
+                    createdBy: currentUser.uid,
+                    createdByName: currentUserData.name || 'Admin',
+                    createdByRole: currentUserData.role,
+                    createdAt: serverTimestamp()
+                });
+                
+                showToast('✅ Itangazo ryatangajwe!', 'success');
+                closeModal('addAnnouncementModal');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza';
+                
+                await loadAllData();
+                renderAnnouncements();
+                newAnnImage = null;
+                
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza';
+            }
+        };
+
+        window.renderAnnouncements = function() {
+            const list = document.getElementById('announcementsList');
+            if (!list) return;
+            
+            const pf = document.getElementById('announcementsFilterPriority')?.value || '';
+            const st = document.getElementById('announcementsSearch')?.value.toLowerCase().trim() || '';
+            
+            let filtered = [...announcements];
+            if (pf) filtered = filtered.filter(a => a.priority === pf);
+            if (st) filtered = filtered.filter(a => 
+                (a.title||'').toLowerCase().includes(st) || 
+                (a.content||'').toLowerCase().includes(st)
+            );
+            
+            filtered.sort((a, b) => {
+                const da = a.createdAt?.toDate?.() || new Date(a.createdAt || 0);
+                const db_ = b.createdAt?.toDate?.() || new Date(b.createdAt || 0);
+                return db_ - da;
+            });
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-bullhorn"></i></div><h3>Nta matangazo arahari</h3><p>${currentUserData?.role === 'student' ? 'Tegereza amatangazo mashya' : 'Kanda "Tangaza" gutangira'}</p></div>`;
+                return;
+            }
+            
+            list.innerHTML = filtered.map(a => {
+                const date = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || Date.now());
+                const dateStr = timeAgo(date);
+                const priorityLabels = { urgent: '🔴 Urgent', high: '🟠 High', normal: '🔵 Normal', low: '⚪ Low' };
+                const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
+                
+                return `<div class="announcement-card priority-${a.priority || 'normal'}">
+                    <div class="announcement-header">
+                        <div class="announcement-title-row">
+                            <h3 class="announcement-title">${escapeHtml(a.title)}</h3>
+                            <span class="priority-badge ${a.priority || 'normal'}">${priorityLabels[a.priority] || 'Normal'}</span>
+                        </div>
+                    </div>
+                    <div class="announcement-meta">
+                        <span><i class="fas fa-user"></i> ${escapeHtml(a.createdByName || 'Admin')}</span>
+                        <span><i class="fas fa-clock"></i> ${dateStr}</span>
+                    </div>
+                    <div class="announcement-content">${escapeHtml(a.content)}</div>
+                    ${a.imageUrl ? `<img src="${a.imageUrl}" class="announcement-image" onclick="window.open('${a.imageUrl}', '_blank')" alt="Announcement image">` : ''}
+                    ${isAdmin ? `<div class="announcement-actions">
+                        <button class="action-btn delete" onclick="deleteAnnouncement('${a.id}')" title="Siba"><i class="fas fa-trash"></i></button>
+                    </div>` : ''}
+                </div>`;
+            }).join('');
+        };
+
+        window.deleteAnnouncement = async function(id) {
+            if (currentUserData?.role === 'student') return;
+            if (!confirm('Siba itangazo?')) return;
+            try {
+                await deleteDoc(doc(db, 'announcements', id));
+                showToast('🗑️ Itangazo ryasibwe', 'warning');
+                await loadAllData();
+                renderAnnouncements();
+            } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
         // ============================================
@@ -2927,7 +3166,6 @@ body {
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turazamura...';
             
             try {
-                // Upload file kuri Cloudinary (raw upload kuri PDF/Word)
                 const fileUrl = await uploadToCloudinary(currentNoteFile, true);
                 const ext = currentNoteFile.name.split('.').pop().toLowerCase();
                 let fileType = 'other';
@@ -2935,7 +3173,6 @@ body {
                 else if (ext === 'doc' || ext === 'docx') fileType = 'word';
                 else if (ext === 'txt') fileType = 'text';
                 
-                // Bika muri Firestore
                 await addDoc(collection(db, 'notes'), {
                     title, subject, level, description,
                     fileUrl, fileType, fileName: currentNoteFile.name,
@@ -3076,23 +3313,20 @@ body {
                 const payment = notesPayments.find(p => p.id === id);
                 if (!payment) return;
 
-                // 1. Hindura status y'ubwishyu muri notesPayments
                 await updateDoc(doc(db, 'notesPayments', id), {
                     status: 'confirmed',
                     confirmedAt: serverTimestamp()
                 });
                 
-                // 2. Hindura subscription status ya umunyeshuri
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'active',
                     subscriptionStartDate: serverTimestamp(),
-                    subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000) // 14 days = 2 weeks
+                    subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000)
                 });
 
                 showToast('✅ Amasomo yafunguriwe uyu munyeshuri!', 'success');
                 await loadAllData();
                 renderNotesPayments();
-                renderMyNotes();
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
@@ -3120,7 +3354,6 @@ body {
             const list = document.getElementById('myNotesList');
             if (!list) return;
             
-            // Reba niba umunyeshuri yishyuye (afite subscription active)
             const m = students.find(x => x.id === currentUserData.studentId);
             const hasSubscription = m && m.subscriptionStatus === 'active';
             
@@ -3214,17 +3447,41 @@ body {
             document.getElementById('studentWelcomeGreeting').innerHTML = `<i class="fas fa-sun" style="color:#f59e0b;"></i> Umunsi mwiza wa kazi`;
             document.getElementById('studentWelcomeDate').textContent = `${daysRw[now.getDay()]}, ${now.getDate()} ${monthsRw[now.getMonth()]} ${now.getFullYear()}`;
             
-            // Ongeraho subscription status
             renderSubscriptionStatus(m);
             
-            // Recent Notes (abona gusa niba yishyuye)
+            // Recent Announcements (3 za mbere)
+            const dashAnnList = document.getElementById('studentDashboardAnnouncementsList');
+            if (dashAnnList) {
+                const recentAnn = announcements.slice(0, 3);
+                if (recentAnn.length === 0) {
+                    dashAnnList.innerHTML = `<div class="empty-state" style="padding:30px;"><div class="icon" style="font-size:40px;"><i class="fas fa-bullhorn"></i></div><h3>Nta matangazo arahari</h3></div>`;
+                } else {
+                    dashAnnList.innerHTML = recentAnn.map(a => {
+                        const date = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || Date.now());
+                        const priorityLabels = { urgent: '🔴 Urgent', high: '🟠 High', normal: '🔵 Normal', low: '⚪ Low' };
+                        return `<div class="saved-card" style="cursor:pointer;" onclick="switchPage('announcements', null)">
+                            <div class="saved-info">
+                                <h3><i class="fas fa-bullhorn"></i> ${escapeHtml(a.title)}</h3>
+                                <div class="saved-meta">
+                                    <span>${priorityLabels[a.priority] || 'Normal'}</span>
+                                    <span><i class="fas fa-clock"></i> ${timeAgo(date)}</span>
+                                </div>
+                            </div>
+                            <div class="saved-actions">
+                                <button class="btn btn-outline btn-sm">Reba</button>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            }
+            
             const myNotesList = document.getElementById('studentDashboardNotesList');
             const hasSubscription = m.subscriptionStatus === 'active';
             
             if (!hasSubscription) {
                 myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-lock"></i></div><h3>Nturabona Amasomo</h3><p>Wishyure mbere kugira ngo ubone amasomo yawe.</p></div>`;
             } else {
-                const myNotes = notes.slice(0, 3); // Abona 3 za mbere
+                const myNotes = notes.slice(0, 3);
                 if (myNotes.length === 0) {
                     myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo ufite ubu</h3></div>`;
                 } else {
@@ -3303,9 +3560,6 @@ body {
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turaohereza...';
 
             try {
-                const date = new Date().toISOString().split('T')[0];
-                
-                // 1. Bika nk'ubwishyu butegereje (muri notesPayments)
                 await addDoc(collection(db, 'notesPayments'), {
                     studentId: m.id,
                     studentName: m.name,
@@ -3318,7 +3572,6 @@ body {
                     createdAt: serverTimestamp(),
                 });
                 
-                // 2. Hindura status ya subscription muri students kuri 'pending'
                 await updateDoc(doc(db, 'students', studentId), {
                     subscriptionStatus: 'pending'
                 });
@@ -3335,71 +3588,6 @@ body {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Ohereza';
-            }
-        };
-
-        // ============================================
-        // STUDENT MY GRADES
-        // ============================================
-        window.renderMyGrades = function() {
-            if (currentUserData?.role !== 'student') return;
-            
-            const myGrades = grades.filter(g => g.studentId === currentUserData.studentId);
-            
-            document.getElementById('mySubjectsCount').textContent = myGrades.length;
-            
-            if (myGrades.length === 0) {
-                document.getElementById('myGradesList').innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-chart-bar"></i></div><h3>Nta manota urahari</h3><p>Umwarimu azayashyiraho vuba</p></div>`;
-                document.getElementById('myAvgMarks').textContent = '0';
-                document.getElementById('myBestGrade').textContent = '-';
-                document.getElementById('myOverallGrade').textContent = '-';
-                return;
-            }
-            
-            const avg = Math.round(myGrades.reduce((sum, g) => sum + g.marks, 0) / myGrades.length);
-            document.getElementById('myAvgMarks').textContent = avg;
-            
-            const bestMarks = Math.max(...myGrades.map(g => g.marks));
-            document.getElementById('myBestGrade').textContent = bestMarks;
-            document.getElementById('myOverallGrade').textContent = calculateGrade(avg);
-            
-            document.getElementById('myGradesList').innerHTML = myGrades.map(g => {
-                const grade = calculateGrade(g.marks);
-                return `<div class="grade-card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-                        <div>
-                            <div class="grade-title">${g.subject}</div>
-                            <div class="grade-meta">
-                                <span><i class="fas fa-calendar"></i> ${formatDate(g.date)}</span>
-                                <span><i class="fas fa-tag"></i> ${g.term}</span>
-                                ${g.teacher ? `<span><i class="fas fa-user"></i> ${g.teacher}</span>` : ''}
-                            </div>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="font-size:24px;font-weight:800;color:var(--primary);">${g.marks}/100</div>
-                            <div class="grade-badge grade-${grade}">${grade}</div>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-            
-            const ctx = document.getElementById('myGradesChart')?.getContext('2d');
-            if (ctx) {
-                if (myGradesChartInstance) myGradesChartInstance.destroy();
-                myGradesChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: myGrades.map(g => g.subject),
-                        datasets: [{ 
-                            label: 'Amanota', 
-                            data: myGrades.map(g => g.marks), 
-                            backgroundColor: 'rgba(56,189,248,0.8)',
-                            borderRadius: 12,
-                            barThickness: 50
-                        }]
-                    },
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
-                });
             }
         };
 
@@ -3504,196 +3692,8 @@ body {
         };
 
         // ============================================
-        // CHAT (PRIVATE)
+        // SETTINGS
         // ============================================
-        window.initChatPage = function() {
-            renderChatUsers();
-            const chatInputBar = document.querySelector('.chat-input-bar');
-            if (chatInputBar) {
-                chatInputBar.querySelector('input').disabled = true;
-                chatInputBar.querySelector('button').disabled = true;
-            }
-            document.getElementById('chatHeaderTitle').textContent = 'Hitamo umuntu';
-            document.getElementById('chatHeaderSubtitle').textContent = 'Vugana n\'umuntu';
-            document.getElementById('chatMessages').innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i><h3>Nta butumwa</h3><p>Hitamo umuntu kugira ngo utangire</p></div>`;
-        };
-
-        window.renderChatUsers = function() {
-            const chatList = document.getElementById('chatList');
-            if (!chatList) return;
-            
-            const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
-            
-            let allUsers = [];
-            users.forEach(u => {
-                if (u.uid !== currentUser.uid) {
-                    allUsers.push({ id: u.uid, name: u.name, photo: u.photo, role: u.role, type: 'staff' });
-                }
-            });
-            students.forEach(s => {
-                if (s.uid && s.uid !== currentUser.uid && s.status === 'active') {
-                    allUsers.push({ id: s.uid, name: s.name, photo: s.photo, role: 'student', type: 'student' });
-                }
-            });
-
-            const uniqueUsers = [];
-            const map = new Map();
-            for (const item of allUsers) {
-                if (!map.has(item.id)) {
-                    map.set(item.id, true);
-                    uniqueUsers.push(item);
-                }
-            }
-
-            let filteredUsers = uniqueUsers;
-            if (search) {
-                filteredUsers = uniqueUsers.filter(u => (u.name||'').toLowerCase().includes(search));
-            }
-            
-            filteredUsers.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-
-            if (filteredUsers.length === 0) {
-                chatList.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">Nta muntu wabonetse</div>`;
-                return;
-            }
-
-            chatList.innerHTML = filteredUsers.map(u => {
-                const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                const avatarHtml = u.photo ? `<img src="${u.photo}">` : initials;
-                const roleIcon = u.type === 'student' ? '🎓' : '🛡️';
-                return `<div class="chat-item" onclick="openPrivateChat('${u.id}', '${u.name.replace(/'/g, "\\'")}', '${u.photo || ''}')">
-                    <div class="chat-item-avatar">${avatarHtml}</div>
-                    <div class="chat-item-info">
-                        <div class="chat-item-name">${roleIcon} ${u.name}</div>
-                        <div class="chat-item-preview">Kanda kugira ngo uvugane</div>
-                    </div>
-                </div>`;
-            }).join('');
-        };
-
-        window.openPrivateChat = async function(userId, userName, userPhoto) {
-            if (!userId) return;
-            currentChatUserId = userId;
-
-            document.getElementById('chatHeaderTitle').textContent = userName;
-            document.getElementById('chatHeaderSubtitle').textContent = 'Ubutumwa bwite';
-            document.getElementById('chatInput').disabled = false;
-            document.querySelector('.chat-input-bar button').disabled = false;
-            document.getElementById('chatInput').focus();
-
-            document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
-
-            const messagesEl = document.getElementById('chatMessages');
-            if (!messagesEl) return;
-
-            if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
-            
-            messagesEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);"><i class="fas fa-spinner fa-spin"></i> Turazana...</div>`;
-
-            const q = query(
-                collection(db, 'privateChats'),
-                where('participants', 'array-contains', currentUser.uid),
-                orderBy('createdAt', 'asc'),
-                limit(100)
-            );
-
-            chatUnsubscribe = onSnapshot(q, (snap) => {
-                chatMessages = [];
-                snap.forEach(d => {
-                    const data = d.data();
-                    if (data.participants.includes(userId)) {
-                        chatMessages.push({ id: d.id, ...data });
-                    }
-                });
-                renderPrivateChatMessages(userName, userPhoto);
-            }, (error) => {
-                messagesEl.innerHTML = `<div class="chat-empty"><i class="fas fa-exclamation-triangle"></i><h3>Ikibazo</h3><p>${error.message}</p></div>`;
-            });
-        };
-
-        function renderPrivateChatMessages(otherUserName, otherUserPhoto) {
-            const messagesEl = document.getElementById('chatMessages');
-            if (!messagesEl) return;
-            
-            if (chatMessages.length === 0) {
-                messagesEl.innerHTML = `<div class="chat-empty"><i class="fas fa-comments"></i><h3>Nta butumwa</h3><p>Tangira kuvuga na ${otherUserName}</p></div>`;
-                return;
-            }
-
-            const myUid = currentUser?.uid || 'unknown';
-            messagesEl.innerHTML = chatMessages.map(msg => {
-                const isMine = msg.fromUid === myUid;
-                const date = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
-                const timeStr = `${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
-                const initials = (msg.fromName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                const avatarHtml = msg.fromPhoto ? `<img src="${msg.fromPhoto}">` : initials;
-                return `<div class="chat-message ${isMine ? 'mine' : ''}">
-                    <div class="chat-message-avatar">${avatarHtml}</div>
-                    <div>
-                        ${!isMine ? `<div class="chat-message-sender">${msg.fromName || 'Unknown'}</div>` : ''}
-                        <div class="chat-message-bubble">
-                            <div class="chat-message-text">${escapeHtml(msg.message || '')}</div>
-                            <div class="chat-message-time">${timeStr}</div>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-        }
-
-        window.sendChatMessage = async function() {
-            const input = document.getElementById('chatInput');
-            if (!input) return;
-            const message = input.value.trim();
-            if (!message) return;
-            if (!currentUser) { showToast('❌ Ntabwo winjiye', 'error'); return; }
-            if (!currentChatUserId) { showToast('❌ Hitamo umuntu mbere', 'warning'); return; }
-            
-            input.value = '';
-            try {
-                await addDoc(collection(db, 'privateChats'), {
-                    participants: [currentUser.uid, currentChatUserId],
-                    message: message,
-                    fromUid: currentUser.uid,
-                    fromName: currentUserData?.name || 'Unknown',
-                    fromPhoto: currentUserData?.photo || null,
-                    readBy: [currentUser.uid],
-                    createdAt: serverTimestamp()
-                });
-            } catch (error) {
-                showToast('❌ ' + error.message, 'error');
-                input.value = message;
-            }
-        };
-
-        window.startUnreadListener = function() {
-            if (!currentUser) return;
-            const myUid = currentUser.uid;
-            if (unreadListener) { try { unreadListener(); } catch(e) {} }
-            const q = query(collection(db, 'privateChats'), orderBy('createdAt', 'desc'), limit(100));
-            unreadListener = onSnapshot(q, (snap) => {
-                try {
-                    let count = 0;
-                    snap.forEach(d => {
-                        const data = d.data();
-                        const readBy = Array.isArray(data.readBy) ? data.readBy : [];
-                        if (data.fromUid !== myUid && !readBy.includes(myUid) && data.participants.includes(myUid)) count++;
-                    });
-                    const badge = document.getElementById('chatBadge');
-                    const sb = document.getElementById('sidebarChatCount');
-                    if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'flex' : 'none'; }
-                    if (sb) { sb.textContent = count; sb.style.display = count > 0 ? 'flex' : 'none'; }
-                } catch (e) {}
-            });
-        };
-
-        // ============================================
-        // REPORTS
-        // ============================================
-        window.initReportsPage = function() {
-            // Empty page as requested
-        };
-
         window.saveSettings = async function() {
             const schoolName = document.getElementById('schoolName').value.trim();
             try { 
@@ -3705,7 +3705,7 @@ body {
         };
 
         window.exportData = function() {
-            const data = { students, teachers, grades, notes, exported: new Date().toISOString() };
+            const data = { students, teachers, grades, notes, announcements, exported: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `student-data-${new Date().toISOString().split('T')[0]}.json`; a.click();
