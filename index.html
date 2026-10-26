@@ -1,98 +1,23 @@
 <!DOCTYPE html>
 <html lang="rw">
 <head>
-   
-    <!-- Character Encoding -->
     <meta charset="UTF-8">
-
-    <!-- Responsive Design -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Website Title -->
-    <title>Student System | Student Management System in Rwanda</title>
-
-    <!-- SEO Description -->
-    <meta
-        name="description"
-        content="Student System ni sisitemu yo ifasha abanyeshuri,mukureba notes no kunguka ubumenyi bukenewe buri musi. Yorohereza abanyeshuri kwiga mu buryo bwihuse kandi bworoshye."
-    >
-
-    <!-- Search Engine Indexing -->
-    <meta name="robots" content="index, follow">
-
-    <!-- Canonical URL -->
-    <link
-        rel="canonical"
-        href="https://students-system-mauve.vercel.app/"
-    >
-
-    <!-- Browser Theme Color -->
-    <meta name="theme-color" content="#38bdf8">
-
-    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Favicon: remove favicon-maskable.png -->
-    <!-- Niba ufite favicon.ico, ushobora gukuramo comment iri hasi -->
-    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
-
-    <!-- Open Graph: WhatsApp, Facebook and other social platforms -->
-    <meta property="og:type" content="website">
-
-    <meta
-        property="og:title"
-        content="Student System | Student Management System"
-    >
-
-    <meta
-        property="og:description"
-        content="Sisitemu yorohereza gucunga abanyeshuri, abarimu, amasomo n'amanota mu buryo bwihuse kandi bworoshye."
-    >
-
-    <meta
-        property="og:url"
-        content="https://students-system-mauve.vercel.app/"
-    >
-
-    <meta property="og:site_name" content="Student System">
-
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter / X Sharing -->
-    <meta name="twitter:card" content="summary">
-
-    <meta
-        name="twitter:title"
-        content="Student System | Student Management System"
-    >
-
-    <meta
-        name="twitter:description"
-        content="Manage students, teachers, courses and academic records with Student System."
-    >
-
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- Font Awesome Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    >
-
-    <!-- Chart.js -->
+    <meta name="theme-color" content="#38bdf8">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-maskable.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Student System | Sisitemu y'Abanyeshuri</title>
+    <meta name="description" content="Sisitemu yo gucunga abanyeshuri, amanota n'amasomo.">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-    <!-- Confetti Effects -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script>
-
-    <!-- QR Code Generator -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-maskable.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/favicon-maskable.png">
     
     <script>
         (function() {
@@ -338,6 +263,24 @@ body {
     border-radius: 50px; display: flex; align-items: center; justify-content: center;
     border: 2px solid var(--bg-card);
 }
+.whatsapp-btn {
+    background: #25D366; color: white; border: none;
+    padding: 0 16px; height: 42px; border-radius: 12px;
+    font-family: inherit; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    transition: var(--transition); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+.whatsapp-btn:hover { background: #20bd5a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+.whatsapp-btn i { font-size: 18px; }
+.install-btn {
+    background: var(--gradient-1); color: white; border: none;
+    padding: 0 16px; height: 42px; border-radius: 12px;
+    font-family: inherit; font-weight: 700; font-size: 14px;
+    display: none; align-items: center; gap: 8px; cursor: pointer;
+    transition: var(--transition); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+.install-btn:hover { transform: translateY(-2px); }
+.install-btn i { font-size: 16px; }
 .user-chip {
     display: flex; align-items: center; gap: 10px;
     padding: 6px 14px 6px 6px; background: var(--bg);
@@ -736,6 +679,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     .qr-actions { grid-template-columns: 1fr; }
     .table-card { overflow-x: auto !important; width: 100% !important; }
     .table-card table { min-width: 600px !important; }
+    .whatsapp-btn span, .install-btn span { display: none; }
+    .whatsapp-btn, .install-btn { padding: 0 12px; }
 }
 @media (max-width: 480px) {
     .auth-card { padding: 32px 24px; border-radius: 24px; }
@@ -1028,6 +973,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 </div>
             </div>
             <div class="header-right">
+                <!-- BUTO YA WHATSAPP -->
+                <button class="whatsapp-btn" onclick="window.open('https://wa.me/250794476085?text=Muraho%2C%20ndifuza%20kubaza%20ikibazo%20kuri%20sisitemu.', '_blank')" title="Vugana natwe kuri WhatsApp">
+                    <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
+                </button>
+                <!-- BUTO YA INSTALL APP -->
+                <button class="install-btn" id="installBtn" onclick="installPWA()" title="Shyira App kuri Phone">
+                    <i class="fas fa-download"></i> <span>Install App</span>
+                </button>
                 <button class="icon-btn" onclick="switchPage('announcements', null)" title="Amatangazo">
                     <i class="fas fa-bullhorn"></i>
                     <span class="badge" id="announcementBadge" style="display:none;">0</span>
@@ -2056,6 +2009,32 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         const firebaseApp = initializeApp(firebaseConfig);
         const db = getFirestore(firebaseApp);
         const auth = getAuth(firebaseApp);
+
+        // ============================================
+        // PWA INSTALL LOGIC
+        // ============================================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) installBtn.style.display = 'flex';
+        });
+
+        window.installPWA = async function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
+                    const installBtn = document.getElementById('installBtn');
+                    if (installBtn) installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            } else {
+                showToast('Kanda menu ya browser (⋮) hanyuma ukande "Add to Home Screen"', 'info');
+            }
+        };
 
         // ============================================
         // GLOBALS
