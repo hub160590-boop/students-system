@@ -30,7 +30,15 @@
             } catch(e) {}
         })();
     </script>
-    
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker yanditswe neza!', reg))
+        .catch(err => console.log('Service Worker yanze kwandikwa:', err));
+    });
+  }
+</script>
     <style>
 /* ============================================
    ROOT VARIABLES
