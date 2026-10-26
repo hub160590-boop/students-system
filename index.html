@@ -921,6 +921,66 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .install-btn-auth:hover { background: rgba(56, 189, 248, 0.2); transform: translateY(-2px); }
 .install-btn-auth i { font-size: 20px; color: #38bdf8; }
+
+/* ============================================
+   PWA INSTALL BUTTON (Floating)
+   ============================================ */
+.install-btn-floating {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    background: #38bdf8;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+    z-index: 99999;
+    border: none;
+    outline: none;
+    transition: transform 0.3s ease, background 0.3s ease;
+    animation: pulse-install 2s infinite;
+}
+
+.install-btn-floating:hover {
+    transform: scale(1.1);
+    background: #0284c7;
+    animation: none;
+}
+
+@keyframes pulse-install {
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(56, 189, 248, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+
+.install-btn-floating::before {
+    content: "Install App";
+    position: absolute;
+    top: -40px;
+    background: #1e293b;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.install-btn-floating:hover::before {
+    opacity: 1;
+}
+
+.install-btn-floating.hidden {
+    display: none !important;
+}
     </style>
 </head>
 <body>
@@ -931,6 +991,11 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <h2>🎓 STUDENT SYSTEM</h2>
         <p>Turashakisha amakuru...</p>
     </div>
+
+    <!-- Buto ya Install PWA -->
+    <button id="pwaInstallBtn" class="install-btn-floating hidden" onclick="installPWA()" title="Install App">
+        <i class="fas fa-download"></i>
+    </button>
 
     <!-- ===== AUTH ===== -->
     <div class="auth-screen hidden" id="authScreen">
@@ -2017,32 +2082,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         const firebaseApp = initializeApp(firebaseConfig);
         const db = getFirestore(firebaseApp);
         const auth = getAuth(firebaseApp);
-
-        // ============================================
-        // PWA INSTALL LOGIC
-        // ============================================
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtnAuth = document.getElementById('installBtnAuth');
-            if (installBtnAuth) installBtnAuth.style.display = 'flex';
-        });
-
-        window.installPWA = async function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
-                    const installBtnAuth = document.getElementById('installBtnAuth');
-                    if (installBtnAuth) installBtnAuth.style.display = 'none';
-                }
-                deferredPrompt = null;
-            } else {
-                showToast('Kanda menu ya browser (⋮) hanyuma ukande "Add to Home Screen"', 'info');
-            }
-        };
 
         // ============================================
         // GLOBALS
@@ -3783,6 +3822,47 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 }
             }
         });
+
+        // ============================================
+        // PWA INSTALL LOGIC (Yongeweho hano neza)
+        // ============================================
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtnAuth = document.getElementById('installBtnAuth');
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
+            if (installBtnAuth) installBtnAuth.style.display = 'flex';
+            if (installBtnFloat) installBtnFloat.classList.remove('hidden');
+        });
+
+        window.installPWA = async function() {
+            const installBtnAuth = document.getElementById('installBtnAuth');
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
+            
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
+                    if (installBtnAuth) installBtnAuth.style.display = 'none';
+                    if (installBtnFloat) installBtnFloat.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            } else {
+                showToast('Kanda menu ya browser (⋮) hanyuma ukande "Add to Home Screen"', 'info');
+            }
+        };
+
+        window.addEventListener('appinstalled', () => {
+            const installBtnAuth = document.getElementById('installBtnAuth');
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
+            if (installBtnAuth) installBtnAuth.style.display = 'none';
+            if (installBtnFloat) installBtnFloat.classList.add('hidden');
+            console.log('PWA yashyizweho neza!');
+        });
+
     </script>
 </body>
 </html>
