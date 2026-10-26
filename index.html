@@ -2,6 +2,15 @@
 <html lang="rw">
 <head>
     <meta charset="UTF-8">
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker yanditswe neza!', reg))
+        .catch(err => console.log('Service Worker yanze kwandikwa:', err));
+    });
+  }
+</script>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#38bdf8">
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-maskable.png">
