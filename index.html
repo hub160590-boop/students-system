@@ -3875,6 +3875,9 @@ window.installPWA = async function() {
     // Gukuraho iyi buto nyuma yo kwishyiriraho
     if (outcome === 'accepted') {
         if (installBtnFloat) installBtnFloat.classList.add('hidden');
+        if (typeof showToast === 'function') {
+            showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
+        }
     }
     
     // Gusubiza deferredPrompt kuri null
@@ -3887,33 +3890,6 @@ window.addEventListener('appinstalled', () => {
     if (installBtnFloat) installBtnFloat.classList.add('hidden');
     console.log('PWA yashyizweho neza!');
 });
-
-        window.installPWA = async function() {
-            const installBtnAuth = document.getElementById('installBtnAuth');
-            const installBtnFloat = document.getElementById('pwaInstallBtn');
-            
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
-                    if (installBtnAuth) installBtnAuth.style.display = 'none';
-                    if (installBtnFloat) installBtnFloat.classList.add('hidden');
-                }
-                deferredPrompt = null;
-            } else {
-                showToast('Kanda menu ya browser (⋮) hanyuma ukande "Add to Home Screen"', 'info');
-            }
-        };
-
-        window.addEventListener('appinstalled', () => {
-            const installBtnAuth = document.getElementById('installBtnAuth');
-            const installBtnFloat = document.getElementById('pwaInstallBtn');
-            if (installBtnAuth) installBtnAuth.style.display = 'none';
-            if (installBtnFloat) installBtnFloat.classList.add('hidden');
-            console.log('PWA yashyizweho neza!');
-        });
-
     </script>
 </body>
 </html>
