@@ -3834,14 +3834,51 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // ============================================
         let deferredPrompt;
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtnAuth = document.getElementById('installBtnAuth');
-            const installBtnFloat = document.getElementById('pwaInstallBtn');
-            if (installBtnAuth) installBtnAuth.style.display = 'flex';
-            if (installBtnFloat) installBtnFloat.classList.remove('hidden');
-        });
+       
+// Iyi event ibaho iyo browser ibonye ko app ishobora kwishyiriraho
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Hindura uburyo browser isanzwe ibikora
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Erekana buto yo ku ruhande gusa
+    const installBtnFloat = document.getElementById('pwaInstallBtn');
+    if (installBtnFloat) {
+        installBtnFloat.classList.remove('hidden');
+    }
+});
+
+// Iyi function ikorwa iyo umuntu yakanze buto yo ku ruhande
+window.installPWA = async function() {
+    const installBtnFloat = document.getElementById('pwaInstallBtn');
+    
+    if (!deferredPrompt) {
+        alert("Kuri iyi browser, ushobora gukanda 'Add to Home Screen' mu menu ya browser yawe.");
+        return;
+    }
+
+    // Erekana ubutumwa bwa browser bwo kwishyiriraho
+    deferredPrompt.prompt();
+    
+    // Tegereza igisubizo
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Umukoresha yahisemo: ${outcome}`);
+
+    // Gukuraho iyi buto nyuma yo kwishyiriraho
+    if (outcome === 'accepted') {
+        if (installBtnFloat) installBtnFloat.classList.add('hidden');
+    }
+    
+    // Gusubiza deferredPrompt kuri null
+    deferredPrompt = null;
+};
+
+// Iyi event ibaho iyo app imaze kwishyiriraho neza
+window.addEventListener('appinstalled', () => {
+    const installBtnFloat = document.getElementById('pwaInstallBtn');
+    if (installBtnFloat) installBtnFloat.classList.add('hidden');
+    console.log('PWA yashyizweho neza!');
+});
 
         window.installPWA = async function() {
             const installBtnAuth = document.getElementById('installBtnAuth');
