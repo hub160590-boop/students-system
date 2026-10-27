@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html lang="rw">
 <head>
-  
-    
-<head>
     <meta charset="UTF-8">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
-    
+
     <!-- Theme & Viewport -->
     <meta name="theme-color" content="#38bdf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta -->
     <title>Student System | Sisitemu y'Abanyeshuri</title>
     <meta name="description" content="Sisitemu yo gucunga abanyeshuri, amanota n'amasomo.">
-    
+
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons za App (PWA) - Hano nshyizemo students.jpg -->
+
+    <!-- Icons za App (PWA) -->
     <link rel="icon" type="image/jpeg" sizes="192x192" href="/students.jpg">
     <link rel="apple-touch-icon" sizes="192x192" href="/students.jpg">
 
@@ -39,14 +36,14 @@
         })();
     </script>
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker yanditswe neza!', reg))
-        .catch(err => console.log('Service Worker yanze kwandikwa:', err));
-    });
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker yanditswe neza!', reg))
+                    .catch(err => console.log('Service Worker yanze kwandikwa:', err));
+            });
+        }
+    </script>
     <style>
 /* ============================================
    ROOT VARIABLES
@@ -62,22 +59,22 @@
     --warning: #f59e0b;
     --purple: #8b5cf6;
     --pink: #ec4899;
-    
+
     --bg: #f8fafc;
     --bg-card: #ffffff;
     --text: #0f172a;
     --text-secondary: #64748b;
     --border: #e2e8f0;
-    
+
     --gradient-1: linear-gradient(135deg, #38bdf8, #0ea5e9);
     --gradient-2: linear-gradient(135deg, #10b981, #06b6d4);
     --gradient-3: linear-gradient(135deg, #ef4444, #f59e0b);
     --gradient-4: linear-gradient(135deg, #f59e0b, #ec4899);
     --gradient-purple: linear-gradient(135deg, #8b5cf6, #a78bfa);
-    
+
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
-    
+
     --radius: 16px;
     --radius-lg: 24px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -156,7 +153,7 @@ body {
 .auth-screen.hidden { display: none !important; }
 .network-bg {
     position: fixed; inset: 0; overflow: hidden;
-    background: 
+    background:
         radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.3) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.3) 0%, transparent 50%),
         linear-gradient(135deg, #0a1929 0%, #0d2137 50%, #071827 100%);
@@ -373,6 +370,8 @@ body {
 .btn-danger:hover { transform: translateY(-2px); }
 .btn-outline { background: var(--bg-card); color: var(--text); border: 1.5px solid var(--border); }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-warning { background: linear-gradient(135deg, #f59e0b, #ec4899); color: white; }
+.btn-warning:hover { transform: translateY(-2px); }
 .btn-sm { padding: 8px 14px; font-size: 12.5px; }
 
 /* ============================================
@@ -451,11 +450,11 @@ body {
 }
 .saved-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
 .saved-info { flex: 1; min-width: 200px; }
-.saved-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+.saved-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .saved-info h3 i { color: var(--primary); font-size: 15px; }
 .saved-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
 .saved-meta span { display: flex; align-items: center; gap: 5px; }
-.saved-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.saved-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .action-btn {
     width: 38px; height: 38px; border-radius: 10px;
     border: 1px solid var(--border); background: var(--bg-card);
@@ -886,26 +885,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     transform: scale(1.02);
     box-shadow: var(--shadow-lg);
 }
-.announcement-file {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    color: var(--primary);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: var(--transition);
-    margin-top: 8px;
-}
-.announcement-file:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
 .announcement-actions {
     display: flex;
     gap: 8px;
@@ -998,6 +977,172 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .install-btn-floating.hidden {
     display: none !important;
 }
+
+/* ============================================
+   EXAMS STYLES
+   ============================================ */
+.exam-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; flex-wrap: wrap; transition: var(--transition);
+    border-left: 4px solid var(--primary);
+}
+.exam-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.exam-card.cat { border-left-color: #38bdf8; }
+.exam-card.midterm { border-left-color: #f59e0b; }
+.exam-card.final { border-left-color: #ef4444; }
+.exam-type-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: 50px;
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.5px; white-space: nowrap;
+}
+.exam-type-badge.cat { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+.exam-type-badge.midterm { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.exam-type-badge.final { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.exam-photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 12px; }
+.exam-photo-item { position: relative; border-radius: 12px; overflow: hidden; border: 2px solid var(--border); cursor: pointer; }
+.exam-photo-item img { width: 100%; height: 120px; object-fit: cover; display: block; }
+.exam-photo-item:hover { border-color: var(--primary); }
+
+/* ============================================
+   EXAM FILES (PDF / WORD / PPT)
+   ============================================ */
+.exam-files-container {
+    display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+}
+.exam-file-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 10px 14px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; transition: var(--transition);
+}
+.exam-file-row:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.04); }
+.exam-file-info {
+    display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.exam-file-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white; flex-shrink: 0;
+}
+.exam-file-icon.pdf { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.exam-file-icon.word { background: linear-gradient(135deg, #2b579a, #1e3a8a); }
+.exam-file-icon.ppt { background: linear-gradient(135deg, #d24726, #c0392b); }
+.exam-file-icon.image { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+.exam-file-icon.default { background: linear-gradient(135deg, #64748b, #94a3b8); }
+.exam-file-name {
+    font-size: 13.5px; font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.exam-file-size { font-size: 11.5px; color: var(--text-secondary); }
+.exam-file-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.exam-file-btn {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; text-decoration: none;
+    border: 1px solid var(--border); background: var(--bg-card);
+    color: var(--text-secondary); cursor: pointer;
+    transition: var(--transition);
+}
+.exam-file-btn.view:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.exam-file-btn.download:hover { background: var(--success); color: white; border-color: var(--success); }
+.exam-file-btn.delete:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+/* ============================================
+   FILE UPLOAD AREA (for exams)
+   ============================================ */
+.file-upload-area {
+    border: 2px dashed var(--border); border-radius: 14px;
+    padding: 24px 20px; text-align: center; background: var(--bg);
+    cursor: pointer; transition: var(--transition);
+}
+.file-upload-area:hover {
+    border-color: var(--primary);
+    background: rgba(56, 189, 248, 0.05);
+}
+.file-upload-area .upload-icon {
+    font-size: 40px; color: var(--primary); margin-bottom: 10px;
+    opacity: 0.7;
+}
+.file-upload-area .upload-text { font-size: 13.5px; color: var(--text-secondary); }
+.file-upload-area .upload-text strong { display: block; color: var(--primary); font-size: 14px; margin-bottom: 4px; }
+.file-upload-area .upload-hint { font-size: 11.5px; margin-top: 6px; color: var(--text-secondary); opacity: 0.8; }
+
+.uploaded-files-list {
+    display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+}
+.uploaded-file-item {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 10px 14px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px;
+}
+.uploaded-file-item .info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.uploaded-file-item .info .name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.uploaded-file-item .info .size { font-size: 11px; color: var(--text-secondary); }
+
+/* ============================================
+   TABLE STYLES
+   ============================================ */
+.table-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+}
+.table-header {
+    padding: 18px 22px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.table-title {
+    font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px;
+}
+.table-title i { color: var(--primary); }
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--bg); }
+th {
+    padding: 14px 18px; text-align: left; font-size: 12px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text-secondary);
+    white-space: nowrap;
+}
+td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 14px; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
+
+.member-cell-row { display: flex; align-items: center; gap: 12px; }
+.row-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--gradient-1); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.row-photo {
+    width: 38px; height: 38px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+}
+.row-info .name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.row-info .id { font-size: 12px; color: var(--text-secondary); }
+.class-badge {
+    display: inline-block; padding: 4px 10px; border-radius: 50px;
+    font-size: 11.5px; font-weight: 700;
+    background: rgba(56, 189, 248, 0.15); color: var(--primary);
+}
+.dept-badge {
+    display: inline-block; padding: 4px 10px; border-radius: 50px;
+    font-size: 11.5px; font-weight: 700; text-transform: capitalize;
+}
+.dept-badge.science { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
+.dept-badge.arts { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+.dept-badge.commerce { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.dept-badge.technical { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+.section-title {
+    font-size: 18px; font-weight: 800; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+}
+.section-title i { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -1023,8 +1168,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <h1>STUDENT SYSTEM</h1>
                 <p>Injira muri sisitemu</p>
             </div>
-            
-            
 
             <div class="auth-error" id="authError">
                 <i class="fas fa-exclamation-circle"></i>
@@ -1080,7 +1223,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <div class="layout">
             <aside class="sidebar" id="sidebar">
                 <div class="nav-label">Menu Nyamukuru</div>
-                
+
                 <div class="nav-item admin-only active" onclick="switchPage('dashboard', this)">
                     <i class="fas fa-home"></i><span>Ahabanza</span>
                 </div>
@@ -1090,12 +1233,15 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <div class="nav-item student-only" onclick="switchPage('my-notes', this)" style="display: none;">
                     <i class="fas fa-book"></i><span>Amasomo Yanjye</span>
                 </div>
-                
+                <div class="nav-item student-only" onclick="switchPage('my-exams', this)" style="display: none;">
+                    <i class="fas fa-file-alt"></i><span>Ibizamini Byanjye</span>
+                </div>
+
                 <div class="nav-item" onclick="switchPage('announcements', this)">
                     <i class="fas fa-bullhorn"></i><span>Amatangazo</span>
                     <span class="count" id="sidebarAnnouncementCount" style="display:none;">0</span>
                 </div>
-                
+
                 <div class="nav-item admin-only" onclick="openQRRegisterModal()">
                     <i class="fas fa-qrcode"></i><span>QR Code Mushya</span>
                 </div>
@@ -1111,13 +1257,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <i class="fas fa-chalkboard-teacher"></i><span>Abarimu</span>
                     <span class="count" id="sidebarTeacherCount">0</span>
                 </div>
-                
+
                 <div class="nav-label admin-only">Isesengura</div>
                 <div class="nav-item admin-only" onclick="switchPage('grades', this)">
                     <i class="fas fa-chart-bar"></i><span>Amanota</span>
                 </div>
                 <div class="nav-item admin-only" onclick="switchPage('notes', this)">
                     <i class="fas fa-book-open"></i><span>Gucunga Amasomo</span>
+                </div>
+                <div class="nav-item admin-only" onclick="switchPage('exams', this)">
+                    <i class="fas fa-file-alt"></i><span>Ibizamini</span>
                 </div>
                 <div class="nav-item admin-only" onclick="switchPage('notes-payments', this)">
                     <i class="fas fa-money-check-alt"></i><span>Kwemeza Ubwishyu</span>
@@ -1132,12 +1281,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <div class="nav-item admin-only" onclick="switchPage('reports', this)">
                     <i class="fas fa-chart-line"></i><span>Raporo</span>
                 </div>
-                
+
                 <div class="nav-label super-admin-only" style="display: none;">Super Admin</div>
                 <div class="nav-item super-admin-only" onclick="switchPage('users', this)" style="display: none;">
                     <i class="fas fa-user-shield"></i><span>Abakoresha</span>
                 </div>
-                
+
                 <div class="nav-label">Konti</div>
                 <div class="nav-item" onclick="switchPage('profile', this)">
                     <i class="fas fa-user-circle"></i><span>Profile</span>
@@ -1145,12 +1294,11 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <div class="nav-item admin-only" onclick="switchPage('settings', this)">
                     <i class="fas fa-cog"></i><span>Igenamiterere</span>
                 </div>
-                
-                <!-- BUTO YA WHATSAPP (Iri muri Sidebar) -->
+
                 <button class="whatsapp-btn-sidebar" onclick="window.open('https://wa.me/250794476085?text=Muraho%2C%20ndifuza%20kubaza%20ikibazo%20kuri%20sisitemu.', '_blank')">
                     <i class="fab fa-whatsapp"></i><span>Vugana natwe (WhatsApp)</span>
                 </button>
-                
+
                 <div class="nav-item" onclick="forceLogout()" style="color: var(--danger); margin-top: 8px;">
                     <i class="fas fa-sign-out-alt"></i><span>Sohoka</span>
                 </div>
@@ -1225,11 +1373,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     </div>
 
                     <div class="member-profile-card" id="studentProfileCard"></div>
-                    <!-- Buto yo Kwishyura Amasomo -->
-                    <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer">
-                        <!-- Iyi code izahindurwa na JavaScript bitewe n'uko subscription imeze -->
-                    </div>
-                    
+                    <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer"></div>
+
                     <div class="section-title" style="margin-top: 30px;">
                         <i class="fas fa-bullhorn"></i>
                         <span>Amatangazo aheruka</span>
@@ -1237,11 +1382,51 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <div class="saved-list" id="studentDashboardAnnouncementsList"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Ibizamini Byakozwe (Bya vuba)</span>
+                    </div>
+                    <div class="saved-list" id="studentDashboardExamsList"></div>
+
+                    <div class="section-title" style="margin-top: 30px;">
                         <i class="fas fa-book"></i>
                         <span>Amasomo Yawe (Notes)</span>
                     </div>
                     <div class="saved-list" id="studentDashboardNotesList"></div>
+                </div>
 
+                <!-- ============ STUDENT MY EXAMS PAGE ============ -->
+                <div class="page" id="page-my-exams">
+                    <div class="page-header">
+                        <div>
+                            <h1>📝 Ibizamini Byanjye</h1>
+                            <p>Reba no gukurura ibizamini byakozwe (CAT, Midterm, Final)</p>
+                        </div>
+                    </div>
+
+                    <div class="readonly-notice">
+                        <i class="fas fa-eye"></i>
+                        <span>Iyi ni <strong>ibizamini byawe</strong> — ureba gusa.</span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="filter-group" style="width: 100%;">
+                            <select class="filter-select" id="myExamsFilterType" onchange="renderMyExams()">
+                                <option value="">📋 Ubwoko: Byose</option>
+                                <option value="cat">🔵 CAT</option>
+                                <option value="midterm">🟠 Midterm</option>
+                                <option value="final">🔴 Final Exam</option>
+                            </select>
+                            <select class="filter-select" id="myExamsFilterSubject" onchange="renderMyExams()">
+                                <option value="">📚 Isomo: Byose</option>
+                            </select>
+                            <div class="search-box" style="flex:1;">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="myExamsSearch" placeholder="Shakisha ikizamini..." oninput="renderMyExams()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="saved-list" id="myExamsList"></div>
                 </div>
 
                 <!-- ============ ANNOUNCEMENTS PAGE ============ -->
@@ -1259,7 +1444,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="announcementsFilterPriority" onchange="renderAnnouncements()">
-                                <option value="">📌 Prioritе: Bose</option>
+                                <option value="">📌 Priorité: Bose</option>
                                 <option value="urgent">🔴 Urgent</option>
                                 <option value="high">🟠 High</option>
                                 <option value="normal">🔵 Normal</option>
@@ -1283,7 +1468,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                             <p>Reba no gukurura amafishi y'amasomo wahawe n'abarimu.</p>
                         </div>
                     </div>
-                    
+
                     <div class="readonly-notice">
                         <i class="fas fa-eye"></i>
                         <span>Iyi ni <strong>amasomo yawe</strong> — ureba gusa.</span>
@@ -1569,6 +1754,46 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <div class="saved-list" id="notesList"></div>
                 </div>
 
+                <!-- ============ ADMIN EXAMS PAGE ============ -->
+                <div class="page" id="page-exams">
+                    <div class="page-header">
+                        <div>
+                            <h1>📝 Ibizamini</h1>
+                            <p>Gucunga ibizamini byakozwe (CAT, Midterm, Final) - PDF, Word, PPT</p>
+                        </div>
+                        <button class="btn btn-primary admin-only" onclick="openAddExamModal()">
+                            <i class="fas fa-plus"></i> Ongeraho Ikizamini
+                        </button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="filter-group" style="width: 100%;">
+                            <select class="filter-select" id="examsFilterLevel" onchange="renderExams()">
+                                <option value="">🎓 Urwego: Byose</option>
+                                <option value="University">University</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
+                                <option value="S4">S4</option>
+                                <option value="S5">S5</option>
+                                <option value="S6">S6</option>
+                            </select>
+                            <select class="filter-select" id="examsFilterType" onchange="renderExams()">
+                                <option value="">📋 Ubwoko: Byose</option>
+                                <option value="cat">🔵 CAT</option>
+                                <option value="midterm">🟠 Midterm</option>
+                                <option value="final">🔴 Final Exam</option>
+                            </select>
+                            <div class="search-box" style="flex:1;">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="examsSearch" placeholder="Shakisha ikizamini..." oninput="renderExams()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="saved-list" id="examsList"></div>
+                </div>
+
                 <!-- ============ NOTES PAYMENTS (ADMIN) ============ -->
                 <div class="page" id="page-notes-payments">
                     <div class="page-header">
@@ -1713,7 +1938,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     </div>
 
     <!-- ===== MODALS ===== -->
-    
+
     <!-- QR Register -->
     <div class="modal-overlay" id="qrRegisterModal">
         <div class="modal">
@@ -1891,17 +2116,17 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <h3><i class="fas fa-book"></i> Ongeraho Isomo (Note)</h3>
                 <button class="close-btn" onclick="closeModal('addNoteModal')"><i class="fas fa-times"></i></button>
             </div>
-            
+
             <div class="form-group">
                 <label>Izina ry'Isomo <span>*</span></label>
                 <input type="text" class="form-control" id="noteTitle" placeholder="Urugero: Mathematics Notes - Chapter 1">
             </div>
-            
+
             <div class="form-group">
                 <label>Isomo (Subject) <span>*</span></label>
                 <input type="text" class="form-control" id="noteSubject" placeholder="Urugero: Mathematics">
             </div>
-            
+
             <div class="form-group">
                 <label>Urwego (Level) <span>*</span></label>
                 <select class="form-control" id="noteLevel">
@@ -1915,7 +2140,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <option value="S6">S6</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>Ibisobanuro (Optional)</label>
                 <input type="text" class="form-control" id="noteDescription" placeholder="Urugero: Byateguwe n'umwarimu...">
@@ -1929,10 +2154,109 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 </div>
                 <input type="file" id="noteFileInput" accept=".pdf,.doc,.docx,.txt" class="hidden-input" onchange="previewNoteFile(event)">
             </div>
-            
+
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('addNoteModal')">Hagarika</button>
                 <button class="btn btn-primary" id="saveNoteBtn" onclick="uploadNote()"><i class="fas fa-save"></i> Bika</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ ADD EXAM MODAL (with multi-file upload) ============ -->
+    <div class="modal-overlay" id="addExamModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-alt"></i> Ongeraho Ikizamini</h3>
+                <button class="close-btn" onclick="closeModal('addExamModal')"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="form-group">
+                <label>Izina ry'Ikizamini <span>*</span></label>
+                <input type="text" class="form-control" id="examTitle" placeholder="Urugero: CAT 1 - Mathematics">
+            </div>
+
+            <div class="form-group">
+                <label>Isomo (Subject) <span>*</span></label>
+                <input type="text" class="form-control" id="examSubject" placeholder="Urugero: Mathematics">
+            </div>
+
+            <div class="form-group">
+                <label>Ubwoko bw'Ikizamini <span>*</span></label>
+                <select class="form-control" id="examType">
+                    <option value="cat">🔵 CAT</option>
+                    <option value="midterm">🟠 Midterm</option>
+                    <option value="final">🔴 Final Exam</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Urwego (Level) <span>*</span></label>
+                <select class="form-control" id="examLevel">
+                    <option value="">-- Hitamo Urwego --</option>
+                    <option value="University">University</option>
+                    <option value="S1">S1</option>
+                    <option value="S2">S2</option>
+                    <option value="S3">S3</option>
+                    <option value="S4">S4</option>
+                    <option value="S5">S5</option>
+                    <option value="S6">S6</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Igihembwe</label>
+                <select class="form-control" id="examTerm">
+                    <option value="Term1">Term 1</option>
+                    <option value="Term2">Term 2</option>
+                    <option value="Term3">Term 3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Itariki y'Ikizamini <span>*</span></label>
+                <input type="date" class="form-control" id="examDate">
+            </div>
+
+            <div class="form-group">
+                <label>Amanota yose (Max Marks)</label>
+                <input type="number" class="form-control" id="examMaxMarks" value="100" min="1">
+            </div>
+
+            <div class="form-group">
+                <label>Ibisobanuro (Optional)</label>
+                <textarea class="form-control" id="examDescription" rows="3" placeholder="Andika ibisobanuro by'ikizamini..."></textarea>
+            </div>
+
+            <!-- ===== FILE UPLOAD (PDF, Word, PPT) ===== -->
+            <div class="form-group">
+                <label>Shyiramo Amafishi y'Ikizamini (PDF, Word, PPT)</label>
+                <div class="file-upload-area" onclick="document.getElementById('examFilesInput').click()">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="upload-text">
+                        <strong>Kanda hano wongeremo amafishi</strong>
+                        PDF, DOC, DOCX, PPT, PPTX (Max 15MB kuri file)
+                    </div>
+                    <div class="upload-hint">Ushobora guhitamo amafishi menshi icyarimwe</div>
+                </div>
+                <input type="file" id="examFilesInput" class="hidden-input"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx"
+                    multiple onchange="previewExamFiles(event)">
+                <div class="uploaded-files-list" id="examFilesPreview"></div>
+            </div>
+
+            <!-- ===== PHOTO (optional) ===== -->
+            <div class="form-group">
+                <label>Ifoto y'Ikizamini (Optional)</label>
+                <div class="photo-upload" onclick="document.getElementById('examPhotoInput').click()">
+                    <div id="examPhotoPreviewContainer"><div class="photo-placeholder">📷</div></div>
+                    <div class="photo-upload-text"><strong>Kanda hano wongeremo ifoto</strong> JPG, PNG (max 5MB)</div>
+                </div>
+                <input type="file" id="examPhotoInput" accept="image/*" class="hidden-input" onchange="previewExamPhoto(event)">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('addExamModal')">Hagarika</button>
+                <button class="btn btn-primary" id="saveExamBtn" onclick="saveExam()"><i class="fas fa-save"></i> Bika</button>
             </div>
         </div>
     </div>
@@ -1944,17 +2268,17 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <h3><i class="fas fa-bullhorn"></i> Tangaza Itangazo</h3>
                 <button class="close-btn" onclick="closeModal('addAnnouncementModal')"><i class="fas fa-times"></i></button>
             </div>
-            
+
             <div class="form-group">
                 <label>Umutwe w'Itangazo <span>*</span></label>
                 <input type="text" class="form-control" id="annTitle" placeholder="Urugero: Ikizamini kizabaho ejo">
             </div>
-            
+
             <div class="form-group">
                 <label>Ibisobanuro <span>*</span></label>
                 <textarea class="form-control" id="annContent" placeholder="Andika ibisobanuro by'itangazo..." rows="5"></textarea>
             </div>
-            
+
             <div class="form-group">
                 <label>Priorité <span>*</span></label>
                 <select class="form-control" id="annPriority">
@@ -1964,7 +2288,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     <option value="low">⚪ Low</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>Ifoto (Optional)</label>
                 <div class="photo-upload" onclick="document.getElementById('annImageInput').click()">
@@ -1973,7 +2297,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 </div>
                 <input type="file" id="annImageInput" accept="image/*" class="hidden-input" onchange="previewAnnImage(event)">
             </div>
-            
+
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('addAnnouncementModal')">Hagarika</button>
                 <button class="btn btn-primary" id="saveAnnBtn" onclick="saveAnnouncement()"><i class="fas fa-paper-plane"></i> Tangaza</button>
@@ -2010,7 +2334,20 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             </div>
         </div>
     </div>
-    
+
+    <!-- Exam Photo Viewer -->
+    <div class="modal-overlay" id="examPhotoViewerModal" style="background: rgba(0,0,0,0.9); padding: 20px;">
+        <div class="modal" style="max-width: 700px; padding: 0; overflow: hidden; background: transparent; box-shadow: none; border: none; display: flex; flex-direction: column; align-items: center;">
+            <button class="close-btn" onclick="closeModal('examPhotoViewerModal')" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; z-index: 10;">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="examPhotoViewerImg" src="" style="width: 100%; max-height: 75vh; object-fit: contain; border-radius: 16px; border: 3px solid white;">
+            <div style="width: 100%; padding: 20px; background: var(--bg-card); border-radius: 16px; margin-top: 16px; text-align: center;">
+                <h3 id="examPhotoViewerTitle" style="font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px;">-</h3>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal yo Kwishyura Amasomo -->
     <div class="modal-overlay" id="studentSubscriptionModal">
         <div class="modal">
@@ -2018,22 +2355,22 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 <h3><i class="fas fa-book-reader"></i> Kwishyura Amasomo</h3>
                 <button class="close-btn" onclick="closeModal('studentSubscriptionModal')"><i class="fas fa-times"></i></button>
             </div>
-            
+
             <div style="background: rgba(56,189,248,0.08); border-left: 4px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
                 <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-info-circle"></i> Amabwiriza</h4>
                 <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6;">
-                    Kugira ngo ubone no gukurura amasomo yose (Notes) muri sisitemu, ugomba kwishyura <strong>1,000 RWF</strong>. Ibi ni ukwezi (Amezi 2). 
+                    Kugira ngo ubone no gukurura amasomo yose (Notes) muri sisitemu, ugomba kwishyura <strong>1,000 RWF</strong>. Ibi ni ukwezi (Amezi 2).
                     <br><br>
                     <strong>Nimero yo Kwishyura: 0794476085</strong> (MTN MoMo)<br>
                     Nyuma yo kwishyura, ohereza ubu butumwa. <strong>Admin azabikwemera</strong>, hanyuma uzahita ubona amasomo yawe.
                 </p>
             </div>
-            
+
             <div class="form-group">
                 <label>Amafaranga (RWF)</label>
                 <input type="number" class="form-control" id="subAmount" value="1000" readonly style="background: var(--bg); color: var(--text-secondary); cursor: not-allowed;">
             </div>
-            
+
             <div class="form-group">
                 <label>Uburyo bwo Kwishyura</label>
                 <select class="form-control" id="subMethod">
@@ -2064,14 +2401,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // FIREBASE IMPORTS
         // ============================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { 
-            getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, 
+        import {
+            getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
             query, orderBy, where, serverTimestamp, setDoc, getDoc,
-            limit
+            limit, onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-        import { 
-            getAuth, signInWithEmailAndPassword, 
-            signOut, onAuthStateChanged, updateProfile, updatePassword, 
+        import {
+            getAuth, signInWithEmailAndPassword,
+            signOut, onAuthStateChanged, updateProfile, updatePassword,
             EmailAuthProvider, reauthenticateWithCredential
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
@@ -2109,13 +2446,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         let notes = [];
         let notesPayments = [];
         let announcements = [];
+        let exams = [];
         let announcementsUnsubscribe = null;
-        
+
         let newStudentPhoto = null;
         let editingPhoto = null;
         let deptChartInstance = null;
         let currentNoteFile = null;
         let newAnnImage = null;
+        let newExamPhoto = null;
+        let examPendingFiles = []; // { file, id, name, size, type }
 
         // ============================================
         // HELPERS
@@ -2132,13 +2472,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
         };
 
-        window.closeModal = function(id) { 
+        window.closeModal = function(id) {
             const el = document.getElementById(id);
             if (el) el.classList.remove('active');
         };
 
-        document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', function(e) { 
-            if (e.target === this) this.classList.remove('active'); 
+        document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
         }));
 
         window.formatDate = function(d) {
@@ -2182,6 +2522,35 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             return formatDate(date);
         }
 
+        function examTypeLabel(type) {
+            const map = { cat: 'CAT', midterm: 'Midterm', final: 'Final Exam' };
+            return map[type] || type;
+        }
+
+        // ============================================
+        // FILE HELPERS
+        // ============================================
+        function getFileTypeFromName(name) {
+            const ext = (name || '').split('.').pop().toLowerCase();
+            if (ext === 'pdf') return 'pdf';
+            if (ext === 'doc' || ext === 'docx') return 'word';
+            if (ext === 'ppt' || ext === 'pptx') return 'ppt';
+            if (['jpg','jpeg','png','gif','webp','bmp'].includes(ext)) return 'image';
+            return 'default';
+        }
+
+        function getFileIconClass(type) {
+            const map = { pdf: 'fa-file-pdf', word: 'fa-file-word', ppt: 'fa-file-powerpoint', image: 'fa-file-image', default: 'fa-file' };
+            return map[type] || 'fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (!bytes && bytes !== 0) return '';
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
         // ============================================
         // CLOUDINARY UPLOAD
         // ============================================
@@ -2189,10 +2558,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            
+
             const endpoint = isRaw ? 'raw/upload' : 'image/upload';
             const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${endpoint}`;
-            
+
             const response = await fetch(url, { method: 'POST', body: formData });
             if (!response.ok) throw new Error('Upload yananiwe');
             const data = await response.json();
@@ -2226,13 +2595,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const file = event.target.files[0];
             if (!file) return;
             if (file.size > 10 * 1024 * 1024) { showToast('File ni nini cyane (Max 10MB)', 'warning'); event.target.value = ''; return; }
-            
+
             currentNoteFile = file;
             const ext = file.name.split('.').pop().toLowerCase();
             let icon = 'fa-file';
             if (ext === 'pdf') icon = 'fa-file-pdf text-danger';
             else if (ext === 'doc' || ext === 'docx') icon = 'fa-file-word text-primary';
-            
+
             document.getElementById('noteFilePreview').innerHTML = `<i class="fas ${icon}" style="font-size: 40px;"></i>`;
             document.getElementById('noteFilePreview').classList.remove('photo-placeholder');
             showToast('✅ File yatoranyijwe: ' + file.name, 'success');
@@ -2244,10 +2613,90 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             if (file.size > 5 * 1024 * 1024) { showToast('Ifoto ni nini cyane (Max 5MB)', 'warning'); event.target.value = ''; return; }
             newAnnImage = file;
             const reader = new FileReader();
-            reader.onload = (e) => { 
-                document.getElementById('annImagePreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" style="width:120px;height:120px;border-radius:12px;">`; 
+            reader.onload = (e) => {
+                document.getElementById('annImagePreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" style="width:120px;height:120px;border-radius:12px;">`;
             };
             reader.readAsDataURL(file);
+        };
+
+        window.previewExamPhoto = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast('Ifoto ni nini cyane (Max 5MB)', 'warning'); event.target.value = ''; return; }
+            newExamPhoto = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('examPhotoPreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" style="width:120px;height:120px;border-radius:12px;">`;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // ============================================
+        // EXAM FILES PREVIEW (multi-file)
+        // ============================================
+        window.previewExamFiles = function(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+
+            const maxSize = 15 * 1024 * 1024; // 15MB
+            const allowedExt = ['pdf','doc','docx','ppt','pptx'];
+
+            files.forEach(f => {
+                const ext = (f.name.split('.').pop() || '').toLowerCase();
+                if (!allowedExt.includes(ext)) {
+                    showToast(`❌ ${f.name} ntabwo ari PDF/Word/PPT`, 'error');
+                    return;
+                }
+                if (f.size > maxSize) {
+                    showToast(`❌ ${f.name} ni nini cyane (Max 15MB)`, 'error');
+                    return;
+                }
+                // Avoid duplicates by name+size
+                if (examPendingFiles.some(x => x.name === f.name && x.size === f.size)) return;
+                examPendingFiles.push({
+                    file: f,
+                    id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+                    name: f.name,
+                    size: f.size,
+                    type: getFileTypeFromName(f.name)
+                });
+            });
+
+            // reset input so same file can be picked again if removed
+            event.target.value = '';
+            renderExamFilesPreview();
+        };
+
+        function renderExamFilesPreview() {
+            const container = document.getElementById('examFilesPreview');
+            if (!container) return;
+
+            if (!examPendingFiles.length) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = examPendingFiles.map(f => `
+                <div class="uploaded-file-item">
+                    <div class="info">
+                        <div class="exam-file-icon ${f.type}" style="width:34px;height:34px;font-size:15px;">
+                            <i class="fas ${getFileIconClass(f.type)}"></i>
+                        </div>
+                        <div style="min-width:0;">
+                            <div class="name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
+                            <div class="size">${formatFileSize(f.size)}</div>
+                        </div>
+                    </div>
+                    <button type="button" class="action-btn delete" onclick="removeExamPendingFile('${f.id}')" title="Kuraho">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.removeExamPendingFile = function(id) {
+            examPendingFiles = examPendingFiles.filter(f => f.id !== id);
+            renderExamFilesPreview();
         };
 
         // ============================================
@@ -2313,17 +2762,17 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const loadingScreen = document.getElementById('loadingScreen');
             const authScreen = document.getElementById('authScreen');
             const appEl = document.getElementById('app');
-            
+
             if (loadingScreen) loadingScreen.classList.remove('hidden');
             if (authScreen) authScreen.classList.add('hidden');
             if (appEl) appEl.classList.remove('active');
-            
+
             const loadingTextEl = loadingScreen?.querySelector('p');
-            
+
             if (user) {
                 currentUser = user;
                 if (loadingTextEl) loadingTextEl.textContent = 'Turakureba...';
-                
+
                 try {
                     const userDoc = await getDoc(doc(db, 'users', user.uid));
                     if (userDoc.exists()) {
@@ -2332,7 +2781,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                         const studentsSnap = await getDocs(query(collection(db, 'students'), where('uid', '==', user.uid)));
                         let studentData = null;
                         studentsSnap.forEach(d => studentData = { id: d.id, ...d.data() });
-                        
+
                         if (studentData) {
                             if (studentData.status === 'pending') {
                                 loadingScreen?.classList.add('hidden');
@@ -2369,13 +2818,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                             });
                         }
                     }
-                } catch(e) { 
+                } catch(e) {
                     loadingScreen?.classList.add('hidden');
                     showAuthScreen();
                     setTimeout(() => showAuthError('❌ Ikibazo cyabaye.'), 300);
                     return;
                 }
-                
+
                 await loadAllData();
                 await new Promise(r => setTimeout(r, 300));
                 enterApp();
@@ -2391,9 +2840,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         function showAuthScreen() {
             document.getElementById('authScreen').classList.remove('hidden');
             document.getElementById('app').classList.remove('active');
-            setTimeout(() => { 
+            setTimeout(() => {
                 const ls = document.getElementById('loadingScreen');
-                if (ls) ls.classList.add('hidden'); 
+                if (ls) ls.classList.add('hidden');
             }, 1000);
         }
 
@@ -2439,21 +2888,27 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 announcements = [];
                 a.forEach(d => announcements.push({ id: d.id, ...d.data() }));
             } catch(e) { announcements = []; }
+
+            try {
+                const ex = await getDocs(collection(db, 'exams'));
+                exams = [];
+                ex.forEach(d => exams.push({ id: d.id, ...d.data() }));
+            } catch(e) { exams = []; }
         }
 
         async function enterApp() {
             const authScreen = document.getElementById('authScreen');
             const appEl = document.getElementById('app');
             const ls = document.getElementById('loadingScreen');
-            
+
             if (authScreen) { authScreen.classList.add('hidden'); authScreen.style.display = 'none'; }
             if (appEl) { appEl.classList.add('active'); appEl.style.display = 'block'; }
             if (ls) { ls.classList.add('hidden'); ls.style.display = 'none'; }
-            
+
             const role = currentUserData?.role;
             const isSuperAdmin = role === 'super_admin';
             const isStudent = role === 'student';
-            
+
             if (isStudent) {
                 document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('.super-admin-only').forEach(el => el.style.display = 'none');
@@ -2467,9 +2922,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     document.querySelectorAll('.super-admin-only').forEach(el => el.style.display = 'none');
                 }
             }
-            
+
             updateProfileUI();
-            
+
             if (isStudent) {
                 switchPage('my-dashboard', null);
             } else {
@@ -2478,7 +2933,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 renderStudents();
                 renderPhotosPage();
             }
-            
+
             try { startAnnouncementsListener(); } catch(e) {}
         }
 
@@ -2504,7 +2959,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const recent = announcements.filter(a => {
                 if (!a.createdAt) return false;
                 const date = a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
-                return (Date.now() - date.getTime()) < 7 * 24 * 60 * 60 * 1000; // 7 days
+                return (Date.now() - date.getTime()) < 7 * 24 * 60 * 60 * 1000;
             });
             const badge = document.getElementById('announcementBadge');
             const sb = document.getElementById('sidebarAnnouncementCount');
@@ -2520,14 +2975,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const name = currentUserData.name || '';
             const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || '?';
             const role = currentUserData.role || 'student';
-            
+
             const roleLabels = {
                 super_admin: 'Super Admin',
                 admin: 'Admin',
                 teacher: 'Umwarimu',
                 student: 'Umunyeshuri'
             };
-            
+
             const headerAvatar = document.getElementById('headerAvatar');
             if (headerAvatar) {
                 if (currentUserData.photo) headerAvatar.innerHTML = `<img src="${currentUserData.photo}">`;
@@ -2535,13 +2990,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             }
             const headerName = document.getElementById('headerName');
             if (headerName) headerName.textContent = name;
-            
+
             const headerRole = document.getElementById('headerRole');
             if (headerRole) {
                 headerRole.textContent = roleLabels[role] || role;
                 headerRole.className = `role-badge ${role}`;
             }
-            
+
             const profileAvatarContent = document.getElementById('profileAvatarContent');
             if (profileAvatarContent) {
                 if (currentUserData.photo) profileAvatarContent.innerHTML = `<img src="${currentUserData.photo}">`;
@@ -2560,7 +3015,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             if (profileInputName) profileInputName.value = name;
             const profileInputPhone = document.getElementById('profileInputPhone');
             if (profileInputPhone) profileInputPhone.value = currentUserData.phone || '';
-            
+
             const birthdayGroup = document.getElementById('birthdayInputGroup');
             if (birthdayGroup) {
                 if (role === 'student') {
@@ -2571,7 +3026,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     birthdayGroup.style.display = 'none';
                 }
             }
-            
+
             const schoolName = currentUserData.schoolName || 'Ishuri Ryacu';
             const sn = document.getElementById('schoolName');
             if (sn) sn.value = schoolName;
@@ -2637,8 +3092,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // ============================================
         // NAV
         // ============================================
-        window.toggleSidebar = function() { 
-            document.getElementById('sidebar').classList.toggle('open'); 
+        window.toggleSidebar = function() {
+            document.getElementById('sidebar').classList.toggle('open');
         };
 
         window.switchPage = function(page, element) {
@@ -2647,7 +3102,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const pageEl = document.getElementById('page-' + page);
             if (pageEl) pageEl.classList.add('active');
-            
+
             if (page === 'students') renderStudents();
             if (page === 'pending') renderPending();
             if (page === 'users') renderUsers();
@@ -2655,13 +3110,15 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             if (page === 'grades') renderGrades();
             if (page === 'my-dashboard') renderMyDashboard();
             if (page === 'my-notes') renderMyNotes();
+            if (page === 'my-exams') renderMyExams();
             if (page === 'departments') renderDepartmentsPage();
             if (page === 'photos') renderPhotosPage();
             if (page === 'profile') updateProfileUI();
             if (page === 'notes') renderNotes();
+            if (page === 'exams') renderExams();
             if (page === 'notes-payments') renderNotesPayments();
             if (page === 'announcements') renderAnnouncements();
-            
+
             if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
@@ -2684,19 +3141,19 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const title = document.getElementById('annTitle').value.trim();
             const content = document.getElementById('annContent').value.trim();
             const priority = document.getElementById('annPriority').value;
-            
+
             if (!title || !content) { showToast('Uzuza umutwe n\'ibisobanuro', 'warning'); return; }
-            
+
             const btn = document.getElementById('saveAnnBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turaohereza...';
-            
+
             try {
                 let imageUrl = null;
                 if (newAnnImage) {
                     imageUrl = await uploadToCloudinary(newAnnImage);
                 }
-                
+
                 await addDoc(collection(db, 'announcements'), {
                     title,
                     content,
@@ -2707,16 +3164,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     createdByRole: currentUserData.role,
                     createdAt: serverTimestamp()
                 });
-                
+
                 showToast('✅ Itangazo ryatangajwe!', 'success');
                 closeModal('addAnnouncementModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza';
-                
+
                 await loadAllData();
                 renderAnnouncements();
                 newAnnImage = null;
-                
+
             } catch (error) {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
@@ -2727,34 +3184,34 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         window.renderAnnouncements = function() {
             const list = document.getElementById('announcementsList');
             if (!list) return;
-            
+
             const pf = document.getElementById('announcementsFilterPriority')?.value || '';
             const st = document.getElementById('announcementsSearch')?.value.toLowerCase().trim() || '';
-            
+
             let filtered = [...announcements];
             if (pf) filtered = filtered.filter(a => a.priority === pf);
-            if (st) filtered = filtered.filter(a => 
-                (a.title||'').toLowerCase().includes(st) || 
+            if (st) filtered = filtered.filter(a =>
+                (a.title||'').toLowerCase().includes(st) ||
                 (a.content||'').toLowerCase().includes(st)
             );
-            
+
             filtered.sort((a, b) => {
                 const da = a.createdAt?.toDate?.() || new Date(a.createdAt || 0);
                 const db_ = b.createdAt?.toDate?.() || new Date(b.createdAt || 0);
                 return db_ - da;
             });
-            
+
             if (filtered.length === 0) {
                 list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-bullhorn"></i></div><h3>Nta matangazo arahari</h3><p>${currentUserData?.role === 'student' ? 'Tegereza amatangazo mashya' : 'Kanda "Tangaza" gutangira'}</p></div>`;
                 return;
             }
-            
+
             list.innerHTML = filtered.map(a => {
                 const date = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || Date.now());
                 const dateStr = timeAgo(date);
                 const priorityLabels = { urgent: '🔴 Urgent', high: '🟠 High', normal: '🔵 Normal', low: '⚪ Low' };
                 const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
-                
+
                 return `<div class="announcement-card priority-${a.priority || 'normal'}">
                     <div class="announcement-header">
                         <div class="announcement-title-row">
@@ -2791,18 +3248,18 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // ============================================
         window.renderDashboard = function() {
             if (currentUserData?.role === 'student') return;
-            
+
             const active = students.filter(s => s.status === 'active' || !s.status);
             const pending = students.filter(s => s.status === 'pending');
-            
+
             document.getElementById('statTotalStudents').textContent = students.length;
             document.getElementById('statActiveStudents').textContent = active.length;
             document.getElementById('statPendingStudents').textContent = pending.length;
             document.getElementById('statTotalTeachers').textContent = teachers.length;
-            
+
             document.getElementById('sidebarStudentCount').textContent = active.length;
             document.getElementById('sidebarTeacherCount').textContent = teachers.length;
-            
+
             const pendingCountEl = document.getElementById('sidebarPendingCount');
             if (pendingCountEl) {
                 pendingCountEl.textContent = pending.length;
@@ -2819,12 +3276,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const st = document.getElementById('studentsSearch')?.value.toLowerCase().trim() || '';
             const tbody = document.getElementById('studentsBody');
             if (!tbody) return;
-            
+
             let list = students.filter(m => m.status === 'active' || !m.status);
             if (df) list = list.filter(m => m.department === df);
             if (lf) list = list.filter(m => m.level === lf);
             if (st) list = list.filter(m => (m.name||'').toLowerCase().includes(st) || (m.number||'').toLowerCase().includes(st) || (m.studentId||'').toLowerCase().includes(st));
-            
+
             document.getElementById('studentsCount').textContent = list.length;
             tbody.innerHTML = '';
             if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;">Nta munyeshuri</td></tr>`; return; }
@@ -2872,14 +3329,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 let photoURL = null;
                 if (newStudentPhoto) photoURL = await uploadToCloudinary(newStudentPhoto);
                 const studentId = `STU-${String(students.length + 1).padStart(3, '0')}`;
-                const data = { 
-                    name, email, number, level, department, studentId, 
+                const data = {
+                    name, email, number, level, department, studentId,
                     parentName, parentPhone,
                     photo: photoURL,
                     status: 'active', role: 'student',
-                    registeredAt: serverTimestamp(), 
-                    createdAt: serverTimestamp(), 
-                    createdBy: currentUser.uid 
+                    registeredAt: serverTimestamp(),
+                    createdAt: serverTimestamp(),
+                    createdBy: currentUser.uid
                 };
                 if (birthday) data.birthday = birthday;
                 await addDoc(collection(db, 'students'), data);
@@ -2935,10 +3392,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const m = students.find(x => x.id === id);
             if (!m || !confirm(`Siba ${m.name}?`)) return;
             try {
-                await updateDoc(doc(db, 'students', id), { 
-                    status: 'deleted', 
-                    deletedAt: serverTimestamp(), 
-                    deletedBy: currentUser.uid 
+                await updateDoc(doc(db, 'students', id), {
+                    status: 'deleted',
+                    deletedAt: serverTimestamp(),
+                    deletedBy: currentUser.uid
                 });
                 showToast(`🗑️ ${m.name} yasibwe`, 'warning');
                 await loadAllData(); renderStudents(); renderDashboard();
@@ -2953,10 +3410,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             if (!tbody) return;
             const pending = students.filter(m => m.status === 'pending');
             document.getElementById('pendingCount').textContent = pending.length;
-            
+
             const badge = document.getElementById('sidebarPendingCount');
             if (badge) { badge.textContent = pending.length; badge.style.display = pending.length > 0 ? '' : 'none'; }
-            
+
             if (pending.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;">Nta bakandida</td></tr>`;
                 return;
@@ -3017,10 +3474,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             document.getElementById('usersCount').textContent = users.length;
             if (users.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:40px;">Nta bakoresha</td></tr>`; return; }
             tbody.innerHTML = users.map(u => {
-                const roleBadge = u.role === 'super_admin' 
-                    ? `<span class="role-badge super_admin">Super Admin</span>` 
-                    : u.role === 'admin' 
-                    ? `<span class="role-badge admin">Admin</span>` 
+                const roleBadge = u.role === 'super_admin'
+                    ? `<span class="role-badge super_admin">Super Admin</span>`
+                    : u.role === 'admin'
+                    ? `<span class="role-badge admin">Admin</span>`
                     : u.role === 'teacher'
                     ? `<span class="role-badge teacher">Umwarimu</span>`
                     : `<span class="role-badge student">Student</span>`;
@@ -3057,8 +3514,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 } else {
                     await addDoc(collection(db, 'adminInvitations'), {
                         email, name, role: 'admin',
-                        invitedBy: currentUser.uid, 
-                        status: 'pending', 
+                        invitedBy: currentUser.uid,
+                        status: 'pending',
                         createdAt: serverTimestamp()
                     });
                     showToast(`✅ ${name} yatumiwe!`, 'success');
@@ -3120,7 +3577,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 const subjects = subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
                 await addDoc(collection(db, 'teachers'), {
                     name, email, phone, subjects,
-                    createdAt: serverTimestamp(), 
+                    createdAt: serverTimestamp(),
                     createdBy: currentUser.uid
                 });
                 showToast(`✅ ${name} yongeweho!`, 'success');
@@ -3156,23 +3613,23 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             if (!tbody) return;
             const lf = document.getElementById('gradesFilterLevel')?.value || '';
             const tf = document.getElementById('gradesFilterTerm')?.value || '';
-            
+
             let filtered = [...grades];
             if (lf) filtered = filtered.filter(g => {
                 const s = students.find(x => x.id === g.studentId);
                 return s && s.level === lf;
             });
             if (tf) filtered = filtered.filter(g => g.term === tf);
-            
+
             filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-            
+
             document.getElementById('gradesCount').textContent = filtered.length;
-            
+
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;">Nta manota</td></tr>`;
                 return;
             }
-            
+
             tbody.innerHTML = filtered.map(g => {
                 const s = students.find(x => x.id === g.studentId);
                 const studentName = s ? s.name : g.studentName || '-';
@@ -3213,27 +3670,27 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const marks = parseFloat(document.getElementById('gradeMarks').value);
             const teacher = document.getElementById('gradeTeacher').value.trim();
             const date = document.getElementById('gradeDate').value;
-            
+
             if (!studentId || !subject || isNaN(marks) || !date) { showToast('Uzuza ibisabwa', 'warning'); return; }
             if (marks < 0 || marks > 100) { showToast('Amanota agomba kuba hagati ya 0 na 100', 'warning'); return; }
-            
+
             const s = students.find(x => x.id === studentId);
             if (!s) return;
-            
+
             const btn = document.getElementById('addGradeBtn');
             btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 await addDoc(collection(db, 'grades'), {
-                    studentId, 
+                    studentId,
                     studentName: s.name,
-                    subject, 
-                    term, 
-                    marks, 
+                    subject,
+                    term,
+                    marks,
                     maxMarks: 100,
                     grade: calculateGrade(marks),
-                    teacher, 
+                    teacher,
                     date,
-                    createdAt: serverTimestamp(), 
+                    createdAt: serverTimestamp(),
                     createdBy: currentUser.uid
                 });
                 showToast(`✅ Amanota yabitswe!`, 'success');
@@ -3272,14 +3729,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const subject = document.getElementById('noteSubject').value.trim();
             const level = document.getElementById('noteLevel').value;
             const description = document.getElementById('noteDescription').value.trim();
-            
+
             if (!title || !subject || !level) { showToast('Uzuza ibisabwa byose', 'warning'); return; }
             if (!currentNoteFile) { showToast('Shyiramo file y\'isomo', 'warning'); return; }
-            
+
             const btn = document.getElementById('saveNoteBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turazamura...';
-            
+
             try {
                 const fileUrl = await uploadToCloudinary(currentNoteFile, true);
                 const ext = currentNoteFile.name.split('.').pop().toLowerCase();
@@ -3287,7 +3744,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 if (ext === 'pdf') fileType = 'pdf';
                 else if (ext === 'doc' || ext === 'docx') fileType = 'word';
                 else if (ext === 'txt') fileType = 'text';
-                
+
                 await addDoc(collection(db, 'notes'), {
                     title, subject, level, description,
                     fileUrl, fileType, fileName: currentNoteFile.name,
@@ -3295,15 +3752,15 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     uploadedByName: currentUserData.name,
                     createdAt: serverTimestamp()
                 });
-                
+
                 showToast('✅ Isomo ryabitswe!', 'success');
                 closeModal('addNoteModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-save"></i> Bika';
-                
+
                 await loadAllData();
                 renderNotes();
-                
+
             } catch (error) {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
@@ -3314,26 +3771,26 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         window.renderNotes = function() {
             const list = document.getElementById('notesList');
             if (!list) return;
-            
+
             const lf = document.getElementById('notesFilterLevel')?.value || '';
             const st = document.getElementById('notesSearch')?.value.toLowerCase().trim() || '';
-            
+
             let filtered = [...notes];
             if (lf) filtered = filtered.filter(n => n.level === lf);
             if (st) filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(st) || (n.subject||'').toLowerCase().includes(st));
-            
+
             filtered.sort((a, b) => (b.createdAt?.toDate?.() || 0) - (a.createdAt?.toDate?.() || 0));
-            
+
             if (filtered.length === 0) {
                 list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo arahari</h3><p>Kanda "Ongeraho Isomo" gutangira</p></div>`;
                 return;
             }
-            
+
             list.innerHTML = filtered.map(n => {
                 const date = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
-                
+
                 return `<div class="saved-card">
                     <div class="saved-info">
                         <h3><i class="fas ${fileIcon}"></i> ${n.title}</h3>
@@ -3363,16 +3820,282 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         };
 
         // ============================================
+        // EXAMS (IBIZAMINI) - ADMIN
+        // ============================================
+        window.openAddExamModal = function() {
+            if (currentUserData?.role === 'student') { showToast('Ntushobora kongeraho ikizamini', 'error'); return; }
+            newExamPhoto = null;
+            examPendingFiles = [];
+            document.getElementById('examTitle').value = '';
+            document.getElementById('examSubject').value = '';
+            document.getElementById('examType').value = 'cat';
+            document.getElementById('examLevel').value = '';
+            document.getElementById('examTerm').value = 'Term1';
+            document.getElementById('examDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('examMaxMarks').value = '100';
+            document.getElementById('examDescription').value = '';
+            document.getElementById('examPhotoInput').value = '';
+            document.getElementById('examPhotoPreviewContainer').innerHTML = '<div class="photo-placeholder">📷</div>';
+            document.getElementById('examFilesInput').value = '';
+            renderExamFilesPreview();
+            document.getElementById('addExamModal').classList.add('active');
+        };
+
+        window.saveExam = async function() {
+            const title = document.getElementById('examTitle').value.trim();
+            const subject = document.getElementById('examSubject').value.trim();
+            const type = document.getElementById('examType').value;
+            const level = document.getElementById('examLevel').value;
+            const term = document.getElementById('examTerm').value;
+            const date = document.getElementById('examDate').value;
+            const maxMarks = parseFloat(document.getElementById('examMaxMarks').value) || 100;
+            const description = document.getElementById('examDescription').value.trim();
+
+            if (!title || !subject || !level || !date) { showToast('Uzuza ibisabwa byose', 'warning'); return; }
+
+            const btn = document.getElementById('saveExamBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turabika...';
+
+            try {
+                // Upload files first (one by one)
+                const uploadedFiles = [];
+                for (let i = 0; i < examPendingFiles.length; i++) {
+                    const fItem = examPendingFiles[i];
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Turazamura file ${i+1}/${examPendingFiles.length}...`;
+                    try {
+                        const url = await uploadToCloudinary(fItem.file, true);
+                        uploadedFiles.push({
+                            url,
+                            name: fItem.name,
+                            size: fItem.size,
+                            type: fItem.type
+                        });
+                    } catch (err) {
+                        console.warn('File upload failed:', fItem.name, err);
+                        showToast(`⚠️ ${fItem.name} ntiyazamuwe`, 'warning');
+                    }
+                }
+
+                let photoUrl = null;
+                if (newExamPhoto) {
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turazamura ifoto...';
+                    photoUrl = await uploadToCloudinary(newExamPhoto);
+                }
+
+                await addDoc(collection(db, 'exams'), {
+                    title,
+                    subject,
+                    type,
+                    level,
+                    term,
+                    date,
+                    maxMarks,
+                    description,
+                    photoUrl,
+                    files: uploadedFiles,
+                    createdBy: currentUser.uid,
+                    createdByName: currentUserData.name || 'Admin',
+                    createdAt: serverTimestamp()
+                });
+
+                showToast(`✅ Ikizamini cyabitswe! (Amafishi: ${uploadedFiles.length})`, 'success');
+                closeModal('addExamModal');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Bika';
+
+                examPendingFiles = [];
+                newExamPhoto = null;
+
+                await loadAllData();
+                renderExams();
+
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Bika';
+            }
+        };
+
+        function renderExamFiles(files) {
+            if (!files || files.length === 0) return '';
+            return `<div class="exam-files-container">
+                ${files.map(f => {
+                    const ftype = f.type || getFileTypeFromName(f.name);
+                    return `<div class="exam-file-row">
+                        <div class="exam-file-info">
+                            <div class="exam-file-icon ${ftype}">
+                                <i class="fas ${getFileIconClass(ftype)}"></i>
+                            </div>
+                            <div style="min-width:0;">
+                                <div class="exam-file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
+                                <div class="exam-file-size">${formatFileSize(f.size)}</div>
+                            </div>
+                        </div>
+                        <div class="exam-file-actions">
+                            <a href="${f.url}" target="_blank" class="exam-file-btn view" title="Reba"><i class="fas fa-eye"></i></a>
+                            <a href="${f.url}" download="${escapeHtml(f.name)}" target="_blank" class="exam-file-btn download" title="Kurura"><i class="fas fa-download"></i></a>
+                            ${currentUserData?.role !== 'student' ? `<button class="exam-file-btn delete" onclick="deleteExamFile('${f.url}')" title="Siba file"><i class="fas fa-trash"></i></button>` : ''}
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>`;
+        }
+
+        window.deleteExamFile = function() {
+            // Placeholder - deletion of individual files needs examId; leave for future
+            showToast('Siba ikizamini cyose kugira ngo ukureho amafishi', 'warning');
+        };
+
+        window.renderExams = function() {
+            const list = document.getElementById('examsList');
+            if (!list) return;
+
+            const lf = document.getElementById('examsFilterLevel')?.value || '';
+            const tf = document.getElementById('examsFilterType')?.value || '';
+            const st = document.getElementById('examsSearch')?.value.toLowerCase().trim() || '';
+
+            let filtered = [...exams];
+            if (lf) filtered = filtered.filter(e => e.level === lf);
+            if (tf) filtered = filtered.filter(e => e.type === tf);
+            if (st) filtered = filtered.filter(e =>
+                (e.title||'').toLowerCase().includes(st) ||
+                (e.subject||'').toLowerCase().includes(st)
+            );
+
+            filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini birahari</h3><p>Kanda "Ongeraho Ikizamini" gutangira</p></div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(e => {
+                const typeLabel = examTypeLabel(e.type);
+                const fileCount = (e.files || []).length;
+                return `<div class="exam-card ${e.type}" style="flex-direction:column;align-items:stretch;">
+                    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;">
+                        <div class="saved-info" style="flex:1;">
+                            <h3><i class="fas fa-file-alt"></i> ${escapeHtml(e.title)}</h3>
+                            <div class="saved-meta">
+                                <span><i class="fas fa-book"></i> ${escapeHtml(e.subject)}</span>
+                                <span><i class="fas fa-layer-group"></i> ${escapeHtml(e.level)}</span>
+                                <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                                <span><i class="fas fa-medal"></i> Max: ${e.maxMarks || 100}</span>
+                                ${e.term ? `<span><i class="fas fa-clock"></i> ${e.term}</span>` : ''}
+                                ${fileCount > 0 ? `<span><i class="fas fa-paperclip"></i> Amafishi: ${fileCount}</span>` : ''}
+                            </div>
+                            ${e.description ? `<div style="margin-top:8px;font-size:13px;color:var(--text-secondary);">${escapeHtml(e.description)}</div>` : ''}
+                        </div>
+                        <div class="saved-actions" style="align-items:center;">
+                            <span class="exam-type-badge ${e.type}">${typeLabel}</span>
+                            ${e.photoUrl ? `<button class="action-btn view" onclick="openExamPhotoViewer('${e.photoUrl}', '${escapeHtml(e.title).replace(/'/g, "\\'")}')" title="Reba ifoto"><i class="fas fa-image"></i></button>` : ''}
+                            <button class="action-btn delete" onclick="deleteExam('${e.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    ${fileCount > 0 ? renderExamFiles(e.files) : ''}
+                </div>`;
+            }).join('');
+        };
+
+        window.deleteExam = async function(id) {
+            if (currentUserData?.role === 'student') return;
+            if (!confirm('Siba iki kizamini?')) return;
+            try {
+                await deleteDoc(doc(db, 'exams', id));
+                showToast('🗑️ Ikizamini cyasibwe', 'warning');
+                await loadAllData();
+                renderExams();
+            } catch (error) { showToast('❌ ' + error.message, 'error'); }
+        };
+
+        window.openExamPhotoViewer = function(photoUrl, title) {
+            document.getElementById('examPhotoViewerImg').src = photoUrl;
+            document.getElementById('examPhotoViewerTitle').textContent = title;
+            document.getElementById('examPhotoViewerModal').classList.add('active');
+        };
+
+        // ============================================
+        // EXAMS - STUDENT
+        // ============================================
+        window.renderMyExams = function() {
+            const list = document.getElementById('myExamsList');
+            if (!list) return;
+
+            // Populate subject filter once
+            const subjectSelect = document.getElementById('myExamsFilterSubject');
+            if (subjectSelect && subjectSelect.options.length <= 1) {
+                const subjects = [...new Set(exams.map(e => e.subject).filter(Boolean))];
+                subjects.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s;
+                    opt.textContent = s;
+                    subjectSelect.appendChild(opt);
+                });
+            }
+
+            const tf = document.getElementById('myExamsFilterType')?.value || '';
+            const sf = document.getElementById('myExamsFilterSubject')?.value || '';
+            const st = document.getElementById('myExamsSearch')?.value.toLowerCase().trim() || '';
+
+            const myLevel = currentUserData?.level || '';
+            const m = students.find(x => x.id === currentUserData?.studentId);
+            const myActualLevel = m?.level || myLevel;
+
+            let filtered = [...exams];
+            if (myActualLevel) filtered = filtered.filter(e => e.level === myActualLevel);
+            if (tf) filtered = filtered.filter(e => e.type === tf);
+            if (sf) filtered = filtered.filter(e => e.subject === sf);
+            if (st) filtered = filtered.filter(e =>
+                (e.title||'').toLowerCase().includes(st) ||
+                (e.subject||'').toLowerCase().includes(st)
+            );
+
+            filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini birahari</h3><p>Nta bizamini byakozwe kuri uru rwego ubu.</p></div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(e => {
+                const typeLabel = examTypeLabel(e.type);
+                const fileCount = (e.files || []).length;
+                return `<div class="exam-card ${e.type}" style="flex-direction:column;align-items:stretch;">
+                    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;">
+                        <div class="saved-info" style="flex:1;">
+                            <h3><i class="fas fa-file-alt"></i> ${escapeHtml(e.title)}</h3>
+                            <div class="saved-meta">
+                                <span><i class="fas fa-book"></i> ${escapeHtml(e.subject)}</span>
+                                <span><i class="fas fa-layer-group"></i> ${escapeHtml(e.level)}</span>
+                                <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                                <span><i class="fas fa-medal"></i> Max: ${e.maxMarks || 100}</span>
+                                ${e.term ? `<span><i class="fas fa-clock"></i> ${e.term}</span>` : ''}
+                                ${fileCount > 0 ? `<span><i class="fas fa-paperclip"></i> Amafishi: ${fileCount}</span>` : ''}
+                            </div>
+                            ${e.description ? `<div style="margin-top:8px;font-size:13px;color:var(--text-secondary);">${escapeHtml(e.description)}</div>` : ''}
+                        </div>
+                        <div class="saved-actions" style="align-items:center;">
+                            <span class="exam-type-badge ${e.type}">${typeLabel}</span>
+                            ${e.photoUrl ? `<button class="action-btn view" onclick="openExamPhotoViewer('${e.photoUrl}', '${escapeHtml(e.title).replace(/'/g, "\\'")}')" title="Reba ifoto"><i class="fas fa-image"></i></button>` : ''}
+                        </div>
+                    </div>
+                    ${fileCount > 0 ? renderExamFiles(e.files) : '<div style="margin-top:10px;font-size:12.5px;color:var(--text-secondary);"><i class="fas fa-info-circle"></i> Nta mafishi yongeweho kuri iki kizamini.</div>'}
+                </div>`;
+            }).join('');
+        };
+
+        // ============================================
         // NOTES PAYMENTS (ADMIN)
         // ============================================
         window.renderNotesPayments = async function() {
             await loadAllData();
             const list = document.getElementById('notesPaymentsList');
             if (!list) return;
-            
+
             const pending = notesPayments.filter(p => p.status === 'pending');
             const confirmed = notesPayments.filter(p => p.status === 'confirmed');
-            
+
             const badge = document.getElementById('sidebarNotesPaymentsCount');
             if (badge) { badge.textContent = pending.length; badge.style.display = pending.length > 0 ? 'flex' : 'none'; }
 
@@ -3399,7 +4122,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     </div>`;
                 }).join('');
             }
-            
+
             if (confirmed.length > 0) {
                 html += `<div class="section-title" style="margin-top:24px;"><i class="fas fa-history"></i><span>Byemejwe</span></div>`;
                 html += confirmed.map(p => {
@@ -3415,7 +4138,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     </div>`;
                 }).join('');
             }
-            
+
             if (!html) {
                 html = `<div class="empty-state"><div class="icon"><i class="fas fa-check-circle"></i></div><h3>Nta bwishyu burahari</h3></div>`;
             }
@@ -3432,7 +4155,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     status: 'confirmed',
                     confirmedAt: serverTimestamp()
                 });
-                
+
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'active',
                     subscriptionStartDate: serverTimestamp(),
@@ -3455,7 +4178,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     status: 'rejected',
                     rejectedAt: serverTimestamp()
                 });
-                
+
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'inactive'
                 });
@@ -3468,29 +4191,29 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         window.renderMyNotes = function() {
             const list = document.getElementById('myNotesList');
             if (!list) return;
-            
+
             const m = students.find(x => x.id === currentUserData.studentId);
             const hasSubscription = m && m.subscriptionStatus === 'active';
-            
+
             const lf = document.getElementById('myNotesFilterLevel')?.value || '';
             const st = document.getElementById('myNotesSearch')?.value.toLowerCase().trim() || '';
-            
-            let filtered = [...notes]; 
+
+            let filtered = [...notes];
             if (lf) filtered = filtered.filter(n => n.level === lf);
             if (st) filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(st) || (n.subject||'').toLowerCase().includes(st));
-            
+
             filtered.sort((a, b) => (b.createdAt?.toDate?.() || 0) - (a.createdAt?.toDate?.() || 0));
-            
+
             if (filtered.length === 0) {
                 list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo arahari</h3></div>`;
                 return;
             }
-            
+
             list.innerHTML = filtered.map(n => {
                 const date = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
-                
+
                 let actionHtml = '';
                 if (hasSubscription) {
                     actionHtml = `
@@ -3502,7 +4225,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                         <button class="btn btn-warning btn-sm" onclick="openSubscriptionModal()"><i class="fas fa-lock"></i> Fungura (Wishyure)</button>
                     `;
                 }
-                
+
                 return `<div class="saved-card">
                     <div class="saved-info">
                         <h3><i class="fas ${fileIcon}"></i> ${n.title}</h3>
@@ -3525,20 +4248,20 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // ============================================
         window.renderMyDashboard = function() {
             if (currentUserData?.role !== 'student') return;
-            
+
             const studentId = currentUserData.studentId;
             const m = students.find(x => x.id === studentId);
-            
+
             if (!m) {
                 document.getElementById('studentProfileCard').innerHTML = `<div class="readonly-notice"><i class="fas fa-exclamation-triangle"></i>Nta makuru abonetse.</div>`;
                 return;
             }
-            
+
             const initials = m.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            const photoHtml = m.photo 
+            const photoHtml = m.photo
                 ? `<img src="${m.photo}" class="member-profile-photo" onerror="this.outerHTML='<div class=\\'member-profile-avatar\\'>${initials}</div>'">`
                 : `<div class="member-profile-avatar">${initials}</div>`;
-            
+
             document.getElementById('studentProfileCard').innerHTML = `
                 ${photoHtml}
                 <div class="member-profile-info">
@@ -3552,18 +4275,18 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     </div>
                 </div>
             `;
-            
+
             const firstName = m.name.split(' ')[0];
             const now = new Date();
             const daysRw = ['Ku cyumweru', 'Kuwa mbere', 'Kuwa kabiri', 'Kuwa gatatu', 'Kuwa kane', 'Kuwa gatanu', 'Kuwa gatandatu'];
             const monthsRw = ['Mutarama', 'Gashyantare', 'Werurwe', 'Mata', 'Gicurasi', 'Kamena', 'Nyakanga', 'Kanama', 'Nzeli', 'Ukwakira', 'Ugushyingo', 'Ukuboza'];
-            
+
             document.getElementById('studentWelcomeName').textContent = firstName;
             document.getElementById('studentWelcomeGreeting').innerHTML = `<i class="fas fa-sun" style="color:#f59e0b;"></i> Umunsi mwiza wa kazi`;
             document.getElementById('studentWelcomeDate').textContent = `${daysRw[now.getDay()]}, ${now.getDate()} ${monthsRw[now.getMonth()]} ${now.getFullYear()}`;
-            
+
             renderSubscriptionStatus(m);
-            
+
             // Recent Announcements (3 za mbere)
             const dashAnnList = document.getElementById('studentDashboardAnnouncementsList');
             if (dashAnnList) {
@@ -3589,10 +4312,40 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     }).join('');
                 }
             }
-            
+
+            // Recent Exams (3 za mbere) - Student dashboard
+            const dashExamsList = document.getElementById('studentDashboardExamsList');
+            if (dashExamsList) {
+                let myLevelExams = exams.filter(e => !m.level || e.level === m.level);
+                myLevelExams.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+                const recentExams = myLevelExams.slice(0, 3);
+                if (recentExams.length === 0) {
+                    dashExamsList.innerHTML = `<div class="empty-state" style="padding:30px;"><div class="icon" style="font-size:40px;"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini birahari</h3></div>`;
+                } else {
+                    dashExamsList.innerHTML = recentExams.map(e => {
+                        const typeLabel = examTypeLabel(e.type);
+                        const fileCount = (e.files || []).length;
+                        return `<div class="saved-card" style="cursor:pointer;" onclick="switchPage('my-exams', null)">
+                            <div class="saved-info">
+                                <h3><i class="fas fa-file-alt"></i> ${escapeHtml(e.title)}</h3>
+                                <div class="saved-meta">
+                                    <span class="exam-type-badge ${e.type}">${typeLabel}</span>
+                                    <span><i class="fas fa-book"></i> ${escapeHtml(e.subject)}</span>
+                                    <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                                    ${fileCount > 0 ? `<span><i class="fas fa-paperclip"></i> ${fileCount} file(s)</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="saved-actions">
+                                <button class="btn btn-outline btn-sm">Reba</button>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            }
+
             const myNotesList = document.getElementById('studentDashboardNotesList');
             const hasSubscription = m.subscriptionStatus === 'active';
-            
+
             if (!hasSubscription) {
                 myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-lock"></i></div><h3>Nturabona Amasomo</h3><p>Wishyure mbere kugira ngo ubone amasomo yawe.</p></div>`;
             } else {
@@ -3686,7 +4439,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                     status: 'pending',
                     createdAt: serverTimestamp(),
                 });
-                
+
                 await updateDoc(doc(db, 'students', studentId), {
                     subscriptionStatus: 'pending'
                 });
@@ -3696,7 +4449,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
                 closeModal('studentSubscriptionModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Ohereza';
-                
+
                 await loadAllData();
                 renderMyDashboard();
             } catch (error) {
@@ -3713,19 +4466,19 @@ textarea.form-control { resize: vertical; min-height: 100px; }
             const depts = { Science: 0, Arts: 0, Commerce: 0, Technical: 0 };
             const active = students.filter(m => m.status === 'active' || !m.status);
             active.forEach(m => { if (depts[m.department] !== undefined) depts[m.department]++; });
-            
+
             document.getElementById('deptStatScience').textContent = depts.Science;
             document.getElementById('deptStatArts').textContent = depts.Arts;
             document.getElementById('deptStatCommerce').textContent = depts.Commerce;
             document.getElementById('deptStatTechnical').textContent = depts.Technical;
-            
+
             const ctx = document.getElementById('deptChart')?.getContext('2d');
             if (!ctx) return;
             if (deptChartInstance) deptChartInstance.destroy();
             deptChartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: ['Science','Arts','Commerce','Technical'], 
-                    datasets: [{ label: 'Abanyeshuri', data: [depts.Science, depts.Arts, depts.Commerce, depts.Technical], 
+                data: { labels: ['Science','Arts','Commerce','Technical'],
+                    datasets: [{ label: 'Abanyeshuri', data: [depts.Science, depts.Arts, depts.Commerce, depts.Technical],
                         backgroundColor: ['rgba(236,72,153,0.8)','rgba(6,182,212,0.8)','rgba(245,158,11,0.8)','rgba(16,185,129,0.8)'], borderWidth: 2, borderRadius: 12, barThickness: 60 }] },
                 options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
             });
@@ -3811,16 +4564,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         // ============================================
         window.saveSettings = async function() {
             const schoolName = document.getElementById('schoolName').value.trim();
-            try { 
-                await updateDoc(doc(db, 'users', currentUser.uid), { schoolName }); 
-                currentUserData.schoolName = schoolName; 
+            try {
+                await updateDoc(doc(db, 'users', currentUser.uid), { schoolName });
+                currentUserData.schoolName = schoolName;
                 updateProfileUI();
-                showToast('✅ Byabitswe', 'success'); 
+                showToast('✅ Byabitswe', 'success');
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
         };
 
         window.exportData = function() {
-            const data = { students, teachers, grades, notes, announcements, exported: new Date().toISOString() };
+            const data = { students, teachers, grades, notes, exams, announcements, exported: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `student-data-${new Date().toISOString().split('T')[0]}.json`; a.click();
@@ -3838,58 +4591,46 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         });
 
         // ============================================
-        // PWA INSTALL LOGIC (Yongeweho hano neza)
+        // PWA INSTALL LOGIC
         // ============================================
         let deferredPrompt;
 
-       
-// Iyi event ibaho iyo browser ibonye ko app ishobora kwishyiriraho
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Hindura uburyo browser isanzwe ibikora
-    e.preventDefault();
-    deferredPrompt = e;
-    
-    // Erekana buto yo ku ruhande gusa
-    const installBtnFloat = document.getElementById('pwaInstallBtn');
-    if (installBtnFloat) {
-        installBtnFloat.classList.remove('hidden');
-    }
-});
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
+            if (installBtnFloat) {
+                installBtnFloat.classList.remove('hidden');
+            }
+        });
 
-// Iyi function ikorwa iyo umuntu yakanze buto yo ku ruhande
-window.installPWA = async function() {
-    const installBtnFloat = document.getElementById('pwaInstallBtn');
-    
-    if (!deferredPrompt) {
-        alert("Kuri iyi browser, ushobora gukanda 'Add to Home Screen' mu menu ya browser yawe.");
-        return;
-    }
+        window.installPWA = async function() {
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
 
-    // Erekana ubutumwa bwa browser bwo kwishyiriraho
-    deferredPrompt.prompt();
-    
-    // Tegereza igisubizo
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`Umukoresha yahisemo: ${outcome}`);
+            if (!deferredPrompt) {
+                alert("Kuri iyi browser, ushobora gukanda 'Add to Home Screen' mu menu ya browser yawe.");
+                return;
+            }
 
-    // Gukuraho iyi buto nyuma yo kwishyiriraho
-    if (outcome === 'accepted') {
-        if (installBtnFloat) installBtnFloat.classList.add('hidden');
-        if (typeof showToast === 'function') {
-            showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
-        }
-    }
-    
-    // Gusubiza deferredPrompt kuri null
-    deferredPrompt = null;
-};
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Umukoresha yahisemo: ${outcome}`);
 
-// Iyi event ibaho iyo app imaze kwishyiriraho neza
-window.addEventListener('appinstalled', () => {
-    const installBtnFloat = document.getElementById('pwaInstallBtn');
-    if (installBtnFloat) installBtnFloat.classList.add('hidden');
-    console.log('PWA yashyizweho neza!');
-});
+            if (outcome === 'accepted') {
+                if (installBtnFloat) installBtnFloat.classList.add('hidden');
+                if (typeof showToast === 'function') {
+                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
+                }
+            }
+
+            deferredPrompt = null;
+        };
+
+        window.addEventListener('appinstalled', () => {
+            const installBtnFloat = document.getElementById('pwaInstallBtn');
+            if (installBtnFloat) installBtnFloat.classList.add('hidden');
+            console.log('PWA yashyizweho neza!');
+        });
     </script>
 </body>
 </html>
