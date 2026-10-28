@@ -3294,9 +3294,61 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
     let lastError = null;
     const maxRetries = 3;
     
-    // Model nziza (gemini-2.0-flash ni yo yizewe kandi irahari)
+    async function generateQuizFromText(pdfText, subject, level, numQuestions = 10) {
+    // 1. Kugenzura API Key
+    if (!GEMINI_API_KEY || 
+        GEMINI_API_KEY === 'AQ.Ab8RN6KNTHKuutvx6CUaKcpoe_quwiP9gzNVS1sdehWkfUxefQ' || 
+        GEMINI_API_KEY.length < 20) {
+        throw new Error('Gemini API Key ntabwo yashyizweho cyangwa ni mbi. Jya muri Settings → Quiz System.');
+    }
+    
+    // 2. Gutegura text
+    const maxChars = 30000;
+    const truncatedText = pdfText.length > maxChars 
+        ? pdfText.substring(0, maxChars) + '\n[... byakuwemo ...]'
+        : pdfText;
+    
+    const prompt = `You are an expert teacher creating a quiz from study material.
+
+SUBJECT: ${subject || 'General'}
+LEVEL: ${level || 'Secondary'}
+NUMBER OF QUESTIONS: ${numQuestions}
+
+STUDY MATERIAL:
+"""
+${truncatedText}
+"""
+
+INSTRUCTIONS:
+1. Create exactly ${numQuestions} multiple-choice questions based ONLY on the study material above.
+2. Each question MUST have exactly 4 options.
+3. Only ONE option is correct.
+4. Questions should test understanding, not just memorization.
+5. Mix difficulty: 3 easy, 4 medium, 3 hard.
+6. Add a brief explanation for each correct answer.
+
+RETURN FORMAT (STRICT JSON, no markdown, no extra text):
+{
+  "title": "Quiz title based on content",
+  "questions": [
+    {
+      "question": "Question text here?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctIndex": 0,
+      "explanation": "Why this is correct"
+    }
+  ]
+}`;
+
+    // 3. Gusubiramo (retry) - Model nziza
+    let response = null;
+    let lastError = null;
+    const maxRetries = 3;
+    
+    // Model nziza (gemini-3.8-flash ni yo yizewe kandi irahari)
     const MODEL_NAME = 'gemini-3.8-flash';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
+    // ⚠️ HINDURA: Koresha x-goog-api-key mu mutwe, ntabwo ?key= muri URL
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
     
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
@@ -3308,7 +3360,11 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
             
             response = await fetch(apiUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    // ⚠️ SHYIRAMO API KEY HANO (ntabwo muri URL)
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
                     generationConfig: {
@@ -3337,9 +3393,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         }
     }
     
-    // ============================================
-    // 4. KUGENZURA IBISUBIZO
-    // ============================================
+    // 4. Kugenzura ibisubizo
     if (!response) {
         throw new Error(`Ntibyakunze nyuma yo kugerageza ${maxRetries} inshuro. ${lastError?.message || 'Reba internet yawe.'}`);
     }
@@ -3351,15 +3405,16 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
             errDetail = errText.substring(0, 300);
         } catch(e) {}
         
-        // Ubutumwa bwihariye kuri 400 (key mbi)
+        // Ubutumwa bwihariye kuri 401 (key mbi cyangwa uburyo bubi)
+        if (response.status === 401) {
+            throw new Error(`API Key ntiyemewe (401). Reba ko key yawe ari nziza kandi ko yoherejwe mu mutwe wa x-goog-api-key. ${errDetail}`);
+        }
         if (response.status === 400) {
             throw new Error(`API Key yawe ni mbi cyangwa ntiyemewe. ${errDetail}`);
         }
-        // 404 (model ntabwo iboneka)
         if (response.status === 404) {
             throw new Error(`Model "${MODEL_NAME}" ntabwo iboneka kuri API key yawe. ${errDetail}`);
         }
-        // 403 (nta burenganzira)
         if (response.status === 403) {
             throw new Error(`Nta burenganzira bwo gukoresha Gemini API. Reba ko key yawe yemerewe. ${errDetail}`);
         }
@@ -3367,9 +3422,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         throw new Error(`Gemini API error: ${response.status} - ${errDetail}`);
     }
     
-    // ============================================
-    // 5. GUSOMA IBISUBIZO
-    // ============================================
+    // 5. Gusoma ibisubizo
     let data;
     try {
         data = await response.json();
@@ -3383,15 +3436,11 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
     
     const rawText = data.candidates[0].content.parts[0].text;
     
-    // ============================================
-    // 6. GUSUKURA NA PARSE JSON
-    // ============================================
+    // 6. Gusukura na parse JSON
     let quizData;
     try {
-        // Gerageza parse mbere
         quizData = JSON.parse(rawText);
     } catch (e) {
-        // Niba byanze, sukuramo markdown (```json ... ```)
         try {
             const cleaned = rawText
                 .replace(/```json\s*/gi, '')
@@ -3405,14 +3454,11 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         }
     }
     
-    // ============================================
-    // 7. KUGENZURA IBIBAZO
-    // ============================================
+    // 7. Kugenzura ibibazo
     if (!quizData.questions || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
         throw new Error('AI ntiyatanze ibibazo. Ongera ugerageze.');
     }
     
-    // Kugenzura buri kibazo
     quizData.questions.forEach((q, i) => {
         if (!q.question) {
             throw new Error(`Ikibazo ${i + 1} nta kibazo kirimo`);
