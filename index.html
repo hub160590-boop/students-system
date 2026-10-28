@@ -2,26 +2,17 @@
 <html lang="rw">
 <head>
     <meta charset="UTF-8">
-
-    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Theme & Viewport -->
     <meta name="theme-color" content="#38bdf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO Meta -->
     <title>Student System | Sisitemu y'Abanyeshuri</title>
     <meta name="description" content="Sisitemu yo gucunga abanyeshuri, amanota n'amasomo.">
 
-    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Icons za App (PWA) -->
     <link rel="icon" type="image/jpeg" sizes="192x192" href="/students.jpg">
     <link rel="apple-touch-icon" sizes="192x192" href="/students.jpg">
 
@@ -98,9 +89,6 @@ body {
     transition: var(--transition);
 }
 
-/* ============================================
-   LOADING SCREEN
-   ============================================ */
 .loading-screen {
     position: fixed; inset: 0;
     background: linear-gradient(135deg, #0a1929 0%, #0d2137 50%, #071827 100%);
@@ -140,9 +128,6 @@ body {
 }
 @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-/* ============================================
-   AUTH SCREEN
-   ============================================ */
 .auth-screen {
     position: fixed; inset: 0; display: flex;
     align-items: center; justify-content: center;
@@ -237,9 +222,6 @@ body {
 .auth-footer-link a { color: #38bdf8; text-decoration: none; font-weight: 700; cursor: pointer; }
 .auth-footer-link a:hover { text-decoration: underline; }
 
-/* ============================================
-   APP LAYOUT
-   ============================================ */
 .app { display: none; }
 .app.active { display: block !important; }
 
@@ -352,9 +334,6 @@ body {
 .page-header h1 { font-size: 26px; font-weight: 800; }
 .page-header p { color: var(--text-secondary); font-size: 14px; margin-top: 4px; }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
 .btn {
     display: inline-flex; align-items: center; justify-content: center;
     gap: 8px; padding: 12px 22px; border: none; border-radius: 12px;
@@ -374,9 +353,6 @@ body {
 .btn-warning:hover { transform: translateY(-2px); }
 .btn-sm { padding: 8px 14px; font-size: 12.5px; }
 
-/* ============================================
-   STATS & CARDS
-   ============================================ */
 .stats-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 18px; margin-bottom: 28px;
@@ -399,9 +375,6 @@ body {
 .stat-value { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
 .stat-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 
-/* ============================================
-   HERO BANNER
-   ============================================ */
 .choir-title-banner {
     position: relative;
     width: 100%;
@@ -438,9 +411,6 @@ body {
     letter-spacing: 2px; text-transform: uppercase;
 }
 
-/* ============================================
-   TABLES & CARDS
-   ============================================ */
 .saved-list { display: flex; flex-direction: column; gap: 14px; }
 .saved-card {
     background: var(--bg-card); border: 1px solid var(--border);
@@ -475,9 +445,6 @@ body {
 .empty-state .icon { font-size: 60px; color: var(--primary); opacity: 0.3; margin-bottom: 16px; }
 .empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
 
-/* ============================================
-   MODALS
-   ============================================ */
 .modal-overlay {
     position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(8px); display: none;
@@ -541,9 +508,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .photo-upload-text { font-size: 13px; color: var(--text-secondary); text-align: center; }
 .photo-upload-text strong { display: block; color: var(--primary); margin-bottom: 4px; font-size: 14px; }
 
-/* ============================================
-   FILTERS
-   ============================================ */
 .filter-bar {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 16px 20px;
@@ -568,9 +532,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .search-box input:focus { outline: none; border-color: var(--primary); }
 
-/* ============================================
-   TOAST
-   ============================================ */
 .toast-container {
     position: fixed; top: 90px; right: 24px; z-index: 30000;
     display: flex; flex-direction: column; gap: 10px;
@@ -598,9 +559,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .toast.error .toast-icon { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 .toast.warning .toast-icon { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
 
-/* ============================================
-   SETTINGS & PROFILE
-   ============================================ */
 .settings-card {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 24px; margin-bottom: 20px;
@@ -631,18 +589,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .profile-name { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
 .profile-email { color: var(--text-secondary); font-size: 14px; }
 
-/* ============================================
-   QR DISPLAY
-   ============================================ */
 .qr-display { text-align: center; padding: 30px; background: white; border-radius: var(--radius); margin-bottom: 20px; }
 .qr-display #qr-register-code { display: inline-block; padding: 20px; background: white; border-radius: 16px; }
 .qr-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; color: #1e293b; }
 .qr-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
 .qr-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
 
-/* ============================================
-   GRADE BADGES
-   ============================================ */
 .grade-badge {
     display: inline-flex; align-items: center; justify-content: center;
     width: 44px; height: 44px; border-radius: 12px;
@@ -654,9 +606,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .grade-badge.grade-D { background: rgba(236,72,153,0.15); color: #ec4899; }
 .grade-badge.grade-F { background: rgba(239,68,68,0.15); color: #ef4444; }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 900px) {
     .menu-toggle { display: flex; }
     .sidebar {
@@ -684,16 +633,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     .auth-logo h1 { font-size: 22px; }
 }
 
-/* ============================================
-   UTILITY
-   ============================================ */
 .fa-spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .hidden-input { display: none !important; }
 
-/* ============================================
-   MEMBER WELCOME
-   ============================================ */
 .member-welcome-header { margin-bottom: 24px; animation: welcomeSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .member-welcome-title { font-size: 30px; font-weight: 900; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; line-height: 1.3; margin: 0; }
 .welcome-wave { display: inline-block; font-size: 34px; animation: waveHand 2.5s ease-in-out infinite; transform-origin: 70% 70%; }
@@ -704,9 +647,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 @keyframes welcomeSlideIn { from { opacity: 0; transform: translateX(-40px) scale(0.95); } to { opacity: 1; transform: translateX(0) scale(1); } }
 @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ============================================
-   NOTICE
-   ============================================ */
 .readonly-notice {
     background: rgba(56, 189, 248, 0.08);
     border: 1px solid rgba(56, 189, 248, 0.25);
@@ -720,9 +660,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .readonly-notice i { color: #38bdf8; font-size: 16px; }
 
-/* ============================================
-   MEMBER PROFILE CARD
-   ============================================ */
 .member-profile-card {
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(14, 165, 233, 0.05));
     border: 1.5px solid rgba(56, 189, 248, 0.3);
@@ -748,9 +685,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .member-profile-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); }
 .member-profile-meta span { display: flex; align-items: center; gap: 5px; }
 
-/* ============================================
-   GRADE TABLE
-   ============================================ */
 .grade-subject-cell { font-weight: 700; font-size: 14px; }
 .grade-marks { font-weight: 800; font-size: 15px; color: var(--primary); }
 .grade-card {
@@ -763,9 +697,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .grade-card .grade-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
 .grade-card .grade-meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ============================================
-   PHOTO GRID
-   ============================================ */
 .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
 .photo-card {
     background: var(--bg-card); border: 1px solid var(--border);
@@ -776,17 +707,11 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .photo-card .photo-info { padding: 12px 14px; }
 .photo-card .photo-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 
-/* ============================================
-   CHARTS
-   ============================================ */
 .chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 24px; }
 .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .chart-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 .chart-title i { color: var(--primary); }
 
-/* ============================================
-   ANNOUNCEMENTS
-   ============================================ */
 .announcement-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -894,9 +819,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     border-top: 1px solid var(--border);
 }
 
-/* ============================================
-   WHATSAPP & INSTALL BUTTONS
-   ============================================ */
 .whatsapp-btn-sidebar {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 14px; border-radius: 12px; cursor: pointer;
@@ -918,9 +840,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .install-btn-auth:hover { background: rgba(56, 189, 248, 0.2); transform: translateY(-2px); }
 .install-btn-auth i { font-size: 20px; color: #38bdf8; }
 
-/* ============================================
-   PWA INSTALL BUTTON (Floating)
-   ============================================ */
 .install-btn-floating {
     position: fixed;
     bottom: 30px;
@@ -942,19 +861,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     transition: transform 0.3s ease, background 0.3s ease;
     animation: pulse-install 2s infinite;
 }
-
 .install-btn-floating:hover {
     transform: scale(1.1);
     background: #0284c7;
     animation: none;
 }
-
 @keyframes pulse-install {
     0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
     70% { box-shadow: 0 0 0 20px rgba(56, 189, 248, 0); }
     100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
-
 .install-btn-floating::before {
     content: "Install App";
     position: absolute;
@@ -969,18 +885,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     transition: opacity 0.3s;
     pointer-events: none;
 }
+.install-btn-floating:hover::before { opacity: 1; }
+.install-btn-floating.hidden { display: none !important; }
 
-.install-btn-floating:hover::before {
-    opacity: 1;
-}
-
-.install-btn-floating.hidden {
-    display: none !important;
-}
-
-/* ============================================
-   EXAMS STYLES
-   ============================================ */
 .exam-card {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 20px 24px;
@@ -1006,12 +913,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .exam-photo-item img { width: 100%; height: 120px; object-fit: cover; display: block; }
 .exam-photo-item:hover { border-color: var(--primary); }
 
-/* ============================================
-   EXAM FILES (PDF / WORD / PPT)
-   ============================================ */
-.exam-files-container {
-    display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
-}
+.exam-files-container { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .exam-file-row {
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; padding: 10px 14px;
@@ -1019,9 +921,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     border-radius: 10px; transition: var(--transition);
 }
 .exam-file-row:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.04); }
-.exam-file-info {
-    display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
-}
+.exam-file-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 .exam-file-icon {
     width: 38px; height: 38px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
@@ -1032,10 +932,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .exam-file-icon.ppt { background: linear-gradient(135deg, #d24726, #c0392b); }
 .exam-file-icon.image { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 .exam-file-icon.default { background: linear-gradient(135deg, #64748b, #94a3b8); }
-.exam-file-name {
-    font-size: 13.5px; font-weight: 600; color: var(--text);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
+.exam-file-name { font-size: 13.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .exam-file-size { font-size: 11.5px; color: var(--text-secondary); }
 .exam-file-actions { display: flex; gap: 6px; flex-shrink: 0; }
 .exam-file-btn {
@@ -1050,29 +947,18 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .exam-file-btn.download:hover { background: var(--success); color: white; border-color: var(--success); }
 .exam-file-btn.delete:hover { background: var(--danger); color: white; border-color: var(--danger); }
 
-/* ============================================
-   FILE UPLOAD AREA (for exams)
-   ============================================ */
 .file-upload-area {
     border: 2px dashed var(--border); border-radius: 14px;
     padding: 24px 20px; text-align: center; background: var(--bg);
     cursor: pointer; transition: var(--transition);
 }
-.file-upload-area:hover {
-    border-color: var(--primary);
-    background: rgba(56, 189, 248, 0.05);
-}
-.file-upload-area .upload-icon {
-    font-size: 40px; color: var(--primary); margin-bottom: 10px;
-    opacity: 0.7;
-}
+.file-upload-area:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+.file-upload-area .upload-icon { font-size: 40px; color: var(--primary); margin-bottom: 10px; opacity: 0.7; }
 .file-upload-area .upload-text { font-size: 13.5px; color: var(--text-secondary); }
 .file-upload-area .upload-text strong { display: block; color: var(--primary); font-size: 14px; margin-bottom: 4px; }
 .file-upload-area .upload-hint { font-size: 11.5px; margin-top: 6px; color: var(--text-secondary); opacity: 0.8; }
 
-.uploaded-files-list {
-    display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
-}
+.uploaded-files-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .uploaded-file-item {
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; padding: 10px 14px;
@@ -1083,9 +969,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .uploaded-file-item .info .name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .uploaded-file-item .info .size { font-size: 11px; color: var(--text-secondary); }
 
-/* ============================================
-   TABLE STYLES
-   ============================================ */
 .table-card {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: var(--radius); overflow: hidden;
@@ -1094,9 +977,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     padding: 18px 22px; border-bottom: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
 }
-.table-title {
-    font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px;
-}
+.table-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 .table-title i { color: var(--primary); }
 .table-wrapper { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
@@ -1118,10 +999,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 700; flex-shrink: 0;
 }
-.row-photo {
-    width: 38px; height: 38px; border-radius: 50%;
-    object-fit: cover; flex-shrink: 0;
-}
+.row-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .row-info .name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
 .row-info .id { font-size: 12px; color: var(--text-secondary); }
 .class-badge {
@@ -1143,6 +1021,81 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     display: flex; align-items: center; gap: 10px;
 }
 .section-title i { color: var(--primary); }
+
+/* ============================================
+   POSTS / FEED (NEW)
+   ============================================ */
+.post-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    margin-bottom: 18px; transition: var(--transition);
+}
+.post-card:hover { box-shadow: var(--shadow-lg); }
+.post-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.post-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--gradient-1); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; overflow: hidden; flex-shrink: 0;
+}
+.post-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.post-author { flex: 1; }
+.post-author .name { font-weight: 700; font-size: 14.5px; }
+.post-author .time { font-size: 12px; color: var(--text-secondary); }
+.post-content {
+    font-size: 14.5px; line-height: 1.7; margin-bottom: 14px;
+    white-space: pre-wrap; word-wrap: break-word;
+}
+.post-media {
+    border-radius: 14px; overflow: hidden; margin-bottom: 14px;
+    max-height: 500px; background: #000;
+}
+.post-media img, .post-media video {
+    width: 100%; max-height: 500px; object-fit: contain; display: block;
+}
+.post-actions {
+    display: flex; gap: 8px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+.post-action-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 10px; border-radius: 10px;
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-secondary); font-family: inherit;
+    font-size: 13.5px; font-weight: 600; transition: var(--transition);
+}
+.post-action-btn:hover { background: var(--bg); }
+.post-action-btn.liked { color: var(--danger); }
+.post-action-btn.liked i { animation: likePop 0.3s ease; }
+@keyframes likePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+.post-delete-btn {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: none; background: transparent; color: var(--text-secondary);
+    cursor: pointer; transition: var(--transition);
+}
+.post-delete-btn:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+.comment-item {
+    display: flex; gap: 10px; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+.comment-item:last-child { border-bottom: none; }
+.comment-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--gradient-purple); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; overflow: hidden; flex-shrink: 0;
+}
+.comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.comment-body { flex: 1; min-width: 0; }
+.comment-body .name { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+.comment-body .text { font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+.comment-body .time { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -1154,7 +1107,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <p>Turashakisha amakuru...</p>
     </div>
 
-    <!-- Buto ya Install PWA -->
+    <!-- PWA Install -->
     <button id="pwaInstallBtn" class="install-btn-floating hidden" onclick="installPWA()" title="Install App">
         <i class="fas fa-download"></i>
     </button>
@@ -1168,7 +1121,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 <h1>STUDENT SYSTEM</h1>
                 <p>Injira muri sisitemu</p>
             </div>
-
             <div class="auth-error" id="authError">
                 <i class="fas fa-exclamation-circle"></i>
                 <span id="authErrorText">-</span>
@@ -1196,9 +1148,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     <div class="app" id="app">
         <header class="header">
             <div class="header-left">
-                <button class="menu-toggle" onclick="toggleSidebar()">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
                 <div class="logo">
                     <i class="fas fa-graduation-cap"></i>
                     <span>STUDENT SYSTEM</span>
@@ -1208,6 +1158,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 <button class="icon-btn" onclick="switchPage('announcements', null)" title="Amatangazo">
                     <i class="fas fa-bullhorn"></i>
                     <span class="badge" id="announcementBadge" style="display:none;">0</span>
+                </button>
+                <button class="icon-btn" onclick="switchPage('feed', null)" title="Feed">
+                    <i class="fas fa-newspaper"></i>
                 </button>
                 <button class="icon-btn" onclick="toggleTheme()" title="Dark/Light">
                     <i class="fas fa-moon" id="themeIcon"></i>
@@ -1235,6 +1188,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
                 <div class="nav-item student-only" onclick="switchPage('my-exams', this)" style="display: none;">
                     <i class="fas fa-file-alt"></i><span>Ibizamini Byanjye</span>
+                </div>
+
+                <div class="nav-item" onclick="switchPage('feed', this)">
+                    <i class="fas fa-newspaper"></i><span>Feed y'Abanyeshuri</span>
                 </div>
 
                 <div class="nav-item" onclick="switchPage('announcements', this)">
@@ -1315,19 +1272,15 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                                 <span>SYSTEM</span>
                                 <span>🎓</span>
                             </div>
-                            <div class="choir-title-subtitle" id="schoolNameSubtitle">
-                                SCHOOL SYSTEM
-                            </div>
+                            <div class="choir-title-subtitle" id="schoolNameSubtitle">SCHOOL SYSTEM</div>
                         </div>
                     </div>
-
                     <div class="page-header">
                         <div>
                             <h1>Murakaza neza! 👋</h1>
                             <p>Reba amakuru y'abanyeshuri</p>
                         </div>
                     </div>
-
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon"><i class="fas fa-users"></i></div>
@@ -1352,6 +1305,20 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
                 </div>
 
+                <!-- ============ FEED PAGE (POSTS) ============ -->
+                <div class="page" id="page-feed">
+                    <div class="page-header">
+                        <div>
+                            <h1>📰 Feed y'Abanyeshuri</h1>
+                            <p>Reba amafoto na videwo byashyizweho n'abanyeshuri</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openAddPostModal()">
+                            <i class="fas fa-plus"></i> Shyiraho Post
+                        </button>
+                    </div>
+                    <div class="saved-list" id="postsList"></div>
+                </div>
+
                 <!-- ============ STUDENT DASHBOARD ============ -->
                 <div class="page" id="page-my-dashboard">
                     <div class="member-welcome-header">
@@ -1366,30 +1333,25 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             · <span id="studentWelcomeDate"></span>
                         </p>
                     </div>
-
                     <div class="readonly-notice">
                         <i class="fas fa-eye"></i>
                         <span>Iyi ni <strong>Dashboard yawe</strong> — ureba gusa.</span>
                     </div>
-
                     <div class="member-profile-card" id="studentProfileCard"></div>
                     <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Amatangazo aheruka</span>
+                        <i class="fas fa-bullhorn"></i><span>Amatangazo aheruka</span>
                     </div>
                     <div class="saved-list" id="studentDashboardAnnouncementsList"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Ibizamini Byakozwe (Bya vuba)</span>
+                        <i class="fas fa-file-alt"></i><span>Ibizamini Byakozwe (Bya vuba)</span>
                     </div>
                     <div class="saved-list" id="studentDashboardExamsList"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-book"></i>
-                        <span>Amasomo Yawe (Notes)</span>
+                        <i class="fas fa-book"></i><span>Amasomo Yawe (Notes)</span>
                     </div>
                     <div class="saved-list" id="studentDashboardNotesList"></div>
                 </div>
@@ -1402,12 +1364,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <p>Reba no gukurura ibizamini byakozwe (CAT, Midterm, Final)</p>
                         </div>
                     </div>
-
                     <div class="readonly-notice">
                         <i class="fas fa-eye"></i>
                         <span>Iyi ni <strong>ibizamini byawe</strong> — ureba gusa.</span>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="myExamsFilterType" onchange="renderMyExams()">
@@ -1425,7 +1385,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </div>
                         </div>
                     </div>
-
                     <div class="saved-list" id="myExamsList"></div>
                 </div>
 
@@ -1440,7 +1399,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <i class="fas fa-plus"></i> Tangaza
                         </button>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="announcementsFilterPriority" onchange="renderAnnouncements()">
@@ -1456,7 +1414,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </div>
                         </div>
                     </div>
-
                     <div id="announcementsList"></div>
                 </div>
 
@@ -1468,12 +1425,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <p>Reba no gukurura amafishi y'amasomo wahawe n'abarimu.</p>
                         </div>
                     </div>
-
                     <div class="readonly-notice">
                         <i class="fas fa-eye"></i>
                         <span>Iyi ni <strong>amasomo yawe</strong> — ureba gusa.</span>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="myNotesFilterLevel" onchange="renderMyNotes()">
@@ -1492,7 +1447,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </div>
                         </div>
                     </div>
-
                     <div class="saved-list" id="myNotesList"></div>
                 </div>
 
@@ -1507,8 +1461,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <div class="table-card">
                         <div class="table-header">
                             <div class="table-title">
-                                <i class="fas fa-user-clock"></i>
-                                Abakandida (<span id="pendingCount">0</span>)
+                                <i class="fas fa-user-clock"></i> Abakandida (<span id="pendingCount">0</span>)
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -1568,8 +1521,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <div class="table-card">
                         <div class="table-header">
                             <div class="table-title">
-                                <i class="fas fa-users"></i>
-                                Abanyeshuri Bose (<span id="studentsCount">0</span>)
+                                <i class="fas fa-users"></i> Abanyeshuri Bose (<span id="studentsCount">0</span>)
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -1603,8 +1555,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <div class="table-card">
                         <div class="table-header">
                             <div class="table-title">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                Abarimu Bose (<span id="teachersCount">0</span>)
+                                <i class="fas fa-chalkboard-teacher"></i> Abarimu Bose (<span id="teachersCount">0</span>)
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -1638,8 +1589,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <div class="table-card">
                         <div class="table-header">
                             <div class="table-title">
-                                <i class="fas fa-users-cog"></i>
-                                Abakoresha Bose (<span id="usersCount">0</span>)
+                                <i class="fas fa-users-cog"></i> Abakoresha Bose (<span id="usersCount">0</span>)
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -1658,7 +1608,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
                 </div>
 
-                <!-- ============ GRADES (Admin) ============ -->
+                <!-- ============ GRADES ============ -->
                 <div class="page" id="page-grades">
                     <div class="page-header">
                         <div>
@@ -1669,7 +1619,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <i class="fas fa-plus"></i> Ongeraho Amanota
                         </button>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group">
                             <label>Umwaka:</label>
@@ -1691,12 +1640,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </select>
                         </div>
                     </div>
-
                     <div class="table-card">
                         <div class="table-header">
                             <div class="table-title">
-                                <i class="fas fa-chart-bar"></i>
-                                Amanota Yose (<span id="gradesCount">0</span>)
+                                <i class="fas fa-chart-bar"></i> Amanota Yose (<span id="gradesCount">0</span>)
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -1720,7 +1667,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
                 </div>
 
-                <!-- ============ ADMIN NOTES PAGE ============ -->
+                <!-- ============ ADMIN NOTES ============ -->
                 <div class="page" id="page-notes">
                     <div class="page-header">
                         <div>
@@ -1731,7 +1678,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <i class="fas fa-plus"></i> Ongeraho Isomo
                         </button>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="notesFilterLevel" onchange="renderNotes()">
@@ -1750,11 +1696,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </div>
                         </div>
                     </div>
-
                     <div class="saved-list" id="notesList"></div>
                 </div>
 
-                <!-- ============ ADMIN EXAMS PAGE ============ -->
+                <!-- ============ ADMIN EXAMS ============ -->
                 <div class="page" id="page-exams">
                     <div class="page-header">
                         <div>
@@ -1765,7 +1710,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             <i class="fas fa-plus"></i> Ongeraho Ikizamini
                         </button>
                     </div>
-
                     <div class="filter-bar">
                         <div class="filter-group" style="width: 100%;">
                             <select class="filter-select" id="examsFilterLevel" onchange="renderExams()">
@@ -1790,11 +1734,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             </div>
                         </div>
                     </div>
-
                     <div class="saved-list" id="examsList"></div>
                 </div>
 
-                <!-- ============ NOTES PAYMENTS (ADMIN) ============ -->
+                <!-- ============ NOTES PAYMENTS ============ -->
                 <div class="page" id="page-notes-payments">
                     <div class="page-header">
                         <div>
@@ -2116,17 +2059,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 <h3><i class="fas fa-book"></i> Ongeraho Isomo (Note)</h3>
                 <button class="close-btn" onclick="closeModal('addNoteModal')"><i class="fas fa-times"></i></button>
             </div>
-
             <div class="form-group">
                 <label>Izina ry'Isomo <span>*</span></label>
                 <input type="text" class="form-control" id="noteTitle" placeholder="Urugero: Mathematics Notes - Chapter 1">
             </div>
-
             <div class="form-group">
                 <label>Isomo (Subject) <span>*</span></label>
                 <input type="text" class="form-control" id="noteSubject" placeholder="Urugero: Mathematics">
             </div>
-
             <div class="form-group">
                 <label>Urwego (Level) <span>*</span></label>
                 <select class="form-control" id="noteLevel">
@@ -2140,12 +2080,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="S6">S6</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Ibisobanuro (Optional)</label>
                 <input type="text" class="form-control" id="noteDescription" placeholder="Urugero: Byateguwe n'umwarimu...">
             </div>
-
             <div class="form-group">
                 <label>Shyiramo File (PDF, Word, cyangwa Text) <span>*</span></label>
                 <div class="photo-upload" onclick="document.getElementById('noteFileInput').click()">
@@ -2154,7 +2092,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
                 <input type="file" id="noteFileInput" accept=".pdf,.doc,.docx,.txt" class="hidden-input" onchange="previewNoteFile(event)">
             </div>
-
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('addNoteModal')">Hagarika</button>
                 <button class="btn btn-primary" id="saveNoteBtn" onclick="uploadNote()"><i class="fas fa-save"></i> Bika</button>
@@ -2162,24 +2099,21 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         </div>
     </div>
 
-    <!-- ============ ADD EXAM MODAL (with multi-file upload) ============ -->
+    <!-- Add Exam Modal -->
     <div class="modal-overlay" id="addExamModal">
         <div class="modal">
             <div class="modal-header">
                 <h3><i class="fas fa-file-alt"></i> Ongeraho Ikizamini</h3>
                 <button class="close-btn" onclick="closeModal('addExamModal')"><i class="fas fa-times"></i></button>
             </div>
-
             <div class="form-group">
                 <label>Izina ry'Ikizamini <span>*</span></label>
                 <input type="text" class="form-control" id="examTitle" placeholder="Urugero: CAT 1 - Mathematics">
             </div>
-
             <div class="form-group">
                 <label>Isomo (Subject) <span>*</span></label>
                 <input type="text" class="form-control" id="examSubject" placeholder="Urugero: Mathematics">
             </div>
-
             <div class="form-group">
                 <label>Ubwoko bw'Ikizamini <span>*</span></label>
                 <select class="form-control" id="examType">
@@ -2188,7 +2122,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="final">🔴 Final Exam</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Urwego (Level) <span>*</span></label>
                 <select class="form-control" id="examLevel">
@@ -2202,7 +2135,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="S6">S6</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Igihembwe</label>
                 <select class="form-control" id="examTerm">
@@ -2211,23 +2143,18 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="Term3">Term 3</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Itariki y'Ikizamini <span>*</span></label>
                 <input type="date" class="form-control" id="examDate">
             </div>
-
             <div class="form-group">
                 <label>Amanota yose (Max Marks)</label>
                 <input type="number" class="form-control" id="examMaxMarks" value="100" min="1">
             </div>
-
             <div class="form-group">
                 <label>Ibisobanuro (Optional)</label>
                 <textarea class="form-control" id="examDescription" rows="3" placeholder="Andika ibisobanuro by'ikizamini..."></textarea>
             </div>
-
-            <!-- ===== FILE UPLOAD (PDF, Word, PPT) ===== -->
             <div class="form-group">
                 <label>Shyiramo Amafishi y'Ikizamini (PDF, Word, PPT)</label>
                 <div class="file-upload-area" onclick="document.getElementById('examFilesInput').click()">
@@ -2238,13 +2165,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
                     <div class="upload-hint">Ushobora guhitamo amafishi menshi icyarimwe</div>
                 </div>
-                <input type="file" id="examFilesInput" class="hidden-input"
-                    accept=".pdf,.doc,.docx,.ppt,.pptx"
-                    multiple onchange="previewExamFiles(event)">
+                <input type="file" id="examFilesInput" class="hidden-input" accept=".pdf,.doc,.docx,.ppt,.pptx" multiple onchange="previewExamFiles(event)">
                 <div class="uploaded-files-list" id="examFilesPreview"></div>
             </div>
-
-            <!-- ===== PHOTO (optional) ===== -->
             <div class="form-group">
                 <label>Ifoto y'Ikizamini (Optional)</label>
                 <div class="photo-upload" onclick="document.getElementById('examPhotoInput').click()">
@@ -2253,7 +2176,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
                 <input type="file" id="examPhotoInput" accept="image/*" class="hidden-input" onchange="previewExamPhoto(event)">
             </div>
-
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('addExamModal')">Hagarika</button>
                 <button class="btn btn-primary" id="saveExamBtn" onclick="saveExam()"><i class="fas fa-save"></i> Bika</button>
@@ -2268,17 +2190,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 <h3><i class="fas fa-bullhorn"></i> Tangaza Itangazo</h3>
                 <button class="close-btn" onclick="closeModal('addAnnouncementModal')"><i class="fas fa-times"></i></button>
             </div>
-
             <div class="form-group">
                 <label>Umutwe w'Itangazo <span>*</span></label>
                 <input type="text" class="form-control" id="annTitle" placeholder="Urugero: Ikizamini kizabaho ejo">
             </div>
-
             <div class="form-group">
                 <label>Ibisobanuro <span>*</span></label>
                 <textarea class="form-control" id="annContent" placeholder="Andika ibisobanuro by'itangazo..." rows="5"></textarea>
             </div>
-
             <div class="form-group">
                 <label>Priorité <span>*</span></label>
                 <select class="form-control" id="annPriority">
@@ -2288,7 +2207,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="low">⚪ Low</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Ifoto (Optional)</label>
                 <div class="photo-upload" onclick="document.getElementById('annImageInput').click()">
@@ -2297,7 +2215,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
                 <input type="file" id="annImageInput" accept="image/*" class="hidden-input" onchange="previewAnnImage(event)">
             </div>
-
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('addAnnouncementModal')">Hagarika</button>
                 <button class="btn btn-primary" id="saveAnnBtn" onclick="saveAnnouncement()"><i class="fas fa-paper-plane"></i> Tangaza</button>
@@ -2348,14 +2265,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         </div>
     </div>
 
-    <!-- Modal yo Kwishyura Amasomo -->
+    <!-- Subscription Modal -->
     <div class="modal-overlay" id="studentSubscriptionModal">
         <div class="modal">
             <div class="modal-header">
                 <h3><i class="fas fa-book-reader"></i> Kwishyura Amasomo</h3>
                 <button class="close-btn" onclick="closeModal('studentSubscriptionModal')"><i class="fas fa-times"></i></button>
             </div>
-
             <div style="background: rgba(56,189,248,0.08); border-left: 4px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
                 <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-info-circle"></i> Amabwiriza</h4>
                 <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6;">
@@ -2365,12 +2281,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     Nyuma yo kwishyura, ohereza ubu butumwa. <strong>Admin azabikwemera</strong>, hanyuma uzahita ubona amasomo yawe.
                 </p>
             </div>
-
             <div class="form-group">
                 <label>Amafaranga (RWF)</label>
                 <input type="number" class="form-control" id="subAmount" value="1000" readonly style="background: var(--bg); color: var(--text-secondary); cursor: not-allowed;">
             </div>
-
             <div class="form-group">
                 <label>Uburyo bwo Kwishyura</label>
                 <select class="form-control" id="subMethod">
@@ -2380,15 +2294,71 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <option value="Cash">💵 Amafaranga mu ntoki</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Nimero yawe ya Mobile Money (Cyangwa iy'uwandikishije)</label>
                 <input type="text" class="form-control" id="subPhone" placeholder="Urugero: 0788123456">
             </div>
-
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('studentSubscriptionModal')">Hagarika</button>
                 <button class="btn btn-primary" id="subBtn" onclick="submitSubscriptionPayment()"><i class="fas fa-paper-plane"></i> Ohereza</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ ADD POST MODAL (NEW) ============ -->
+    <div class="modal-overlay" id="addPostModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Shyiraho Post</h3>
+                <button class="close-btn" onclick="closeModal('addPostModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label>Ibisobanuro (Caption) <span>*</span></label>
+                <textarea class="form-control" id="postCaption" rows="3" placeholder="Andika ibisobanuro by'ifoto cyangwa videwo yawe..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Ubwoko bwa Post</label>
+                <select class="form-control" id="postType" onchange="togglePostMediaInput()">
+                    <option value="photo">📷 Ifoto</option>
+                    <option value="video">🎥 Videwo</option>
+                </select>
+            </div>
+            <div class="form-group" id="postPhotoGroup">
+                <label>Ifoto <span>*</span></label>
+                <div class="photo-upload" onclick="document.getElementById('postPhotoInput').click()">
+                    <div id="postPhotoPreviewContainer"><div class="photo-placeholder">📷</div></div>
+                    <div class="photo-upload-text"><strong>Kanda hano wongeremo ifoto</strong> JPG, PNG (max 5MB)</div>
+                </div>
+                <input type="file" id="postPhotoInput" accept="image/*" class="hidden-input" onchange="previewPostPhoto(event)">
+            </div>
+            <div class="form-group" id="postVideoGroup" style="display:none;">
+                <label>Videwo <span>*</span></label>
+                <div class="photo-upload" onclick="document.getElementById('postVideoInput').click()">
+                    <div id="postVideoPreviewContainer"><div class="photo-placeholder">🎥</div></div>
+                    <div class="photo-upload-text"><strong>Kanda hano wongeremo videwo</strong> MP4, WebM (max 50MB)</div>
+                </div>
+                <input type="file" id="postVideoInput" accept="video/*" class="hidden-input" onchange="previewPostVideo(event)">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('addPostModal')">Hagarika</button>
+                <button class="btn btn-primary" id="savePostBtn" onclick="savePost()"><i class="fas fa-paper-plane"></i> Tangaza</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ COMMENTS MODAL (NEW) ============ -->
+    <div class="modal-overlay" id="commentsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-comments"></i> Comments</h3>
+                <button class="close-btn" onclick="closeModal('commentsModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="commentsList" style="max-height:400px;overflow-y:auto;margin-bottom:16px;"></div>
+            <div class="form-group" style="margin-bottom:0;">
+                <div style="display:flex;gap:8px;">
+                    <input type="text" class="form-control" id="commentInput" placeholder="Andika comment yawe..." onkeypress="if(event.key==='Enter')submitComment()">
+                    <button class="btn btn-primary" onclick="submitComment()"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -2404,7 +2374,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         import {
             getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
             query, orderBy, where, serverTimestamp, setDoc, getDoc,
-            limit, onSnapshot
+            limit, onSnapshot, increment
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
         import {
             getAuth, signInWithEmailAndPassword,
@@ -2447,7 +2417,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         let notesPayments = [];
         let announcements = [];
         let exams = [];
+        let posts = [];
         let announcementsUnsubscribe = null;
+        let postsUnsubscribe = null;
 
         let newStudentPhoto = null;
         let editingPhoto = null;
@@ -2455,7 +2427,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         let currentNoteFile = null;
         let newAnnImage = null;
         let newExamPhoto = null;
-        let examPendingFiles = []; // { file, id, name, size, type }
+        let examPendingFiles = [];
+
+        // NEW: Post globals
+        let newPostPhoto = null;
+        let newPostVideo = null;
+        let currentPostIdForComments = null;
 
         // ============================================
         // HELPERS
@@ -2527,9 +2504,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             return map[type] || type;
         }
 
-        // ============================================
-        // FILE HELPERS
-        // ============================================
         function getFileTypeFromName(name) {
             const ext = (name || '').split('.').pop().toLowerCase();
             if (ext === 'pdf') return 'pdf';
@@ -2551,17 +2525,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
         }
 
-        // ============================================
-        // CLOUDINARY UPLOAD
-        // ============================================
         async function uploadToCloudinary(file, isRaw = false) {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
             const endpoint = isRaw ? 'raw/upload' : 'image/upload';
             const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${endpoint}`;
-
             const response = await fetch(url, { method: 'POST', body: formData });
             if (!response.ok) throw new Error('Upload yananiwe');
             const data = await response.json();
@@ -2595,13 +2564,11 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             const file = event.target.files[0];
             if (!file) return;
             if (file.size > 10 * 1024 * 1024) { showToast('File ni nini cyane (Max 10MB)', 'warning'); event.target.value = ''; return; }
-
             currentNoteFile = file;
             const ext = file.name.split('.').pop().toLowerCase();
             let icon = 'fa-file';
             if (ext === 'pdf') icon = 'fa-file-pdf text-danger';
             else if (ext === 'doc' || ext === 'docx') icon = 'fa-file-word text-primary';
-
             document.getElementById('noteFilePreview').innerHTML = `<i class="fas ${icon}" style="font-size: 40px;"></i>`;
             document.getElementById('noteFilePreview').classList.remove('photo-placeholder');
             showToast('✅ File yatoranyijwe: ' + file.name, 'success');
@@ -2631,38 +2598,21 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             reader.readAsDataURL(file);
         };
 
-        // ============================================
-        // EXAM FILES PREVIEW (multi-file)
-        // ============================================
         window.previewExamFiles = function(event) {
             const files = Array.from(event.target.files || []);
             if (!files.length) return;
-
-            const maxSize = 15 * 1024 * 1024; // 15MB
+            const maxSize = 15 * 1024 * 1024;
             const allowedExt = ['pdf','doc','docx','ppt','pptx'];
-
             files.forEach(f => {
                 const ext = (f.name.split('.').pop() || '').toLowerCase();
-                if (!allowedExt.includes(ext)) {
-                    showToast(`❌ ${f.name} ntabwo ari PDF/Word/PPT`, 'error');
-                    return;
-                }
-                if (f.size > maxSize) {
-                    showToast(`❌ ${f.name} ni nini cyane (Max 15MB)`, 'error');
-                    return;
-                }
-                // Avoid duplicates by name+size
+                if (!allowedExt.includes(ext)) { showToast(`❌ ${f.name} ntabwo ari PDF/Word/PPT`, 'error'); return; }
+                if (f.size > maxSize) { showToast(`❌ ${f.name} ni nini cyane (Max 15MB)`, 'error'); return; }
                 if (examPendingFiles.some(x => x.name === f.name && x.size === f.size)) return;
                 examPendingFiles.push({
-                    file: f,
-                    id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
-                    name: f.name,
-                    size: f.size,
-                    type: getFileTypeFromName(f.name)
+                    file: f, id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+                    name: f.name, size: f.size, type: getFileTypeFromName(f.name)
                 });
             });
-
-            // reset input so same file can be picked again if removed
             event.target.value = '';
             renderExamFilesPreview();
         };
@@ -2670,12 +2620,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         function renderExamFilesPreview() {
             const container = document.getElementById('examFilesPreview');
             if (!container) return;
-
-            if (!examPendingFiles.length) {
-                container.innerHTML = '';
-                return;
-            }
-
+            if (!examPendingFiles.length) { container.innerHTML = ''; return; }
             container.innerHTML = examPendingFiles.map(f => `
                 <div class="uploaded-file-item">
                     <div class="info">
@@ -2743,6 +2688,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         window.forceLogout = async function() {
             if (!confirm('Urabyemeza ko ushaka gusohoka?')) return;
             if (announcementsUnsubscribe) { try { announcementsUnsubscribe(); } catch(e) {} }
+            if (postsUnsubscribe) { try { postsUnsubscribe(); } catch(e) {} }
             try {
                 if (currentUser) {
                     await updateDoc(doc(db, 'users', currentUser.uid), { isOnline: false, lastSeen: serverTimestamp() });
@@ -2894,6 +2840,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 exams = [];
                 ex.forEach(d => exams.push({ id: d.id, ...d.data() }));
             } catch(e) { exams = []; }
+
+            try {
+                const p = await getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(100)));
+                posts = [];
+                p.forEach(d => posts.push({ id: d.id, ...d.data() }));
+            } catch(e) { posts = []; }
         }
 
         async function enterApp() {
@@ -2935,6 +2887,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             }
 
             try { startAnnouncementsListener(); } catch(e) {}
+            try { startPostsListener(); } catch(e) {}
         }
 
         // ============================================
@@ -2965,6 +2918,22 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             const sb = document.getElementById('sidebarAnnouncementCount');
             if (badge) { badge.textContent = recent.length; badge.style.display = recent.length > 0 ? 'flex' : 'none'; }
             if (sb) { sb.textContent = recent.length; sb.style.display = recent.length > 0 ? 'flex' : 'none'; }
+        }
+
+        // ============================================
+        // POSTS LISTENER (NEW)
+        // ============================================
+        function startPostsListener() {
+            if (postsUnsubscribe) { try { postsUnsubscribe(); } catch(e) {} }
+            const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(100));
+            postsUnsubscribe = onSnapshot(q, (snap) => {
+                posts = [];
+                snap.forEach(d => posts.push({ id: d.id, ...d.data() }));
+                const currentPage = document.querySelector('.page.active');
+                if (currentPage && currentPage.id === 'page-feed') renderPosts();
+            }, (error) => {
+                console.warn('Posts listener error:', error);
+            });
         }
 
         // ============================================
@@ -3118,9 +3087,283 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             if (page === 'exams') renderExams();
             if (page === 'notes-payments') renderNotesPayments();
             if (page === 'announcements') renderAnnouncements();
+            if (page === 'feed') renderPosts();
 
             if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ============================================
+        // POSTS (NEW)
+        // ============================================
+        window.togglePostMediaInput = function() {
+            const type = document.getElementById('postType').value;
+            document.getElementById('postPhotoGroup').style.display = type === 'photo' ? '' : 'none';
+            document.getElementById('postVideoGroup').style.display = type === 'video' ? '' : 'none';
+        };
+
+        window.openAddPostModal = function() {
+            if (!currentUserData) return;
+            newPostPhoto = null;
+            newPostVideo = null;
+            document.getElementById('postCaption').value = '';
+            document.getElementById('postType').value = 'photo';
+            document.getElementById('postPhotoInput').value = '';
+            document.getElementById('postVideoInput').value = '';
+            document.getElementById('postPhotoPreviewContainer').innerHTML = '<div class="photo-placeholder">📷</div>';
+            document.getElementById('postVideoPreviewContainer').innerHTML = '<div class="photo-placeholder">🎥</div>';
+            togglePostMediaInput();
+            document.getElementById('addPostModal').classList.add('active');
+        };
+
+        window.previewPostPhoto = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast('Ifoto ni nini cyane (Max 5MB)', 'warning'); event.target.value = ''; return; }
+            newPostPhoto = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('postPhotoPreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" style="width:140px;height:140px;border-radius:12px;object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.previewPostVideo = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 50 * 1024 * 1024) { showToast('Videwo ni nini cyane (Max 50MB)', 'warning'); event.target.value = ''; return; }
+            newPostVideo = file;
+            const url = URL.createObjectURL(file);
+            document.getElementById('postVideoPreviewContainer').innerHTML = `<video src="${url}" style="width:180px;height:120px;border-radius:12px;object-fit:cover;" controls></video>`;
+        };
+
+        window.savePost = async function() {
+            const caption = document.getElementById('postCaption').value.trim();
+            const type = document.getElementById('postType').value;
+
+            if (!caption) { showToast('Andika ibisobanuro bya post', 'warning'); return; }
+            if (type === 'photo' && !newPostPhoto) { showToast('Shyiramo ifoto', 'warning'); return; }
+            if (type === 'video' && !newPostVideo) { showToast('Shyiramo videwo', 'warning'); return; }
+
+            const btn = document.getElementById('savePostBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turazamura...';
+
+            try {
+                let mediaUrl = null;
+                if (type === 'photo' && newPostPhoto) {
+                    mediaUrl = await uploadToCloudinary(newPostPhoto);
+                } else if (type === 'video' && newPostVideo) {
+                    mediaUrl = await uploadToCloudinary(newPostVideo, true);
+                }
+
+                await addDoc(collection(db, 'posts'), {
+                    caption,
+                    type,
+                    mediaUrl,
+                    authorUid: currentUser.uid,
+                    authorName: currentUserData.name || 'Umunyeshuri',
+                    authorPhoto: currentUserData.photo || null,
+                    authorRole: currentUserData.role || 'student',
+                    likes: [],
+                    commentCount: 0,
+                    createdAt: serverTimestamp()
+                });
+
+                showToast('✅ Post yashyizweho!', 'success');
+                closeModal('addPostModal');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza';
+
+                newPostPhoto = null;
+                newPostVideo = null;
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza';
+            }
+        };
+
+        window.renderPosts = function() {
+            const list = document.getElementById('postsList');
+            if (!list) return;
+
+            if (posts.length === 0) {
+                list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-newspaper"></i></div><h3>Nta byashyizweho</h3><p>Kanda "Shyiraho Post" gutangira</p></div>`;
+                return;
+            }
+
+            list.innerHTML = posts.map(p => {
+                const date = p.createdAt?.toDate ? p.createdAt.toDate() : new Date(p.createdAt || Date.now());
+                const timeStr = timeAgo(date);
+                const initials = (p.authorName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarHtml = p.authorPhoto
+                    ? `<img src="${p.authorPhoto}" onerror="this.outerHTML='<span>${initials}</span>'">`
+                    : `<span>${initials}</span>`;
+
+                const likes = Array.isArray(p.likes) ? p.likes : [];
+                const isLiked = currentUser && likes.includes(currentUser.uid);
+                const likeCount = likes.length;
+                const commentCount = p.commentCount || 0;
+                const isOwner = currentUser && p.authorUid === currentUser.uid;
+                const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
+
+                let mediaHtml = '';
+                if (p.mediaUrl) {
+                    if (p.type === 'video') {
+                        mediaHtml = `<div class="post-media"><video src="${p.mediaUrl}" controls playsinline preload="metadata"></video></div>`;
+                    } else {
+                        mediaHtml = `<div class="post-media"><img src="${p.mediaUrl}" alt="Post image" onclick="window.open('${p.mediaUrl}', '_blank')" style="cursor:pointer;"></div>`;
+                    }
+                }
+
+                return `<div class="post-card" id="post-${p.id}">
+                    <div class="post-header">
+                        <div class="post-avatar">${avatarHtml}</div>
+                        <div class="post-author">
+                            <div class="name">${escapeHtml(p.authorName || 'Unknown')}</div>
+                            <div class="time"><i class="fas fa-clock"></i> ${timeStr}</div>
+                        </div>
+                        ${(isOwner || isAdmin) ? `<button class="post-delete-btn" onclick="deletePost('${p.id}')" title="Siba"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                    <div class="post-content">${escapeHtml(p.caption)}</div>
+                    ${mediaHtml}
+                    <div class="post-actions">
+                        <button class="post-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
+                            <i class="fas fa-heart"></i> <span>${likeCount} Like${likeCount !== 1 ? 's' : ''}</span>
+                        </button>
+                        <button class="post-action-btn" onclick="openComments('${p.id}')">
+                            <i class="fas fa-comment"></i> <span>${commentCount} Comment${commentCount !== 1 ? 's' : ''}</span>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        };
+
+        window.toggleLike = async function(postId) {
+            if (!currentUser) return;
+            const p = posts.find(x => x.id === postId);
+            if (!p) return;
+
+            const likes = Array.isArray(p.likes) ? [...p.likes] : [];
+            const idx = likes.indexOf(currentUser.uid);
+            if (idx >= 0) {
+                likes.splice(idx, 1);
+            } else {
+                likes.push(currentUser.uid);
+            }
+
+            // Optimistic update
+            p.likes = likes;
+            renderPosts();
+
+            try {
+                await updateDoc(doc(db, 'posts', postId), { likes });
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        };
+
+        window.deletePost = async function(postId) {
+            if (!confirm('Siba iyi post?')) return;
+            try {
+                const commentsSnap = await getDocs(collection(db, 'posts', postId, 'comments'));
+                const deletePromises = [];
+                commentsSnap.forEach(d => deletePromises.push(deleteDoc(doc(db, 'posts', postId, 'comments', d.id))));
+                await Promise.all(deletePromises);
+                await deleteDoc(doc(db, 'posts', postId));
+                showToast('🗑️ Post yasibwe', 'warning');
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        };
+
+        // ============================================
+        // COMMENTS (NEW)
+        // ============================================
+        window.openComments = async function(postId) {
+            currentPostIdForComments = postId;
+            document.getElementById('commentInput').value = '';
+            document.getElementById('commentsList').innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Turashakisha comments...</div>';
+            document.getElementById('commentsModal').classList.add('active');
+            await loadComments(postId);
+        };
+
+        async function loadComments(postId) {
+            const listEl = document.getElementById('commentsList');
+            if (!listEl) return;
+            try {
+                const q = query(collection(db, 'posts', postId, 'comments'), orderBy('createdAt', 'asc'));
+                const snap = await getDocs(q);
+                const comments = [];
+                snap.forEach(d => comments.push({ id: d.id, ...d.data() }));
+
+                if (comments.length === 0) {
+                    listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);"><i class="fas fa-comment-slash" style="font-size:32px;opacity:0.4;display:block;margin-bottom:10px;"></i>Nta comment irahari. Ba uwambere!</div>';
+                    return;
+                }
+
+                listEl.innerHTML = comments.map(c => {
+                    const date = c.createdAt?.toDate ? c.createdAt.toDate() : new Date(c.createdAt || Date.now());
+                    const initials = (c.authorName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    const avatarHtml = c.authorPhoto
+                        ? `<img src="${c.authorPhoto}" onerror="this.outerHTML='<span>${initials}</span>'">`
+                        : `<span>${initials}</span>`;
+                    const isOwner = currentUser && c.authorUid === currentUser.uid;
+                    const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
+
+                    return `<div class="comment-item">
+                        <div class="comment-avatar">${avatarHtml}</div>
+                        <div class="comment-body">
+                            <div class="name">${escapeHtml(c.authorName || 'Unknown')}</div>
+                            <div class="text">${escapeHtml(c.text)}</div>
+                            <div class="time">${timeAgo(date)}</div>
+                        </div>
+                        ${(isOwner || isAdmin) ? `<button class="post-delete-btn" onclick="deleteComment('${postId}', '${c.id}')" title="Siba"><i class="fas fa-times"></i></button>` : ''}
+                    </div>`;
+                }).join('');
+            } catch (error) {
+                listEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--danger);">❌ ${error.message}</div>`;
+            }
+        }
+
+        window.submitComment = async function() {
+            const text = document.getElementById('commentInput').value.trim();
+            if (!text) { showToast('Andika comment', 'warning'); return; }
+            if (!currentPostIdForComments) return;
+            try {
+                await addDoc(collection(db, 'posts', currentPostIdForComments, 'comments'), {
+                    text,
+                    authorUid: currentUser.uid,
+                    authorName: currentUserData.name || 'Umunyeshuri',
+                    authorPhoto: currentUserData.photo || null,
+                    createdAt: serverTimestamp()
+                });
+
+                await updateDoc(doc(db, 'posts', currentPostIdForComments), {
+                    commentCount: increment(1)
+                });
+
+                document.getElementById('commentInput').value = '';
+                await loadComments(currentPostIdForComments);
+                showToast('✅ Comment yongeweho!', 'success');
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        };
+
+        window.deleteComment = async function(postId, commentId) {
+            if (!confirm('Siba comment?')) return;
+            try {
+                await deleteDoc(doc(db, 'posts', postId, 'comments', commentId));
+                try {
+                    await updateDoc(doc(db, 'posts', postId), { commentCount: increment(-1) });
+                } catch(e) {}
+                await loadComments(postId);
+                showToast('🗑️ Comment yasibwe', 'warning');
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
         };
 
         // ============================================
@@ -3150,15 +3393,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
             try {
                 let imageUrl = null;
-                if (newAnnImage) {
-                    imageUrl = await uploadToCloudinary(newAnnImage);
-                }
+                if (newAnnImage) imageUrl = await uploadToCloudinary(newAnnImage);
 
                 await addDoc(collection(db, 'announcements'), {
-                    title,
-                    content,
-                    priority,
-                    imageUrl,
+                    title, content, priority, imageUrl,
                     createdBy: currentUser.uid,
                     createdByName: currentUserData.name || 'Admin',
                     createdByRole: currentUserData.role,
@@ -3173,7 +3411,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 await loadAllData();
                 renderAnnouncements();
                 newAnnImage = null;
-
             } catch (error) {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
@@ -3184,7 +3421,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         window.renderAnnouncements = function() {
             const list = document.getElementById('announcementsList');
             if (!list) return;
-
             const pf = document.getElementById('announcementsFilterPriority')?.value || '';
             const st = document.getElementById('announcementsSearch')?.value.toLowerCase().trim() || '';
 
@@ -3248,18 +3484,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         // ============================================
         window.renderDashboard = function() {
             if (currentUserData?.role === 'student') return;
-
             const active = students.filter(s => s.status === 'active' || !s.status);
             const pending = students.filter(s => s.status === 'pending');
-
             document.getElementById('statTotalStudents').textContent = students.length;
             document.getElementById('statActiveStudents').textContent = active.length;
             document.getElementById('statPendingStudents').textContent = pending.length;
             document.getElementById('statTotalTeachers').textContent = teachers.length;
-
             document.getElementById('sidebarStudentCount').textContent = active.length;
             document.getElementById('sidebarTeacherCount').textContent = teachers.length;
-
             const pendingCountEl = document.getElementById('sidebarPendingCount');
             if (pendingCountEl) {
                 pendingCountEl.textContent = pending.length;
@@ -3410,10 +3642,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             if (!tbody) return;
             const pending = students.filter(m => m.status === 'pending');
             document.getElementById('pendingCount').textContent = pending.length;
-
             const badge = document.getElementById('sidebarPendingCount');
             if (badge) { badge.textContent = pending.length; badge.style.display = pending.length > 0 ? '' : 'none'; }
-
             if (pending.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;">Nta bakandida</td></tr>`;
                 return;
@@ -3443,8 +3673,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     await setDoc(doc(db, 'users', m.uid), {
                         uid: m.uid, name: m.name, email: m.email, photo: m.photo,
                         role: 'student', studentId: m.id, studentNumber: m.studentId,
-                        level: m.level,
-                        birthday: m.birthday || null,
+                        level: m.level, birthday: m.birthday || null,
                         schoolName: currentUserData.schoolName || 'Ishuri Ryacu',
                         createdAt: serverTimestamp()
                     });
@@ -3476,10 +3705,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             tbody.innerHTML = users.map(u => {
                 const roleBadge = u.role === 'super_admin'
                     ? `<span class="role-badge super_admin">Super Admin</span>`
-                    : u.role === 'admin'
-                    ? `<span class="role-badge admin">Admin</span>`
-                    : u.role === 'teacher'
-                    ? `<span class="role-badge teacher">Umwarimu</span>`
+                    : u.role === 'admin' ? `<span class="role-badge admin">Admin</span>`
+                    : u.role === 'teacher' ? `<span class="role-badge teacher">Umwarimu</span>`
                     : `<span class="role-badge student">Student</span>`;
                 return `<tr>
                     <td><strong>${u.name || '-'}</strong></td>
@@ -3613,23 +3840,18 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             if (!tbody) return;
             const lf = document.getElementById('gradesFilterLevel')?.value || '';
             const tf = document.getElementById('gradesFilterTerm')?.value || '';
-
             let filtered = [...grades];
             if (lf) filtered = filtered.filter(g => {
                 const s = students.find(x => x.id === g.studentId);
                 return s && s.level === lf;
             });
             if (tf) filtered = filtered.filter(g => g.term === tf);
-
             filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-
             document.getElementById('gradesCount').textContent = filtered.length;
-
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;">Nta manota</td></tr>`;
                 return;
             }
-
             tbody.innerHTML = filtered.map(g => {
                 const s = students.find(x => x.id === g.studentId);
                 const studentName = s ? s.name : g.studentName || '-';
@@ -3681,17 +3903,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 await addDoc(collection(db, 'grades'), {
-                    studentId,
-                    studentName: s.name,
-                    subject,
-                    term,
-                    marks,
-                    maxMarks: 100,
-                    grade: calculateGrade(marks),
-                    teacher,
-                    date,
-                    createdAt: serverTimestamp(),
-                    createdBy: currentUser.uid
+                    studentId, studentName: s.name, subject, term, marks,
+                    maxMarks: 100, grade: calculateGrade(marks), teacher, date,
+                    createdAt: serverTimestamp(), createdBy: currentUser.uid
                 });
                 showToast(`✅ Amanota yabitswe!`, 'success');
                 closeModal('addGradeModal');
@@ -3710,7 +3924,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         // ============================================
-        // NOTES (AMASOMO)
+        // NOTES
         // ============================================
         window.openAddNoteModal = function() {
             currentNoteFile = null;
@@ -3757,10 +3971,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 closeModal('addNoteModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-save"></i> Bika';
-
                 await loadAllData();
                 renderNotes();
-
             } catch (error) {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
@@ -3771,14 +3983,11 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         window.renderNotes = function() {
             const list = document.getElementById('notesList');
             if (!list) return;
-
             const lf = document.getElementById('notesFilterLevel')?.value || '';
             const st = document.getElementById('notesSearch')?.value.toLowerCase().trim() || '';
-
             let filtered = [...notes];
             if (lf) filtered = filtered.filter(n => n.level === lf);
             if (st) filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(st) || (n.subject||'').toLowerCase().includes(st));
-
             filtered.sort((a, b) => (b.createdAt?.toDate?.() || 0) - (a.createdAt?.toDate?.() || 0));
 
             if (filtered.length === 0) {
@@ -3790,7 +3999,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 const date = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
-
                 return `<div class="saved-card">
                     <div class="saved-info">
                         <h3><i class="fas ${fileIcon}"></i> ${n.title}</h3>
@@ -3820,7 +4028,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         // ============================================
-        // EXAMS (IBIZAMINI) - ADMIN
+        // EXAMS
         // ============================================
         window.openAddExamModal = function() {
             if (currentUserData?.role === 'student') { showToast('Ntushobora kongeraho ikizamini', 'error'); return; }
@@ -3858,19 +4066,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turabika...';
 
             try {
-                // Upload files first (one by one)
                 const uploadedFiles = [];
                 for (let i = 0; i < examPendingFiles.length; i++) {
                     const fItem = examPendingFiles[i];
                     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Turazamura file ${i+1}/${examPendingFiles.length}...`;
                     try {
                         const url = await uploadToCloudinary(fItem.file, true);
-                        uploadedFiles.push({
-                            url,
-                            name: fItem.name,
-                            size: fItem.size,
-                            type: fItem.type
-                        });
+                        uploadedFiles.push({ url, name: fItem.name, size: fItem.size, type: fItem.type });
                     } catch (err) {
                         console.warn('File upload failed:', fItem.name, err);
                         showToast(`⚠️ ${fItem.name} ntiyazamuwe`, 'warning');
@@ -3884,16 +4086,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 }
 
                 await addDoc(collection(db, 'exams'), {
-                    title,
-                    subject,
-                    type,
-                    level,
-                    term,
-                    date,
-                    maxMarks,
-                    description,
-                    photoUrl,
-                    files: uploadedFiles,
+                    title, subject, type, level, term, date, maxMarks, description,
+                    photoUrl, files: uploadedFiles,
                     createdBy: currentUser.uid,
                     createdByName: currentUserData.name || 'Admin',
                     createdAt: serverTimestamp()
@@ -3903,13 +4097,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 closeModal('addExamModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-save"></i> Bika';
-
                 examPendingFiles = [];
                 newExamPhoto = null;
-
                 await loadAllData();
                 renderExams();
-
             } catch (error) {
                 showToast('❌ ' + error.message, 'error');
                 btn.disabled = false;
@@ -3935,34 +4126,22 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <div class="exam-file-actions">
                             <a href="${f.url}" target="_blank" class="exam-file-btn view" title="Reba"><i class="fas fa-eye"></i></a>
                             <a href="${f.url}" download="${escapeHtml(f.name)}" target="_blank" class="exam-file-btn download" title="Kurura"><i class="fas fa-download"></i></a>
-                            ${currentUserData?.role !== 'student' ? `<button class="exam-file-btn delete" onclick="deleteExamFile('${f.url}')" title="Siba file"><i class="fas fa-trash"></i></button>` : ''}
                         </div>
                     </div>`;
                 }).join('')}
             </div>`;
         }
 
-        window.deleteExamFile = function() {
-            // Placeholder - deletion of individual files needs examId; leave for future
-            showToast('Siba ikizamini cyose kugira ngo ukureho amafishi', 'warning');
-        };
-
         window.renderExams = function() {
             const list = document.getElementById('examsList');
             if (!list) return;
-
             const lf = document.getElementById('examsFilterLevel')?.value || '';
             const tf = document.getElementById('examsFilterType')?.value || '';
             const st = document.getElementById('examsSearch')?.value.toLowerCase().trim() || '';
-
             let filtered = [...exams];
             if (lf) filtered = filtered.filter(e => e.level === lf);
             if (tf) filtered = filtered.filter(e => e.type === tf);
-            if (st) filtered = filtered.filter(e =>
-                (e.title||'').toLowerCase().includes(st) ||
-                (e.subject||'').toLowerCase().includes(st)
-            );
-
+            if (st) filtered = filtered.filter(e => (e.title||'').toLowerCase().includes(st) || (e.subject||'').toLowerCase().includes(st));
             filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
             if (filtered.length === 0) {
@@ -4015,14 +4194,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             document.getElementById('examPhotoViewerModal').classList.add('active');
         };
 
-        // ============================================
-        // EXAMS - STUDENT
-        // ============================================
         window.renderMyExams = function() {
             const list = document.getElementById('myExamsList');
             if (!list) return;
-
-            // Populate subject filter once
             const subjectSelect = document.getElementById('myExamsFilterSubject');
             if (subjectSelect && subjectSelect.options.length <= 1) {
                 const subjects = [...new Set(exams.map(e => e.subject).filter(Boolean))];
@@ -4033,24 +4207,17 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     subjectSelect.appendChild(opt);
                 });
             }
-
             const tf = document.getElementById('myExamsFilterType')?.value || '';
             const sf = document.getElementById('myExamsFilterSubject')?.value || '';
             const st = document.getElementById('myExamsSearch')?.value.toLowerCase().trim() || '';
-
             const myLevel = currentUserData?.level || '';
             const m = students.find(x => x.id === currentUserData?.studentId);
             const myActualLevel = m?.level || myLevel;
-
             let filtered = [...exams];
             if (myActualLevel) filtered = filtered.filter(e => e.level === myActualLevel);
             if (tf) filtered = filtered.filter(e => e.type === tf);
             if (sf) filtered = filtered.filter(e => e.subject === sf);
-            if (st) filtered = filtered.filter(e =>
-                (e.title||'').toLowerCase().includes(st) ||
-                (e.subject||'').toLowerCase().includes(st)
-            );
-
+            if (st) filtered = filtered.filter(e => (e.title||'').toLowerCase().includes(st) || (e.subject||'').toLowerCase().includes(st));
             filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
             if (filtered.length === 0) {
@@ -4086,16 +4253,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         // ============================================
-        // NOTES PAYMENTS (ADMIN)
+        // NOTES PAYMENTS
         // ============================================
         window.renderNotesPayments = async function() {
             await loadAllData();
             const list = document.getElementById('notesPaymentsList');
             if (!list) return;
-
             const pending = notesPayments.filter(p => p.status === 'pending');
             const confirmed = notesPayments.filter(p => p.status === 'confirmed');
-
             const badge = document.getElementById('sidebarNotesPaymentsCount');
             if (badge) { badge.textContent = pending.length; badge.style.display = pending.length > 0 ? 'flex' : 'none'; }
 
@@ -4122,7 +4287,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>`;
                 }).join('');
             }
-
             if (confirmed.length > 0) {
                 html += `<div class="section-title" style="margin-top:24px;"><i class="fas fa-history"></i><span>Byemejwe</span></div>`;
                 html += confirmed.map(p => {
@@ -4138,7 +4302,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>`;
                 }).join('');
             }
-
             if (!html) {
                 html = `<div class="empty-state"><div class="icon"><i class="fas fa-check-circle"></i></div><h3>Nta bwishyu burahari</h3></div>`;
             }
@@ -4150,18 +4313,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             try {
                 const payment = notesPayments.find(p => p.id === id);
                 if (!payment) return;
-
-                await updateDoc(doc(db, 'notesPayments', id), {
-                    status: 'confirmed',
-                    confirmedAt: serverTimestamp()
-                });
-
+                await updateDoc(doc(db, 'notesPayments', id), { status: 'confirmed', confirmedAt: serverTimestamp() });
                 await updateDoc(doc(db, 'students', payment.studentId), {
                     subscriptionStatus: 'active',
                     subscriptionStartDate: serverTimestamp(),
                     subscriptionEndDate: new Date(Date.now() + 14*24*60*60*1000)
                 });
-
                 showToast('✅ Amasomo yafunguriwe uyu munyeshuri!', 'success');
                 await loadAllData();
                 renderNotesPayments();
@@ -4169,20 +4326,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         window.rejectNotePayment = async function(id) {
-            if (!confirm('Anze ubu bwishyu?')) return;
+            if (!confirm('Anze ubu bwishiyu?')) return;
             try {
                 const payment = notesPayments.find(p => p.id === id);
                 if (!payment) return;
-
-                await updateDoc(doc(db, 'notesPayments', id), {
-                    status: 'rejected',
-                    rejectedAt: serverTimestamp()
-                });
-
-                await updateDoc(doc(db, 'students', payment.studentId), {
-                    subscriptionStatus: 'inactive'
-                });
-
+                await updateDoc(doc(db, 'notesPayments', id), { status: 'rejected', rejectedAt: serverTimestamp() });
+                await updateDoc(doc(db, 'students', payment.studentId), { subscriptionStatus: 'inactive' });
                 showToast('❌ Byanzwe', 'warning');
                 renderNotesPayments();
             } catch (error) { showToast('❌ ' + error.message, 'error'); }
@@ -4191,17 +4340,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         window.renderMyNotes = function() {
             const list = document.getElementById('myNotesList');
             if (!list) return;
-
             const m = students.find(x => x.id === currentUserData.studentId);
             const hasSubscription = m && m.subscriptionStatus === 'active';
-
             const lf = document.getElementById('myNotesFilterLevel')?.value || '';
             const st = document.getElementById('myNotesSearch')?.value.toLowerCase().trim() || '';
-
             let filtered = [...notes];
             if (lf) filtered = filtered.filter(n => n.level === lf);
             if (st) filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(st) || (n.subject||'').toLowerCase().includes(st));
-
             filtered.sort((a, b) => (b.createdAt?.toDate?.() || 0) - (a.createdAt?.toDate?.() || 0));
 
             if (filtered.length === 0) {
@@ -4213,7 +4358,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 const date = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
-
                 let actionHtml = '';
                 if (hasSubscription) {
                     actionHtml = `
@@ -4221,11 +4365,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <a href="${n.fileUrl}" download="${n.fileName || 'file.pdf'}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
                     `;
                 } else {
-                    actionHtml = `
-                        <button class="btn btn-warning btn-sm" onclick="openSubscriptionModal()"><i class="fas fa-lock"></i> Fungura (Wishyure)</button>
-                    `;
+                    actionHtml = `<button class="btn btn-warning btn-sm" onclick="openSubscriptionModal()"><i class="fas fa-lock"></i> Fungura (Wishyure)</button>`;
                 }
-
                 return `<div class="saved-card">
                     <div class="saved-info">
                         <h3><i class="fas ${fileIcon}"></i> ${n.title}</h3>
@@ -4236,9 +4377,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                             ${n.description ? `<span><i class="fas fa-info-circle"></i> ${n.description}</span>` : ''}
                         </div>
                     </div>
-                    <div class="saved-actions">
-                        ${actionHtml}
-                    </div>
+                    <div class="saved-actions">${actionHtml}</div>
                 </div>`;
             }).join('');
         };
@@ -4248,20 +4387,16 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         // ============================================
         window.renderMyDashboard = function() {
             if (currentUserData?.role !== 'student') return;
-
             const studentId = currentUserData.studentId;
             const m = students.find(x => x.id === studentId);
-
             if (!m) {
                 document.getElementById('studentProfileCard').innerHTML = `<div class="readonly-notice"><i class="fas fa-exclamation-triangle"></i>Nta makuru abonetse.</div>`;
                 return;
             }
-
             const initials = m.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
             const photoHtml = m.photo
                 ? `<img src="${m.photo}" class="member-profile-photo" onerror="this.outerHTML='<div class=\\'member-profile-avatar\\'>${initials}</div>'">`
                 : `<div class="member-profile-avatar">${initials}</div>`;
-
             document.getElementById('studentProfileCard').innerHTML = `
                 ${photoHtml}
                 <div class="member-profile-info">
@@ -4280,14 +4415,11 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             const now = new Date();
             const daysRw = ['Ku cyumweru', 'Kuwa mbere', 'Kuwa kabiri', 'Kuwa gatatu', 'Kuwa kane', 'Kuwa gatanu', 'Kuwa gatandatu'];
             const monthsRw = ['Mutarama', 'Gashyantare', 'Werurwe', 'Mata', 'Gicurasi', 'Kamena', 'Nyakanga', 'Kanama', 'Nzeli', 'Ukwakira', 'Ugushyingo', 'Ukuboza'];
-
             document.getElementById('studentWelcomeName').textContent = firstName;
             document.getElementById('studentWelcomeGreeting').innerHTML = `<i class="fas fa-sun" style="color:#f59e0b;"></i> Umunsi mwiza wa kazi`;
             document.getElementById('studentWelcomeDate').textContent = `${daysRw[now.getDay()]}, ${now.getDate()} ${monthsRw[now.getMonth()]} ${now.getFullYear()}`;
-
             renderSubscriptionStatus(m);
 
-            // Recent Announcements (3 za mbere)
             const dashAnnList = document.getElementById('studentDashboardAnnouncementsList');
             if (dashAnnList) {
                 const recentAnn = announcements.slice(0, 3);
@@ -4305,15 +4437,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                                     <span><i class="fas fa-clock"></i> ${timeAgo(date)}</span>
                                 </div>
                             </div>
-                            <div class="saved-actions">
-                                <button class="btn btn-outline btn-sm">Reba</button>
-                            </div>
+                            <div class="saved-actions"><button class="btn btn-outline btn-sm">Reba</button></div>
                         </div>`;
                     }).join('');
                 }
             }
 
-            // Recent Exams (3 za mbere) - Student dashboard
             const dashExamsList = document.getElementById('studentDashboardExamsList');
             if (dashExamsList) {
                 let myLevelExams = exams.filter(e => !m.level || e.level === m.level);
@@ -4335,9 +4464,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                                     ${fileCount > 0 ? `<span><i class="fas fa-paperclip"></i> ${fileCount} file(s)</span>` : ''}
                                 </div>
                             </div>
-                            <div class="saved-actions">
-                                <button class="btn btn-outline btn-sm">Reba</button>
-                            </div>
+                            <div class="saved-actions"><button class="btn btn-outline btn-sm">Reba</button></div>
                         </div>`;
                     }).join('');
                 }
@@ -4345,7 +4472,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
             const myNotesList = document.getElementById('studentDashboardNotesList');
             const hasSubscription = m.subscriptionStatus === 'active';
-
             if (!hasSubscription) {
                 myNotesList.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-lock"></i></div><h3>Nturabona Amasomo</h3><p>Wishyure mbere kugira ngo ubone amasomo yawe.</p></div>`;
             } else {
@@ -4357,9 +4483,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <div class="saved-card">
                             <div class="saved-info">
                                 <h3><i class="fas fa-book"></i> ${n.title}</h3>
-                                <div class="saved-meta">
-                                    <span><i class="fas fa-book"></i> ${n.subject}</span>
-                                </div>
+                                <div class="saved-meta"><span><i class="fas fa-book"></i> ${n.subject}</span></div>
                             </div>
                             <div class="saved-actions">
                                 <a href="${n.fileUrl}" target="_blank" class="btn btn-primary" style="padding: 8px 16px;"><i class="fas fa-download"></i> Kurura</a>
@@ -4371,28 +4495,25 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         // ============================================
-        // SUBSCRIPTION (KWISHYURA AMASOMO)
+        // SUBSCRIPTION
         // ============================================
         window.renderSubscriptionStatus = function(m) {
             const container = document.getElementById('subscriptionStatusContainer');
             if (!container) return;
-
             if (m.subscriptionStatus === 'active') {
                 container.innerHTML = `
                     <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.05)); border: 1.5px solid rgba(16,185,129,0.3); border-radius: 16px; padding: 20px; text-align: center;">
                         <i class="fas fa-check-circle" style="font-size: 40px; color: var(--success); margin-bottom: 12px;"></i>
                         <h3 style="font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px;">Wishyuye Amasomo!</h3>
                         <p style="font-size: 13.5px; color: var(--text-secondary);">Ubu ushobora kubona no gukurura amasomo yose ari muri sisitemu.</p>
-                    </div>
-                `;
+                    </div>`;
             } else if (m.subscriptionStatus === 'pending') {
                 container.innerHTML = `
                     <div style="background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05)); border: 1.5px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 20px; text-align: center;">
                         <i class="fas fa-clock" style="font-size: 40px; color: var(--warning); margin-bottom: 12px;"></i>
                         <h3 style="font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px;">Ubwishyu Butegereje Kwemezwa</h3>
                         <p style="font-size: 13.5px; color: var(--text-secondary);">Admin aracyemeza ubwishyu bwawe. Urabyihanganira gato.</p>
-                    </div>
-                `;
+                    </div>`;
             } else {
                 container.innerHTML = `
                     <div style="background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05)); border: 1.5px solid rgba(239,68,68,0.3); border-radius: 16px; padding: 20px; text-align: center;">
@@ -4402,8 +4523,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <button class="btn btn-primary" onclick="openSubscriptionModal()" style="width: 100%; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 700;">
                             <i class="fas fa-hand-holding-usd"></i> Wishyure Ubu (1,000 RWF)
                         </button>
-                    </div>
-                `;
+                    </div>`;
             }
         };
 
@@ -4418,38 +4538,25 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             const phone = document.getElementById('subPhone').value.trim();
             const method = document.getElementById('subMethod').value;
             if (!phone) { showToast('Shyiramo nimero ya telefone yawe', 'warning'); return; }
-
             const studentId = currentUserData.studentId;
             const m = students.find(x => x.id === studentId);
             if (!m) return;
-
             const btn = document.getElementById('subBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turaohereza...';
-
             try {
                 await addDoc(collection(db, 'notesPayments'), {
-                    studentId: m.id,
-                    studentName: m.name,
-                    noteId: 'subscription',
-                    noteTitle: 'Subscription (Amasomo Yose)',
-                    amount: 1000,
-                    method: method,
-                    phone: phone,
-                    status: 'pending',
-                    createdAt: serverTimestamp(),
+                    studentId: m.id, studentName: m.name,
+                    noteId: 'subscription', noteTitle: 'Subscription (Amasomo Yose)',
+                    amount: 1000, method: method, phone: phone,
+                    status: 'pending', createdAt: serverTimestamp(),
                 });
-
-                await updateDoc(doc(db, 'students', studentId), {
-                    subscriptionStatus: 'pending'
-                });
-
+                await updateDoc(doc(db, 'students', studentId), { subscriptionStatus: 'pending' });
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
                 showToast(`✅ Ubwishyu bwoherejwe! Tegereza Admin`, 'success');
                 closeModal('studentSubscriptionModal');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Ohereza';
-
                 await loadAllData();
                 renderMyDashboard();
             } catch (error) {
@@ -4466,12 +4573,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             const depts = { Science: 0, Arts: 0, Commerce: 0, Technical: 0 };
             const active = students.filter(m => m.status === 'active' || !m.status);
             active.forEach(m => { if (depts[m.department] !== undefined) depts[m.department]++; });
-
             document.getElementById('deptStatScience').textContent = depts.Science;
             document.getElementById('deptStatArts').textContent = depts.Arts;
             document.getElementById('deptStatCommerce').textContent = depts.Commerce;
             document.getElementById('deptStatTechnical').textContent = depts.Technical;
-
             const ctx = document.getElementById('deptChart')?.getContext('2d');
             if (!ctx) return;
             if (deptChartInstance) deptChartInstance.destroy();
@@ -4573,7 +4678,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         };
 
         window.exportData = function() {
-            const data = { students, teachers, grades, notes, exams, announcements, exported: new Date().toISOString() };
+            const data = { students, teachers, grades, notes, exams, announcements, posts, exported: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `student-data-${new Date().toISOString().split('T')[0]}.json`; a.click();
@@ -4591,38 +4696,29 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         });
 
         // ============================================
-        // PWA INSTALL LOGIC
+        // PWA INSTALL
         // ============================================
         let deferredPrompt;
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             const installBtnFloat = document.getElementById('pwaInstallBtn');
-            if (installBtnFloat) {
-                installBtnFloat.classList.remove('hidden');
-            }
+            if (installBtnFloat) installBtnFloat.classList.remove('hidden');
         });
 
         window.installPWA = async function() {
             const installBtnFloat = document.getElementById('pwaInstallBtn');
-
             if (!deferredPrompt) {
                 alert("Kuri iyi browser, ushobora gukanda 'Add to Home Screen' mu menu ya browser yawe.");
                 return;
             }
-
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`Umukoresha yahisemo: ${outcome}`);
-
             if (outcome === 'accepted') {
                 if (installBtnFloat) installBtnFloat.classList.add('hidden');
-                if (typeof showToast === 'function') {
-                    showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
-                }
+                if (typeof showToast === 'function') showToast('✅ App yashyizwe kuri telefone yawe!', 'success');
             }
-
             deferredPrompt = null;
         };
 
