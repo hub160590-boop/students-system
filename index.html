@@ -18,15 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    
-    <!-- PDF.js for reading PDFs -->
-    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-    <script>
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-        }
-    </script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -1152,534 +1143,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     display: flex; align-items: center; gap: 10px;
 }
 .section-title i { color: var(--primary); }
-
-/* ============================================
-   QUIZ SYSTEM STYLES (NSHYA)
-   ============================================ */
-.quiz-modal-content {
-    max-width: 800px !important;
-}
-
-.quiz-loading-screen {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.quiz-loading-icon {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-    background: rgba(56, 189, 248, 0.1);
-    border-radius: 50%;
-    border: 3px solid var(--primary);
-    animation: quizBrainPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes quizBrainPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
-    50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(56, 189, 248, 0.8); }
-}
-
-.quiz-loading-title {
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: var(--text);
-}
-
-.quiz-loading-status {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-}
-
-.quiz-progress-bar {
-    width: 100%;
-    height: 10px;
-    background: var(--border);
-    border-radius: 50px;
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.quiz-progress-fill {
-    height: 100%;
-    background: var(--gradient-1);
-    border-radius: 50px;
-    transition: width 0.4s ease;
-    width: 0%;
-}
-
-.quiz-header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(56,189,248,0.12), rgba(14,165,233,0.06));
-    border-radius: 14px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-    border: 1.5px solid rgba(56,189,248,0.25);
-}
-
-.quiz-timer-display {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    background: var(--bg-card);
-    border: 2px solid var(--primary);
-    border-radius: 50px;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--primary);
-    font-family: 'Courier New', monospace;
-}
-
-.quiz-timer-display.danger {
-    border-color: var(--danger);
-    color: var(--danger);
-    animation: quizPulseDanger 1s infinite;
-}
-
-@keyframes quizPulseDanger {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
-    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
-}
-
-.quiz-progress-info {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-    min-width: 150px;
-}
-
-.quiz-progress-label {
-    font-size: 13px;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.quiz-progress-track {
-    width: 100%;
-    height: 10px;
-    background: var(--border);
-    border-radius: 50px;
-    overflow: hidden;
-}
-
-.quiz-progress-track-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
-    border-radius: 50px;
-    transition: width 0.4s ease;
-    width: 0%;
-}
-
-.quiz-question-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 18px;
-    transition: all 0.3s;
-}
-
-.quiz-q-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-}
-
-.quiz-q-number {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--primary);
-    background: rgba(56,189,248,0.12);
-    padding: 5px 14px;
-    border-radius: 50px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.quiz-q-points {
-    font-size: 12px;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.quiz-q-text {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 18px;
-    line-height: 1.5;
-}
-
-.quiz-q-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.quiz-option-btn {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    background: var(--bg);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14.5px;
-    font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
-    position: relative;
-    width: 100%;
-}
-
-.quiz-option-btn:hover:not(:disabled) {
-    border-color: var(--primary);
-    background: rgba(56,189,248,0.06);
-    transform: translateX(3px);
-}
-
-.quiz-option-btn.selected {
-    background: linear-gradient(135deg, rgba(56,189,248,0.18), rgba(14,165,233,0.1));
-    border-color: var(--primary);
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.quiz-option-btn.selected::after {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    right: 16px;
-    font-size: 18px;
-    color: var(--primary);
-}
-
-.quiz-option-letter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: white;
-    font-weight: 800;
-    font-size: 13px;
-    flex-shrink: 0;
-}
-
-.quiz-option-btn.selected .quiz-option-letter {
-    background: var(--primary-dark);
-}
-
-.quiz-nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.quiz-result-screen {
-    text-align: center;
-    padding: 30px 20px;
-}
-
-.quiz-result-icon {
-    font-size: 80px;
-    margin-bottom: 20px;
-    animation: quizBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes quizBounceIn {
-    from { opacity: 0; transform: scale(0.3); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.quiz-result-title {
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 10px;
-}
-
-.quiz-result-title.passed {
-    background: linear-gradient(135deg, #10b981, #06b6d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.quiz-result-title.failed {
-    color: var(--danger);
-}
-
-.quiz-result-score {
-    font-size: 64px;
-    font-weight: 900;
-    margin: 20px 0;
-    line-height: 1;
-}
-
-.quiz-result-score.passed { color: var(--success); }
-.quiz-result-score.failed { color: var(--danger); }
-
-.quiz-result-message {
-    font-size: 15px;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-    line-height: 1.6;
-}
-
-.quiz-result-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.quiz-result-stat {
-    background: var(--bg);
-    padding: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-}
-
-.quiz-result-stat-value {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-.quiz-result-stat-label {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 4px;
-    font-weight: 600;
-}
-
-.quiz-review-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 14px;
-}
-
-.quiz-review-item.correct {
-    border-left: 4px solid var(--success);
-}
-
-.quiz-review-item.incorrect {
-    border-left: 4px solid var(--danger);
-}
-
-.quiz-review-question {
-    font-weight: 700;
-    font-size: 15px;
-    margin-bottom: 12px;
-    color: var(--text);
-}
-
-.quiz-review-answer {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 13.5px;
-    margin-bottom: 10px;
-}
-
-.quiz-review-answer span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.quiz-review-explanation {
-    background: rgba(56,189,248,0.08);
-    border-left: 3px solid var(--primary);
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.6;
-    margin-top: 10px;
-}
-
-.quiz-history-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 22px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    transition: var(--transition);
-}
-
-.quiz-history-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
-
-.quiz-history-score {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    font-size: 22px;
-    font-weight: 900;
-    color: white;
-    flex-shrink: 0;
-}
-
-.quiz-history-score.passed {
-    background: var(--gradient-2);
-}
-
-.quiz-history-score.failed {
-    background: var(--gradient-3);
-}
-
-/* ============================================
-   XP & PROGRESS STYLES
-   ============================================ */
-.xp-card {
-    background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(167,139,250,0.05));
-    border: 1.5px solid rgba(139,92,246,0.3);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.xp-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--gradient-purple);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: white;
-    flex-shrink: 0;
-    box-shadow: 0 8px 25px rgba(139,92,246,0.4);
-}
-
-.xp-info {
-    flex: 1;
-    min-width: 150px;
-}
-
-.xp-level {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--purple);
-    margin-bottom: 4px;
-}
-
-.xp-progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--border);
-    border-radius: 50px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-
-.xp-progress-fill {
-    height: 100%;
-    background: var(--gradient-purple);
-    border-radius: 50px;
-    transition: width 0.5s ease;
-}
-
-.xp-text {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 4px;
-    font-weight: 600;
-}
-
-/* ============================================
-   QUIZ LOADING OVERLAY (inside modal)
-   ============================================ */
-.quiz-loading-overlay {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.quiz-loading-spinner {
-    width: 80px;
-    height: 80px;
-    border: 5px solid var(--border);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: quizSpin 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes quizSpin {
-    to { transform: rotate(360deg); }
-}
-
-.quiz-loading-message {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-}
-
-.quiz-loading-submessage {
-    font-size: 13px;
-    color: var(--text-secondary);
-}
-
-/* ============================================
-   PDF PREVIEW MODAL
-   ============================================ */
-.pdf-viewer-modal {
-    max-width: 900px !important;
-}
-
-.pdf-viewer-frame {
-    width: 100%;
-    height: 70vh;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: white;
-}
     </style>
 </head>
 <body>
@@ -1769,10 +1232,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
                 <div class="nav-item student-only" onclick="switchPage('my-notes', this)" style="display: none;">
                     <i class="fas fa-book"></i><span>Amasomo Yanjye</span>
-                </div>
-                <div class="nav-item student-only" onclick="switchPage('my-quizzes', this)" style="display: none;">
-                    <i class="fas fa-brain"></i><span>Quizzes Zanjye</span>
-                    <span class="count" id="sidebarQuizCount" style="display:none;">0</span>
                 </div>
                 <div class="nav-item student-only" onclick="switchPage('my-exams', this)" style="display: none;">
                     <i class="fas fa-file-alt"></i><span>Ibizamini Byanjye</span>
@@ -1914,7 +1373,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
 
                     <div class="member-profile-card" id="studentProfileCard"></div>
-                    <div id="studentXpContainer"></div>
                     <div style="margin-top: 20px; margin-bottom: 24px;" id="subscriptionStatusContainer"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
@@ -1922,12 +1380,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <span>Amatangazo aheruka</span>
                     </div>
                     <div class="saved-list" id="studentDashboardAnnouncementsList"></div>
-
-                    <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-brain"></i>
-                        <span>Quizzes Zawe (Bya vuba)</span>
-                    </div>
-                    <div class="saved-list" id="studentDashboardQuizzesList"></div>
 
                     <div class="section-title" style="margin-top: 30px;">
                         <i class="fas fa-file-alt"></i>
@@ -1940,50 +1392,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <span>Amasomo Yawe (Notes)</span>
                     </div>
                     <div class="saved-list" id="studentDashboardNotesList"></div>
-                </div>
-
-                <!-- ============ STUDENT MY QUIZZES PAGE ============ -->
-                <div class="page" id="page-my-quizzes">
-                    <div class="page-header">
-                        <div>
-                            <h1>🧠 Quizzes Zanjye</h1>
-                            <p>Kora quizzes zishingiye kuri PDF cyangwa reba amanota yawe</p>
-                        </div>
-                    </div>
-
-                    <div class="readonly-notice">
-                        <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
-                        <span>Kanda <strong>"Kora Quiz"</strong> kuri PDF iyo ari yo yose mu <strong>"Amasomo Yanjye"</strong> kugira ngo AI ikore ibibazo.</span>
-                    </div>
-
-                    <div class="stats-grid" id="quizStatsGrid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                            <div class="stat-value" id="statQuizzesTaken">0</div>
-                            <div class="stat-label">Quizzes Zakozwe</div>
-                        </div>
-                        <div class="stat-card success">
-                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                            <div class="stat-value" id="statQuizzesPassed">0</div>
-                            <div class="stat-label">Zatsinzwe</div>
-                        </div>
-                        <div class="stat-card warning">
-                            <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                            <div class="stat-value" id="statQuizAvg">0%</div>
-                            <div class="stat-label">Impuzandengo</div>
-                        </div>
-                        <div class="stat-card purple">
-                            <div class="stat-icon"><i class="fas fa-star"></i></div>
-                            <div class="stat-value" id="statTotalXP">0</div>
-                            <div class="stat-label">XP Yose</div>
-                        </div>
-                    </div>
-
-                    <div class="section-title" style="margin-top: 30px;">
-                        <i class="fas fa-history"></i>
-                        <span>Quiz History</span>
-                    </div>
-                    <div class="saved-list" id="quizHistoryList"></div>
                 </div>
 
                 <!-- ============ STUDENT MY EXAMS PAGE ============ -->
@@ -2057,13 +1465,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <div class="page-header">
                         <div>
                             <h1>📚 Amasomo Yanjye</h1>
-                            <p>Reba, kurura, cyangwa ukore quiz kuri PDF z'amasomo.</p>
+                            <p>Reba no gukurura amafishi y'amasomo wahawe n'abarimu.</p>
                         </div>
                     </div>
 
                     <div class="readonly-notice">
-                        <i class="fas fa-brain" style="color: var(--purple);"></i>
-                        <span>Kanda <strong>"🧠 Kora Quiz"</strong> kuri PDF iyo ari yo yose kugira ngo AI ikore ibibazo 10 bikwegere.</span>
+                        <i class="fas fa-eye"></i>
+                        <span>Iyi ni <strong>amasomo yawe</strong> — ureba gusa.</span>
                     </div>
 
                     <div class="filter-bar">
@@ -2515,17 +1923,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <h3><i class="fas fa-school"></i> Amakuru y'Ishuri</h3>
                         <div class="form-group"><label>Izina ry'Ishuri</label><input type="text" class="form-control" value="Ishuri Ryacu" id="schoolName"></div>
                         <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Bika</button>
-                    </div>
-                    <div class="settings-card">
-                        <h3><i class="fas fa-brain"></i> Quiz System (AI)</h3>
-                        <div class="form-group">
-                            <label>Gemini API Key (kubika nabi)</label>
-                            <input type="password" class="form-control" id="geminiApiKeyInput" placeholder="AIza...">
-                            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">
-                                <i class="fas fa-info-circle"></i> Reba <a href="https://aistudio.google.com/apikey" target="_blank" style="color: var(--primary);">Aistudio Google</a> kubona key.
-                            </p>
-                        </div>
-                        <button class="btn btn-primary" onclick="saveGeminiKey()"><i class="fas fa-save"></i> Bika Key</button>
                     </div>
                     <div class="settings-card">
                         <h3><i class="fas fa-palette"></i> Ibara</h3>
@@ -2996,33 +2393,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         </div>
     </div>
 
-    <!-- ============ QUIZ MODAL (NEW) ============ -->
-    <div class="modal-overlay" id="quizModal">
-        <div class="modal quiz-modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-brain"></i> <span id="quizModalTitle">Quiz</span></h3>
-                <button class="close-btn" onclick="closeQuizModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="quizModalBody">
-                <!-- Dynamic content -->
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ QUIZ LOADING MODAL ============ -->
-    <div class="modal-overlay" id="quizLoadingModal">
-        <div class="modal quiz-modal-content">
-            <div class="quiz-loading-screen">
-                <div class="quiz-loading-icon">🧠</div>
-                <div class="quiz-loading-title">AI Iri Gukora Quiz...</div>
-                <div class="quiz-loading-status" id="quizLoadingStatus">Turazamura PDF...</div>
-                <div class="quiz-progress-bar">
-                    <div class="quiz-progress-fill" id="quizLoadingProgressFill"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -3034,7 +2404,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         import {
             getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
             query, orderBy, where, serverTimestamp, setDoc, getDoc,
-            limit, onSnapshot, increment
+            limit, onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
         import {
             getAuth, signInWithEmailAndPassword,
@@ -3047,13 +2417,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         // ============================================
         const CLOUDINARY_CLOUD_NAME = "hgiajaqz";
         const CLOUDINARY_UPLOAD_PRESET = "students_system";
-
-        // ============================================
-        // GEMINI API KEY
-        // ============================================
-        // ⚠️ SHYIRAMO API KEY YAWE HANO
-        // Kubona: https://aistudio.google.com/apikey
-        let GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || 'AQ.Ab8RN6KNTHKuutvx6CUaKcpoe_quwiP9gzNVS1sdehWkfUxefQ';
 
         // ============================================
         // FIREBASE CONFIG
@@ -3084,7 +2447,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         let notesPayments = [];
         let announcements = [];
         let exams = [];
-        let quizAttempts = []; // NSHYA
         let announcementsUnsubscribe = null;
 
         let newStudentPhoto = null;
@@ -3093,14 +2455,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         let currentNoteFile = null;
         let newAnnImage = null;
         let newExamPhoto = null;
-        let examPendingFiles = [];
-
-        // Quiz state
-        let activeQuiz = null;
-        let quizAnswers = {};
-        let quizTimer = null;
-        let quizTimeLeft = 0;
-        let quizStartTime = null;
+        let examPendingFiles = []; // { file, id, name, size, type }
 
         // ============================================
         // HELPERS
@@ -3214,770 +2569,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         }
 
         // ============================================
-        // PDF TEXT EXTRACTION
-        // ============================================
-        async function extractTextFromPDF(pdfUrl) {
-            if (typeof pdfjsLib === 'undefined') {
-                throw new Error('PDF.js ntabwo yapakiwe neza');
-            }
-            
-            const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-            const totalPages = pdf.numPages;
-            const maxPages = Math.min(totalPages, 15);
-            
-            let fullText = '';
-            
-            for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
-                const page = await pdf.getPage(pageNum);
-                const textContent = await page.getTextContent();
-                const pageText = textContent.items.map(item => item.str).join(' ');
-                fullText += `\n--- Page ${pageNum} ---\n${pageText}\n`;
-            }
-            
-            return { text: fullText, totalPages };
-        }
-
-       // ============================================
-// GEMINI QUIZ GENERATION (IKORA NEZA)
-// ============================================
-async function generateQuizFromText(pdfText, subject, level, numQuestions = 10) {
-    
-    // ============================================
-    // 1. KUGENZURA API KEY
-    // ============================================
-  
-    
-    // ============================================
-    // 2. GUTEGURA TEXT
-    // ============================================
-    const maxChars = 30000;
-    const truncatedText = pdfText.length > maxChars 
-        ? pdfText.substring(0, maxChars) + '\n[... byakuwemo ...]'
-        : pdfText;
-    
-    const prompt = `You are an expert teacher creating a quiz from study material.
-
-SUBJECT: ${subject || 'General'}
-LEVEL: ${level || 'Secondary'}
-NUMBER OF QUESTIONS: ${numQuestions}
-
-STUDY MATERIAL:
-"""
-${truncatedText}
-"""
-
-INSTRUCTIONS:
-1. Create exactly ${numQuestions} multiple-choice questions based ONLY on the study material above.
-2. Each question MUST have exactly 4 options.
-3. Only ONE option is correct.
-4. Questions should test understanding, not just memorization.
-5. Mix difficulty: 3 easy, 4 medium, 3 hard.
-6. Add a brief explanation for each correct answer.
-
-RETURN FORMAT (STRICT JSON, no markdown, no extra text):
-{
-  "title": "Quiz title based on content",
-  "questions": [
-    {
-      "question": "Question text here?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "correctIndex": 0,
-      "explanation": "Why this is correct"
-    }
-  ]
-}`;
-
-    // ============================================
-    // 3. GUSUBIRAMO (RETRY) - MODEL NZIZA
-    // ============================================
-    let response = null;
-    let lastError = null;
-    const maxRetries = 3;
-    
-    async function generateQuizFromText(pdfText, subject, level, numQuestions = 10) {
-    // 1. Kugenzura API Key
-    if (!GEMINI_API_KEY || 
-        GEMINI_API_KEY === 'AQ.Ab8RN6KNTHKuutvx6CUaKcpoe_quwiP9gzNVS1sdehWkfUxefQ' || 
-        GEMINI_API_KEY.length < 20) {
-        throw new Error('Gemini API Key ntabwo yashyizweho cyangwa ni mbi. Jya muri Settings → Quiz System.');
-    }
-    
-    // 2. Gutegura text
-    const maxChars = 30000;
-    const truncatedText = pdfText.length > maxChars 
-        ? pdfText.substring(0, maxChars) + '\n[... byakuwemo ...]'
-        : pdfText;
-    
-    const prompt = `You are an expert teacher creating a quiz from study material.
-
-SUBJECT: ${subject || 'General'}
-LEVEL: ${level || 'Secondary'}
-NUMBER OF QUESTIONS: ${numQuestions}
-
-STUDY MATERIAL:
-"""
-${truncatedText}
-"""
-
-INSTRUCTIONS:
-1. Create exactly ${numQuestions} multiple-choice questions based ONLY on the study material above.
-2. Each question MUST have exactly 4 options.
-3. Only ONE option is correct.
-4. Questions should test understanding, not just memorization.
-5. Mix difficulty: 3 easy, 4 medium, 3 hard.
-6. Add a brief explanation for each correct answer.
-
-RETURN FORMAT (STRICT JSON, no markdown, no extra text):
-{
-  "title": "Quiz title based on content",
-  "questions": [
-    {
-      "question": "Question text here?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "correctIndex": 0,
-      "explanation": "Why this is correct"
-    }
-  ]
-}`;
-
-    // 3. Gusubiramo (retry) - Model nziza
-    let response = null;
-    let lastError = null;
-    const maxRetries = 3;
-    
-    // Model nziza (gemini-3.8-flash ni yo yizewe kandi irahari)
-    const MODEL_NAME = 'gemini-3.8-flash';
-    // ⚠️ HINDURA: Koresha x-goog-api-key mu mutwe, ntabwo ?key= muri URL
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
-    
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-        try {
-            if (attempt > 0) {
-                const waitSec = Math.pow(2, attempt); // 2s, 4s
-                console.log(`⏳ Kugerageza ${attempt + 1}/${maxRetries} nyuma y'amasegonda ${waitSec}...`);
-                await new Promise(r => setTimeout(r, waitSec * 1000));
-            }
-            
-            response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    // ⚠️ SHYIRAMO API KEY HANO (ntabwo muri URL)
-                    'x-goog-api-key': GEMINI_API_KEY
-                },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 4096,
-                        responseMimeType: "application/json"
-                    }
-                })
-            });
-            
-            // Niba 503 (server yuzuye) cyangwa 429 (inshuro nyinshi) — subiramo
-            if (response.status === 503 || response.status === 429) {
-                lastError = new Error(`Serveri yuzuye (${response.status}), turacyasubiramo...`);
-                console.warn(`⚠️ Attempt ${attempt + 1}: ${response.status} — turacyasubiramo`);
-                response = null;
-                continue;
-            }
-            
-            // Niba ari byiza cyangwa ikindi kibazo, soka muri loop
-            break;
-            
-        } catch (err) {
-            lastError = err;
-            console.warn(`⚠️ Attempt ${attempt + 1} yananiwe:`, err.message);
-            response = null;
-        }
-    }
-    
-    // 4. Kugenzura ibisubizo
-    if (!response) {
-        throw new Error(`Ntibyakunze nyuma yo kugerageza ${maxRetries} inshuro. ${lastError?.message || 'Reba internet yawe.'}`);
-    }
-    
-    if (!response.ok) {
-        let errDetail = '';
-        try {
-            const errText = await response.text();
-            errDetail = errText.substring(0, 300);
-        } catch(e) {}
-        
-        // Ubutumwa bwihariye kuri 401 (key mbi cyangwa uburyo bubi)
-        if (response.status === 401) {
-            throw new Error(`API Key ntiyemewe (401). Reba ko key yawe ari nziza kandi ko yoherejwe mu mutwe wa x-goog-api-key. ${errDetail}`);
-        }
-        if (response.status === 400) {
-            throw new Error(`API Key yawe ni mbi cyangwa ntiyemewe. ${errDetail}`);
-        }
-        if (response.status === 404) {
-            throw new Error(`Model "${MODEL_NAME}" ntabwo iboneka kuri API key yawe. ${errDetail}`);
-        }
-        if (response.status === 403) {
-            throw new Error(`Nta burenganzira bwo gukoresha Gemini API. Reba ko key yawe yemerewe. ${errDetail}`);
-        }
-        
-        throw new Error(`Gemini API error: ${response.status} - ${errDetail}`);
-    }
-    
-    // 5. Gusoma ibisubizo
-    let data;
-    try {
-        data = await response.json();
-    } catch (e) {
-        throw new Error('Ntibyashobotse gusoma ibisubizo bya Gemini (ntabwo ari JSON).');
-    }
-    
-    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        throw new Error('Gemini ntiyatanze ibisubizo byiza. Ongera ugerageze.');
-    }
-    
-    const rawText = data.candidates[0].content.parts[0].text;
-    
-    // 6. Gusukura na parse JSON
-    let quizData;
-    try {
-        quizData = JSON.parse(rawText);
-    } catch (e) {
-        try {
-            const cleaned = rawText
-                .replace(/```json\s*/gi, '')
-                .replace(/```\s*/g, '')
-                .replace(/^\s*[\r\n]/gm, '')
-                .trim();
-            quizData = JSON.parse(cleaned);
-        } catch (e2) {
-            console.error('Raw AI response:', rawText.substring(0, 500));
-            throw new Error('AI yatanze ibisubizo bidahuye n\'imiterere (JSON). Ongera ugerageze.');
-        }
-    }
-    
-    // 7. Kugenzura ibibazo
-    if (!quizData.questions || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
-        throw new Error('AI ntiyatanze ibibazo. Ongera ugerageze.');
-    }
-    
-    quizData.questions.forEach((q, i) => {
-        if (!q.question) {
-            throw new Error(`Ikibazo ${i + 1} nta kibazo kirimo`);
-        }
-        if (!Array.isArray(q.options) || q.options.length !== 4) {
-            throw new Error(`Ikibazo ${i + 1} ntigifite amahitamo 4`);
-        }
-        if (typeof q.correctIndex !== 'number' || q.correctIndex < 0 || q.correctIndex > 3) {
-            throw new Error(`Ikibazo ${i + 1} nta gisubizo cyiza kigaragara`);
-        }
-    });
-    
-    console.log(`✅ Quiz ikozwe neza: ${quizData.questions.length} ibibazo (model: ${MODEL_NAME})`);
-    return quizData;
-}
-        // ============================================
-        // START QUIZ FROM PDF (MAIN ENTRY POINT)
-        // ============================================
-        window.startQuizFromPDF = async function(noteId) {
-            const note = notes.find(n => n.id === noteId);
-            if (!note) { showToast('Isomo ntibonetse', 'error'); return; }
-            
-            if (note.fileType !== 'pdf' && !note.fileUrl.toLowerCase().includes('.pdf')) {
-                showToast('Quiz ikorwa gusa kuri PDF', 'warning');
-                return;
-            }
-            
-            if (!confirm(`Kora quiz kuri "${note.title}"?\n\nAI izakoresha ibiri muri PDF gukora ibibazo 10.`)) return;
-            
-            // Show loading
-            document.getElementById('quizLoadingModal').classList.add('active');
-            updateQuizLoading(0, 'Turazamura PDF...');
-            
-            try {
-                // Step 1: Extract PDF text
-                updateQuizLoading(20, '📖 Turasoma PDF...');
-                const { text, totalPages } = await extractTextFromPDF(note.fileUrl);
-                
-                if (!text || text.length < 200) {
-                    throw new Error('PDF nta nyandiko irimo (ni ifoto gusa). Koresha PDF ifite text.');
-                }
-                
-                updateQuizLoading(50, `🤖 AI iri gukora ibibazo... (PDF ifite ${totalPages} pages)`);
-                
-                // Step 2: Generate quiz
-                const quizData = await generateQuizFromText(text, note.subject, note.level, 10);
-                
-                updateQuizLoading(80, '💾 Turabika quiz...');
-                
-                // Step 3: Save quiz to Firestore
-                const quizDoc = await addDoc(collection(db, 'quizzes'), {
-                    title: quizData.title || `Quiz: ${note.title}`,
-                    subject: note.subject,
-                    level: note.level,
-                    term: note.term || 'Term1',
-                    sourcePdfId: note.id,
-                    sourcePdfName: note.fileName,
-                    sourcePdfUrl: note.fileUrl,
-                    timeLimit: 15,
-                    passingScore: 60,
-                    maxAttempts: 3,
-                    questions: quizData.questions.map((q, i) => ({
-                        id: `q_${i}_${Date.now()}`,
-                        type: 'multiple_choice',
-                        question: q.question,
-                        options: q.options.map((text, idx) => ({
-                            id: `o${idx}`,
-                            text,
-                            isCorrect: idx === q.correctIndex
-                        })),
-                        explanation: q.explanation || '',
-                        points: 1
-                    })),
-                    totalPoints: quizData.questions.length,
-                    generatedByAI: true,
-                    createdBy: currentUser.uid,
-                    createdAt: serverTimestamp()
-                });
-                
-                updateQuizLoading(100, '✅ Quiz yiteguye!');
-                
-                setTimeout(() => {
-                    document.getElementById('quizLoadingModal').classList.remove('active');
-                    openQuiz(quizDoc.id);
-                }, 800);
-                
-            } catch (error) {
-                document.getElementById('quizLoadingModal').classList.remove('active');
-                showToast('❌ ' + error.message, 'error');
-                console.error(error);
-            }
-        };
-
-        function updateQuizLoading(percent, status) {
-            const fill = document.getElementById('quizLoadingProgressFill');
-            const statusEl = document.getElementById('quizLoadingStatus');
-            if (fill) fill.style.width = percent + '%';
-            if (statusEl) statusEl.textContent = status;
-        }
-
-        // ============================================
-        // OPEN QUIZ
-        // ============================================
-        window.openQuiz = async function(quizId) {
-            try {
-                const quizDoc = await getDoc(doc(db, 'quizzes', quizId));
-                if (!quizDoc.exists()) {
-                    showToast('Quiz ntibonetse', 'error');
-                    return;
-                }
-                
-                activeQuiz = { id: quizDoc.id, ...quizDoc.data() };
-                quizAnswers = {};
-                quizStartTime = Date.now();
-                quizTimeLeft = (activeQuiz.timeLimit || 15) * 60;
-                
-                document.getElementById('quizModalTitle').textContent = activeQuiz.title;
-                document.getElementById('quizModal').classList.add('active');
-                
-                renderQuizPlayer();
-                startQuizTimer();
-                
-            } catch (error) {
-                showToast('❌ ' + error.message, 'error');
-            }
-        };
-
-        function renderQuizPlayer() {
-            const body = document.getElementById('quizModalBody');
-            const total = activeQuiz.questions.length;
-            
-            body.innerHTML = `
-                <div class="quiz-header-bar">
-                    <div class="quiz-timer-display" id="quizTimer">
-                        <i class="fas fa-clock"></i>
-                        <span id="quizTimerText">${formatTime(quizTimeLeft)}</span>
-                    </div>
-                    <div class="quiz-progress-info">
-                        <div class="quiz-progress-label">
-                            <span id="quizAnsweredCount">0</span> / ${total} ibibazo byasubijwe
-                        </div>
-                        <div class="quiz-progress-track">
-                            <div class="quiz-progress-track-fill" id="quizProgressFill"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="quizQuestionsContainer">
-                    ${activeQuiz.questions.map((q, idx) => renderQuizQuestion(q, idx)).join('')}
-                </div>
-                
-                <div class="quiz-nav-buttons">
-                    <button class="btn btn-outline" onclick="closeQuizModal()">
-                        <i class="fas fa-times"></i> Hagarika
-                    </button>
-                    <button class="btn btn-primary" onclick="submitQuiz()">
-                        <i class="fas fa-paper-plane"></i> Tanga Quiz
-                    </button>
-                </div>
-            `;
-            
-            updateQuizProgress();
-        }
-
-        function renderQuizQuestion(q, idx) {
-            return `
-                <div class="quiz-question-card" id="quiz-card-${q.id}">
-                    <div class="quiz-q-header">
-                        <span class="quiz-q-number">Ikibazo ${idx + 1}</span>
-                        <span class="quiz-q-points">${q.points || 1} pt</span>
-                    </div>
-                    <div class="quiz-q-text">${escapeHtml(q.question)}</div>
-                    <div class="quiz-q-options">
-                        ${q.options.map((opt, oIdx) => `
-                            <button class="quiz-option-btn" 
-                                    id="quiz-opt-${q.id}-${opt.id}"
-                                    onclick="selectQuizAnswer('${q.id}', '${opt.id}')">
-                                <span class="quiz-option-letter">${String.fromCharCode(65 + oIdx)}</span>
-                                <span>${escapeHtml(opt.text)}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        window.selectQuizAnswer = function(questionId, optionId) {
-            quizAnswers[questionId] = optionId;
-            
-            // Update UI
-            document.querySelectorAll(`[id^="quiz-opt-${questionId}-"]`).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            const selected = document.getElementById(`quiz-opt-${questionId}-${optionId}`);
-            if (selected) selected.classList.add('selected');
-            
-            updateQuizProgress();
-        };
-
-        function updateQuizProgress() {
-            const answered = Object.keys(quizAnswers).length;
-            const total = activeQuiz.questions.length;
-            
-            const countEl = document.getElementById('quizAnsweredCount');
-            const fillEl = document.getElementById('quizProgressFill');
-            
-            if (countEl) countEl.textContent = answered;
-            if (fillEl) fillEl.style.width = (answered / total * 100) + '%';
-        }
-
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function startQuizTimer() {
-            clearInterval(quizTimer);
-            
-            const updateTimer = () => {
-                const timerEl = document.getElementById('quizTimer');
-                const timerTextEl = document.getElementById('quizTimerText');
-                
-                if (timerEl && timerTextEl) {
-                    timerTextEl.textContent = formatTime(quizTimeLeft);
-                    if (quizTimeLeft <= 60) {
-                        timerEl.classList.add('danger');
-                    } else {
-                        timerEl.classList.remove('danger');
-                    }
-                }
-            };
-            
-            updateTimer();
-            
-            quizTimer = setInterval(() => {
-                quizTimeLeft--;
-                updateTimer();
-                
-                if (quizTimeLeft <= 0) {
-                    clearInterval(quizTimer);
-                    showToast('⏰ Igihe kirangiye! Turabika...', 'warning');
-                    submitQuiz(true);
-                }
-            }, 1000);
-        }
-
-        window.closeQuizModal = function() {
-            if (Object.keys(quizAnswers).length > 0) {
-                if (!confirm('Ufite ibisubizo bitaratumwa. Urabyemeza ko ushaka gusohoka?')) return;
-            }
-            clearInterval(quizTimer);
-            activeQuiz = null;
-            quizAnswers = {};
-            document.getElementById('quizModal').classList.remove('active');
-            // Refresh history
-            if (currentUserData?.role === 'student') {
-                renderMyQuizzes();
-            }
-        };
-
-        // ============================================
-        // SUBMIT QUIZ
-        // ============================================
-        window.submitQuiz = async function(autoSubmit = false) {
-            if (!autoSubmit) {
-                const answered = Object.keys(quizAnswers).length;
-                const total = activeQuiz.questions.length;
-                if (answered < total) {
-                    if (!confirm(`Washubije ${answered}/${total}. Urabyemeza ko ushaka gutanga?`)) return;
-                }
-            }
-            
-            clearInterval(quizTimer);
-            
-            // Calculate score
-            let correct = 0;
-            const questionsReview = [];
-            
-            activeQuiz.questions.forEach(q => {
-                const userAns = quizAnswers[q.id];
-                const correctOpt = q.options.find(o => o.isCorrect);
-                const isCorrect = userAns === correctOpt.id;
-                
-                if (isCorrect) correct++;
-                
-                questionsReview.push({
-                    question: q.question,
-                    userAnswer: userAns ? q.options.find(o => o.id === userAns)?.text : '(Nta gisubizo)',
-                    correctAnswer: correctOpt.text,
-                    isCorrect,
-                    explanation: q.explanation
-                });
-            });
-            
-            const total = activeQuiz.questions.length;
-            const percentage = Math.round((correct / total) * 100);
-            const passed = percentage >= (activeQuiz.passingScore || 60);
-            const timeSpent = Math.round((Date.now() - quizStartTime) / 1000);
-            
-            // Save attempt
-            try {
-                await addDoc(collection(db, 'quizAttempts'), {
-                    quizId: activeQuiz.id,
-                    quizTitle: activeQuiz.title,
-                    quizSubject: activeQuiz.subject,
-                    studentId: currentUserData.studentId,
-                    studentName: currentUserData.name,
-                    studentLevel: currentUserData.level,
-                    answers: quizAnswers,
-                    score: correct,
-                    totalPoints: total,
-                    percentage,
-                    passed,
-                    timeSpent,
-                    submittedAt: serverTimestamp()
-                });
-                
-                // Award XP if passed
-                if (passed && currentUserData.studentId) {
-                    try {
-                        await updateDoc(doc(db, 'students', currentUserData.studentId), {
-                            xp: increment(percentage * 2)
-                        });
-                    } catch(e) { console.warn('XP award failed:', e); }
-                }
-            } catch (error) {
-                console.error('Save attempt failed:', error);
-            }
-            
-            // Show result
-            renderQuizResult({ correct, total, percentage, passed, timeSpent, questionsReview });
-        };
-
-        function renderQuizResult({ correct, total, percentage, passed, timeSpent, questionsReview }) {
-            const body = document.getElementById('quizModalBody');
-            
-            if (passed) {
-                try {
-                    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-                } catch(e) {}
-            }
-            
-            body.innerHTML = `
-                <div class="quiz-result-screen">
-                    <div class="quiz-result-icon">${passed ? '🎉' : '😔'}</div>
-                    <div class="quiz-result-title ${passed ? 'passed' : 'failed'}">
-                        ${passed ? 'WATSINZE!' : 'Ntiwatsinze'}
-                    </div>
-                    <div class="quiz-result-score ${passed ? 'passed' : 'failed'}">${percentage}%</div>
-                    <div class="quiz-result-message">
-                        ${passed 
-                            ? `Ni byiza cyane! Wabonye ${correct} kuri ${total}. Ubwenge bwawe burakura!` 
-                            : `Wabonye ${correct} kuri ${total}. Ugomba kubona ${activeQuiz.passingScore || 60}% kugira ngo utsinde. Ongera ugerageze!`}
-                    </div>
-                    
-                    <div class="quiz-result-stats">
-                        <div class="quiz-result-stat">
-                            <div class="quiz-result-stat-value" style="color: var(--success);">${correct}</div>
-                            <div class="quiz-result-stat-label">Byiza</div>
-                        </div>
-                        <div class="quiz-result-stat">
-                            <div class="quiz-result-stat-value" style="color: var(--danger);">${total - correct}</div>
-                            <div class="quiz-result-stat-label">Bibi</div>
-                        </div>
-                        <div class="quiz-result-stat">
-                            <div class="quiz-result-stat-value">${formatTime(timeSpent)}</div>
-                            <div class="quiz-result-stat-label">Igihe</div>
-                        </div>
-                        ${passed ? `<div class="quiz-result-stat">
-                            <div class="quiz-result-stat-value" style="color: var(--purple);">+${percentage * 2}</div>
-                            <div class="quiz-result-stat-label">XP</div>
-                        </div>` : ''}
-                    </div>
-                    
-                    <div class="quiz-nav-buttons" style="justify-content: center;">
-                        <button class="btn btn-outline" onclick="showQuizReview()">
-                            <i class="fas fa-search"></i> Reba Ibisubizo
-                        </button>
-                        <button class="btn btn-primary" onclick="closeQuizModal()">
-                            <i class="fas fa-check"></i> Komeza
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Store review for later
-            window._quizReview = questionsReview;
-        }
-
-        window.showQuizReview = function() {
-            const body = document.getElementById('quizModalBody');
-            const review = window._quizReview || [];
-            
-            body.innerHTML = `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">
-                        <i class="fas fa-search"></i> Ibisubizo Byose
-                    </h3>
-                    <p style="color: var(--text-secondary); font-size: 14px;">
-                        Reba igisubizo cyawe n'igisobanuro ku kibazo kimwe.
-                    </p>
-                </div>
-                
-                <div style="max-height: 60vh; overflow-y: auto;">
-                    ${review.map((r, i) => `
-                        <div class="quiz-review-item ${r.isCorrect ? 'correct' : 'incorrect'}">
-                            <div class="quiz-review-question">
-                                ${i + 1}. ${escapeHtml(r.question)}
-                            </div>
-                            <div class="quiz-review-answer">
-                                <span style="color: ${r.isCorrect ? 'var(--success)' : 'var(--danger)'};">
-                                    <i class="fas fa-${r.isCorrect ? 'check' : 'times'}-circle"></i>
-                                    <strong>Igisubizo cyawe:</strong> ${escapeHtml(r.userAnswer || '-')}
-                                </span>
-                                ${!r.isCorrect ? `
-                                    <span style="color: var(--success);">
-                                        <i class="fas fa-check-circle"></i>
-                                        <strong>Igisubizo cyiza:</strong> ${escapeHtml(r.correctAnswer)}
-                                    </span>
-                                ` : ''}
-                            </div>
-                            ${r.explanation ? `
-                                <div class="quiz-review-explanation">
-                                    <strong><i class="fas fa-lightbulb"></i> Igisobanuro:</strong>
-                                    ${escapeHtml(r.explanation)}
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="quiz-nav-buttons" style="justify-content: center; margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="closeQuizModal()">
-                        <i class="fas fa-check"></i> Komeza
-                    </button>
-                </div>
-            `;
-        };
-
-        // ============================================
-        // MY QUIZZES PAGE
-        // ============================================
-        window.renderMyQuizzes = async function() {
-            if (currentUserData?.role !== 'student') return;
-            
-            // Load attempts
-            try {
-                const attemptsSnap = await getDocs(query(
-                    collection(db, 'quizAttempts'),
-                    where('studentId', '==', currentUserData.studentId)
-                ));
-                quizAttempts = [];
-                attemptsSnap.forEach(d => quizAttempts.push({ id: d.id, ...d.data() }));
-                quizAttempts.sort((a, b) => {
-                    const ta = a.submittedAt?.toDate?.() || new Date(0);
-                    const tb = b.submittedAt?.toDate?.() || new Date(0);
-                    return tb - ta;
-                });
-            } catch(e) {
-                console.warn('Could not load attempts:', e);
-                quizAttempts = [];
-            }
-            
-            // Stats
-            const total = quizAttempts.length;
-            const passed = quizAttempts.filter(a => a.passed).length;
-            const avg = total > 0 ? Math.round(quizAttempts.reduce((sum, a) => sum + a.percentage, 0) / total) : 0;
-            const m = students.find(x => x.id === currentUserData.studentId);
-            const totalXP = m?.xp || 0;
-            
-            document.getElementById('statQuizzesTaken').textContent = total;
-            document.getElementById('statQuizzesPassed').textContent = passed;
-            document.getElementById('statQuizAvg').textContent = avg + '%';
-            document.getElementById('statTotalXP').textContent = totalXP;
-            
-            // History
-            const historyList = document.getElementById('quizHistoryList');
-            if (quizAttempts.length === 0) {
-                historyList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon"><i class="fas fa-brain"></i></div>
-                        <h3>Nta quizzes zarakozwe</h3>
-                        <p>Jya muri "Amasomo Yanjye" ukande "Kora Quiz" kuri PDF.</p>
-                        <button class="btn btn-primary" onclick="switchPage('my-notes', null)" style="margin-top: 16px;">
-                            <i class="fas fa-book"></i> Jya ku Masomo
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            historyList.innerHTML = quizAttempts.map(a => {
-                const date = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date();
-                return `
-                    <div class="quiz-history-card">
-                        <div class="quiz-history-score ${a.passed ? 'passed' : 'failed'}">
-                            ${a.percentage}%
-                        </div>
-                        <div style="flex: 1; min-width: 200px;">
-                            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">
-                                ${escapeHtml(a.quizTitle)}
-                            </h3>
-                            <div class="saved-meta">
-                                <span><i class="fas fa-book"></i> ${escapeHtml(a.quizSubject || '-')}</span>
-                                <span><i class="fas fa-check"></i> ${a.score}/${a.totalPoints}</span>
-                                <span><i class="fas fa-clock"></i> ${formatTime(a.timeSpent || 0)}</span>
-                                <span><i class="fas fa-calendar"></i> ${timeAgo(date)}</span>
-                            </div>
-                        </div>
-                        <span class="exam-type-badge ${a.passed ? 'cat' : 'final'}" style="font-size: 12px;">
-                            ${a.passed ? '✅ Yatsinzwe' : '❌ Ntiyatsinzwe'}
-                        </span>
-                    </div>
-                `;
-            }).join('');
-        };
-
-        // ============================================
         // PHOTO PREVIEWS
         // ============================================
         window.previewPhoto = function(event) {
@@ -4041,13 +2632,13 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         };
 
         // ============================================
-        // EXAM FILES PREVIEW
+        // EXAM FILES PREVIEW (multi-file)
         // ============================================
         window.previewExamFiles = function(event) {
             const files = Array.from(event.target.files || []);
             if (!files.length) return;
 
-            const maxSize = 15 * 1024 * 1024;
+            const maxSize = 15 * 1024 * 1024; // 15MB
             const allowedExt = ['pdf','doc','docx','ppt','pptx'];
 
             files.forEach(f => {
@@ -4060,6 +2651,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                     showToast(`❌ ${f.name} ni nini cyane (Max 15MB)`, 'error');
                     return;
                 }
+                // Avoid duplicates by name+size
                 if (examPendingFiles.some(x => x.name === f.name && x.size === f.size)) return;
                 examPendingFiles.push({
                     file: f,
@@ -4070,6 +2662,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 });
             });
 
+            // reset input so same file can be picked again if removed
             event.target.value = '';
             renderExamFilesPreview();
         };
@@ -4120,23 +2713,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 html.setAttribute('data-theme', 'dark');
                 if (icon) icon.className = 'fas fa-sun';
                 try { localStorage.setItem('student_theme', 'dark'); } catch(e) {}
-            }
-        };
-
-        // ============================================
-        // SAVE GEMINI KEY
-        // ============================================
-        window.saveGeminiKey = function() {
-            const key = document.getElementById('geminiApiKeyInput').value.trim();
-            if (!key) { showToast('Shyiramo key', 'warning'); return; }
-            if (!key.startsWith('AIza')) { showToast('Key igomba gutangira na AIza', 'warning'); return; }
-            
-            GEMINI_API_KEY = key;
-            try {
-                localStorage.setItem('gemini_api_key', key);
-                showToast('✅ Gemini API Key yabitswe!', 'success');
-            } catch(e) {
-                showToast('⚠️ Ntibyashobotse kubika. Reba na Settings.', 'warning');
             }
         };
 
@@ -4347,13 +2923,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 }
             }
 
-            // Load Gemini key from admin's user data if exists
-            if (currentUserData?.geminiApiKey) {
-                GEMINI_API_KEY = currentUserData.geminiApiKey;
-            }
-            const geminiInput = document.getElementById('geminiApiKeyInput');
-            if (geminiInput) geminiInput.value = GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? '' : GEMINI_API_KEY;
-
             updateProfileUI();
 
             if (isStudent) {
@@ -4541,7 +3110,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
             if (page === 'grades') renderGrades();
             if (page === 'my-dashboard') renderMyDashboard();
             if (page === 'my-notes') renderMyNotes();
-            if (page === 'my-quizzes') renderMyQuizzes();
             if (page === 'my-exams') renderMyExams();
             if (page === 'departments') renderDepartmentsPage();
             if (page === 'photos') renderPhotosPage();
@@ -4766,7 +3334,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                     parentName, parentPhone,
                     photo: photoURL,
                     status: 'active', role: 'student',
-                    xp: 0,
                     registeredAt: serverTimestamp(),
                     createdAt: serverTimestamp(),
                     createdBy: currentUser.uid
@@ -5291,6 +3858,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Turabika...';
 
             try {
+                // Upload files first (one by one)
                 const uploadedFiles = [];
                 for (let i = 0; i < examPendingFiles.length; i++) {
                     const fItem = examPendingFiles[i];
@@ -5375,6 +3943,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         }
 
         window.deleteExamFile = function() {
+            // Placeholder - deletion of individual files needs examId; leave for future
             showToast('Siba ikizamini cyose kugira ngo ukureho amafishi', 'warning');
         };
 
@@ -5453,6 +4022,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
             const list = document.getElementById('myExamsList');
             if (!list) return;
 
+            // Populate subject filter once
             const subjectSelect = document.getElementById('myExamsFilterSubject');
             if (subjectSelect && subjectSelect.options.length <= 1) {
                 const subjects = [...new Set(exams.map(e => e.subject).filter(Boolean))];
@@ -5643,13 +4213,12 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 const date = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
                 const dateStr = `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
                 const fileIcon = n.fileType === 'pdf' ? 'fa-file-pdf text-danger' : n.fileType === 'word' ? 'fa-file-word text-primary' : 'fa-link text-success';
-                const isPdf = n.fileType === 'pdf' || (n.fileUrl && n.fileUrl.toLowerCase().includes('.pdf'));
 
                 let actionHtml = '';
                 if (hasSubscription) {
                     actionHtml = `
                         <a href="${n.fileUrl}" target="_blank" class="btn btn-primary btn-sm" style="margin-right:4px;"><i class="fas fa-eye"></i> View</a>
-                        ${isPdf ? `<button class="btn btn-warning btn-sm" onclick="startQuizFromPDF('${n.id}')"><i class="fas fa-brain"></i> Kora Quiz</button>` : ''}
+                        <a href="${n.fileUrl}" download="${n.fileName || 'file.pdf'}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
                     `;
                 } else {
                     actionHtml = `
@@ -5707,27 +4276,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 </div>
             `;
 
-            // XP container
-            const xp = m.xp || 0;
-            const level = Math.floor(xp / 100) + 1;
-            const xpToNext = 100 - (xp % 100);
-            const xpInLevel = xp % 100;
-            
-            document.getElementById('studentXpContainer').innerHTML = `
-                <div class="xp-card">
-                    <div class="xp-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="xp-info">
-                        <div class="xp-level">Level ${level}</div>
-                        <div class="xp-progress-bar">
-                            <div class="xp-progress-fill" style="width: ${xpInLevel}%;"></div>
-                        </div>
-                        <div class="xp-text">${xp} XP · ${xpToNext} XP ukeneye kugera kuri Level ${level + 1}</div>
-                    </div>
-                </div>
-            `;
-
             const firstName = m.name.split(' ')[0];
             const now = new Date();
             const daysRw = ['Ku cyumweru', 'Kuwa mbere', 'Kuwa kabiri', 'Kuwa gatatu', 'Kuwa kane', 'Kuwa gatanu', 'Kuwa gatandatu'];
@@ -5739,7 +4287,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
 
             renderSubscriptionStatus(m);
 
-            // Recent Announcements
+            // Recent Announcements (3 za mbere)
             const dashAnnList = document.getElementById('studentDashboardAnnouncementsList');
             if (dashAnnList) {
                 const recentAnn = announcements.slice(0, 3);
@@ -5765,38 +4313,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                 }
             }
 
-            // Recent Quizzes
-            const dashQuizList = document.getElementById('studentDashboardQuizzesList');
-            if (dashQuizList) {
-                // Quick summary
-                if (quizAttempts.length === 0) {
-                    dashQuizList.innerHTML = `<div class="empty-state" style="padding:30px;">
-                        <div class="icon" style="font-size:40px;"><i class="fas fa-brain"></i></div>
-                        <h3>Nta quizzes zarakozwe</h3>
-                        <p>Jya mu masomo ukande "Kora Quiz" kuri PDF</p>
-                        <button class="btn btn-primary btn-sm" style="margin-top: 12px;" onclick="switchPage('my-notes', null)">
-                            <i class="fas fa-book"></i> Jya ku Masomo
-                        </button>
-                    </div>`;
-                } else {
-                    dashQuizList.innerHTML = quizAttempts.slice(0, 3).map(a => {
-                        const date = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date();
-                        return `<div class="quiz-history-card">
-                            <div class="quiz-history-score ${a.passed ? 'passed' : 'failed'}">${a.percentage}%</div>
-                            <div style="flex: 1; min-width: 200px;">
-                                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">${escapeHtml(a.quizTitle)}</h3>
-                                <div class="saved-meta">
-                                    <span><i class="fas fa-book"></i> ${escapeHtml(a.quizSubject || '-')}</span>
-                                    <span><i class="fas fa-check"></i> ${a.score}/${a.totalPoints}</span>
-                                    <span><i class="fas fa-calendar"></i> ${timeAgo(date)}</span>
-                                </div>
-                            </div>
-                        </div>`;
-                    }).join('');
-                }
-            }
-
-            // Recent Exams
+            // Recent Exams (3 za mbere) - Student dashboard
             const dashExamsList = document.getElementById('studentDashboardExamsList');
             if (dashExamsList) {
                 let myLevelExams = exams.filter(e => !m.level || e.level === m.level);
@@ -5846,7 +4363,6 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
                             </div>
                             <div class="saved-actions">
                                 <a href="${n.fileUrl}" target="_blank" class="btn btn-primary" style="padding: 8px 16px;"><i class="fas fa-download"></i> Kurura</a>
-                                ${(n.fileType === 'pdf' || n.fileUrl.toLowerCase().includes('.pdf')) ? `<button class="btn btn-warning" style="padding: 8px 16px;" onclick="startQuizFromPDF('${n.id}')"><i class="fas fa-brain"></i> Quiz</button>` : ''}
                             </div>
                         </div>
                     `).join('');
@@ -5855,7 +4371,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         };
 
         // ============================================
-        // SUBSCRIPTION
+        // SUBSCRIPTION (KWISHYURA AMASOMO)
         // ============================================
         window.renderSubscriptionStatus = function(m) {
             const container = document.getElementById('subscriptionStatusContainer');
@@ -6057,7 +4573,7 @@ RETURN FORMAT (STRICT JSON, no markdown, no extra text):
         };
 
         window.exportData = function() {
-            const data = { students, teachers, grades, notes, exams, announcements, quizAttempts, exported: new Date().toISOString() };
+            const data = { students, teachers, grades, notes, exams, announcements, exported: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `student-data-${new Date().toISOString().split('T')[0]}.json`; a.click();
