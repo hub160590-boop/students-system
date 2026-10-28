@@ -460,14 +460,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 .comment-reply-btn:hover { color: var(--primary); }
 .no-results { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
 
-/* ============ AUTO-PLAY VIDEO ============ */
+/* ============ AUTO-PLAY VIDEO & MUTE BUTTON ============ */
 .auto-play-video { cursor: pointer; transition: opacity 0.3s; }
 .auto-play-video::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
 .video-mute-indicator {
     position: absolute; bottom: 12px; right: 12px;
-    background: rgba(0,0,0,0.7); color: white;
-    padding: 6px 10px; border-radius: 50px;
-    font-size: 12px; display: flex; align-items: center; gap: 6px;
+    background: rgba(0,0,0,0.75); color: white;
+    padding: 8px 12px; border-radius: 50px;
+    font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
     cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.3s;
     border: none;
 }
@@ -934,7 +934,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <h4 style="font-size: 18px; font-weight: 800; margin-bottom: 8px;">✅ Email Yoherejwe!</h4>
             <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
                 Reba <strong>Email yawe</strong> (n'ubutumwa bwa Spam) urebe link yo guhindura ijambo ry'ibanga.
-                <br>Link izakora mu <strong>masaha 1</strong>.
+                <br>Link izakora mu <strong>amasaha 1</strong>.
             </p>
             <button class="btn btn-primary" onclick="closeModal('forgotPasswordModal')" style="width: 100%;">
                 <i class="fas fa-check"></i> Nabyumva
@@ -1428,7 +1428,7 @@ window.enableNotifications = async function() {
     });
 };
 
-// ============ AUTO-PLAY VIDEOS ============
+// ============ AUTO-PLAY VIDEOS & MUTE LOGIC ============
 function initVideoObserver() {
     if (videoObserver) try { videoObserver.disconnect(); } catch(e) {}
     videoObserver = new IntersectionObserver((entries) => {
@@ -1445,11 +1445,33 @@ function initVideoObserver() {
             }
         });
     }, { threshold: [0, 0.6, 0.9], rootMargin: '0px' });
+    
     document.querySelectorAll('.auto-play-video').forEach(v => {
         videoObserver.observe(v);
+        
+        // Add Unmute button listener if it doesn't exist
+        const parent = v.parentElement;
+        if (parent && !parent.querySelector('.video-mute-indicator')) {
+            const muteBtn = document.createElement('button');
+            muteBtn.className = 'video-mute-indicator';
+            muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> <span>Unmute</span>';
+            muteBtn.onclick = (e) => {
+                e.stopPropagation();
+                v.muted = !v.muted;
+                if (!v.muted) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> <span>Mute</span>';
+                } else {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> <span>Unmute</span>';
+                }
+            };
+            parent.appendChild(muteBtn);
+        }
+
+        // Prevent click from pausing video when clicking unmute button
         if (!v.dataset.boundClick) {
             v.dataset.boundClick = 'true';
-            v.addEventListener('click', () => {
+            v.addEventListener('click', (e) => {
+                if (e.target.closest('.video-mute-indicator')) return;
                 if (v.paused) { v.dataset.userPaused = ''; v.play().catch(e => {}); }
                 else { v.dataset.userPaused = 'true'; v.pause(); }
             });
@@ -1624,6 +1646,8 @@ window.savePost = async function() {
         postPhotosToUpload = []; newPostVideo = null;
     } catch(e) { showToast('❌ ' + e.message, 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Tangaza'; }
 };
+
+// 🎯 UPDATED POST RENDERING (Profile Click, No Video Download, Mute Button)
 window.renderPosts = function() {
     const list = document.getElementById('postsList'); if (!list) return;
     const typeF = document.getElementById('feedFilterType')?.value || '';
@@ -1654,6 +1678,7 @@ window.renderPosts = function() {
         const isLiked = currentUser && likes.includes(currentUser.uid);
         const isOwner = currentUser && p.authorUid === currentUser.uid;
         const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
+        
         let mediaHtml = '';
         const urls = Array.isArray(p.mediaUrls) && p.mediaUrls.length > 0 ? p.mediaUrls : (p.mediaUrl ? [p.mediaUrl] : []);
         if (urls.length > 1) {
@@ -1667,7 +1692,11 @@ window.renderPosts = function() {
             if (p.type === 'video') mediaHtml = `<div class="post-media"><video src="${urls[0]}" controls playsinline preload="metadata" loop muted data-autoplay="true" class="auto-play-video"></video></div>`;
             else mediaHtml = `<div class="post-media"><img src="${urls[0]}" onclick="window.open('${urls[0]}','_blank')" style="cursor:pointer;"></div>`;
         }
-        let downloadBtn = urls.length > 0 ? `<a href="${urls[0]}" download target="_blank" class="post-action-btn"><i class="fas fa-download"></i> Download</a>` : '';
+        // 🔥 REMOVED DOWNLOAD BUTTON for Video
+        let downloadBtn = '';
+        if (urls.length > 0 && p.type !== 'video') {
+            downloadBtn = `<a href="${urls[0]}" download target="_blank" class="post-action-btn"><i class="fas fa-download"></i> Download</a>`;
+        }
         let moreMenu = `<div class="post-more-actions"><button class="post-action-btn" onclick="toggleMoreMenu('${p.id}')"><i class="fas fa-ellipsis-h"></i></button>
             <div class="post-more-menu" id="more-${p.id}" style="display:none;">
                 ${(isOwner || isAdmin) ? `<button onclick="openEditPost('${p.id}')"><i class="fas fa-edit"></i> Hindura</button>` : ''}
@@ -1677,11 +1706,15 @@ window.renderPosts = function() {
             </div>
         </div>`;
         let pinBadge = p.pinned ? `<div class="pin-badge"><i class="fas fa-thumbtack"></i> Pinned</div>` : '';
+        
         return `<div class="post-card ${p.pinned ? 'pinned' : ''}" id="post-${p.id}">
             ${pinBadge}
             <div class="post-header">
-                <div class="post-avatar">${av}</div>
-                <div class="post-author"><div class="name">${escapeHtml(p.authorName || 'Unknown')}</div><div class="time"><i class="fas fa-clock"></i> ${tstr}</div></div>
+                <div class="post-avatar" onclick="openUserProfile('${p.authorUid}')" style="cursor:pointer;">${av}</div>
+                <div class="post-author" onclick="openUserProfile('${p.authorUid}')" style="cursor:pointer;">
+                    <div class="name">${escapeHtml(p.authorName || 'Unknown')}</div>
+                    <div class="time"><i class="fas fa-clock"></i> ${tstr}</div>
+                </div>
                 ${moreMenu}
             </div>
             <div class="post-content">${escapeHtml(p.caption)}</div>
@@ -1695,6 +1728,75 @@ window.renderPosts = function() {
     }).join('');
     setTimeout(() => initVideoObserver(), 100);
 };
+
+// 👤 OPEN USER PROFILE (NEW)
+window.openUserProfile = async function(uid) {
+    try {
+        // First, check if the user is the current logged in user
+        if (uid === currentUser?.uid) {
+            switchPage('profile', null);
+            return;
+        }
+        
+        // Show loading
+        showToast('⏳ Turashakisha profile...', 'info');
+        
+        // Try fetching from users
+        let userDoc = await getDoc(doc(db, 'users', uid));
+        let profileData = null;
+        if (userDoc.exists()) {
+            profileData = userDoc.data();
+        } else {
+            // Try from students
+            const sSnap = await getDocs(query(collection(db, 'students'), where('uid', '==', uid)));
+            let sData = null;
+            sSnap.forEach(d => sData = d.data());
+            if (sData) {
+                profileData = { name: sData.name, email: sData.email, photo: sData.photo, role: 'student', level: sData.level, department: sData.department };
+            }
+        }
+        
+        if (!profileData) { showToast('❌ Ntabwo yabonetse', 'error'); return; }
+        
+        // Build Profile HTML
+        const name = profileData.name || 'Unknown';
+        const init = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+        const ph = profileData.photo ? `<img src="${profileData.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);margin-bottom:16px;">` : `<div style="width:120px;height:120px;border-radius:50%;background:var(--gradient-1);color:white;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;margin:0 auto 16px;border:4px solid white;">${init}</div>`;
+        
+        const roleLabel = profileData.role === 'super_admin' ? 'Super Admin' : (profileData.role === 'admin' ? 'Admin' : (profileData.role === 'teacher' ? 'Umwarimu' : 'Umunyeshuri'));
+        const roleClass = profileData.role || 'student';
+        
+        let metaHtml = '';
+        if (profileData.email) metaHtml += `<span><i class="fas fa-envelope"></i> ${profileData.email}</span>`;
+        if (profileData.phone) metaHtml += `<span><i class="fas fa-phone"></i> ${profileData.phone}</span>`;
+        if (profileData.level) metaHtml += `<span class="class-badge">🎓 ${profileData.level}</span>`;
+        if (profileData.department) metaHtml += `<span class="dept-badge ${(profileData.department||'').toLowerCase()}">${profileData.department}</span>`;
+        
+        const profileModalHtml = `
+            <div class="modal-overlay active" id="userProfileModal" style="background:rgba(0,0,0,0.7);">
+                <div class="modal" style="max-width:400px;text-align:center;padding:30px;">
+                    <button class="close-btn" onclick="closeModal('userProfileModal')" style="position:absolute;top:15px;right:15px;background:var(--bg);"><i class="fas fa-times"></i></button>
+                    ${ph}
+                    <h2 style="font-size:24px;font-weight:800;margin-bottom:4px;">${escapeHtml(name)}</h2>
+                    <span class="role-badge ${roleClass}" style="display:inline-block;margin-bottom:12px;font-size:12px;">${roleLabel}</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:13px;color:var(--text-secondary);margin-bottom:20px;">
+                        ${metaHtml}
+                    </div>
+                    <button class="btn btn-primary" onclick="closeModal('userProfileModal')" style="width:100%;">Funga</button>
+                </div>
+            </div>
+        `;
+        
+        // Append to body and remove after
+        const existing = document.getElementById('userProfileModal');
+        if (existing) existing.remove();
+        document.body.insertAdjacentHTML('beforeend', profileModalHtml);
+        
+    } catch(e) {
+        showToast('❌ ' + e.message, 'error');
+    }
+};
+
 window.toggleMoreMenu = function(postId) {
     document.querySelectorAll('.post-more-menu').forEach(m => { if (m.id !== 'more-'+postId) m.style.display = 'none'; });
     const menu = document.getElementById('more-'+postId);
