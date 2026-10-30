@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://students-system-mauve.vercel.app/sitemap.xml
