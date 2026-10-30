@@ -5,7 +5,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#38bdf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student System | Sisitemu y'Abanyeshuri</title>
+    <title>MINDBOOK | Sisitemu y'Abanyeshuri</title>
     <meta name="description" content="Sisitemu yo gucunga abanyeshuri, amanota n'amasomo.">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -504,7 +504,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
 <div class="loading-screen" id="loadingScreen">
     <div class="loading-icon"><i class="fas fa-graduation-cap"></i></div>
-    <h2>🎓 STUDENT SYSTEM</h2>
+    <h2>🎓 MINDBOOK</h2>
     <p>Turashakisha amakuru...</p>
 </div>
 
@@ -517,7 +517,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     <div class="auth-card">
         <div class="auth-logo">
             <div class="icon"><i class="fas fa-graduation-cap"></i></div>
-            <h1>STUDENT SYSTEM</h1>
+            <h1>MINDBOOK</h1>
             <p>Injira muri sisitemu</p>
         </div>
         <div class="auth-error" id="authError">
@@ -557,7 +557,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i>
-                <span>STUDENT SYSTEM</span>
+                <span>MINDBOOK</span>
             </div>
         </div>
         <div class="header-right">
@@ -1500,7 +1500,7 @@ window.updateProfileUI = function() {
     if (bg) { if (role === 'student') { bg.style.display = ''; const pi = document.getElementById('profileInputBirthday'); if (pi) pi.value = currentUserData.birthday || ''; } else bg.style.display = 'none'; }
     const sn = currentUserData.schoolName || 'Ishuri Ryacu';
     const sni = document.getElementById('schoolName'); if (sni) sni.value = sn;
-    const sub = document.getElementById('schoolNameSubtitle'); if (sub) sub.textContent = `${sn} • Student System`;
+    const sub = document.getElementById('schoolNameSubtitle'); if (sub) sub.textContent = `${sn} • MINDBOOK`;
 };
 window.uploadProfilePhoto = async function(event) {
     const file = event.target.files[0]; if (!file) return;
