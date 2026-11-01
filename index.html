@@ -2833,6 +2833,7 @@ window.initChat = function() {
     }
 };
 
+
 function startChatListener() {
     if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
     
@@ -2850,16 +2851,14 @@ function startChatListener() {
 
         renderChatMessages();
         
-        // Gahunda nshya: Kwerekana umubare w'ubutumwa kuri Menu
         if (!chatPanelOpen) {
             const newCount = chatMessages.length - chatLastSeenCount;
-            const sidebarBadge = document.getElementById('sidebarChatCount'); // Dore hano twahinduye ID
+            const sidebarBadge = document.getElementById('sidebarChatCount');
             if (sidebarBadge && newCount > 0) {
                 sidebarBadge.textContent = newCount > 99 ? '99+' : newCount;
                 sidebarBadge.style.display = 'flex';
             }
         } else {
-            // Niba chat ifunguye, hisha umubare kuri menu
             const sidebarBadge = document.getElementById('sidebarChatCount');
             if (sidebarBadge) sidebarBadge.style.display = 'none';
         }
@@ -2868,92 +2867,6 @@ function startChatListener() {
     });
 }
 
-// Listener ya Firestore
-function startChatListener() {
-    if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
-    
-    // ✅ Ntidukoresha orderBy hano kugira ngo twirinde kubura index
-    const q = query(collection(db, 'chats'), limit(200));
-    
-    chatUnsubscribe = onSnapshot(q, (snap) => {
-        chatMessages = [];
-        snap.forEach(d => chatMessages.push({ id: d.id, ...d.data() }));
-        
-        // ✅ Gutondeka messages hano aho kuri Firestore (kugira ngo udakenera Index)
-        chatMessages.sort((a, b) => {
-            const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-            const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-            return dateA - dateB;
-        });
-
-        renderChatMessages();
-        
-        if (!chatPanelOpen) {
-            const newCount = chatMessages.length - chatLastSeenCount;
-            const badge = document.getElementById('chatFabBadge');
-            if (badge && newCount > 0) {
-                badge.textContent = newCount > 99 ? '99+' : newCount;
-                badge.style.display = 'flex';
-            }
-        }
-    }, (err) => {
-        console.warn('Chat error:', err);
-        // Ndetse niba hari error, FAB iracyagaragara kuko tuyishyize hanze y'iyi function
-    });
-}
-// Listener ya Firestore
-function startChatListener() {
-    if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
-    
-    // ✅ Ntidukoresha orderBy hano kugira ngo twirinde kubura index
-    const q = query(collection(db, 'chats'), limit(200));
-    
-    chatUnsubscribe = onSnapshot(q, (snap) => {
-        chatMessages = [];
-        snap.forEach(d => chatMessages.push({ id: d.id, ...d.data() }));
-        
-        // ✅ Gutondeka messages hano aho kuri Firestore (kugira ngo udakenera Index)
-        chatMessages.sort((a, b) => {
-            const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-            const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-            return dateA - dateB;
-        });
-
-        renderChatMessages();
-        
-        if (!chatPanelOpen) {
-            const newCount = chatMessages.length - chatLastSeenCount;
-            const badge = document.getElementById('chatFabBadge');
-            if (badge && newCount > 0) {
-                badge.textContent = newCount > 99 ? '99+' : newCount;
-                badge.style.display = 'flex';
-            }
-        }
-    }, (err) => {
-        console.warn('Chat error:', err);
-        // Ndetse niba hari error, FAB iracyagaragara kuko tuyishyize hanze y'iyi function
-    });
-}
-
-// Listener ya Firestore
-function startChatListener() {
-    if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
-    const q = query(collection(db, 'chats'), orderBy('createdAt', 'asc'), limit(200));
-    chatUnsubscribe = onSnapshot(q, (snap) => {
-        chatMessages = [];
-        snap.forEach(d => chatMessages.push({ id: d.id, ...d.data() }));
-        renderChatMessages();
-        // Update badge niba panel ifunze
-        if (!chatPanelOpen) {
-            const newCount = chatMessages.length - chatLastSeenCount;
-            const badge = document.getElementById('chatFabBadge');
-            if (badge && newCount > 0) {
-                badge.textContent = newCount > 99 ? '99+' : newCount;
-                badge.style.display = 'flex';
-            }
-        }
-    }, (err) => console.warn('Chat error:', err));
-}
 
 // Rendering
 function renderChatMessages() {
