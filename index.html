@@ -602,6 +602,10 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .chat-panel { width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
     .chat-fab { bottom: 90px; left: 16px; width: 52px; height: 52px; font-size: 20px; }
 }
+        /* Hisha FAB kuko chat iri kuri Menu */
+#chatFab {
+    display: none !important;
+}
     </style>
 </head>
 <body>
@@ -712,6 +716,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <div class="nav-label super-admin-only" style="display: none;">Super Admin</div>
             <div class="nav-item super-admin-only" onclick="switchPage('users', this)" style="display: none;"><i class="fas fa-user-shield"></i><span>Abakoresha</span></div>
             <div class="nav-label">Konti</div>
+            <div class="nav-item" onclick="openChatFromMenu(this)"><i class="fas fa-comments"></i><span>Chats</span><span class="count" id="sidebarChatCount" style="display:none;">0</span></div>
             <div class="nav-item" onclick="switchPage('profile', this)"><i class="fas fa-user-circle"></i><span>Profile</span></div>
             <div class="nav-item admin-only" onclick="switchPage('settings', this)"><i class="fas fa-cog"></i><span>Igenamiterere</span></div>
             <button class="whatsapp-btn-sidebar" onclick="window.open('https://wa.me/250794476085?text=Muraho%2C%20ndifuza%20kubaza%20ikibazo%20kuri%20sisitemu.', '_blank')"><i class="fab fa-whatsapp"></i><span>Vugana natwe (WhatsApp)</span></button>
@@ -2807,7 +2812,7 @@ window.toggleChatPanel = function() {
     const badge = document.getElementById('chatFabBadge');
     if (chatPanelOpen) {
         panel.classList.add('open');
-        if (badge) badge.style.display = 'none';
+        
         chatLastSeenCount = chatMessages.length;
         startChatListener();
         setTimeout(() => document.getElementById('chatInput')?.focus(), 300);
@@ -2828,18 +2833,15 @@ window.initChat = function() {
     }
 };
 
-// Listener ya Firestore
 function startChatListener() {
     if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e) {} }
     
-    // ✅ Ntidukoresha orderBy hano kugira ngo twirinde kubura index
     const q = query(collection(db, 'chats'), limit(200));
     
     chatUnsubscribe = onSnapshot(q, (snap) => {
         chatMessages = [];
         snap.forEach(d => chatMessages.push({ id: d.id, ...d.data() }));
         
-        // ✅ Gutondeka messages hano aho kuri Firestore (kugira ngo udakenera Index)
         chatMessages.sort((a, b) => {
             const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
             const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
@@ -2848,17 +2850,21 @@ function startChatListener() {
 
         renderChatMessages();
         
+        // Gahunda nshya: Kwerekana umubare w'ubutumwa kuri Menu
         if (!chatPanelOpen) {
             const newCount = chatMessages.length - chatLastSeenCount;
-            const badge = document.getElementById('chatFabBadge');
-            if (badge && newCount > 0) {
-                badge.textContent = newCount > 99 ? '99+' : newCount;
-                badge.style.display = 'flex';
+            const sidebarBadge = document.getElementById('sidebarChatCount'); // Dore hano twahinduye ID
+            if (sidebarBadge && newCount > 0) {
+                sidebarBadge.textContent = newCount > 99 ? '99+' : newCount;
+                sidebarBadge.style.display = 'flex';
             }
+        } else {
+            // Niba chat ifunguye, hisha umubare kuri menu
+            const sidebarBadge = document.getElementById('sidebarChatCount');
+            if (sidebarBadge) sidebarBadge.style.display = 'none';
         }
     }, (err) => {
         console.warn('Chat error:', err);
-        // Ndetse niba hari error, FAB iracyagaragara kuko tuyishyize hanze y'iyi function
     });
 }
 
@@ -3027,6 +3033,22 @@ window.clearMyChatMessages = async function() {
         showToast('🗑️ Ubutumwa bwawe bwasibwe', 'success');
     } catch(e) {
         showToast('❌ ' + e.message, 'error');
+    }
+};
+    // Iyi function izafungura chat iyo uyikanzemo kuri Menu
+window.openChatFromMenu = function(element) {
+    // 1. Gukuraho "active" kuri menu zose no kuyishyira kuri Chat
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    if (element) element.classList.add('active');
+
+    // 2. Gufungura Chat Panel
+    if (!chatPanelOpen) {
+        toggleChatPanel();
+    }
+
+    // 3. Kuri telefone, gufunga menu nyuma yo gukanda
+    if (window.innerWidth <= 900) {
+        document.getElementById('sidebar').classList.remove('open');
     }
 };
 </script>
