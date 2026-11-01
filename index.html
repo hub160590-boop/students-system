@@ -1321,12 +1321,12 @@ window.forceLogout = async function() {
     if (announcementsUnsubscribe) try { announcementsUnsubscribe(); } catch(e) {}
     if (postsUnsubscribe) try { postsUnsubscribe(); } catch(e) {}
     if (notificationsUnsubscribe) try { notificationsUnsubscribe(); } catch(e) {}
+    if (chatUnsubscribe) try { chatUnsubscribe(); } catch(e) {}
     try {
         if (currentUser) await updateDoc(doc(db, 'users', currentUser.uid), { isOnline: false, lastSeen: serverTimestamp() });
         await signOut(auth); window.location.reload();
     } catch(e) { try { localStorage.clear(); } catch(e) {} window.location.reload(); }
 };
-
 // AUTH STATE
 onAuthStateChanged(auth, async (user) => {
     const ls = document.getElementById('loadingScreen'), as = document.getElementById('authScreen'), appEl = document.getElementById('app');
@@ -1399,8 +1399,8 @@ async function enterApp() {
     try { startPostsListener(); } catch(e) {}
     try { startNotificationsListener(); } catch(e) {}
     try { setTimeout(() => initFCM(), 2000); } catch(e) { console.warn('FCM init:', e); }
+    try { initChat(); } catch(e) { console.warn('Chat init:', e); }
 }
-
 function startAnnouncementsListener() {
     if (announcementsUnsubscribe) try { announcementsUnsubscribe(); } catch(e) {}
     const q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(50));
