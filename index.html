@@ -2300,6 +2300,7 @@ function updateChatBadges() {
 window.renderChatList = function() {
     const container = document.getElementById('chatListContainer'); if (!container) return;
     const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
+    
     if (chatCurrentTab === 'chats') {
         let convs = [...chatConversations];
         if (search) convs = convs.filter(c => {
@@ -2308,21 +2309,53 @@ window.renderChatList = function() {
         });
         if (convs.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-comments"></i><div style="font-weight:700;margin-bottom:4px;">Nta chats</div><div style="font-size:12px;">Kanda ➕ ubanze kuganira</div></div>`; return; }
         container.innerHTML = convs.map(c => renderConvItem(c)).join('');
+        
     } else if (chatCurrentTab === 'people') {
-        let list = users.filter(u => u.uid !== currentUser.uid);
+        // Guhuza abakoresha (users) n'abanyeshuri (students)
+        let allPeople = [...users];
+        
+        students.forEach(s => {
+            if (s.uid && !allPeople.some(u => u.uid === s.uid)) {
+                allPeople.push({
+                    uid: s.uid,
+                    name: s.name,
+                    email: s.email,
+                    photo: s.photo,
+                    role: 'student',
+                    isOnline: false,
+                    level: s.level
+                });
+            }
+        });
+
+        // Kuraho wowe ubwawe
+        let list = allPeople.filter(u => u.uid !== currentUser.uid);
+        
         if (search) list = list.filter(u => (u.name||'').toLowerCase().includes(search) || (u.email||'').toLowerCase().includes(search));
-        if (list.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div>Nta bantu</div></div>`; return; }
+        
+        if (list.length === 0) { 
+            container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div style="font-weight:700;">Nta bantu</div><div style="font-size:12px;">Nta wundi muntu urandikwa muri sisitemu.</div></div>`; 
+            return; 
+        }
+        
         container.innerHTML = list.map(u => {
             const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
             const av = u.photo ? `<img src="${u.photo}">` : `<span>${init}</span>`;
+            const roleLabel = u.role === 'student' ? 'Umunyeshuri' : u.role === 'admin' ? 'Admin' : u.role === 'super_admin' ? 'Super Admin' : u.role;
             return `<div class="chat-conv-item" onclick="startDirectChat('${u.uid}')">
                 <div class="chat-conv-avatar ${u.isOnline ? 'online' : ''}">${av}</div>
                 <div class="chat-conv-info">
-                    <div class="chat-conv-header"><div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div>${u.isOnline ? '<div class="chat-conv-time" style="color:#10b981;">● Online</div>' : ''}</div>
-                    <div class="chat-conv-preview"><div class="chat-conv-msg">${escapeHtml(u.role === 'student' ? 'Umunyeshuri' : u.role === 'admin' ? 'Admin' : u.role === 'super_admin' ? 'Super Admin' : u.role)}</div></div>
+                    <div class="chat-conv-header">
+                        <div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div>
+                        ${u.isOnline ? '<div class="chat-conv-time" style="color:#10b981;">● Online</div>' : ''}
+                    </div>
+                    <div class="chat-conv-preview">
+                        <div class="chat-conv-msg">${escapeHtml(roleLabel)} ${u.level ? '• ' + u.level : ''}</div>
+                    </div>
                 </div>
             </div>`;
         }).join('');
+        
     } else if (chatCurrentTab === 'groups') {
         let list = chatGroups.filter(g => (g.members || []).includes(currentUser.uid));
         if (search) list = list.filter(g => (g.name||'').toLowerCase().includes(search));
