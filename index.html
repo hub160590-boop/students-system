@@ -599,14 +599,21 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 @media (max-width: 600px) {
-    .chat-panel { width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
+    .chat-panel { 
+        width: 100vw !important; 
+        height: 100vh !important; 
+        height: 100dvh !important; /* Ibi bituma ikoresha neza screen ya telefone n'iyo keyboard ifunguwe */
+        max-height: 100dvh !important; 
+        border-radius: 0 !important; 
+        top: 0 !important;
+        bottom: 0 !important;
+        z-index: 9999999 !important; /* Ituma iba hejuru y'ibindi byose */
+    }
+    .chat-header {
+        padding-top: 20px !important; /* Kugira ngo itikikire status bar ya telefone */
+    }
     .chat-fab { bottom: 90px; left: 16px; width: 52px; height: 52px; font-size: 20px; }
-}
-        /* Hisha FAB kuko chat iri kuri Menu */
-#chatFab {
-    display: none !important;
-}
-        /* ============ CHAT SYSTEM (WHATSAPP STYLE) ============ */
+}      /* ============ CHAT SYSTEM (WHATSAPP STYLE) ============ */
 #chatFab { display: none !important; } /* Hisha FAB kuko chat iri kuri Menu */
 
 .chat-panel {
@@ -3062,20 +3069,19 @@ window.sendChatMessage = async function() {
     
     try {
         await addDoc(collection(db, 'chats'), {
-            text: text,
+            text: String(text),
             authorUid: currentUser.uid,
-            authorName: currentUserData.name || 'Umunyeshuri',
-            authorPhoto: currentUserData.photo || null,
-            authorRole: currentUserData.role || 'student',
-            createdAt: serverTimestamp() // Iyi ni ngombwa kuri Rules zawe
+            authorName: (currentUserData && currentUserData.name) ? String(currentUserData.name) : 'Umunyeshuri',
+            authorPhoto: (currentUserData && currentUserData.photo) ? String(currentUserData.photo) : null,
+            authorRole: (currentUserData && currentUserData.role) ? String(currentUserData.role) : 'student',
+            createdAt: serverTimestamp()
         });
     } catch(e) {
         console.error('Chat send error:', e);
         showToast('❌ Ntibyakunze kohereza: ' + e.message, 'error');
-        input.value = text; // Subiza ubutumwa niba byanze
+        input.value = text; 
     } finally {
         btn.disabled = false;
-        // Subiramo focus kuri input
         input.focus();
     }
 };
