@@ -32,25 +32,6 @@
         }
     </script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js";
-        const FCM_CONFIG = {
-            apiKey: "AIzaSyDUhTzkU02VrFLLDrld3tBML-j9wo9UrmQ",
-            authDomain: "students-system-66d62.firebaseapp.com",
-            projectId: "students-system-66d62",
-            storageBucket: "students-system-66d62.firebasestorage.app",
-            messagingSenderId: "870493079374",
-            appId: "1:870493079374:web:505ce5f2fa7f0f51d0c01f"
-        };
-        const VAPID_KEY = "BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U";
-        const fcmApp = initializeApp(FCM_CONFIG);
-        window.FCM_MESSAGING = getMessaging(fcmApp);
-        window.FCM_VAPID_KEY = VAPID_KEY;
-        window.FCM_GET_TOKEN = getToken;
-        window.FCM_ON_MESSAGE = onMessage;
-    </script>
-
     <style>
 :root {
     --primary: #38bdf8; --primary-dark: #0284c7; --primary-light: #7dd3fc;
@@ -63,7 +44,6 @@
     --gradient-4: linear-gradient(135deg, #f59e0b, #ec4899);
     --gradient-purple: linear-gradient(135deg, #8b5cf6, #a78bfa);
     --gradient-live: linear-gradient(135deg, #ef4444, #ec4899);
-    --gradient-chat: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
     --radius: 16px; --radius-lg: 24px;
@@ -200,11 +180,9 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .course-cover img { width: 100%; height: 100%; object-fit: cover; }
 .course-cover .course-cover-icon { font-size: 60px; color: rgba(255, 255, 255, 0.9); }
 .course-cover .course-level-badge { position: absolute; top: 12px; left: 12px; background: rgba(0, 0, 0, 0.7); color: white; padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; backdrop-filter: blur(10px); }
-.course-cover .course-live-badge { position: absolute; top: 12px; right: 12px; background: var(--gradient-live); color: white; padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 5px; animation: pulse-live 1.5s infinite; }
 .course-body { padding: 18px 20px; }
 .course-body h3 { font-size: 16.5px; font-weight: 800; margin-bottom: 6px; line-height: 1.4; }
 .course-body .course-subject { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-.course-body .course-teacher { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
 .course-progress { margin-bottom: 12px; }
 .course-progress-bar { height: 8px; background: var(--border); border-radius: 50px; overflow: hidden; margin-bottom: 6px; }
 .course-progress-fill { height: 100%; background: var(--gradient-2); border-radius: 50px; transition: width 0.5s ease; }
@@ -220,12 +198,9 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .lesson-video-container { background: #000; border-radius: 14px; overflow: hidden; margin-bottom: 20px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
 .lesson-video-container video, .lesson-video-container iframe { width: 100%; height: 100%; border: none; }
 .lesson-content-text { font-size: 15px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-wrap: break-word; }
-.lesson-files { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-.lesson-file-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; }
 .lesson-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
 
 .live-class-card { background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(236, 72, 153, 0.05)); border: 2px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; position: relative; overflow: hidden; }
-.live-class-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-live); animation: pulse-live 2s infinite; }
 .live-class-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
 .live-class-card .live-indicator { display: inline-flex; align-items: center; gap: 6px; background: var(--gradient-live); color: white; padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; animation: pulse-live 1.5s infinite; }
 .live-class-card .live-indicator .dot { width: 8px; height: 8px; background: white; border-radius: 50%; }
@@ -272,7 +247,6 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .assignment-meta span { display: flex; align-items: center; gap: 5px; }
 .assignment-desc { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 14px; }
 
-/* ============ FEED/POSTS ============ */
 .post-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 18px; transition: var(--transition); position: relative; }
 .post-card:hover { box-shadow: var(--shadow-lg); }
 .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
@@ -288,22 +262,6 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .post-action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; background: transparent; border: none; cursor: pointer; color: var(--text-secondary); font-family: inherit; font-size: 13.5px; font-weight: 600; transition: var(--transition); }
 .post-action-btn:hover { background: var(--bg); }
 .post-action-btn.liked { color: var(--danger); }
-.post-carousel { position: relative; border-radius: 14px; overflow: hidden; margin-bottom: 14px; background: #000; }
-.post-carousel .carousel-track { display: flex; transition: transform 0.3s ease; }
-.post-carousel .carousel-track img { width: 100%; flex-shrink: 0; max-height: 500px; object-fit: contain; display: block; }
-.post-carousel .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; z-index: 5; }
-.post-carousel .carousel-nav.prev { left: 10px; }
-.post-carousel .carousel-nav.next { right: 10px; }
-.post-carousel .carousel-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-.post-carousel .carousel-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); }
-.post-carousel .carousel-dots .dot.active { background: white; }
-.post-card.pinned { border: 2px solid var(--warning); }
-.pin-badge { position: absolute; top: 10px; right: 10px; background: var(--warning); color: white; padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 800; z-index: 5; }
-.post-more-actions { position: relative; }
-.post-more-menu { position: absolute; top: 100%; right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100; overflow: hidden; }
-.post-more-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; border: none; background: transparent; cursor: pointer; font-family: inherit; font-size: 13.5px; color: var(--text); text-align: left; }
-.post-more-menu button:hover { background: var(--bg); }
-.post-more-menu button.danger { color: var(--danger); }
 .comment-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .comment-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gradient-purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; overflow: hidden; }
 .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -314,45 +272,32 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 
 /* ============ MODERN CHAT UI ============ */
 .chat-page-container { display: grid; grid-template-columns: 380px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; height: calc(100vh - 160px); min-height: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-
-/* LEFT PANEL */
 .chat-sidebar-panel { background: linear-gradient(180deg, #1a1d2e 0%, #252942 100%); display: flex; flex-direction: column; overflow: hidden; position: relative; }
-.chat-sidebar-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 200px; background: radial-gradient(circle at 50% 0%, rgba(102,126,234,0.3) 0%, transparent 70%); pointer-events: none; }
-
 .chat-sidebar-header { padding: 20px; position: relative; z-index: 2; }
 .chat-sidebar-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .chat-sidebar-title h3 { font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; }
 .chat-sidebar-title .actions { display: flex; gap: 8px; }
-.chat-sidebar-title .actions button { width: 38px; height: 38px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; backdrop-filter: blur(10px); }
-.chat-sidebar-title .actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102,126,234,0.4); }
-
+.chat-sidebar-title .actions button { width: 38px; height: 38px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.chat-sidebar-title .actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); transform: translateY(-2px); }
 .chat-search { position: relative; }
 .chat-search i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.5); font-size: 14px; }
-.chat-search input { width: 100%; padding: 12px 16px 12px 44px; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.05); color: #ffffff; font-family: inherit; font-size: 14px; outline: none; transition: all 0.2s; backdrop-filter: blur(10px); }
+.chat-search input { width: 100%; padding: 12px 16px 12px 44px; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.05); color: #ffffff; font-family: inherit; font-size: 14px; outline: none; transition: all 0.2s; }
 .chat-search input::placeholder { color: rgba(255,255,255,0.4); }
 .chat-search input:focus { border-color: #667eea; background: rgba(102,126,234,0.15); }
-
 .chat-tabs { display: flex; gap: 6px; padding: 8px 20px 12px; position: relative; z-index: 2; }
 .chat-tab { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.6); transition: all 0.2s; }
 .chat-tab:hover { background: rgba(255,255,255,0.1); color: #ffffff; }
 .chat-tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
-
 .chat-list { flex: 1; overflow-y: auto; padding: 4px 12px 12px; position: relative; z-index: 2; }
-.chat-list::-webkit-scrollbar { width: 6px; }
-.chat-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
 .chat-list-empty { padding: 50px 20px; text-align: center; color: rgba(255,255,255,0.5); }
 .chat-list-empty i { font-size: 50px; opacity: 0.3; margin-bottom: 16px; display: block; }
-
 .chat-conv-item { display: flex; gap: 12px; padding: 14px; cursor: pointer; border-radius: 14px; transition: all 0.2s; margin-bottom: 4px; border: 1px solid transparent; }
 .chat-conv-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
 .chat-conv-item.active { background: linear-gradient(135deg, rgba(102,126,234,0.25), rgba(118,75,162,0.25)); border-color: rgba(102,126,234,0.5); }
-
 .chat-conv-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; position: relative; overflow: hidden; }
 .chat-conv-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-conv-avatar.online::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; background: #10b981; border-radius: 50%; border: 3px solid #1a1d2e; box-shadow: 0 0 10px rgba(16,185,129,0.7); animation: onlinePulse 2s infinite; }
-@keyframes onlinePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); } 50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); } }
+.chat-conv-avatar.online::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; background: #10b981; border-radius: 50%; border: 3px solid #1a1d2e; }
 .chat-conv-avatar .group-icon { font-size: 22px; }
-
 .chat-conv-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
 .chat-conv-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
 .chat-conv-name { font-size: 15px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -360,16 +305,12 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .chat-conv-time.unread { color: #38bdf8; font-weight: 700; }
 .chat-conv-preview { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .chat-conv-msg { font-size: 13px; color: rgba(255,255,255,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-conv-badge { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(102,126,234,0.5); }
+.chat-conv-badge { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-/* RIGHT PANEL */
 .chat-main-panel { display: flex; flex-direction: column; background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%); overflow: hidden; position: relative; }
 [data-theme="dark"] .chat-main-panel { background: linear-gradient(180deg, #0f172a 0%, #1a2234 100%); }
-.chat-main-panel::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 30%, rgba(102,126,234,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(118,75,162,0.08) 0%, transparent 50%); pointer-events: none; }
-
 .chat-empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; color: var(--text-secondary); position: relative; z-index: 1; }
-.chat-empty-state .big-icon { width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15)); display: flex; align-items: center; justify-content: center; font-size: 70px; color: #667eea; margin-bottom: 24px; animation: floatIcon 3s ease-in-out infinite; }
-@keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.chat-empty-state .big-icon { width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15)); display: flex; align-items: center; justify-content: center; font-size: 70px; color: #667eea; margin-bottom: 24px; }
 .chat-empty-state h2 { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
 .chat-empty-state p { font-size: 14px; line-height: 1.6; max-width: 400px; }
 
@@ -381,16 +322,12 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .chat-main-avatar.online::after { content: ''; position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border-radius: 50%; border: 2px solid var(--bg-card); }
 .chat-main-name { font-size: 16px; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-main-status { font-size: 12px; color: var(--text-secondary); margin: 2px 0 0; }
-
 .chat-main-actions { display: flex; gap: 6px; }
 .chat-main-actions button { width: 40px; height: 40px; border-radius: 12px; border: none; background: var(--bg); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 15px; }
-.chat-main-actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; transform: translateY(-2px); }
+.chat-main-actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
 
 .chat-messages-area { flex: 1; overflow-y: auto; padding: 24px 8%; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 1; }
-.chat-messages-area::-webkit-scrollbar { width: 6px; }
-.chat-messages-area::-webkit-scrollbar-thumb { background: rgba(102,126,234,0.3); border-radius: 3px; }
 @media (max-width: 1100px) { .chat-messages-area { padding: 24px 4%; } }
-
 .chat-msg { display: flex; gap: 8px; max-width: 75%; margin-bottom: 6px; position: relative; animation: msgPop 0.3s ease; }
 @keyframes msgPop { from { opacity: 0; transform: translateY(8px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .chat-msg.mine { align-self: flex-end; flex-direction: row-reverse; }
@@ -401,7 +338,7 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .chat-msg-name { font-size: 12px; font-weight: 700; color: #667eea; padding: 0 8px; margin-bottom: 2px; }
 .chat-bubble { padding: 10px 14px; border-radius: 18px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14.5px; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; position: relative; border-bottom-left-radius: 4px; }
 [data-theme="dark"] .chat-bubble { background: #1e293b; color: #e2e8f0; }
-.chat-msg.mine .chat-bubble { background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; border-bottom-left-radius: 18px; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(102,126,234,0.35); }
+.chat-msg.mine .chat-bubble { background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; border-bottom-left-radius: 18px; border-bottom-right-radius: 4px; }
 .chat-msg-reply-quote { padding: 6px 10px; background: rgba(0,0,0,0.08); border-left: 3px solid #667eea; border-radius: 8px; margin-bottom: 6px; font-size: 12.5px; }
 .chat-msg.mine .chat-msg-reply-quote { background: rgba(0,0,0,0.15); border-left-color: #ffffff; }
 .chat-msg-reply-quote .reply-name { font-weight: 700; color: #667eea; margin-bottom: 2px; }
@@ -409,21 +346,16 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .chat-msg-reply-quote .reply-text { opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
 .chat-msg-time { font-size: 10.5px; color: var(--text-secondary); padding: 0 8px; margin-top: 2px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 .chat-msg.mine .chat-msg-time { color: rgba(255,255,255,0.85); }
-.chat-msg.edited .chat-msg-time::before { content: '✏️ '; font-size: 10px; }
 .chat-msg-time .checkmark { color: #53bdeb; font-size: 11px; }
 .chat-msg.mine .chat-msg-time .checkmark { color: rgba(255,255,255,0.9); }
-
 .chat-msg-actions { position: absolute; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
 .chat-msg:hover .chat-msg-actions { opacity: 1; pointer-events: auto; }
 .chat-msg:not(.mine) .chat-msg-actions { right: -70px; }
 .chat-msg.mine .chat-msg-actions { left: -70px; }
 .chat-msg-actions button { width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--bg-card); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s; }
 .chat-msg-actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.chat-day-divider { align-self: center; background: rgba(102,126,234,0.15); color: #667eea; font-size: 11.5px; font-weight: 700; padding: 6px 16px; border-radius: 50px; margin: 16px 0; }
 
-.chat-day-divider { align-self: center; background: rgba(102,126,234,0.15); color: #667eea; font-size: 11.5px; font-weight: 700; padding: 6px 16px; border-radius: 50px; margin: 16px 0; backdrop-filter: blur(10px); border: 1px solid rgba(102,126,234,0.2); }
-[data-theme="dark"] .chat-day-divider { background: rgba(102,126,234,0.2); color: #93c5fd; }
-
-/* Reply preview above input */
 .chat-reply-preview { padding: 10px 16px; background: rgba(102,126,234,0.08); border-top: 1px solid var(--border); border-left: 4px solid #667eea; display: none; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
 .chat-reply-preview.active { display: flex; }
 .chat-reply-preview .info { flex: 1; min-width: 0; }
@@ -435,17 +367,15 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 [data-theme="dark"] .chat-input-area { background: rgba(15, 23, 42, 0.9); }
 .chat-input-area textarea { flex: 1; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 24px; background: var(--bg-card); color: var(--text); font-family: inherit; font-size: 14.5px; resize: none; max-height: 100px; min-height: 48px; outline: none; transition: all 0.2s; }
 .chat-input-area textarea:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); }
-.chat-send-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 6px 20px rgba(102,126,234,0.5); }
-.chat-send-btn:hover:not(:disabled) { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px rgba(102,126,234,0.7); }
+.chat-send-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: all 0.2s; }
+.chat-send-btn:hover:not(:disabled) { transform: scale(1.05) translateY(-2px); }
 .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Chat FAB */
 .chat-fab { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50%; border: none; cursor: pointer; font-size: 24px; box-shadow: 0 10px 30px rgba(102,126,234,0.5); z-index: 9998; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; }
 .chat-fab:hover { transform: scale(1.1); }
 .chat-fab .chat-fab-badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; font-size: 11px; font-weight: 800; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); }
 .chat-fab.hidden { display: none !important; }
 
-/* User profile view */
 .user-profile-view { text-align: center; padding: 20px; }
 .user-profile-view .avatar-big { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 800; margin: 0 auto 16px; overflow: hidden; border: 4px solid white; box-shadow: var(--shadow-lg); }
 .user-profile-view .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
@@ -496,6 +426,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .toast.error .toast-icon { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 .toast.warning .toast-icon { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
 
+.notification-item { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.notification-item:last-child { border-bottom: none; }
+.notification-content .title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.notification-content .body { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.notification-content .time { font-size: 11px; color: var(--text-secondary); }
+
 .settings-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
 .settings-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
 .settings-card h3 i { color: var(--primary); }
@@ -511,7 +447,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .qr-display #qr-register-code { display: inline-block; padding: 20px; background: white; border-radius: 16px; }
 .qr-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; color: #1e293b; }
 .qr-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
-.qr-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
 
 .grade-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; font-size: 16px; font-weight: 800; }
 .grade-badge.grade-A { background: rgba(16,185,129,0.15); color: #10b981; }
@@ -568,7 +503,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .announcement-meta { display: flex; gap: 14px; font-size: 12.5px; color: var(--text-secondary); flex-wrap: wrap; margin-bottom: 12px; }
 .announcement-meta span { display: flex; align-items: center; gap: 5px; }
 .announcement-content { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; white-space: pre-wrap; }
-.announcement-image { max-width: 100%; max-height: 350px; border-radius: 12px; margin-top: 8px; cursor: pointer; border: 1px solid var(--border); }
 .announcement-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
 
 .install-btn-floating { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #38bdf8; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5); z-index: 99999; border: none; animation: pulse-install 2s infinite; }
@@ -576,28 +510,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .install-btn-floating.hidden { display: none !important; }
 
 .exam-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; border-left: 4px solid var(--primary); }
-.exam-card.cat { border-left-color: #38bdf8; }
-.exam-card.midterm { border-left-color: #f59e0b; }
-.exam-card.final { border-left-color: #ef4444; }
 .exam-type-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
 .exam-type-badge.cat { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
 .exam-type-badge.midterm { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 .exam-type-badge.final { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-.exam-files-container { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-.exam-file-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
-.exam-file-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.exam-file-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; flex-shrink: 0; }
-.exam-file-icon.pdf { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.exam-file-icon.word { background: linear-gradient(135deg, #2b579a, #1e3a8a); }
-.exam-file-icon.ppt { background: linear-gradient(135deg, #d24726, #c0392b); }
-.exam-file-icon.video { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.exam-file-icon.default { background: linear-gradient(135deg, #64748b, #94a3b8); }
-.exam-file-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.exam-file-size { font-size: 11.5px; color: var(--text-secondary); }
-.exam-file-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.exam-file-btn { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; text-decoration: none; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
-.exam-file-btn.view:hover { background: var(--primary); color: white; }
-.exam-file-btn.download:hover { background: var(--success); color: white; }
 
 .file-upload-area { border: 2px dashed var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; background: var(--bg); cursor: pointer; transition: var(--transition); }
 .file-upload-area:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
@@ -623,9 +539,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
 .member-cell-row { display: flex; align-items: center; gap: 12px; }
 .row-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--gradient-1); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-.row-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .row-info .name { font-weight: 600; font-size: 14px; }
-.row-info .id { font-size: 12px; color: var(--text-secondary); }
 .class-badge { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 11.5px; font-weight: 700; background: rgba(56, 189, 248, 0.15); color: var(--primary); }
 .dept-badge { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 11.5px; font-weight: 700; }
 .dept-badge.science { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
@@ -643,7 +557,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .main { padding: 20px; }
     .course-grid { grid-template-columns: 1fr; }
     .chat-page-container { grid-template-columns: 1fr; height: calc(100vh - 130px); }
-    .chat-sidebar-panel { display: flex; }
     .chat-main-panel { display: none; }
     .chat-page-container.show-conv .chat-sidebar-panel { display: none; }
     .chat-page-container.show-conv .chat-main-panel { display: flex; }
@@ -658,7 +571,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .main { padding: 14px; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
     .saved-card { flex-direction: column; align-items: stretch; }
-    .qr-actions { grid-template-columns: 1fr; }
     .table-card { overflow-x: auto !important; width: 100% !important; }
     .table-card table { min-width: 600px !important; }
     .lesson-nav { flex-direction: column; }
@@ -752,13 +664,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <div class="nav-label">Menu Nyamukuru</div>
             <div class="nav-item admin-only active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i><span>Ahabanza</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-dashboard', this)" style="display: none;"><i class="fas fa-home"></i><span>Ahabanza</span></div>
-            
+
             <div class="nav-label student-only" style="display: none;">🎓 Online Learning</div>
             <div class="nav-item student-only" onclick="switchPage('my-courses', this)" style="display: none;"><i class="fas fa-graduation-cap"></i><span>Amasomo Yanjye</span></div>
-            <div class="nav-item student-only" onclick="switchPage('my-assignments', this)" style="display: none;"><i class="fas fa-tasks"></i><span>Imirimo</span><span class="count warning" id="sidebarAssignmentCount" style="display:none;">0</span></div>
+            <div class="nav-item student-only" onclick="switchPage('my-assignments', this)" style="display: none;"><i class="fas fa-tasks"></i><span>Imirimo</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-quizzes', this)" style="display: none;"><i class="fas fa-question-circle"></i><span>Ibibazo</span></div>
-            <div class="nav-item student-only" onclick="switchPage('live-classes', this)" style="display: none;"><i class="fas fa-video"></i><span>Live Classes</span><span class="count live" id="sidebarLiveCount" style="display:none;">LIVE</span></div>
-            
+            <div class="nav-item student-only" onclick="switchPage('live-classes', this)" style="display: none;"><i class="fas fa-video"></i><span>Live Classes</span></div>
+
             <div class="nav-label admin-only">🎓 Online Learning</div>
             <div class="nav-item admin-only" onclick="switchPage('manage-courses', this)"><i class="fas fa-graduation-cap"></i><span>Gucunga Courses</span></div>
             <div class="nav-item admin-only" onclick="switchPage('manage-lessons', this)"><i class="fas fa-list-ol"></i><span>Gucunga Lessons</span></div>
@@ -766,13 +678,13 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <div class="nav-item admin-only" onclick="switchPage('manage-quizzes', this)"><i class="fas fa-question-circle"></i><span>Quizzes</span></div>
             <div class="nav-item admin-only" onclick="switchPage('manage-live', this)"><i class="fas fa-video"></i><span>Live Classes</span></div>
             <div class="nav-item admin-only" onclick="switchPage('submissions', this)"><i class="fas fa-inbox"></i><span>Imirimo Yoherejwe</span><span class="count warning" id="sidebarSubmissionsCount" style="display:none;">0</span></div>
-            
+
             <div class="nav-label">Menu Nyamukuru</div>
             <div class="nav-item" onclick="switchPage('feed', this)"><i class="fas fa-newspaper"></i><span>VIDEOS & Feed</span></div>
             <div class="nav-item" onclick="switchPage('announcements', this)"><i class="fas fa-bullhorn"></i><span>Amatangazo</span><span class="count" id="sidebarAnnouncementCount" style="display:none;">0</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-notes', this)" style="display: none;"><i class="fas fa-book"></i><span>Amasomo Yanjye</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-exams', this)" style="display: none;"><i class="fas fa-file-alt"></i><span>Ibizamini Byanjye</span></div>
-            
+
             <div class="nav-item admin-only" onclick="openQRRegisterModal()"><i class="fas fa-qrcode"></i><span>QR Code Mushya</span></div>
             <div class="nav-item admin-only" onclick="switchPage('students', this)"><i class="fas fa-users"></i><span>Abanyeshuri</span><span class="count" id="sidebarStudentCount">0</span></div>
             <div class="nav-item admin-only" onclick="switchPage('pending', this)"><i class="fas fa-user-clock"></i><span>Abakandida</span><span class="count warning" id="sidebarPendingCount" style="display: none;">0</span></div>
@@ -824,7 +736,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                         <div class="chat-empty-state" id="chatEmptyState">
                             <div class="big-icon"><i class="fas fa-comments"></i></div>
                             <h2>MINDBOOK Chat</h2>
-                            <p>Hitamo umuntu cyangwa itsinda kugira ngo utangire kuganira. Ubutumwa bwawe ni private kandi burabitswe neza.</p>
+                            <p>Hitamo umuntu cyangwa itsinda kugira ngo utangire kuganira.</p>
                         </div>
                         <div id="chatActiveView" style="display: none; flex: 1; flex-direction: column; overflow: hidden;">
                             <div class="chat-main-header" id="chatMainHeader">
@@ -877,7 +789,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 </div>
             </div>
 
-            <!-- FEED -->
             <div class="page" id="page-feed">
                 <div class="page-header">
                     <div><h1>📰 VIDEOS & Feed</h1><p>Reba amafoto, videwo n'ibyashyizweho</p></div>
@@ -1136,7 +1047,9 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     <span class="chat-fab-badge" id="chatFabBadge" style="display:none;">0</span>
 </button>
 
-<!-- MODALS -->
+<!-- ============ MODALS ============ -->
+
+<!-- Edit Message -->
 <div class="modal-overlay" id="editMessageModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-edit"></i> Hindura Ubutumwa</h3><button class="close-btn" onclick="closeModal('editMessageModal')"><i class="fas fa-times"></i></button></div>
@@ -1146,6 +1059,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- New Chat -->
 <div class="modal-overlay" id="newChatModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-comment-medical"></i> Chat Nshya</h3><button class="close-btn" onclick="closeModal('newChatModal')"><i class="fas fa-times"></i></button></div>
@@ -1154,6 +1068,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- New Group -->
 <div class="modal-overlay" id="newGroupModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-users"></i> Kora Group Nshya</h3><button class="close-btn" onclick="closeModal('newGroupModal')"><i class="fas fa-times"></i></button></div>
@@ -1165,6 +1080,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- View Profile -->
 <div class="modal-overlay" id="viewProfileModal">
     <div class="modal" style="max-width: 450px;">
         <div class="modal-header"><h3><i class="fas fa-user"></i> Umwirondoro</h3><button class="close-btn" onclick="closeModal('viewProfileModal')"><i class="fas fa-times"></i></button></div>
@@ -1172,6 +1088,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Post -->
 <div class="modal-overlay" id="addPostModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Shyiraho Post</h3><button class="close-btn" onclick="closeModal('addPostModal')"><i class="fas fa-times"></i></button></div>
@@ -1182,6 +1099,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Comments -->
 <div class="modal-overlay" id="commentsModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-comments"></i> Comments</h3><button class="close-btn" onclick="closeModal('commentsModal')"><i class="fas fa-times"></i></button></div>
@@ -1190,6 +1108,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Course -->
 <div class="modal-overlay" id="addCourseModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-graduation-cap"></i> Ongeraho Course</h3><button class="close-btn" onclick="closeModal('addCourseModal')"><i class="fas fa-times"></i></button></div>
@@ -1203,6 +1122,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Lesson -->
 <div class="modal-overlay" id="addLessonModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-book"></i> Ongeraho Lesson</h3><button class="close-btn" onclick="closeModal('addLessonModal')"><i class="fas fa-times"></i></button></div>
@@ -1215,6 +1135,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Assignment -->
 <div class="modal-overlay" id="addAssignmentModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-tasks"></i> Ongeraho Assignment</h3><button class="close-btn" onclick="closeModal('addAssignmentModal')"><i class="fas fa-times"></i></button></div>
@@ -1227,6 +1148,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Quiz -->
 <div class="modal-overlay" id="addQuizModal">
     <div class="modal" style="max-width: 700px;">
         <div class="modal-header"><h3><i class="fas fa-question-circle"></i> Ongeraho Quiz</h3><button class="close-btn" onclick="closeModal('addQuizModal')"><i class="fas fa-times"></i></button></div>
@@ -1238,6 +1160,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Add Live -->
 <div class="modal-overlay" id="addLiveModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-video"></i> Ongeraho Live</h3><button class="close-btn" onclick="closeModal('addLiveModal')"><i class="fas fa-times"></i></button></div>
@@ -1249,6 +1172,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
+<!-- Submit Assignment -->
 <div class="modal-overlay" id="submitAssignmentModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-upload"></i> Ohereza Umurimo</h3><button class="close-btn" onclick="closeModal('submitAssignmentModal')"><i class="fas fa-times"></i></button></div>
@@ -1258,12 +1182,91 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
-<div class="modal-overlay" id="notificationsModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-bell"></i> Notifications</h3><button class="close-btn" onclick="closeModal('notificationsModal')"><i class="fas fa-times"></i></button></div><div id="notificationsList" style="max-height:500px;overflow-y:auto;"></div></div></div>
-<div class="modal-overlay" id="qrRegisterModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-qrcode"></i> QR Mushya</h3><button class="close-btn" onclick="closeModal('qrRegisterModal')"><i class="fas fa-times"></i></button></div><div class="qr-display"><div class="qr-title">Iyandikishe</div><div id="qr-register-code"></div></div></div></div>
-<div class="modal-overlay" id="addStudentModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-user-plus"></i> Ongeraho Umunyeshuri</h3><button class="close-btn" onclick="closeModal('addStudentModal')"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="newName"></div><div class="form-group"><label>Email</label><input type="email" class="form-control" id="newEmail"></div><div class="form-group"><label>Nimero</label><input type="text" class="form-control" id="newNumberInput"></div><div class="form-group"><label>Umwaka</label><select class="form-control" id="newLevel"><option value="">-- Hitamo --</option><option value="Year1">Year 1</option><option value="Year2">Year 2</option><option value="Year3">Year 3</option></select></div><div class="form-group"><label>Ishami</label><select class="form-control" id="newDepartment"><option value="Science">Science</option><option value="Arts">Arts</option><option value="Commerce">Commerce</option><option value="Technical">Technical</option></select></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addStudentModal')">Hagarika</button><button class="btn btn-primary" onclick="addStudent()"><i class="fas fa-save"></i> Bika</button></div></div></div>
-<div class="modal-overlay" id="addTeacherModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-chalkboard-teacher"></i> Ongeraho Umwarimu</h3><button class="close-btn" onclick="closeModal('addTeacherModal')"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="teacherName"></div><div class="form-group"><label>Email</label><input type="email" class="form-control" id="teacherEmail"></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addTeacherModal')">Hagarika</button><button class="btn btn-primary" onclick="addTeacher()"><i class="fas fa-save"></i> Bika</button></div></div></div>
-<div class="modal-overlay" id="addAdminModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-user-shield"></i> Ongeraho Admin</h3><button class="close-btn" onclick="closeModal('addAdminModal')"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Email</label><input type="email" class="form-control" id="newAdminEmail"></div><div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="newAdminName"></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addAdminModal')">Hagarika</button><button class="btn btn-primary" onclick="addNewAdmin()"><i class="fas fa-save"></i> Bika</button></div></div></div>
-<div class="modal-overlay" id="forgotPasswordModal"><div class="modal"><div class="modal-header"><h3><i class="fas fa-key"></i> Hindura Ijambo</h3><button class="close-btn" onclick="closeModal('forgotPasswordModal')"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Email</label><input type="email" class="form-control" id="forgotEmailInput"></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('forgotPasswordModal')">Hagarika</button><button class="btn btn-primary" onclick="sendResetPasswordEmail()"><i class="fas fa-paper-plane"></i> Ohereza</button></div></div></div>
+<!-- Notifications -->
+<div class="modal-overlay" id="notificationsModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-bell"></i> Notifications</h3><button class="close-btn" onclick="closeModal('notificationsModal')"><i class="fas fa-times"></i></button></div>
+        <div id="notificationsList" style="max-height:500px;overflow-y:auto;"></div>
+    </div>
+</div>
+
+<!-- QR Register -->
+<div class="modal-overlay" id="qrRegisterModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-qrcode"></i> QR Mushya</h3><button class="close-btn" onclick="closeModal('qrRegisterModal')"><i class="fas fa-times"></i></button></div>
+        <div class="qr-display"><div class="qr-title">Iyandikishe</div><div class="qr-subtitle">Scan iyi QR wiyandikishe</div><div id="qr-register-code"></div></div>
+    </div>
+</div>
+
+<!-- Add Student -->
+<div class="modal-overlay" id="addStudentModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-user-plus"></i> Ongeraho Umunyeshuri</h3><button class="close-btn" onclick="closeModal('addStudentModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="newName"></div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="newEmail"></div>
+        <div class="form-group"><label>Nimero</label><input type="text" class="form-control" id="newNumberInput"></div>
+        <div class="form-group"><label>Umwaka</label><select class="form-control" id="newLevel"><option value="">-- Hitamo --</option><option value="Year1">Year 1</option><option value="Year2">Year 2</option><option value="Year3">Year 3</option></select></div>
+        <div class="form-group"><label>Ishami</label><select class="form-control" id="newDepartment"><option value="Science">Science</option><option value="Arts">Arts</option><option value="Commerce">Commerce</option><option value="Technical">Technical</option></select></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addStudentModal')">Hagarika</button><button class="btn btn-primary" onclick="addStudent()"><i class="fas fa-save"></i> Bika</button></div>
+    </div>
+</div>
+
+<!-- Add Teacher -->
+<div class="modal-overlay" id="addTeacherModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-chalkboard-teacher"></i> Ongeraho Umwarimu</h3><button class="close-btn" onclick="closeModal('addTeacherModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="teacherName"></div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="teacherEmail"></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addTeacherModal')">Hagarika</button><button class="btn btn-primary" onclick="addTeacher()"><i class="fas fa-save"></i> Bika</button></div>
+    </div>
+</div>
+
+<!-- Add Admin -->
+<div class="modal-overlay" id="addAdminModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-user-shield"></i> Ongeraho Admin</h3><button class="close-btn" onclick="closeModal('addAdminModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="newAdminEmail"></div>
+        <div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="newAdminName"></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addAdminModal')">Hagarika</button><button class="btn btn-primary" onclick="addNewAdmin()"><i class="fas fa-save"></i> Bika</button></div>
+    </div>
+</div>
+
+<!-- Forgot Password -->
+<div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-key"></i> Hindura Ijambo</h3><button class="close-btn" onclick="closeModal('forgotPasswordModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="forgotEmailInput"></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('forgotPasswordModal')">Hagarika</button><button class="btn btn-primary" onclick="sendResetPasswordEmail()"><i class="fas fa-paper-plane"></i> Ohereza</button></div>
+    </div>
+</div>
+
+<!-- Add Announcement -->
+<div class="modal-overlay" id="addAnnouncementModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-bullhorn"></i> Tangaza</h3><button class="close-btn" onclick="closeModal('addAnnouncementModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Umutwe <span>*</span></label><input type="text" class="form-control" id="annTitle"></div>
+        <div class="form-group"><label>Ibisobanuro <span>*</span></label><textarea class="form-control" id="annContent" rows="4"></textarea></div>
+        <div class="form-group"><label>Ubwoko</label><select class="form-control" id="annPriority">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+            <option value="low">Low</option>
+        </select></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addAnnouncementModal')">Hagarika</button><button class="btn btn-primary" onclick="saveAnnouncement()"><i class="fas fa-paper-plane"></i> Tangaza</button></div>
+    </div>
+</div>
+
+<!-- Add Grade -->
+<div class="modal-overlay" id="addGradeModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-chart-bar"></i> Ongeraho Amanota</h3><button class="close-btn" onclick="closeModal('addGradeModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Umunyeshuri <span>*</span></label><select class="form-control" id="gradeStudentId"><option value="">-- Hitamo --</option></select></div>
+        <div class="form-group"><label>Isomo <span>*</span></label><input type="text" class="form-control" id="gradeSubject"></div>
+        <div class="form-group"><label>Amanota (0-100) <span>*</span></label><input type="number" class="form-control" id="gradeMarks" min="0" max="100"></div>
+        <div class="form-group"><label>Itariki <span>*</span></label><input type="date" class="form-control" id="gradeDate"></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addGradeModal')">Hagarika</button><button class="btn btn-primary" onclick="addGrade()"><i class="fas fa-save"></i> Bika</button></div>
+    </div>
+</div>
 
 <div class="toast-container" id="toastContainer"></div>
 
@@ -1301,8 +1304,8 @@ let currentUserData = null;
 let students = [], users = [], teachers = [], grades = [], notes = [], notesPayments = [], announcements = [], exams = [], posts = [], notifications = [];
 let courses = [], lessons = [], assignments = [], submissions = [], quizzes = [], quizResults = [], liveClasses = [];
 let announcementsUnsubscribe = null, notificationsUnsubscribe = null, postsUnsubscribe = null;
-let newStudentPhoto = null, deptChartInstance = null, currentNoteFile = null, newAnnImage = null;
 let newPostMedia = null, currentPostIdForComments = null;
+let deptChartInstance = null;
 
 let currentCourseId = null, currentLessonIndex = 0, courseLessons = [], courseProgress = {};
 let quizQuestions = [], currentQuiz = null, quizAnswers = {};
@@ -1418,7 +1421,7 @@ onAuthStateChanged(auth, async (user) => {
         currentUser = user;
         try {
             const uDoc = await getDoc(doc(db, 'users', user.uid));
-            if (uDoc.exists()) currentUserData = uDoc.data();
+            if (uDoc.exists()) currentUserData = { uid: user.uid, ...uDoc.data() };
             else {
                 const sSnap = await getDocs(query(collection(db, 'students'), where('uid', '==', user.uid)));
                 let sData = null; sSnap.forEach(d => sData = { id: d.id, ...d.data() });
@@ -1432,8 +1435,8 @@ onAuthStateChanged(auth, async (user) => {
                     await setDoc(doc(db, 'users', user.uid), { ...currentUserData, createdAt: serverTimestamp() });
                 }
             }
-            try { await updateDoc(doc(db, 'users', user.uid), { isOnline: true, lastSeen: serverTimestamp(), name: currentUserData.name, photo: currentUserData.photo || null }); } catch(e) {}
-        } catch(e) { ls?.classList.add('hidden'); showAuthScreen(); return; }
+            try { await updateDoc(doc(db, 'users', user.uid), { isOnline: true, lastSeen: serverTimestamp() }); } catch(e) {}
+        } catch(e) { console.error(e); ls?.classList.add('hidden'); showAuthScreen(); return; }
         await loadAllData(); await new Promise(r => setTimeout(r, 300)); enterApp();
     } else { currentUser = null; currentUserData = null; await new Promise(r => setTimeout(r, 500)); ls?.classList.add('hidden'); showAuthScreen(); }
 });
@@ -1485,7 +1488,7 @@ async function enterApp() {
     try { startAnnouncementsListener(); } catch(e) {}
     try { startNotificationsListener(); } catch(e) {}
     try { startPostsListener(); } catch(e) {}
-    try { initChat(); } catch(e) {}
+    try { await initChat(); } catch(e) {}
 }
 
 function startAnnouncementsListener() {
@@ -1652,7 +1655,7 @@ window.openAddPostModal = function() {
 window.previewPostMedia = function(event) {
     const file = event.target.files[0]; if (!file) return;
     newPostMedia = file;
-    document.getElementById('postMediaPreview').innerHTML = `<div class="uploaded-file-item"><div class="info"><div class="exam-file-icon default" style="width:34px;height:34px;"><i class="fas fa-file"></i></div><div><div class="name">${escapeHtml(file.name)}</div></div></div></div>`;
+    document.getElementById('postMediaPreview').innerHTML = `<div class="uploaded-file-item"><div class="info"><div style="width:34px;height:34px;"><i class="fas fa-file"></i></div><div><div class="name">${escapeHtml(file.name)}</div></div></div></div>`;
 };
 window.savePost = async function() {
     const caption = document.getElementById('postCaption').value.trim();
@@ -1816,7 +1819,7 @@ window.renderMyAssignments = function() {
     list.innerHTML = filtered.map(a => {
         const mySub = submissions.find(s => s.assignmentId === a.id && s.studentUid === myUid);
         const isOverdue = a.dueDate && new Date(a.dueDate) < new Date() && !mySub;
-        const statusClass = mySub ? (mySub.status === 'graded' ? 'submitted' : 'submitted') : (isOverdue ? 'overdue' : '');
+        const statusClass = mySub ? 'submitted' : (isOverdue ? 'overdue' : '');
         return `<div class="assignment-card ${statusClass}"><div class="assignment-header"><h3>${escapeHtml(a.title)}</h3><span class="priority-badge ${mySub ? 'normal' : (isOverdue ? 'urgent' : 'high')}">${mySub ? '✅ Byoherejwe' : (isOverdue ? '⏰ Byarenze' : '⏳ Ntirakoherezwa')}</span></div><div class="assignment-meta"><span><i class="fas fa-calendar"></i> ${formatDate(a.dueDate)}</span></div><div class="assignment-desc">${escapeHtml(a.desc || '')}</div>${!mySub ? `<button class="btn btn-primary btn-sm" onclick="openSubmitAssignment('${a.id}')"><i class="fas fa-upload"></i> Ohereza</button>` : ''}</div>`;
     }).join('');
 };
@@ -2094,11 +2097,13 @@ window.renderAnnouncements = function() {
     if (announcements.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta matangazo</h3></div>`; return; }
     list.innerHTML = announcements.map(a => {
         const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
-        const readBy = Array.isArray(a.readBy) ? a.readBy : [];
-        const isRead = currentUser && readBy.includes(currentUser.uid);
-        if (!isRead) markAnnouncementAsRead(a.id);
         return `<div class="announcement-card priority-${a.priority || 'normal'}"><div class="announcement-header"><div class="announcement-title-row"><h3 class="announcement-title">${escapeHtml(a.title)}</h3><span class="priority-badge ${a.priority || 'normal'}">${a.priority || 'normal'}</span></div></div><div class="announcement-meta"><span><i class="fas fa-clock"></i> ${timeAgo(a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt))}</span></div><div class="announcement-content">${escapeHtml(a.content)}</div>${isAdmin ? `<div class="announcement-actions"><button class="action-btn delete" onclick="deleteAnnouncement('${a.id}')"><i class="fas fa-trash"></i></button></div>` : ''}</div>`;
     }).join('');
+    // mark as read after render
+    announcements.forEach(a => {
+        const readBy = Array.isArray(a.readBy) ? a.readBy : [];
+        if (currentUser && !readBy.includes(currentUser.uid)) markAnnouncementAsRead(a.id);
+    });
 };
 async function markAnnouncementAsRead(announcementId) {
     if (!currentUser) return;
@@ -2218,8 +2223,10 @@ window.renderGrades = function() {
 window.openAddGradeModal = function() {
     const sel = document.getElementById('gradeStudentId');
     sel.innerHTML = '<option value="">-- Hitamo --</option>';
-    students.forEach(s => sel.innerHTML += `<option value="${s.id}">${s.name}</option>`);
-    document.getElementById('gradeSubject').value = ''; document.getElementById('gradeMarks').value = ''; document.getElementById('gradeDate').value = new Date().toISOString().split('T')[0];
+    students.filter(s => s.status === 'active' || !s.status).forEach(s => sel.innerHTML += `<option value="${s.id}">${s.name}</option>`);
+    document.getElementById('gradeSubject').value = '';
+    document.getElementById('gradeMarks').value = '';
+    document.getElementById('gradeDate').value = new Date().toISOString().split('T')[0];
     document.getElementById('addGradeModal').classList.add('active');
 };
 window.addGrade = async function() {
@@ -2236,7 +2243,10 @@ window.renderNotesPayments = function() { const list = document.getElementById('
 window.renderDepartmentsPage = function() {
     const d = { Science: 0, Arts: 0, Commerce: 0, Technical: 0 };
     students.forEach(m => { if (d[m.department] !== undefined) d[m.department]++; });
-    document.getElementById('deptStatScience').textContent = d.Science; document.getElementById('deptStatArts').textContent = d.Arts; document.getElementById('deptStatCommerce').textContent = d.Commerce; document.getElementById('deptStatTechnical').textContent = d.Technical;
+    document.getElementById('deptStatScience').textContent = d.Science;
+    document.getElementById('deptStatArts').textContent = d.Arts;
+    document.getElementById('deptStatCommerce').textContent = d.Commerce;
+    document.getElementById('deptStatTechnical').textContent = d.Technical;
     const ctx = document.getElementById('deptChart')?.getContext('2d'); if (!ctx) return;
     if (deptChartInstance) deptChartInstance.destroy();
     deptChartInstance = new Chart(ctx, { type: 'bar', data: { labels: ['Science','Arts','Commerce','Technical'], datasets: [{ data: [d.Science, d.Arts, d.Commerce, d.Technical], backgroundColor: ['#ec4899','#06b6d4','#f59e0b','#10b981'], borderRadius: 12 }] }, options: { responsive: true, plugins: { legend: { display: false } } } });
@@ -2253,38 +2263,53 @@ window.openQRRegisterModal = function() {
 };
 window.saveSettings = async function() { const sn = document.getElementById('schoolName').value.trim(); try { await updateDoc(doc(db, 'users', currentUser.uid), { schoolName: sn }); currentUserData.schoolName = sn; showToast('✅', 'success'); } catch(e) {} };
 
-// ============ WHATSAPP CHAT SYSTEM ============
+// ============ CHAT SYSTEM ============
+async function loadChatGroups() {
+    try { const g = await getDocs(collection(db, 'chatGroups')); chatGroups = []; g.forEach(d => chatGroups.push({ id: d.id, ...d.data() })); } catch(e) {}
+}
 window.initChat = async function() {
     const fab = document.getElementById('chatFab');
     if (fab) fab.classList.remove('hidden');
-    await loadChatConversations();
+    await loadChatGroups();
     startChatConversationsListener();
 };
 function startChatConversationsListener() {
     if (chatConversationsUnsubscribe) try { chatConversationsUnsubscribe(); } catch(e) {}
     if (!currentUser) return;
-    chatConversationsUnsubscribe = onSnapshot(query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(300)), (snap) => {
+    // Listen to all messages where user is sender OR receiver OR group member
+    chatConversationsUnsubscribe = onSnapshot(query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(500)), (snap) => {
         const allMsgs = []; snap.forEach(d => allMsgs.push({ id: d.id, ...d.data() }));
-        buildConversations(allMsgs);
+        // Load groups fresh so we know membership
+        loadChatGroups().then(() => buildConversations(allMsgs));
     }, (err) => console.warn('Chat error:', err));
 }
 function buildConversations(allMsgs) {
     const convMap = {}; let totalUnread = 0;
+    const myGroups = chatGroups.filter(g => (g.members || []).includes(currentUser.uid)).map(g => g.id);
     allMsgs.forEach(m => {
         const isGroup = m.isGroup === true;
-        let key;
-        if (isGroup) key = 'group_' + m.groupId;
-        else key = 'direct_' + [m.senderId, m.receiverId].sort().join('_');
-        if (!convMap[key]) { convMap[key] = { key, type: isGroup ? 'group' : 'direct', messages: [], unread: 0 }; if (isGroup) convMap[key].groupId = m.groupId; else convMap[key].otherUserId = m.senderId === currentUser.uid ? m.receiverId : m.senderId; }
-        convMap[key].messages.push(m);
-        if (m.receiverId === currentUser.uid && !m.read && m.senderId !== currentUser.uid) { convMap[key].unread++; totalUnread++; }
+        if (isGroup) {
+            if (!myGroups.includes(m.groupId)) return;
+            const key = 'group_' + m.groupId;
+            if (!convMap[key]) convMap[key] = { key, type: 'group', groupId: m.groupId, messages: [], unread: 0 };
+            convMap[key].messages.push(m);
+            if (m.senderId !== currentUser.uid && !m.read) { convMap[key].unread++; totalUnread++; }
+        } else {
+            if (m.senderId !== currentUser.uid && m.receiverId !== currentUser.uid) return;
+            const other = m.senderId === currentUser.uid ? m.receiverId : m.senderId;
+            const key = 'direct_' + [currentUser.uid, other].sort().join('_');
+            if (!convMap[key]) convMap[key] = { key, type: 'direct', otherUserId: other, messages: [], unread: 0 };
+            convMap[key].messages.push(m);
+            if (m.receiverId === currentUser.uid && !m.read) { convMap[key].unread++; totalUnread++; }
+        }
     });
     chatConversations = Object.values(convMap).map(c => {
-        const lastMsg = c.messages.sort((a,b) => {
+        const sorted = [...c.messages].sort((a,b) => {
             const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
             const db_ = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
             return db_ - da;
-        })[0];
+        });
+        const lastMsg = sorted[0];
         return { ...c, lastMsg, lastTime: lastMsg?.createdAt?.toDate ? lastMsg.createdAt.toDate() : new Date(lastMsg?.createdAt || 0) };
     }).sort((a, b) => b.lastTime - a.lastTime);
     chatTotalUnread = totalUnread;
@@ -2300,7 +2325,7 @@ function updateChatBadges() {
 window.renderChatList = function() {
     const container = document.getElementById('chatListContainer'); if (!container) return;
     const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
-    
+
     if (chatCurrentTab === 'chats') {
         let convs = [...chatConversations];
         if (search) convs = convs.filter(c => {
@@ -2309,35 +2334,17 @@ window.renderChatList = function() {
         });
         if (convs.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-comments"></i><div style="font-weight:700;margin-bottom:4px;">Nta chats</div><div style="font-size:12px;">Kanda ➕ ubanze kuganira</div></div>`; return; }
         container.innerHTML = convs.map(c => renderConvItem(c)).join('');
-        
+
     } else if (chatCurrentTab === 'people') {
-        // Guhuza abakoresha (users) n'abanyeshuri (students)
         let allPeople = [...users];
-        
         students.forEach(s => {
             if (s.uid && !allPeople.some(u => u.uid === s.uid)) {
-                allPeople.push({
-                    uid: s.uid,
-                    name: s.name,
-                    email: s.email,
-                    photo: s.photo,
-                    role: 'student',
-                    isOnline: false,
-                    level: s.level
-                });
+                allPeople.push({ uid: s.uid, name: s.name, email: s.email, photo: s.photo, role: 'student', isOnline: false, level: s.level });
             }
         });
-
-        // Kuraho wowe ubwawe
         let list = allPeople.filter(u => u.uid !== currentUser.uid);
-        
         if (search) list = list.filter(u => (u.name||'').toLowerCase().includes(search) || (u.email||'').toLowerCase().includes(search));
-        
-        if (list.length === 0) { 
-            container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div style="font-weight:700;">Nta bantu</div><div style="font-size:12px;">Nta wundi muntu urandikwa muri sisitemu.</div></div>`; 
-            return; 
-        }
-        
+        if (list.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div style="font-weight:700;">Nta bantu</div></div>`; return; }
         container.innerHTML = list.map(u => {
             const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
             const av = u.photo ? `<img src="${u.photo}">` : `<span>${init}</span>`;
@@ -2345,17 +2352,12 @@ window.renderChatList = function() {
             return `<div class="chat-conv-item" onclick="startDirectChat('${u.uid}')">
                 <div class="chat-conv-avatar ${u.isOnline ? 'online' : ''}">${av}</div>
                 <div class="chat-conv-info">
-                    <div class="chat-conv-header">
-                        <div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div>
-                        ${u.isOnline ? '<div class="chat-conv-time" style="color:#10b981;">● Online</div>' : ''}
-                    </div>
-                    <div class="chat-conv-preview">
-                        <div class="chat-conv-msg">${escapeHtml(roleLabel)} ${u.level ? '• ' + u.level : ''}</div>
-                    </div>
+                    <div class="chat-conv-header"><div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div>${u.isOnline ? '<div class="chat-conv-time" style="color:#10b981;">● Online</div>' : ''}</div>
+                    <div class="chat-conv-preview"><div class="chat-conv-msg">${escapeHtml(roleLabel)} ${u.level ? '• ' + u.level : ''}</div></div>
                 </div>
             </div>`;
         }).join('');
-        
+
     } else if (chatCurrentTab === 'groups') {
         let list = chatGroups.filter(g => (g.members || []).includes(currentUser.uid));
         if (search) list = list.filter(g => (g.name||'').toLowerCase().includes(search));
@@ -2397,8 +2399,6 @@ window.switchChatTab = function(tab, el) {
 };
 window.filterChats = function() { renderChatList(); };
 window.openChatPage = function(element) {
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    if (element) element.classList.add('active');
     switchPage('chat', element);
     if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
 };
@@ -2429,20 +2429,23 @@ window.openConversation = async function(type, id) {
     }
     startChatMessagesListener();
     setTimeout(() => document.getElementById('chatInputMsg')?.focus(), 300);
-    markChatMessagesRead();
 };
 window.startDirectChat = function(otherUserId) { openConversation('direct', otherUserId); };
 function startChatMessagesListener() {
     if (chatMessagesUnsubscribe) try { chatMessagesUnsubscribe(); } catch(e) {}
     if (!chatCurrentConv || !currentUser) return;
-    let q;
-    if (chatCurrentConv.type === 'direct') q = query(collection(db, 'chatMessages'), where('receiverId', 'in', [currentUser.uid, chatCurrentConv.otherUserId]), limit(500));
-    else q = query(collection(db, 'chatMessages'), where('groupId', '==', chatCurrentConv.groupId), limit(500));
+    // Query all messages and filter client-side (avoids composite index requirement)
+    const q = query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(500));
     chatMessagesUnsubscribe = onSnapshot(q, (snap) => {
         const msgs = []; snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
         if (chatCurrentConv.type === 'direct') {
-            chatMessages = msgs.filter(m => (m.senderId === currentUser.uid && m.receiverId === chatCurrentConv.otherUserId) || (m.senderId === chatCurrentConv.otherUserId && m.receiverId === currentUser.uid));
-        } else chatMessages = msgs;
+            chatMessages = msgs.filter(m => !m.isGroup && (
+                (m.senderId === currentUser.uid && m.receiverId === chatCurrentConv.otherUserId) ||
+                (m.senderId === chatCurrentConv.otherUserId && m.receiverId === currentUser.uid)
+            ));
+        } else {
+            chatMessages = msgs.filter(m => m.isGroup && m.groupId === chatCurrentConv.groupId);
+        }
         chatMessages.sort((a,b) => {
             const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
             const db_ = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
@@ -2455,7 +2458,10 @@ function startChatMessagesListener() {
 async function markChatMessagesRead() {
     if (!currentUser || !chatCurrentConv) return;
     try {
-        const unread = chatMessages.filter(m => m.receiverId === currentUser.uid && !m.read);
+        const unread = chatMessages.filter(m => {
+            if (chatCurrentConv.type === 'direct') return m.receiverId === currentUser.uid && !m.read;
+            return m.senderId !== currentUser.uid && !m.read;
+        });
         for (const m of unread) { try { await updateDoc(doc(db, 'chatMessages', m.id), { read: true }); } catch(e) {} }
     } catch(e) {}
 }
@@ -2475,9 +2481,7 @@ function renderChatMessages() {
         const init = senderName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
         const av = senderPhoto ? `<img src="${senderPhoto}">` : `<span>${init}</span>`;
         let replyHtml = '';
-        if (m.replyTo) {
-            replyHtml = `<div class="chat-msg-reply-quote"><div class="reply-name">${escapeHtml(m.replyTo.senderName)}</div><div class="reply-text">${escapeHtml(m.replyTo.text)}</div></div>`;
-        }
+        if (m.replyTo) replyHtml = `<div class="chat-msg-reply-quote"><div class="reply-name">${escapeHtml(m.replyTo.senderName)}</div><div class="reply-text">${escapeHtml(m.replyTo.text)}</div></div>`;
         html += `<div class="chat-msg ${isMine ? 'mine' : ''} ${m.edited ? 'edited' : ''}">
             ${!isMine ? `<div class="chat-msg-avatar">${av}</div>` : ''}
             <div class="chat-msg-content">
@@ -2517,8 +2521,9 @@ window.sendChatMsg = async function() {
     try {
         const data = { text, senderId: currentUser.uid, senderName: currentUserData.name || 'Unknown', senderPhoto: currentUserData.photo || null, read: false, createdAt: serverTimestamp() };
         if (chatReplyTo) { data.replyTo = chatReplyTo; cancelReply(); }
-        if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; await addDoc(collection(db, 'chatMessages'), data); }
-        else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; await addDoc(collection(db, 'chatMessages'), data); }
+        if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
+        else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
+        await addDoc(collection(db, 'chatMessages'), data);
     } catch(e) { console.error(e); showToast('❌ ' + e.message, 'error'); input.value = text; }
     finally { btn.disabled = false; input.focus(); }
 };
@@ -2633,13 +2638,10 @@ window.createGroup = async function() {
         const ref = await addDoc(collection(db, 'chatGroups'), groupData);
         showToast('✅ Group yakozwe!', 'success');
         closeModal('newGroupModal');
-        await loadChatConversations();
+        await loadChatGroups();
         openConversation('group', ref.id);
     } catch(e) { showToast('❌ ' + e.message, 'error'); }
 };
-async function loadChatConversations() {
-    try { const g = await getDocs(collection(db, 'chatGroups')); chatGroups = []; g.forEach(d => chatGroups.push({ id: d.id, ...d.data() })); } catch(e) {}
-}
 window.closeConversation = function() { document.getElementById('chatPageContainer').classList.remove('show-conv'); };
 
 // PWA
