@@ -2377,29 +2377,45 @@ window.renderNotesPayments = function() {
 
 window.approvePayment = async function(paymentId, studentId) {
     if (!confirm('Emeza ubwishyu bwa uyu munyeshuri?')) return;
+    
+    if (!studentId) {
+        showToast('❌ Nta ID y\'umunyeshuri ibonetse muri ubwo bwishyu.', 'error');
+        return;
+    }
+
     try {
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 14); // 2 weeks
 
+        // 1. Hindura status muri notesPayments
         await updateDoc(doc(db, 'notesPayments', paymentId), { 
             status: 'approved',
             approvedAt: serverTimestamp(),
             expiresAt: expiryDate.toISOString()
         });
         
-        await updateDoc(doc(db, 'students', studentId), { 
-            subscriptionStatus: 'active', 
-            paymentStatus: 'paid',
-            subscriptionExpiresAt: expiryDate.toISOString()
-        });
+        // 2. Reba niba umunyeshuri abaho muri students mbere yo kumuhindura
+        const studentRef = doc(db, 'students', studentId);
+        const studentSnap = await getDoc(studentRef);
         
-        const s = students.find(x => x.id === studentId);
-        if (s && s.uid) {
-            await updateDoc(doc(db, 'users', s.uid), { 
+        if (studentSnap.exists()) {
+            await updateDoc(studentRef, { 
                 subscriptionStatus: 'active', 
                 paymentStatus: 'paid',
                 subscriptionExpiresAt: expiryDate.toISOString()
             });
+
+            // 3. Reba niba hari user (kugira ngo dashboard ye ibone)
+            const s = studentSnap.data();
+            if (s && s.uid) {
+                await updateDoc(doc(db, 'users', s.uid), { 
+                    subscriptionStatus: 'active', 
+                    paymentStatus: 'paid',
+                    subscriptionExpiresAt: expiryDate.toISOString()
+                });
+            }
+        } else {
+            showToast('⚠️ Ubwishyu bwemejwe, ariko nta munyeshuri ubonetse muri sisitemu.', 'warning');
         }
         
         showToast('✅ Ubwishyu bwemejwe! Umunyeshuri afite access mu byumweru 2.', 'success');
@@ -2446,12 +2462,19 @@ window.submitPayment = async function() {
     
     if (!amount || !phone) { showToast('Uzuza amafaranga na nimero', 'warning'); return; }
     
+    // RABA NIBA STUDENT ID IHARI
+    if (!currentUserData || !currentUserData.studentId) {
+        showToast('❌ Ntabwo uri umunyeshuri cyangwa nta ID ufite. Baza muri Profile ukosore amakuru.', 'error');
+        return;
+    }
+    
     try {
         showToast('⏳ Turakora ubwishyu...', 'info');
         
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 14); 
 
+        // 1. Bika ubwishyu muri 'notesPayments'
         await addDoc(collection(db, 'notesPayments'), {
             studentId: currentUserData.studentId,
             studentName: currentUserData.name,
@@ -2463,11 +2486,20 @@ window.submitPayment = async function() {
             createdAt: serverTimestamp()
         });
 
-        await updateDoc(doc(db, 'students', currentUserData.studentId), {
-            subscriptionStatus: 'pending',
-            paymentStatus: 'pending'
-        });
+        // 2. Hindura status ya umunyeshuri muri 'students' (Reba niba document ibaho)
+        const studentRef = doc(db, 'students', currentUserData.studentId);
+        const studentSnap = await getDoc(studentRef);
+        
+        if (studentSnap.exists()) {
+            await updateDoc(studentRef, {
+                subscriptionStatus: 'pending',
+                paymentStatus: 'pending'
+            });
+        } else {
+            console.warn("Nta munyeshuri ubonetse muri students collection");
+        }
 
+        // 3. Hindura status ya user muri 'users'
         await updateDoc(doc(db, 'users', currentUser.uid), {
             subscriptionStatus: 'pending',
             paymentStatus: 'pending'
@@ -2485,7 +2517,6 @@ window.submitPayment = async function() {
         showToast('❌ ' + e.message, 'error');
     }
 };
-
 // ============ PWA ============
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.remove('hidden'); });
