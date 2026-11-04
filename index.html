@@ -13,8 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" sizes="192x192" href="/students.jpg">
-    <link rel="apple-touch-icon" sizes="192x192" href="/students.jpg">
+ 
+
 
     <script>
         (function() {
@@ -1645,7 +1645,7 @@ window.switchPage = function(page, element) {
     if (page === 'manage-assignments') renderManageAssignments();
     if (page === 'manage-quizzes') renderManageQuizzes();
     if (page === 'manage-live') renderManageLive();
-    if (page === 'manage-notes') renderManageNotes();
+    
     if (page === 'submissions') renderSubmissions();
     if (page === 'chat') renderChatList();
     if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
@@ -2273,6 +2273,7 @@ window.renderStudents = function() {
             </td>
         </tr>`;
     }).join('');
+    };   // <-- ONGERAHO IYI
 window.openAddStudentModal = function() {
     ['newName','newEmail','newNumberInput','newLevel','newDepartment'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('addStudentModal').classList.add('active');
