@@ -2202,6 +2202,7 @@ if (cl) {
         cl.innerHTML = myCourses.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta courses</h3></div>` : myCourses.map(c => `<div class="saved-card" style="cursor:pointer;" onclick="openCourse('${c.id}')"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title)}</h3></div><div class="saved-actions"><button class="btn btn-primary btn-sm">Tangira</button></div></div>`).join('');
     }
 }
+    }; 
 window.renderSubscriptionStatus = function(m) {
     const c = document.getElementById('subscriptionStatusContainer'); 
     if (!c) return;
