@@ -761,13 +761,47 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                                 </div>
                                 <button class="close-reply" onclick="cancelReply()"><i class="fas fa-times"></i></button>
                             </div>
-                            <div class="chat-input-area">
-                                <textarea id="chatInputMsg" placeholder="Andika ubutumwa..." rows="1"
-                                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
-                                    oninput="autoResizeChatInput(this)"></textarea>
-                                <button class="chat-send-btn" id="chatSendMsgBtn" onclick="sendChatMsg()">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
+                            <div class="chat-main-header" id="chatMainHeader">
+    <div class="chat-main-header-info" onclick="viewCurrentChatProfile()">
+        <div class="chat-main-avatar" id="chatMainAvatar"></div>
+        <div style="min-width: 0;">
+            <h4 class="chat-main-name" id="chatMainName">-</h4>
+            <!-- HANO: Hano ni ho tuzerekana "Online" cyangwa "Arimo kwandika..." -->
+            <p class="chat-main-status" id="chatMainStatus">-</p> 
+        </div>
+    </div>
+    <div class="chat-main-actions">
+        <!-- HANO: Buto y'ishakisha -->
+        <button onclick="toggleChatSearch()" title="Shakisha mu butumwa"><i class="fas fa-search"></i></button>
+        <button onclick="viewCurrentChatProfile()" title="Profile"><i class="fas fa-user"></i></button>
+        <button onclick="clearCurrentChat()" title="Siba ubutumwa"><i class="fas fa-trash"></i></button>
+    </div>
+</div>
+
+<!-- Search Input (Ihishwe mbere) -->
+<div id="chatSearchBar" style="display:none; padding: 10px; background: var(--bg-card); border-bottom: 1px solid var(--border);">
+    <input type="text" id="chatSearchMsgInput" class="form-control" placeholder="Shakisha ubutumwa muri iyi chat..." oninput="searchChatMessages()">
+</div>
+                           <div class="chat-input-area">
+    <!-- Buto yo kohereza Ifoto -->
+    <button class="icon-btn" onclick="document.getElementById('chatFileInput').click()" title="Ohereza Ifoto/File" style="border:none; background:transparent;">
+        <i class="fas fa-paperclip"></i>
+    </button>
+    <input type="file" id="chatFileInput" class="hidden-input" accept="image/*,.pdf,.doc,.docx" onchange="uploadChatFile(event)">
+
+    <!-- Buto y'Ijwi -->
+    <button class="icon-btn" id="chatMicBtn" onclick="toggleVoiceRecord()" title="Vuga ubutumwa" style="border:none; background:transparent; color:var(--danger);">
+        <i class="fas fa-microphone"></i>
+    </button>
+
+    <textarea id="chatInputMsg" placeholder="Andika ubutumwa..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
+        oninput="autoResizeChatInput(this); sendTypingStatus();"></textarea>
+    
+    <button class="chat-send-btn" id="chatSendMsgBtn" onclick="sendChatMsg()">
+        <i class="fas fa-paper-plane"></i>
+    </button>
+
                             </div>
                         </div>
                     </div>
@@ -2961,6 +2995,164 @@ window.deleteNote = async function(id) {
     if (!confirm('Siba iyi note?')) return;
     try { await deleteDoc(doc(db, 'notes', id)); showToast('🗑️', 'warning'); await loadAllData(); renderManageNotes(); } catch(e) {}
 };
+    // ============ 1. TYPING INDICATOR (Arimo kwandika) ============
+let typingTimeout = null;
+window.sendTypingStatus = function() {
+    if (!chatCurrentConv || !currentUser) return;
+    // Shyiramo status ko arimo kwandika
+    const convId = chatCurrentConv.type === 'direct' ? chatCurrentConv.key : chatCurrentConv.groupId;
+    const docRef = doc(db, 'typingStatus', convId);
+    
+    setDoc(docRef, { [currentUser.uid]: { name: currentUserData.name, typing: true, updatedAt: Date.now() } }, { merge: true });
+
+    // Niba atinze gushyiramo undi mutumwa, kuraho status
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        setDoc(docRef, { [currentUser.uid]: { typing: false } }, { merge: true });
+    }, 2000);
+};
+
+// Kureba niba undi arimo kwandika (Muri startChatMessagesListener)
+// (Iyi code izajyanwa muri startChatMessagesListener)
+let typingUnsubscribe = null;
+function startTypingListener() {
+    if (typingUnsubscribe) try { typingUnsubscribe(); } catch(e) {}
+    if (!chatCurrentConv) return;
+    const convId = chatCurrentConv.type === 'direct' ? chatCurrentConv.key : chatCurrentConv.groupId;
+    
+    typingUnsubscribe = onSnapshot(doc(db, 'typingStatus', convId), (docSnap) => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            let isTyping = false;
+            Object.keys(data).forEach(uid => {
+                if (uid !== currentUser.uid && data[uid].typing && (Date.now() - data[uid].updatedAt < 5000)) {
+                    isTyping = true;
+                }
+            });
+            const statusEl = document.getElementById('chatMainStatus');
+            if (statusEl) {
+                if (isTyping) statusEl.innerHTML = '<span style="color: var(--primary); font-style: italic;">Arimo kwandika...</span>';
+                else {
+                    // Garuka kuri Online/Offline status
+                    if (chatCurrentConv.type === 'direct') {
+                        const u = users.find(x => x.uid === chatCurrentConv.otherUserId);
+                        statusEl.textContent = u?.isOnline ? '🟢 Online ubu' : 'Offline';
+                    } else {
+                        const g = chatGroups.find(x => x.id === chatCurrentConv.groupId);
+                        statusEl.textContent = `${(g?.members || []).length} members`;
+                    }
+                }
+            }
+        }
+    });
+}
+
+// ============ 2. ATTACHMENTS (Kohereza Ifoto/File) ============
+window.uploadChatFile = async function(event) {
+    const file = event.target.files[0];
+    if (!file || !chatCurrentConv) return;
+    
+    showToast('⏳ Turashyiraho ifoto...', 'info');
+    try {
+        const url = await uploadToCloudinary(file);
+        const data = { 
+            text: '', 
+            mediaUrl: url, 
+            mediaType: file.type.startsWith('image') ? 'image' : 'file',
+            senderId: currentUser.uid, 
+            senderName: currentUserData.name || 'Unknown', 
+            senderPhoto: currentUserData.photo || null, 
+            read: false, 
+            createdAt: serverTimestamp() 
+        };
+        
+        if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
+        else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
+        
+        await addDoc(collection(db, 'chatMessages'), data);
+        showToast('✅ Yoherejwe!', 'success');
+        event.target.value = ''; // Siba input
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+
+// ============ 3. VOICE NOTES (Ijwi) ============
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+window.toggleVoiceRecord = async function() {
+    const btn = document.getElementById('chatMicBtn');
+    if (!isRecording) {
+        // Tangira gufata ijwi
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = event => { audioChunks.push(event.data); };
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const file = new File([audioBlob], "voice_note.webm", { type: 'audio/webm' });
+                showToast('⏳ Turashyiraho ijwi...', 'info');
+                try {
+                    const url = await uploadToCloudinary(file, true);
+                    const data = { 
+                        text: '', 
+                        mediaUrl: url, 
+                        mediaType: 'audio',
+                        senderId: currentUser.uid, 
+                        senderName: currentUserData.name || 'Unknown', 
+                        senderPhoto: currentUserData.photo || null, 
+                        read: false, 
+                        createdAt: serverTimestamp() 
+                    };
+                    if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
+                    else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
+                    await addDoc(collection(db, 'chatMessages'), data);
+                } catch(e) { showToast('❌ ' + e.message, 'error'); }
+            };
+            
+            mediaRecorder.start();
+            isRecording = true;
+            btn.innerHTML = '<i class="fas fa-stop"></i>';
+            btn.style.color = 'var(--success)';
+        } catch(e) { showToast('❌ Ntibishoboye gufata ijwi', 'error'); }
+    } else {
+        // Hagarika gufata ijwi
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        isRecording = false;
+        btn.innerHTML = '<i class="fas fa-microphone"></i>';
+        btn.style.color = 'var(--danger)';
+    }
+};
+
+// ============ 4. SEARCH IN CHAT ============
+window.toggleChatSearch = function() {
+    const bar = document.getElementById('chatSearchBar');
+    if (bar.style.display === 'none') { bar.style.display = 'block'; document.getElementById('chatSearchMsgInput').focus(); }
+    else { bar.style.display = 'none'; renderChatMessages(); } // Garuka kuri chat isanzwe
+};
+
+window.searchChatMessages = function() {
+    const searchTerm = document.getElementById('chatSearchMsgInput').value.toLowerCase();
+    // Turareba muri chatMessages twahise tugaragaza gusa ibiri muri search
+    if (!searchTerm) { renderChatMessages(); return; }
+    const filtered = chatMessages.filter(m => (m.text || '').toLowerCase().includes(searchTerm));
+    renderChatMessagesWithFilter(filtered);
+};
+
+// Iyi function ni nshya yo kwerekana ibyasakishijwe
+function renderChatMessagesWithFilter(msgs) {
+    const area = document.getElementById('chatMessagesArea');
+    if (msgs.length === 0) { area.innerHTML = '<div style="text-align:center;padding:40px;">Nta butumwa bubonetse.</div>'; return; }
+    // Koresha code imwe ya renderChatMessages ariko ugaragaze gusa filtered
+    // (Ushobora gukoresha copy ya renderChatMessages ariko uhindure chatMessages = msgs)
+    const originalMessages = chatMessages;
+    chatMessages = msgs;
+    renderChatMessages();
+    chatMessages = originalMessages; // Subiza inyuma
+}
 </script>
 </body>
 </html>
