@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  
-
-
     <script>
         (function() {
             try {
@@ -43,7 +41,6 @@
     --gradient-3: linear-gradient(135deg, #ef4444, #f59e0b);
     --gradient-4: linear-gradient(135deg, #f59e0b, #ec4899);
     --gradient-purple: linear-gradient(135deg, #8b5cf6, #a78bfa);
-    --gradient-live: linear-gradient(135deg, #ef4444, #ec4899);
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
     --radius: 16px; --radius-lg: 24px;
@@ -270,119 +267,6 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .comment-body .text { font-size: 13.5px; line-height: 1.5; }
 .comment-body .time { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
-/* ============ MODERN CHAT UI ============ */
-.chat-page-container { display: grid; grid-template-columns: 380px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; height: calc(100dvh - 160px); min-height: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-.chat-sidebar-panel { background: linear-gradient(180deg, #1a1d2e 0%, #252942 100%); display: flex; flex-direction: column; overflow: hidden; position: relative; }
-.chat-sidebar-header { padding: 20px; position: relative; z-index: 2; }
-.chat-sidebar-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.chat-sidebar-title h3 { font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; }
-.chat-sidebar-title .actions { display: flex; gap: 8px; }
-.chat-sidebar-title .actions button { width: 38px; height: 38px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.chat-sidebar-title .actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); transform: translateY(-2px); }
-.chat-search { position: relative; }
-.chat-search i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.5); font-size: 14px; }
-.chat-search input { width: 100%; padding: 12px 16px 12px 44px; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.05); color: #ffffff; font-family: inherit; font-size: 14px; outline: none; transition: all 0.2s; }
-.chat-search input::placeholder { color: rgba(255,255,255,0.4); }
-.chat-search input:focus { border-color: #667eea; background: rgba(102,126,234,0.15); }
-.chat-tabs { display: flex; gap: 6px; padding: 8px 20px 12px; position: relative; z-index: 2; }
-.chat-tab { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.6); transition: all 0.2s; }
-.chat-tab:hover { background: rgba(255,255,255,0.1); color: #ffffff; }
-.chat-tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
-.chat-list { flex: 1; overflow-y: auto; padding: 4px 12px 12px; position: relative; z-index: 2; }
-.chat-list-empty { padding: 50px 20px; text-align: center; color: rgba(255,255,255,0.5); }
-.chat-list-empty i { font-size: 50px; opacity: 0.3; margin-bottom: 16px; display: block; }
-.chat-conv-item { display: flex; gap: 12px; padding: 14px; cursor: pointer; border-radius: 14px; transition: all 0.2s; margin-bottom: 4px; border: 1px solid transparent; }
-.chat-conv-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-.chat-conv-item.active { background: linear-gradient(135deg, rgba(102,126,234,0.25), rgba(118,75,162,0.25)); border-color: rgba(102,126,234,0.5); }
-.chat-conv-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; position: relative; overflow: hidden; }
-.chat-conv-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-conv-avatar.online::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; background: #10b981; border-radius: 50%; border: 3px solid #1a1d2e; }
-.chat-conv-avatar .group-icon { font-size: 22px; }
-.chat-conv-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-.chat-conv-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
-.chat-conv-name { font-size: 15px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-conv-time { font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; }
-.chat-conv-time.unread { color: #38bdf8; font-weight: 700; }
-.chat-conv-preview { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.chat-conv-msg { font-size: 13px; color: rgba(255,255,255,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-conv-badge { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-.chat-main-panel { display: flex; flex-direction: column; background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%); overflow: hidden; position: relative; }
-[data-theme="dark"] .chat-main-panel { background: linear-gradient(180deg, #0f172a 0%, #1a2234 100%); }
-.chat-empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; color: var(--text-secondary); position: relative; z-index: 1; }
-.chat-empty-state .big-icon { width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15)); display: flex; align-items: center; justify-content: center; font-size: 70px; color: #667eea; margin-bottom: 24px; }
-.chat-empty-state h2 { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
-.chat-empty-state p { font-size: 14px; line-height: 1.6; max-width: 400px; }
-
-.chat-main-header { padding: 14px 20px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); color: var(--text); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 1px solid var(--border); z-index: 10; position: relative; }
-[data-theme="dark"] .chat-main-header { background: rgba(15, 23, 42, 0.85); }
-.chat-main-header-info { display: flex; align-items: center; gap: 14px; cursor: pointer; flex: 1; min-width: 0; }
-.chat-main-avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; overflow: hidden; flex-shrink: 0; position: relative; color: white; }
-.chat-main-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-main-avatar.online::after { content: ''; position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border-radius: 50%; border: 2px solid var(--bg-card); }
-.chat-main-name { font-size: 16px; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-main-status { font-size: 12px; color: var(--text-secondary); margin: 2px 0 0; }
-.chat-main-actions { display: flex; gap: 6px; }
-.chat-main-actions button { width: 40px; height: 40px; border-radius: 12px; border: none; background: var(--bg); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 15px; }
-.chat-main-actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-
-.chat-messages-area { flex: 1; overflow-y: auto; padding: 24px 8%; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 1; }
-@media (max-width: 1100px) { .chat-messages-area { padding: 24px 4%; } }
-.chat-msg { display: flex; gap: 8px; max-width: 75%; margin-bottom: 6px; position: relative; animation: msgPop 0.3s ease; }
-@keyframes msgPop { from { opacity: 0; transform: translateY(8px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.chat-msg.mine { align-self: flex-end; flex-direction: row-reverse; }
-.chat-msg-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; overflow: hidden; margin-top: auto; }
-.chat-msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.chat-msg-content { display: flex; flex-direction: column; gap: 2px; max-width: 100%; }
-.chat-msg.mine .chat-msg-content { align-items: flex-end; }
-.chat-msg-name { font-size: 12px; font-weight: 700; color: #667eea; padding: 0 8px; margin-bottom: 2px; }
-.chat-bubble { padding: 10px 14px; border-radius: 18px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14.5px; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; position: relative; border-bottom-left-radius: 4px; }
-[data-theme="dark"] .chat-bubble { background: #1e293b; color: #e2e8f0; }
-.chat-msg.mine .chat-bubble { background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #ffffff; border-bottom-left-radius: 18px; border-bottom-right-radius: 4px; }
-.chat-msg-reply-quote { padding: 6px 10px; background: rgba(0,0,0,0.08); border-left: 3px solid #667eea; border-radius: 8px; margin-bottom: 6px; font-size: 12.5px; }
-.chat-msg.mine .chat-msg-reply-quote { background: rgba(0,0,0,0.15); border-left-color: #ffffff; }
-.chat-msg-reply-quote .reply-name { font-weight: 700; color: #667eea; margin-bottom: 2px; }
-.chat-msg.mine .chat-msg-reply-quote .reply-name { color: #ffffff; }
-.chat-msg-reply-quote .reply-text { opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
-.chat-msg-time { font-size: 10.5px; color: var(--text-secondary); padding: 0 8px; margin-top: 2px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
-.chat-msg.mine .chat-msg-time { color: rgba(255,255,255,0.85); }
-.chat-msg-time .checkmark { color: #53bdeb; font-size: 11px; }
-.chat-msg.mine .chat-msg-time .checkmark { color: rgba(255,255,255,0.9); }
-.chat-msg-actions { position: absolute; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
-.chat-msg:hover .chat-msg-actions { opacity: 1; pointer-events: auto; }
-.chat-msg:not(.mine) .chat-msg-actions { right: -70px; }
-.chat-msg.mine .chat-msg-actions { left: -70px; }
-.chat-msg-actions button { width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--bg-card); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s; }
-.chat-msg-actions button:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-.chat-day-divider { align-self: center; background: rgba(102,126,234,0.15); color: #667eea; font-size: 11.5px; font-weight: 700; padding: 6px 16px; border-radius: 50px; margin: 16px 0; }
-
-.chat-reply-preview { padding: 10px 16px; background: rgba(102,126,234,0.08); border-top: 1px solid var(--border); border-left: 4px solid #667eea; display: none; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
-.chat-reply-preview.active { display: flex; }
-.chat-reply-preview .info { flex: 1; min-width: 0; }
-.chat-reply-preview .info .name { font-weight: 700; font-size: 12.5px; color: #667eea; margin-bottom: 2px; }
-.chat-reply-preview .info .text { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-reply-preview .close-reply { width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--bg-card); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-.chat-input-area { padding: 14px 20px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; border-top: 1px solid var(--border); position: relative; z-index: 10; }
-[data-theme="dark"] .chat-input-area { background: rgba(15, 23, 42, 0.9); }
-.chat-input-area textarea { flex: 1; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 24px; background: var(--bg-card); color: var(--text); font-family: inherit; font-size: 14.5px; resize: none; max-height: 100px; min-height: 48px; outline: none; transition: all 0.2s; }
-.chat-input-area textarea:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); }
-.chat-send-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: all 0.2s; }
-.chat-send-btn:hover:not(:disabled) { transform: scale(1.05) translateY(-2px); }
-.chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.chat-fab { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50%; border: none; cursor: pointer; font-size: 24px; box-shadow: 0 10px 30px rgba(102,126,234,0.5); z-index: 9998; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; }
-.chat-fab:hover { transform: scale(1.1); }
-.chat-fab .chat-fab-badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; font-size: 11px; font-weight: 800; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); }
-.chat-fab.hidden { display: none !important; }
-
-.user-profile-view { text-align: center; padding: 20px; }
-.user-profile-view .avatar-big { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 800; margin: 0 auto 16px; overflow: hidden; border: 4px solid white; box-shadow: var(--shadow-lg); }
-.user-profile-view .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
-.user-profile-view h3 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-.user-profile-view .info-row { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--bg); border-radius: 10px; margin-bottom: 8px; font-size: 14px; text-align: left; }
-.user-profile-view .info-row i { color: #667eea; width: 20px; }
-
 .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
 .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -556,14 +440,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .sidebar.open { transform: translateX(0); }
     .main { padding: 20px; }
     .course-grid { grid-template-columns: 1fr; }
-     .chat-page-container { grid-template-columns: 1fr; height: calc(100dvh - 130px); }
-    .chat-messages-area { padding: 16px 4%; }
-    .chat-main-panel { display: none; }
-    .chat-page-container.show-conv .chat-sidebar-panel { display: none; }
-    .chat-page-container.show-conv .chat-main-panel { display: flex; }
-    .chat-msg-actions { position: static; opacity: 1; }
-    .chat-msg:not(.mine) .chat-msg-actions { margin-left: 4px; }
-    .chat-msg.mine .chat-msg-actions { margin-right: 4px; }
 }
 @media (max-width: 600px) {
     .header { padding: 12px 16px; }
@@ -577,8 +453,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .lesson-nav { flex-direction: column; }
     .lesson-nav .btn { width: 100%; }
     .player-layout { grid-template-columns: 1fr !important; }
-    .chat-fab { bottom: 90px; left: 16px; width: 52px; height: 52px; font-size: 20px; }
-    .chat-msg { max-width: 85%; }
 }
 @media (max-width: 480px) {
     .auth-card { padding: 32px 24px; border-radius: 24px; }
@@ -662,7 +536,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
     <div class="layout">
         <aside class="sidebar" id="sidebar">
-          
             <div class="nav-item admin-only active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i><span>Ahabanza</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-dashboard', this)" style="display: none;"><i class="fas fa-home"></i><span>Ahabanza</span></div>
 
@@ -698,116 +571,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <div class="nav-label super-admin-only" style="display: none;">Super Admin</div>
             <div class="nav-item super-admin-only" onclick="switchPage('users', this)" style="display: none;"><i class="fas fa-user-shield"></i><span>Abakoresha</span></div>
             <div class="nav-label">Konti</div>
-            <div class="nav-item" onclick="openChatPage(this)"><i class="fas fa-comments"></i><span>Chats</span><span class="count" id="sidebarChatCount" style="display:none;">0</span></div>
             <div class="nav-item" onclick="switchPage('profile', this)"><i class="fas fa-user-circle"></i><span>Profile</span></div>
             <div class="nav-item admin-only" onclick="switchPage('settings', this)"><i class="fas fa-cog"></i><span>Igenamiterere</span></div>
             <div class="nav-item" onclick="forceLogout()" style="color: var(--danger); margin-top: 8px;"><i class="fas fa-sign-out-alt"></i><span>Sohoka</span></div>
         </aside>
 
         <main class="main">
-            <!-- CHAT PAGE -->
-            <div class="page" id="page-chat">
-                <div class="page-header" style="margin-bottom: 16px;">
-                    <div><h1>💬 Chats</h1><p>Ganira n'abandi bakoresha</p></div>
-                </div>
-                <div class="chat-page-container" id="chatPageContainer">
-                    <div class="chat-sidebar-panel">
-                        <div class="chat-sidebar-header">
-                            <div class="chat-sidebar-title">
-                                <h3>Chats</h3>
-                                <div class="actions">
-                                    <button onclick="openNewChatModal()" title="Chat nshya"><i class="fas fa-plus"></i></button>
-                                    <button onclick="openNewGroupModal()" title="Group nshya"><i class="fas fa-users"></i></button>
-                                </div>
-                            </div>
-                            <div class="chat-search">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="chatSearchInput" placeholder="Shakisha chats cyangwa abantu..." oninput="filterChats()">
-                            </div>
-                        </div>
-                        <div class="chat-tabs">
-                            <button class="chat-tab active" onclick="switchChatTab('chats', this)">💬 Chats</button>
-                            <button class="chat-tab" onclick="switchChatTab('people', this)">👥 Abantu</button>
-                            <button class="chat-tab" onclick="switchChatTab('groups', this)">👨‍👩‍👧 Groups</button>
-                        </div>
-                        <div class="chat-list" id="chatListContainer"></div>
-                    </div>
-
-                    <div class="chat-main-panel" id="chatMainPanel">
-                        <div class="chat-empty-state" id="chatEmptyState">
-                            <div class="big-icon"><i class="fas fa-comments"></i></div>
-                            <h2>MINDBOOK Chat</h2>
-                            <p>Hitamo umuntu cyangwa itsinda kugira ngo utangire kuganira.</p>
-                        </div>
-                        <div id="chatActiveView" style="display: none; flex: 1; flex-direction: column; overflow: hidden;">
-                            <div class="chat-main-header" id="chatMainHeader">
-                                <div class="chat-main-header-info" onclick="viewCurrentChatProfile()">
-                                    <div class="chat-main-avatar" id="chatMainAvatar"></div>
-                                    <div style="min-width: 0;">
-                                        <h4 class="chat-main-name" id="chatMainName">-</h4>
-                                        <p class="chat-main-status" id="chatMainStatus">-</p>
-                                    </div>
-                                </div>
-                                <div class="chat-main-actions">
-                                    <button onclick="viewCurrentChatProfile()" title="Profile"><i class="fas fa-user"></i></button>
-                                    <button onclick="clearCurrentChat()" title="Siba ubutumwa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="chat-messages-area" id="chatMessagesArea"></div>
-                            <div class="chat-reply-preview" id="chatReplyPreview">
-                                <div class="info">
-                                    <div class="name" id="replyPreviewName">-</div>
-                                    <div class="text" id="replyPreviewText">-</div>
-                                </div>
-                                <button class="close-reply" onclick="cancelReply()"><i class="fas fa-times"></i></button>
-                            </div>
-                            <div class="chat-main-header" id="chatMainHeader">
-    <div class="chat-main-header-info" onclick="viewCurrentChatProfile()">
-        <div class="chat-main-avatar" id="chatMainAvatar"></div>
-        <div style="min-width: 0;">
-            <h4 class="chat-main-name" id="chatMainName">-</h4>
-            <!-- HANO: Hano ni ho tuzerekana "Online" cyangwa "Arimo kwandika..." -->
-            <p class="chat-main-status" id="chatMainStatus">-</p> 
-        </div>
-    </div>
-    <div class="chat-main-actions">
-        <!-- HANO: Buto y'ishakisha -->
-        <button onclick="toggleChatSearch()" title="Shakisha mu butumwa"><i class="fas fa-search"></i></button>
-        <button onclick="viewCurrentChatProfile()" title="Profile"><i class="fas fa-user"></i></button>
-        <button onclick="clearCurrentChat()" title="Siba ubutumwa"><i class="fas fa-trash"></i></button>
-    </div>
-</div>
-
-<!-- Search Input (Ihishwe mbere) -->
-<div id="chatSearchBar" style="display:none; padding: 10px; background: var(--bg-card); border-bottom: 1px solid var(--border);">
-    <input type="text" id="chatSearchMsgInput" class="form-control" placeholder="Shakisha ubutumwa muri iyi chat..." oninput="searchChatMessages()">
-</div>
-                           <div class="chat-input-area">
-    <!-- Buto yo kohereza Ifoto -->
-    <button class="icon-btn" onclick="document.getElementById('chatFileInput').click()" title="Ohereza Ifoto/File" style="border:none; background:transparent;">
-        <i class="fas fa-paperclip"></i>
-    </button>
-    <input type="file" id="chatFileInput" class="hidden-input" accept="image/*,.pdf,.doc,.docx" onchange="uploadChatFile(event)">
-
-    <!-- Buto y'Ijwi -->
-    <button class="icon-btn" id="chatMicBtn" onclick="toggleVoiceRecord()" title="Vuga ubutumwa" style="border:none; background:transparent; color:var(--danger);">
-        <i class="fas fa-microphone"></i>
-    </button>
-
-    <textarea id="chatInputMsg" placeholder="Andika ubutumwa..." rows="1"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
-        oninput="autoResizeChatInput(this); sendTypingStatus();"></textarea>
-    
-    <button class="chat-send-btn" id="chatSendMsgBtn" onclick="sendChatMsg()">
-        <i class="fas fa-paper-plane"></i>
-    </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="page active" id="page-dashboard">
                 <div class="choir-title-banner">
                     <div style="position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; width: 100%;">
@@ -1077,11 +846,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     </div>
 </div>
 
-<button class="chat-fab hidden" id="chatFab" onclick="openChatPage(null)" title="Chat">
-    <i class="fas fa-comments"></i>
-    <span class="chat-fab-badge" id="chatFabBadge" style="display:none;">0</span>
-</button>
-
 <!-- ============ MODALS ============ -->
 
 <!-- Edit Message -->
@@ -1142,7 +906,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="form-group" style="margin-bottom:0;"><div style="display:flex;gap:8px;"><input type="text" class="form-control" id="commentInput" placeholder="Andika comment..." onkeypress="if(event.key==='Enter')submitComment()"><button class="btn btn-primary" onclick="submitComment()"><i class="fas fa-paper-plane"></i></button></div></div>
     </div>
 </div>
-    <!-- Notes Viewer -->
+
+<!-- Notes Viewer -->
 <div class="modal-overlay" id="notesViewerModal">
     <div class="modal" style="max-width: 900px; width: 95%;">
         <div class="modal-header">
@@ -1247,13 +1012,14 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="qr-display"><div class="qr-title">Iyandikishe</div><div class="qr-subtitle">Scan iyi QR wiyandikishe</div><div id="qr-register-code"></div></div>
     </div>
 </div>
-    <!-- Payment Modal -->
+
+<!-- Payment Modal -->
 <div class="modal-overlay" id="paymentModal">
     <div class="modal">
         <div class="modal-header"><h3><i class="fas fa-money-bill-wave"></i> Kwishyura Amasomo</h3><button class="close-btn" onclick="closeModal('paymentModal')"><i class="fas fa-times"></i></button></div>
         <div class="form-group">
             <label>Amafaranga (RWF) <span>*</span></label>
-            <input type="number" class="form-control" id="paymentAmount" placeholder="Urugero: 5000">
+            <input type="number" class="form-control" id="paymentAmount" placeholder="Urugero: 1000" value="1000">
         </div>
         <div class="form-group">
             <label>Nimero ya Mobile Money (MoMo) <span>*</span></label>
@@ -1386,12 +1152,6 @@ let deptChartInstance = null;
 let currentCourseId = null, currentLessonIndex = 0, courseLessons = [], courseProgress = {};
 let quizQuestions = [], currentQuiz = null, quizAnswers = {};
 
-// CHAT STATE
-let chatConversations = [], chatGroups = [], chatCurrentConv = null;
-let chatMessages = [], chatMessagesUnsubscribe = null, chatConversationsUnsubscribe = null;
-let chatCurrentTab = 'chats', chatSelectedGroupUsers = [], chatTotalUnread = 0;
-let chatReplyTo = null;
-
 // Helpers
 window.showToast = function(message, type = 'success') {
     const container = document.getElementById('toastContainer');
@@ -1421,28 +1181,6 @@ function timeAgo(date) {
     if (diff < 86400) return `${Math.floor(diff / 3600)} amasaha ashize`;
     if (diff < 604800) return `${Math.floor(diff / 86400)} iminsi ishize`;
     return formatDate(date);
-}
-function formatChatTime(date) {
-    if (!date) return '';
-    const now = new Date(), d = new Date(date);
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const msgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const diffDays = Math.floor((today - msgDay) / (1000*60*60*24));
-    if (diffDays === 0) return d.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
-    if (diffDays === 1) return 'Ejo';
-    if (diffDays < 7) return ['Cyu','Mbe','Kab','Gat','Kan','Gat','Gat'][d.getDay()];
-    return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
-}
-function getChatDayLabel(date) {
-    if (!date) return '';
-    const now = new Date(), d = new Date(date);
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const msgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const diffDays = Math.floor((today - msgDay) / (1000*60*60*24));
-    if (diffDays === 0) return 'Uyu munsi';
-    if (diffDays === 1) return 'Ejo';
-    if (diffDays < 7) return ['Ku cyumweru','Kuwa mbere','Kuwa kabiri','Kuwa gatatu','Kuwa kane','Kuwa gatanu','Kuwa gatandatu'][d.getDay()];
-    return formatDate(d);
 }
 async function uploadToCloudinary(file, isRaw = false) {
     const formData = new FormData();
@@ -1539,7 +1277,6 @@ async function loadAllData() {
     try { const q = await getDocs(collection(db, 'quizzes')); quizzes = []; q.forEach(d => quizzes.push({ id: d.id, ...d.data() })); } catch(e) {}
     try { const qr = await getDocs(collection(db, 'quizResults')); quizResults = []; qr.forEach(d => quizResults.push({ id: d.id, ...d.data() })); } catch(e) {}
     try { const lc = await getDocs(collection(db, 'liveClasses')); liveClasses = []; lc.forEach(d => liveClasses.push({ id: d.id, ...d.data() })); } catch(e) {}
-    try { const g2 = await getDocs(collection(db, 'chatGroups')); chatGroups = []; g2.forEach(d => chatGroups.push({ id: d.id, ...d.data() })); } catch(e) {}
     try { const p = await getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(100))); posts = []; p.forEach(d => posts.push({ id: d.id, ...d.data() })); } catch(e) {}
 }
 
@@ -1564,7 +1301,6 @@ async function enterApp() {
     try { startAnnouncementsListener(); } catch(e) {}
     try { startNotificationsListener(); } catch(e) {}
     try { startPostsListener(); } catch(e) {}
-    try { await initChat(); } catch(e) {}
 }
 
 function startAnnouncementsListener() {
@@ -1706,14 +1442,7 @@ window.switchPage = function(page, element) {
     if (page === 'manage-assignments') renderManageAssignments();
     if (page === 'manage-quizzes') renderManageQuizzes();
     if (page === 'manage-live') renderManageLive();
-    
     if (page === 'submissions') renderSubmissions();
-      if (page === 'chat') {
-        renderChatList();
-        document.body.style.overflow = 'hidden'; // Funga scroll ya page yose
-    } else {
-        document.body.style.overflow = ''; // Fungura scroll
-    }
     if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -1846,23 +1575,43 @@ window.submitComment = async function() {
         showToast('✅ Comment yongeweho!', 'success');
     } catch(e) { showToast('❌ ' + e.message, 'error'); }
 };
+window.deletePost = async function(postId) {
+    const p = posts.find(x => x.id === postId);
+    if (!p) return;
+    const canDelete = currentUserData?.role === 'super_admin' || currentUserData?.role === 'admin' || p.authorUid === currentUser?.uid;
+    if (!canDelete) { showToast('Ntushobora gusiba iyi post', 'error'); return; }
+    if (!confirm('Siba iyi post burundu?')) return;
+    try {
+        try {
+            const cSnap = await getDocs(collection(db, 'posts', postId, 'comments'));
+            for (const c of cSnap.docs) {
+                try { await deleteDoc(doc(db, 'posts', postId, 'comments', c.id)); } catch(e) {}
+            }
+        } catch(e) {}
+        await deleteDoc(doc(db, 'posts', postId));
+        posts = posts.filter(x => x.id !== postId);
+        renderPosts();
+        showToast('🗑️ Post yasibwe', 'warning');
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
 
 // ============ ONLINE LEARNING ============
 window.renderMyCourses = function() {
     const grid = document.getElementById('myCoursesGrid'); if (!grid) return;
-    
-    // RABA NIBA YISHYUYE
     const myStudent = students.find(s => s.id === currentUserData?.studentId);
     const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
     
-    // Niba ari umunyeshuri kandi atarishyura
     if (currentUserData?.role === 'student' && !isPaid) {
         grid.innerHTML = `
-            <div class="empty-state" style="grid-column:1/-1;">
-                <div class="icon"><i class="fas fa-lock" style="color:var(--danger);"></i></div>
-                <h3>Nturabona amasomo</h3>
-                <p style="margin-top:10px;">Ugomba kwishyura mbere yo kubona amasomo.</p>
-                <button class="btn btn-primary" onclick="openPaymentModal()" style="margin-top:20px;"><i class="fas fa-money-bill-wave"></i> Ishyura Ubu</button>
+            <div class="empty-state" style="grid-column:1/-1; padding: 50px 20px;">
+                <div class="icon" style="font-size: 70px; color: var(--danger);"><i class="fas fa-lock"></i></div>
+                <h3 style="font-size: 22px; margin-bottom: 10px;">Nturabona amasomo</h3>
+                <p style="font-size: 15px; color: var(--text-secondary); max-width: 400px; margin: 0 auto 20px;">
+                    Banza wishyure amafaranga <strong>1,000 RWF</strong> kugira ngo ubone amasomo yawe mu <strong>byumweru 2 (Two Weeks Access)</strong>.
+                </p>
+                <button class="btn btn-primary" onclick="openPaymentModal()" style="font-size: 16px; padding: 12px 24px;">
+                    <i class="fas fa-money-bill-wave"></i> Ishyura Ubu (1,000 RWF)
+                </button>
             </div>`;
         return;
     }
@@ -2184,42 +1933,40 @@ window.renderMyDashboard = function() {
     renderSubscriptionStatus(m);
     const al = document.getElementById('studentDashboardAnnouncementsList');
     if (al) { const rAnn = announcements.slice(0, 3); al.innerHTML = rAnn.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta matangazo</h3></div>` : rAnn.map(a => `<div class="saved-card" style="cursor:pointer;" onclick="switchPage('announcements', null)"><div class="saved-info"><h3>${escapeHtml(a.title)}</h3><div class="saved-meta"><span>${timeAgo(a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt))}</span></div></div></div>`).join(''); }
-const cl = document.getElementById('studentDashboardCoursesList');
-if (cl) {
-    // Reba niba yishyuye
-    const myStudent = students.find(s => s.id === currentUserData?.studentId);
-    const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
-
-    if (!isPaid) {
-        cl.innerHTML = `
-            <div class="empty-state" style="padding:30px;">
-                <div class="icon"><i class="fas fa-lock"></i></div>
-                <h3>Nturabona amasomo</h3>
-                <button class="btn btn-primary btn-sm" onclick="openPaymentModal()" style="margin-top:15px;">Ishyura Ubu</button>
-            </div>`;
-    } else {
-        const myCourses = courses.filter(c => !m.level || c.level === m.level).slice(0, 3);
-        cl.innerHTML = myCourses.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta courses</h3></div>` : myCourses.map(c => `<div class="saved-card" style="cursor:pointer;" onclick="openCourse('${c.id}')"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title)}</h3></div><div class="saved-actions"><button class="btn btn-primary btn-sm">Tangira</button></div></div>`).join('');
+    
+    const cl = document.getElementById('studentDashboardCoursesList');
+    if (cl) {
+        const myStudent = students.find(s => s.id === currentUserData?.studentId);
+        const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
+        if (!isPaid) {
+            cl.innerHTML = `
+                <div class="empty-state" style="padding:30px;">
+                    <div class="icon"><i class="fas fa-lock"></i></div>
+                    <h3>Nturabona amasomo</h3>
+                    <button class="btn btn-primary btn-sm" onclick="openPaymentModal()" style="margin-top:15px;">Ishyura Ubu</button>
+                </div>`;
+        } else {
+            const myCourses = courses.filter(c => !m.level || c.level === m.level).slice(0, 3);
+            cl.innerHTML = myCourses.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta courses</h3></div>` : myCourses.map(c => `<div class="saved-card" style="cursor:pointer;" onclick="openCourse('${c.id}')"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title)}</h3></div><div class="saved-actions"><button class="btn btn-primary btn-sm">Tangira</button></div></div>`).join('');
+        }
     }
-}
-    }; 
+};
+
 window.renderSubscriptionStatus = function(m) {
     const c = document.getElementById('subscriptionStatusContainer'); 
     if (!c) return;
 
-    // Reba niba umunyeshuri yishyuye (active) cyangwa niba yarasabye kwishyura (pending)
     const isPaid = m.subscriptionStatus === 'active' || m.paymentStatus === 'paid';
     const isPending = m.subscriptionStatus === 'pending' || m.paymentStatus === 'pending';
 
     if (isPaid) {
-        // 1. IYO YISHYUYE
         c.innerHTML = `
             <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i>
                 <h3 style="color:var(--success); margin-top:10px;">Wishyuye! Urabona amasomo yawe.</h3>
+                <p style="font-size:13px; color:var(--text-secondary);">Ufite access mu byumweru 2 (Two Weeks Access).</p>
             </div>`;
     } else if (isPending) {
-        // 2. IYO YOHEREJE UBWSHYU BATEGEREJE KWEMEZWA
         c.innerHTML = `
             <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-clock" style="font-size:40px;color:var(--warning);"></i>
@@ -2227,35 +1974,31 @@ window.renderSubscriptionStatus = function(m) {
                 <p style="font-size:13px; color:var(--text-secondary);">Tegereza Admin yemeze ubwishyu bwawe.</p>
             </div>`;
     } else {
-        // 3. IYO ATARISHYURA (Kongeraho MTN Code)
         c.innerHTML = `
             <div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i>
                 <h3 style="color:var(--danger); margin-top:10px;">Nturabona amasomo kugeza wishyuye.</h3>
-                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Koresha iyi code ukande kuri telefoni yawe cyangwa ukoporore:</p>
+                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Kwishyura <strong>1,000 RWF</strong> uhabwe access mu <strong>byumweru 2</strong>. Koresha iyi code:</p>
                 
-                <!-- HANO: MTN Code -->
                 <div style="background:var(--bg-card); border:2px dashed var(--primary); padding:12px; border-radius:12px; font-family:monospace; font-size:18px; font-weight:800; color:var(--primary); margin-bottom:16px; letter-spacing:1px;">
                     *182*8*1*1629789#
                 </div>
                 
-                <!-- Buto yo guhamagara (Dialer) kuri Mobile -->
                 <a href="tel:*182*8*1*1629789%23" class="btn btn-success" style="width:100%; margin-bottom:10px; text-decoration:none; display:flex; justify-content:center; align-items:center; gap:8px;">
-                    <i class="fas fa-phone"></i> Kanda Ujye Kwishyura (Mobile)
+                    <i class="fas fa-phone"></i> Kanda Ujye Kwishyura (1,000 RWF)
                 </a>
                 
-                <!-- Buto yo kwemeza ko yishyuye -->
                 <button class="btn btn-primary" onclick="openPaymentModal()" style="width:100%;">
                     <i class="fas fa-check-circle"></i> Nishyuye (Ohereza Ubwishyu)
                 </button>
             </div>`;
     }
 };
+
 window.renderMyNotes = function() {
     const list = document.getElementById('myNotesList'); 
     if (!list) return;
 
-    // 1. Reba niba umunyeshuri yishyuye
     const myStudent = students.find(s => s.id === currentUserData?.studentId);
     const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
 
@@ -2264,7 +2007,6 @@ window.renderMyNotes = function() {
         return; 
     }
 
-    // 2. Tanga list ya notes
     list.innerHTML = notes.map(n => {
         const ext = (n.fileUrl || '').split('.').pop().split('?')[0].toLowerCase();
         const isImage = ['jpg','jpeg','png','gif','webp','svg'].includes(ext);
@@ -2283,18 +2025,17 @@ window.renderMyNotes = function() {
             </div>
             <div class="saved-actions">
                 ${isPaid ? `
-                    <!-- Niba yishyuye: Erekana View na Download -->
                     <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba isomo"><i class="fas fa-eye"></i></button>
                     <a href="${n.fileUrl}" download target="_blank" class="action-btn" title="Kurura" style="text-decoration:none;"><i class="fas fa-download"></i></a>
                 ` : `
-                    <!-- Niba atarishyura: Erekana Lock (Ifunze) -->
                     <button class="action-btn" style="background: var(--danger); color: white;" onclick="openPaymentModal()" title="Ishyura mbere"><i class="fas fa-lock"></i> Ishyura</button>
                 `}
             </div>
         </div>`;
     }).join('');
 };
-    window.viewNote = function(noteId) {
+
+window.viewNote = function(noteId) {
     const n = notes.find(x => x.id === noteId);
     if (!n) { showToast('Isomo ntiribonetse', 'error'); return; }
     const url = n.fileUrl;
@@ -2330,7 +2071,6 @@ window.renderMyNotes = function() {
             container.innerHTML = `<div style="padding:40px;text-align:center;"><i class="fas fa-exclamation-triangle" style="font-size:50px;color:#f59e0b;"></i><p style="margin-top:16px;">Ntibishoboye kuboneka muri browser. Kanda <strong>Kurura</strong>.</p></div>`;
         });
     } else {
-        // Ubwoko butazwi — iframe gerageza
         container.innerHTML = `<div style="padding:40px;text-align:center;">
             <i class="fas fa-file" style="font-size:80px;color:#38bdf8;margin-bottom:20px;"></i>
             <p style="margin-bottom:20px;">Ubwoko bw'iyi fishi ntibushobora kuboneka muri browser.</p>
@@ -2340,49 +2080,30 @@ window.renderMyNotes = function() {
 
     document.getElementById('notesViewerModal').classList.add('active');
 };
-window.renderSubscriptionStatus = function(m) {
-    const c = document.getElementById('subscriptionStatusContainer'); 
-    if (!c) return;
 
-    const isPaid = m.subscriptionStatus === 'active' || m.paymentStatus === 'paid';
-    const isPending = m.subscriptionStatus === 'pending' || m.paymentStatus === 'pending';
+window.renderMyExams = function() {
+    const list = document.getElementById('myExamsList'); if (!list) return;
+    
+    const myStudent = students.find(s => s.id === currentUserData?.studentId);
+    const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
 
-    if (isPaid) {
-        c.innerHTML = `
-            <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;">
-                <i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i>
-                <h3 style="color:var(--success); margin-top:10px;">Wishyuye! Urabona amasomo yawe.</h3>
-                <p style="font-size:13px; color:var(--text-secondary);">Ufite access mu byumweru 2 (Two Weeks Access).</p>
+    if (currentUserData?.role === 'student' && !isPaid) {
+        list.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <div class="icon"><i class="fas fa-lock" style="color:var(--danger);"></i></div>
+                <h3>Nturabona ibizamini</h3>
+                <p style="margin-top:10px;">Ugomba kwishyura mbere yo kubona ibizamini.</p>
+                <button class="btn btn-primary" onclick="openPaymentModal()" style="margin-top:20px;"><i class="fas fa-money-bill-wave"></i> Ishyura Ubu</button>
             </div>`;
-    } else if (isPending) {
-        c.innerHTML = `
-            <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center;">
-                <i class="fas fa-clock" style="font-size:40px;color:var(--warning);"></i>
-                <h3 style="color:var(--warning); margin-top:10px;">Ubwishyu bwawe buri gukurikiranwa.</h3>
-                <p style="font-size:13px; color:var(--text-secondary);">Tegereza Admin yemeze ubwishyu bwawe.</p>
-            </div>`;
-    } else {
-        c.innerHTML = `
-            <div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;">
-                <i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i>
-                <h3 style="color:var(--danger); margin-top:10px;">Nturabona amasomo kugeza wishyuye.</h3>
-                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Kwishyura <strong>1,000 RWF</strong> uhabwe access mu <strong>byumweru 2</strong>. Koresha iyi code:</p>
-                
-                <div style="background:var(--bg-card); border:2px dashed var(--primary); padding:12px; border-radius:12px; font-family:monospace; font-size:18px; font-weight:800; color:var(--primary); margin-bottom:16px; letter-spacing:1px;">
-                    *182*8*1*1629789#
-                </div>
-                
-                <!-- Dialer (Iyo akanda iyi buto kuri telefoni, iyo code ihita yinjira muri dialer) -->
-                <a href="tel:*182*8*1*1629789%23" class="btn btn-success" style="width:100%; margin-bottom:10px; text-decoration:none; display:flex; justify-content:center; align-items:center; gap:8px;">
-                    <i class="fas fa-phone"></i> Kanda Ujye Kwishyura (1,000 RWF)
-                </a>
-                
-                <button class="btn btn-primary" onclick="openPaymentModal()" style="width:100%;">
-                    <i class="fas fa-check-circle"></i> Nishyuye (Ohereza Ubwishyu)
-                </button>
-            </div>`;
+        return;
     }
+
+    const myLevel = currentUserData?.level;
+    let filtered = exams.filter(e => !myLevel || e.level === myLevel);
+    if (filtered.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta bizamini</h3></div>`; return; }
+    list.innerHTML = filtered.map(e => `<div class="exam-card ${e.type}"><div class="saved-info"><h3><i class="fas fa-file-alt"></i> ${escapeHtml(e.title)}</h3><div class="saved-meta"><span>${e.subject}</span><span>${formatDate(e.date)}</span></div></div><span class="exam-type-badge ${e.type}">${e.type}</span></div>`).join('');
 };
+
 window.renderAnnouncements = function() {
     const list = document.getElementById('announcementsList'); if (!list) return;
     if (announcements.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta matangazo</h3></div>`; return; }
@@ -2390,7 +2111,6 @@ window.renderAnnouncements = function() {
         const isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'super_admin';
         return `<div class="announcement-card priority-${a.priority || 'normal'}"><div class="announcement-header"><div class="announcement-title-row"><h3 class="announcement-title">${escapeHtml(a.title)}</h3><span class="priority-badge ${a.priority || 'normal'}">${a.priority || 'normal'}</span></div></div><div class="announcement-meta"><span><i class="fas fa-clock"></i> ${timeAgo(a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt))}</span></div><div class="announcement-content">${escapeHtml(a.content)}</div>${isAdmin ? `<div class="announcement-actions"><button class="action-btn delete" onclick="deleteAnnouncement('${a.id}')"><i class="fas fa-trash"></i></button></div>` : ''}</div>`;
     }).join('');
-    // mark as read after render
     announcements.forEach(a => {
         const readBy = Array.isArray(a.readBy) ? a.readBy : [];
         if (currentUser && !readBy.includes(currentUser.uid)) markAnnouncementAsRead(a.id);
@@ -2468,7 +2188,7 @@ window.renderStudents = function() {
             </td>
         </tr>`;
     }).join('');
-    };   // <-- ONGERAHO IYI
+};
 window.openAddStudentModal = function() {
     ['newName','newEmail','newNumberInput','newLevel','newDepartment'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('addStudentModal').classList.add('active');
@@ -2518,7 +2238,6 @@ window.renderUsers = function() {
         </tr>`;
     }).join('');
 };
-
 window.changeUserRoleQuick = async function(uid, newRole) {
     if (currentUserData?.role !== 'super_admin') { showToast('Super Admin gusa!', 'error'); return; }
     const u = users.find(x => x.uid === uid);
@@ -2564,6 +2283,41 @@ window.deleteUser = async function(uid) {
         renderUsers();
     } catch(e) { showToast('❌ ' + e.message, 'error'); }
 };
+window.toggleStudentAdmin = async function(studentId) {
+    if (currentUserData?.role !== 'super_admin') { showToast('Super Admin gusa!', 'error'); return; }
+    const m = students.find(x => x.id === studentId);
+    if (!m) return;
+    const u = users.find(x => x.uid === m.uid || (m.email && x.email && x.email.toLowerCase() === m.email.toLowerCase()));
+    if (!u) {
+        showToast('⚠️ Uyu munyeshuri ntiyiyandikishije (nta Firebase user). Baza muri Firebase Auth ubanze.', 'warning');
+        return;
+    }
+    if (u.role === 'super_admin') { showToast('Ntushobora gukuraho Super Admin', 'error'); return; }
+    const newRole = u.role === 'admin' ? 'student' : 'admin';
+    const actionWord = newRole === 'admin' ? 'kumugira Admin' : 'kumukuraho Admin';
+    if (!confirm(`${actionWord}: ${m.name}?`)) return;
+    try {
+        await updateDoc(doc(db, 'users', u.uid), {
+            role: newRole,
+            roleChangedBy: currentUser.uid,
+            roleChangedAt: serverTimestamp()
+        });
+        try {
+            await addDoc(collection(db, 'auditLog'), {
+                action: newRole === 'admin' ? 'PROMOTE_STUDENT' : 'DEMOTE_STUDENT',
+                details: `${m.name} (${m.email || m.number}) → ${newRole}`,
+                performedBy: currentUser.uid,
+                performedByName: currentUserData.name,
+                timestamp: serverTimestamp()
+            });
+        } catch(e) {}
+        showToast(`✅ ${m.name} ubu ni ${newRole === 'admin' ? 'Admin' : 'Umunyeshuri'}`, 'success');
+        await loadAllData();
+        renderStudents();
+        renderUsers();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+
 window.renderTeachers = function() { document.getElementById('teachersBody').innerHTML = teachers.map(t => `<tr><td>${t.name}</td><td>${t.email||'-'}</td><td>${t.phone||'-'}</td><td>-</td><td><button class="action-btn delete" onclick="deleteTeacher('${t.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); };
 window.openAddTeacherModal = function() { document.getElementById('teacherName').value = ''; document.getElementById('teacherEmail').value = ''; document.getElementById('addTeacherModal').classList.add('active'); };
 window.addTeacher = async function() {
@@ -2599,6 +2353,7 @@ window.addGrade = async function() {
     } catch(e) {}
 };
 window.deleteGrade = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'grades', id)); showToast('🗑️', 'warning'); await loadAllData(); renderGrades(); } catch(e) {} };
+
 window.renderNotesPayments = function() {
     const list = document.getElementById('notesPaymentsList'); if (!list) return;
     if (notesPayments.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta bwishyu</h3></div>`; return; }
@@ -2623,25 +2378,21 @@ window.renderNotesPayments = function() {
 window.approvePayment = async function(paymentId, studentId) {
     if (!confirm('Emeza ubwishyu bwa uyu munyeshuri?')) return;
     try {
-        // 1. Bika itariki yo kurangiza (Ibyumweru 2 = Iminsi 14)
         const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + 14);
+        expiryDate.setDate(expiryDate.getDate() + 14); // 2 weeks
 
-        // 2. Hindura status muri notesPayments
         await updateDoc(doc(db, 'notesPayments', paymentId), { 
             status: 'approved',
             approvedAt: serverTimestamp(),
             expiresAt: expiryDate.toISOString()
         });
         
-        // 3. Hindura status muri students
         await updateDoc(doc(db, 'students', studentId), { 
             subscriptionStatus: 'active', 
             paymentStatus: 'paid',
             subscriptionExpiresAt: expiryDate.toISOString()
         });
         
-        // 4. Reba niba hari user
         const s = students.find(x => x.id === studentId);
         if (s && s.uid) {
             await updateDoc(doc(db, 'users', s.uid), { 
@@ -2656,6 +2407,7 @@ window.approvePayment = async function(paymentId, studentId) {
         renderNotesPayments();
     } catch(e) { showToast('❌ ' + e.message, 'error'); }
 };
+
 window.renderDepartmentsPage = function() {
     const d = { Science: 0, Arts: 0, Commerce: 0, Technical: 0 };
     students.forEach(m => { if (d[m.department] !== undefined) d[m.department]++; });
@@ -2679,697 +2431,14 @@ window.openQRRegisterModal = function() {
 };
 window.saveSettings = async function() { const sn = document.getElementById('schoolName').value.trim(); try { await updateDoc(doc(db, 'users', currentUser.uid), { schoolName: sn }); currentUserData.schoolName = sn; showToast('✅', 'success'); } catch(e) {} };
 
-// ============ CHAT SYSTEM ============
-async function loadChatGroups() {
-    try { const g = await getDocs(collection(db, 'chatGroups')); chatGroups = []; g.forEach(d => chatGroups.push({ id: d.id, ...d.data() })); } catch(e) {}
-}
-window.initChat = async function() {
-    const fab = document.getElementById('chatFab');
-    if (fab) fab.classList.remove('hidden');
-    await loadChatGroups();
-    startChatConversationsListener();
-};
-function startChatConversationsListener() {
-    if (chatConversationsUnsubscribe) try { chatConversationsUnsubscribe(); } catch(e) {}
-    if (!currentUser) return;
-    // Listen to all messages where user is sender OR receiver OR group member
-    chatConversationsUnsubscribe = onSnapshot(query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(500)), (snap) => {
-        const allMsgs = []; snap.forEach(d => allMsgs.push({ id: d.id, ...d.data() }));
-        // Load groups fresh so we know membership
-        loadChatGroups().then(() => buildConversations(allMsgs));
-    }, (err) => console.warn('Chat error:', err));
-}
-function buildConversations(allMsgs) {
-    const convMap = {}; let totalUnread = 0;
-    const myGroups = chatGroups.filter(g => (g.members || []).includes(currentUser.uid)).map(g => g.id);
-    allMsgs.forEach(m => {
-        const isGroup = m.isGroup === true;
-        if (isGroup) {
-            if (!myGroups.includes(m.groupId)) return;
-            const key = 'group_' + m.groupId;
-            if (!convMap[key]) convMap[key] = { key, type: 'group', groupId: m.groupId, messages: [], unread: 0 };
-            convMap[key].messages.push(m);
-            if (m.senderId !== currentUser.uid && !m.read) { convMap[key].unread++; totalUnread++; }
-        } else {
-            if (m.senderId !== currentUser.uid && m.receiverId !== currentUser.uid) return;
-            const other = m.senderId === currentUser.uid ? m.receiverId : m.senderId;
-            const key = 'direct_' + [currentUser.uid, other].sort().join('_');
-            if (!convMap[key]) convMap[key] = { key, type: 'direct', otherUserId: other, messages: [], unread: 0 };
-            convMap[key].messages.push(m);
-            if (m.receiverId === currentUser.uid && !m.read) { convMap[key].unread++; totalUnread++; }
-        }
-    });
-    chatConversations = Object.values(convMap).map(c => {
-        const sorted = [...c.messages].sort((a,b) => {
-            const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-            const db_ = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-            return db_ - da;
-        });
-        const lastMsg = sorted[0];
-        return { ...c, lastMsg, lastTime: lastMsg?.createdAt?.toDate ? lastMsg.createdAt.toDate() : new Date(lastMsg?.createdAt || 0) };
-    }).sort((a, b) => b.lastTime - a.lastTime);
-    chatTotalUnread = totalUnread;
-    updateChatBadges();
-    renderChatList();
-}
-function updateChatBadges() {
-    const badge = document.getElementById('sidebarChatCount');
-    if (badge) { badge.textContent = chatTotalUnread > 99 ? '99+' : chatTotalUnread; badge.style.display = chatTotalUnread > 0 ? 'flex' : 'none'; }
-    const fabBadge = document.getElementById('chatFabBadge');
-    if (fabBadge) { fabBadge.textContent = chatTotalUnread > 99 ? '99+' : chatTotalUnread; fabBadge.style.display = chatTotalUnread > 0 ? 'flex' : 'none'; }
-}
-window.renderChatList = function() {
-    const container = document.getElementById('chatListContainer'); if (!container) return;
-    const search = document.getElementById('chatSearchInput')?.value.toLowerCase().trim() || '';
-
-    if (chatCurrentTab === 'chats') {
-        let convs = [...chatConversations];
-        if (search) convs = convs.filter(c => {
-            if (c.type === 'group') { const g = chatGroups.find(x => x.id === c.groupId); return g?.name?.toLowerCase().includes(search); }
-            const u = users.find(x => x.uid === c.otherUserId); return u?.name?.toLowerCase().includes(search);
-        });
-        if (convs.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-comments"></i><div style="font-weight:700;margin-bottom:4px;">Nta chats</div><div style="font-size:12px;">Kanda ➕ ubanze kuganira</div></div>`; return; }
-        container.innerHTML = convs.map(c => renderConvItem(c)).join('');
-
-    } else if (chatCurrentTab === 'people') {
-        let allPeople = [...users];
-        students.forEach(s => {
-            if (s.uid && !allPeople.some(u => u.uid === s.uid)) {
-                allPeople.push({ uid: s.uid, name: s.name, email: s.email, photo: s.photo, role: 'student', isOnline: false, level: s.level });
-            }
-        });
-        let list = allPeople.filter(u => u.uid !== currentUser.uid);
-        if (search) list = list.filter(u => (u.name||'').toLowerCase().includes(search) || (u.email||'').toLowerCase().includes(search));
-        if (list.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div style="font-weight:700;">Nta bantu</div></div>`; return; }
-        container.innerHTML = list.map(u => {
-            const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-            const av = u.photo ? `<img src="${u.photo}">` : `<span>${init}</span>`;
-            const roleLabel = u.role === 'student' ? 'Umunyeshuri' : u.role === 'admin' ? 'Admin' : u.role === 'super_admin' ? 'Super Admin' : u.role;
-            return `<div class="chat-conv-item" onclick="startDirectChat('${u.uid}')">
-                <div class="chat-conv-avatar ${u.isOnline ? 'online' : ''}">${av}</div>
-                <div class="chat-conv-info">
-                    <div class="chat-conv-header"><div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div>${u.isOnline ? '<div class="chat-conv-time" style="color:#10b981;">● Online</div>' : ''}</div>
-                    <div class="chat-conv-preview"><div class="chat-conv-msg">${escapeHtml(roleLabel)} ${u.level ? '• ' + u.level : ''}</div></div>
-                </div>
-            </div>`;
-        }).join('');
-
-    } else if (chatCurrentTab === 'groups') {
-        let list = chatGroups.filter(g => (g.members || []).includes(currentUser.uid));
-        if (search) list = list.filter(g => (g.name||'').toLowerCase().includes(search));
-        if (list.length === 0) { container.innerHTML = `<div class="chat-list-empty"><i class="fas fa-users"></i><div>Nta groups</div></div>`; return; }
-        container.innerHTML = list.map(g => renderGroupItem(g)).join('');
-    }
-};
-function renderConvItem(c) {
-    if (c.type === 'group') { const g = chatGroups.find(x => x.id === c.groupId); if (!g) return ''; return renderGroupItem(g, c.lastMsg, c.unread); }
-    const otherUser = users.find(x => x.uid === c.otherUserId);
-    if (!otherUser) return '';
-    const init = (otherUser.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-    const av = otherUser.photo ? `<img src="${otherUser.photo}">` : `<span>${init}</span>`;
-    const lastMsgText = c.lastMsg?.text || '';
-    return `<div class="chat-conv-item ${chatCurrentConv?.key === c.key ? 'active' : ''}" onclick="openConversation('direct', '${c.otherUserId}')">
-        <div class="chat-conv-avatar ${otherUser.isOnline ? 'online' : ''}">${av}</div>
-        <div class="chat-conv-info">
-            <div class="chat-conv-header"><div class="chat-conv-name">${escapeHtml(otherUser.name || 'Unknown')}</div><div class="chat-conv-time ${c.unread ? 'unread' : ''}">${c.lastTime ? formatChatTime(c.lastTime) : ''}</div></div>
-            <div class="chat-conv-preview"><div class="chat-conv-msg">${c.lastMsg?.senderId === currentUser.uid ? '✓ ' : ''}${escapeHtml(lastMsgText.substring(0, 50))}</div>${c.unread > 0 ? `<div class="chat-conv-badge">${c.unread}</div>` : ''}</div>
-        </div>
-    </div>`;
-}
-function renderGroupItem(g, lastMsg, unread) {
-    const lastMsgText = lastMsg?.text || '';
-    const lastMsgTime = lastMsg?.createdAt?.toDate ? lastMsg.createdAt.toDate() : new Date(lastMsg?.createdAt || 0);
-    return `<div class="chat-conv-item ${chatCurrentConv?.groupId === g.id ? 'active' : ''}" onclick="openConversation('group', '${g.id}')">
-        <div class="chat-conv-avatar"><i class="fas fa-users group-icon"></i></div>
-        <div class="chat-conv-info">
-            <div class="chat-conv-header"><div class="chat-conv-name">${escapeHtml(g.name)}</div><div class="chat-conv-time ${unread ? 'unread' : ''}">${lastMsg ? formatChatTime(lastMsgTime) : ''}</div></div>
-            <div class="chat-conv-preview"><div class="chat-conv-msg">${lastMsg ? `${escapeHtml(lastMsg.senderName || '')}: ${escapeHtml(lastMsgText.substring(0, 30))}` : `${(g.members||[]).length} members`}</div>${unread > 0 ? `<div class="chat-conv-badge">${unread}</div>` : ''}</div>
-        </div>
-    </div>`;
-}
-window.switchChatTab = function(tab, el) {
-    chatCurrentTab = tab;
-    document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-    if (el) el.classList.add('active');
-    renderChatList();
-};
-window.filterChats = function() { renderChatList(); };
-window.openChatPage = function(element) {
-    switchPage('chat', element);
-    if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
-};
-window.openConversation = async function(type, id) {
-    const container = document.getElementById('chatPageContainer');
-    if (window.innerWidth <= 900) container.classList.add('show-conv');
-    document.getElementById('chatEmptyState').style.display = 'none';
-    document.getElementById('chatActiveView').style.display = 'flex';
-    chatReplyTo = null;
-    document.getElementById('chatReplyPreview').classList.remove('active');
-    if (type === 'direct') {
-        const otherUser = users.find(x => x.uid === id);
-        if (!otherUser) return;
-        chatCurrentConv = { type: 'direct', otherUserId: id, key: 'direct_' + [currentUser.uid, id].sort().join('_') };
-        const init = (otherUser.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        document.getElementById('chatMainAvatar').innerHTML = otherUser.photo ? `<img src="${otherUser.photo}">` : init;
-        document.getElementById('chatMainAvatar').className = 'chat-main-avatar ' + (otherUser.isOnline ? 'online' : '');
-        document.getElementById('chatMainName').textContent = otherUser.name || 'Unknown';
-        document.getElementById('chatMainStatus').textContent = otherUser.isOnline ? '🟢 Online ubu' : (otherUser.lastSeen ? `Iheruka ${timeAgo(otherUser.lastSeen.toDate ? otherUser.lastSeen.toDate() : new Date(otherUser.lastSeen))}` : 'Offline');
-    } else {
-        const g = chatGroups.find(x => x.id === id);
-        if (!g) return;
-        chatCurrentConv = { type: 'group', groupId: id, key: 'group_' + id };
-        document.getElementById('chatMainAvatar').innerHTML = '<i class="fas fa-users"></i>';
-        document.getElementById('chatMainAvatar').className = 'chat-main-avatar';
-        document.getElementById('chatMainName').textContent = g.name;
-        document.getElementById('chatMainStatus').textContent = `${(g.members || []).length} members`;
-    }
-    startChatMessagesListener();
-    setTimeout(() => document.getElementById('chatInputMsg')?.focus(), 300);
-};
-window.startDirectChat = function(otherUserId) { openConversation('direct', otherUserId); };
-function startChatMessagesListener() {
-    if (chatMessagesUnsubscribe) try { chatMessagesUnsubscribe(); } catch(e) {}
-    if (!chatCurrentConv || !currentUser) return;
-    // Query all messages and filter client-side (avoids composite index requirement)
-    const q = query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(500));
-    chatMessagesUnsubscribe = onSnapshot(q, (snap) => {
-        const msgs = []; snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
-        if (chatCurrentConv.type === 'direct') {
-            chatMessages = msgs.filter(m => !m.isGroup && (
-                (m.senderId === currentUser.uid && m.receiverId === chatCurrentConv.otherUserId) ||
-                (m.senderId === chatCurrentConv.otherUserId && m.receiverId === currentUser.uid)
-            ));
-        } else {
-            chatMessages = msgs.filter(m => m.isGroup && m.groupId === chatCurrentConv.groupId);
-        }
-        chatMessages.sort((a,b) => {
-            const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-            const db_ = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-            return da - db_;
-        });
-        renderChatMessages();
-        markChatMessagesRead();
-    }, (err) => console.warn('Messages error:', err));
-}
-async function markChatMessagesRead() {
-    if (!currentUser || !chatCurrentConv) return;
-    try {
-        const unread = chatMessages.filter(m => {
-            if (chatCurrentConv.type === 'direct') return m.receiverId === currentUser.uid && !m.read;
-            return m.senderId !== currentUser.uid && !m.read;
-        });
-        for (const m of unread) { try { await updateDoc(doc(db, 'chatMessages', m.id), { read: true }); } catch(e) {} }
-    } catch(e) {}
-}
-function renderChatMessages() {
-    const area = document.getElementById('chatMessagesArea'); if (!area) return;
-    if (chatMessages.length === 0) { area.innerHTML = `<div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);"><i class="fas fa-comments" style="font-size: 50px; opacity: 0.3; margin-bottom: 16px;"></i><div style="font-size: 14px;">Nta butumwa. Ba uwambere! 👋</div></div>`; return; }
-    let html = ''; let lastDay = null;
-    chatMessages.forEach(m => {
-        const msgDate = m.createdAt?.toDate ? m.createdAt.toDate() : new Date(m.createdAt || 0);
-        const dayLabel = getChatDayLabel(msgDate);
-        if (dayLabel !== lastDay) { html += `<div class="chat-day-divider">${dayLabel}</div>`; lastDay = dayLabel; }
-        const isMine = m.senderId === currentUser.uid;
-        const timeStr = msgDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        const sender = users.find(u => u.uid === m.senderId);
-        const senderName = sender?.name || m.senderName || 'Unknown';
-        const senderPhoto = sender?.photo || m.senderPhoto;
-        const init = senderName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        const av = senderPhoto ? `<img src="${senderPhoto}">` : `<span>${init}</span>`;
-        let replyHtml = '';
-        if (m.replyTo) replyHtml = `<div class="chat-msg-reply-quote"><div class="reply-name">${escapeHtml(m.replyTo.senderName)}</div><div class="reply-text">${escapeHtml(m.replyTo.text)}</div></div>`;
-        html += `<div class="chat-msg ${isMine ? 'mine' : ''} ${m.edited ? 'edited' : ''}">
-            ${!isMine ? `<div class="chat-msg-avatar">${av}</div>` : ''}
-            <div class="chat-msg-content">
-                ${!isMine && chatCurrentConv.type === 'group' ? `<div class="chat-msg-name">${escapeHtml(senderName)}</div>` : ''}
-                <div class="chat-bubble">${replyHtml}${escapeHtml(m.text)}</div>
-                <div class="chat-msg-time">${timeStr}${isMine ? `<span class="checkmark"><i class="fas ${m.read ? 'fa-check-double' : 'fa-check'}"></i></span>` : ''}</div>
-            </div>
-            <div class="chat-msg-actions">
-                <button onclick="replyToMessage('${m.id}')" title="Subiza"><i class="fas fa-reply"></i></button>
-                ${isMine ? `<button onclick="openEditMessage('${m.id}')" title="Hindura"><i class="fas fa-edit"></i></button>` : ''}
-                ${isMine ? `<button onclick="deleteChatMessage('${m.id}')" title="Siba"><i class="fas fa-trash"></i></button>` : ''}
-            </div>
-        </div>`;
-    });
-    area.innerHTML = html;
-    area.scrollTop = area.scrollHeight;
-}
-window.autoResizeChatInput = function(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100) + 'px'; };
-window.replyToMessage = function(msgId) {
-    const m = chatMessages.find(x => x.id === msgId); if (!m) return;
-    chatReplyTo = { id: m.id, text: m.text, senderName: m.senderName || 'Unknown' };
-    document.getElementById('replyPreviewName').textContent = chatReplyTo.senderName;
-    document.getElementById('replyPreviewText').textContent = chatReplyTo.text;
-    document.getElementById('chatReplyPreview').classList.add('active');
-    document.getElementById('chatInputMsg').focus();
-};
-window.cancelReply = function() {
-    chatReplyTo = null;
-    document.getElementById('chatReplyPreview').classList.remove('active');
-};
-window.sendChatMsg = async function() {
-    const input = document.getElementById('chatInputMsg');
-    const text = input.value.trim();
-    if (!text || !chatCurrentConv || !currentUser) return;
-    const btn = document.getElementById('chatSendMsgBtn'); btn.disabled = true;
-    input.value = ''; input.style.height = 'auto';
-    try {
-        const data = { text, senderId: currentUser.uid, senderName: currentUserData.name || 'Unknown', senderPhoto: currentUserData.photo || null, read: false, createdAt: serverTimestamp() };
-        if (chatReplyTo) { data.replyTo = chatReplyTo; cancelReply(); }
-        if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
-        else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
-        await addDoc(collection(db, 'chatMessages'), data);
-    } catch(e) { console.error(e); showToast('❌ ' + e.message, 'error'); input.value = text; }
-    finally { btn.disabled = false; input.focus(); }
-};
-window.openEditMessage = function(msgId) {
-    const m = chatMessages.find(x => x.id === msgId); if (!m) return;
-    document.getElementById('editMessageId').value = msgId;
-    document.getElementById('editMessageText').value = m.text;
-    document.getElementById('editMessageModal').classList.add('active');
-};
-window.saveEditMessage = async function() {
-    const id = document.getElementById('editMessageId').value;
-    const text = document.getElementById('editMessageText').value.trim();
-    if (!text) { showToast('Andika ubutumwa', 'warning'); return; }
-    try {
-        await updateDoc(doc(db, 'chatMessages', id), { text, edited: true, editedAt: serverTimestamp() });
-        showToast('✅ Byahinduwe!', 'success'); closeModal('editMessageModal');
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-window.deleteChatMessage = async function(msgId) {
-    if (!confirm('Siba ubu butumwa?')) return;
-    try { await deleteDoc(doc(db, 'chatMessages', msgId)); showToast('🗑️ Byasibwe', 'warning'); } catch(e) { showToast('❌', 'error'); }
-};
-window.clearCurrentChat = async function() {
-    if (!chatCurrentConv || !currentUser) return;
-    if (!confirm('Siba ubutumwa bwawe muri iyi chat?')) return;
-    try {
-        const myMsgs = chatMessages.filter(m => m.senderId === currentUser.uid);
-        for (const m of myMsgs) { try { await deleteDoc(doc(db, 'chatMessages', m.id)); } catch(e) {} }
-        showToast('🗑️ Byasibwe', 'success');
-    } catch(e) { showToast('❌', 'error'); }
-};
-window.viewCurrentChatProfile = function() {
-    if (!chatCurrentConv) return;
-    if (chatCurrentConv.type === 'direct') { const u = users.find(x => x.uid === chatCurrentConv.otherUserId); if (!u) return; showUserProfile(u); }
-       else {
-        const g = chatGroups.find(x => x.id === chatCurrentConv.groupId); if (!g) return;
-        
-        // Tanga list nziza y'abanyamuryango
-        const membersListHtml = (g.members || []).map(mid => {
-            const u = users.find(x => x.uid === mid);
-            const name = u?.name || 'Unknown';
-            const init = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-            const av = u?.photo ? `<img src="${u.photo}">` : `<span>${init}</span>`;
-            return `<div class="info-row" style="margin-bottom: 6px;">
-                        <div class="chat-conv-avatar" style="width: 36px; height: 36px; font-size: 13px; margin-right: 10px;">${av}</div>
-                        <div style="flex: 1;"><strong>${escapeHtml(name)}</strong></div>
-                    </div>`;
-        }).join('');
-
-        document.getElementById('viewProfileContent').innerHTML = `
-            <div class="user-profile-view">
-                <div class="avatar-big" style="background: linear-gradient(135deg, #667eea, #764ba2);"><i class="fas fa-users"></i></div>
-                <h3>${escapeHtml(g.name)}</h3>
-                <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 24px;">${(g.members||[]).length} members</p>
-                <h4 style="text-align: left; margin-bottom: 12px; font-size: 15px; color: var(--text-secondary);">Abanyamuryango:</h4>
-                <div style="max-height: 300px; overflow-y: auto; text-align: left;">
-                    ${membersListHtml}
-                </div>
-            </div>`;
-        document.getElementById('viewProfileModal').classList.add('active');
-    }
-function showUserProfile(u) {
-    const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-    const av = u.photo ? `<img src="${u.photo}">` : init;
-    const roleLabel = { student: 'Umunyeshuri', admin: 'Admin', super_admin: 'Super Admin', teacher: 'Umwarimu' }[u.role] || u.role;
-    document.getElementById('viewProfileContent').innerHTML = `
-        <div class="user-profile-view">
-            <div class="avatar-big">${av}</div>
-            <h3>${escapeHtml(u.name || 'Unknown')}</h3>
-            <div style="margin-bottom: 16px;"><span class="role-badge ${u.role || 'student'}">${roleLabel}</span></div>
-            <div class="info-row"><i class="fas fa-envelope"></i><span>${escapeHtml(u.email || '-')}</span></div>
-            ${u.phone ? `<div class="info-row"><i class="fas fa-phone"></i><span>${escapeHtml(u.phone)}</span></div>` : ''}
-            <div class="info-row"><i class="fas fa-circle" style="color: ${u.isOnline ? '#10b981' : '#94a3b8'};"></i><span>${u.isOnline ? '🟢 Online ubu' : 'Offline'}</span></div>
-            <div style="margin-top: 16px;"><button class="btn btn-primary" style="width: 100%;" onclick="closeModal('viewProfileModal'); startDirectChat('${u.uid}');"><i class="fas fa-comment"></i> Tangira Chat</button></div>
-        </div>`;
-    document.getElementById('viewProfileModal').classList.add('active');
-}
-    }; 
-    
-window.openNewChatModal = function() { document.getElementById('newChatSearch').value = ''; renderNewChatUsers(); document.getElementById('newChatModal').classList.add('active'); };
-function renderNewChatUsers() {
-    const list = document.getElementById('newChatUsersList');
-    const search = document.getElementById('newChatSearch')?.value.toLowerCase().trim() || '';
-    let filtered = users.filter(u => u.uid !== currentUser.uid);
-    if (search) filtered = filtered.filter(u => (u.name||'').toLowerCase().includes(search) || (u.email||'').toLowerCase().includes(search));
-    if (filtered.length === 0) { list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">Nta bantu</div>'; return; }
-    list.innerHTML = filtered.map(u => {
-        const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        const av = u.photo ? `<img src="${u.photo}">` : init;
-        return `<div class="chat-conv-item" onclick="closeModal('newChatModal'); startDirectChat('${u.uid}')" style="border-radius: 10px;"><div class="chat-conv-avatar ${u.isOnline ? 'online' : ''}">${av}</div><div class="chat-conv-info"><div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div><div class="chat-conv-msg">${escapeHtml(u.email || '')}</div></div></div>`;
-    }).join('');
-}
-window.filterNewChatUsers = renderNewChatUsers;
-window.openNewGroupModal = function() {
-    document.getElementById('newGroupName').value = '';
-    document.getElementById('newGroupSearch').value = '';
-    chatSelectedGroupUsers = [];
-    renderGroupUsers(); renderGroupSelected();
-    document.getElementById('newGroupModal').classList.add('active');
-};
-function renderGroupUsers() {
-    const list = document.getElementById('groupUsersList');
-    const search = document.getElementById('newGroupSearch')?.value.toLowerCase().trim() || '';
-    let filtered = users.filter(u => u.uid !== currentUser.uid);
-    if (search) filtered = filtered.filter(u => (u.name||'').toLowerCase().includes(search));
-    if (filtered.length === 0) { list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nta bantu</div>'; return; }
-    list.innerHTML = filtered.map(u => {
-        const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        const av = u.photo ? `<img src="${u.photo}">` : init;
-        const isSelected = chatSelectedGroupUsers.includes(u.uid);
-        return `<div class="chat-conv-item" onclick="toggleGroupUser('${u.uid}')" style="border-radius: 10px; ${isSelected ? 'background: rgba(102,126,234,0.2);' : ''}"><div class="chat-conv-avatar">${av}</div><div class="chat-conv-info"><div class="chat-conv-name">${escapeHtml(u.name || 'Unknown')}</div></div><input type="checkbox" ${isSelected ? 'checked' : ''} style="width: 20px; height: 20px;"></div>`;
-    }).join('');
-}
-window.filterGroupUsers = renderGroupUsers;
-window.toggleGroupUser = function(uid) {
-    const idx = chatSelectedGroupUsers.indexOf(uid);
-    if (idx >= 0) chatSelectedGroupUsers.splice(idx, 1); else chatSelectedGroupUsers.push(uid);
-    renderGroupUsers(); renderGroupSelected();
-};
-function renderGroupSelected() {
-    const container = document.getElementById('groupSelectedList');
-    if (chatSelectedGroupUsers.length === 0) { container.innerHTML = '<div style="color: var(--text-secondary); font-size: 13px; padding: 8px;">Nta muntu wahiswemo.</div>'; return; }
-    container.innerHTML = chatSelectedGroupUsers.map(uid => {
-        const u = users.find(x => x.uid === uid); if (!u) return '';
-        return `<div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 4px 10px; border-radius: 50px; font-size: 12px; display: flex; align-items: center; gap: 6px;">${escapeHtml(u.name || '?')}<button onclick="toggleGroupUser('${uid}')" style="background: none; border: none; color: white; cursor: pointer; font-size: 14px;">×</button></div>`;
-    }).join('');
-}
-window.createGroup = async function() {
-    const name = document.getElementById('newGroupName').value.trim();
-    if (!name) { showToast('Shyiramo izina', 'warning'); return; }
-    if (chatSelectedGroupUsers.length === 0) { showToast('Hitamo nibura 1', 'warning'); return; }
-    try {
-        const groupData = { name, members: [currentUser.uid, ...chatSelectedGroupUsers], createdBy: currentUser.uid, createdByName: currentUserData.name, createdAt: serverTimestamp() };
-        const ref = await addDoc(collection(db, 'chatGroups'), groupData);
-        showToast('✅ Group yakozwe!', 'success');
-        closeModal('newGroupModal');
-        await loadChatGroups();
-        openConversation('group', ref.id);
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-window.closeConversation = function() { document.getElementById('chatPageContainer').classList.remove('show-conv'); };
-
-// PWA
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.remove('hidden'); });
-window.installPWA = async function() {
-    const b = document.getElementById('pwaInstallBtn');
-    if (!deferredPrompt) { alert("Kuri iyi browser, kanda 'Add to Home Screen'."); return; }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') { if (b) b.classList.add('hidden'); showToast('✅!', 'success'); }
-    deferredPrompt = null;
-};
-window.addEventListener('appinstalled', () => { const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.add('hidden'); });
-window.deletePost = async function(postId) {
-    const p = posts.find(x => x.id === postId);
-    if (!p) return;
-    const canDelete = currentUserData?.role === 'super_admin' || currentUserData?.role === 'admin' || p.authorUid === currentUser?.uid;
-    if (!canDelete) { showToast('Ntushobora gusiba iyi post', 'error'); return; }
-    if (!confirm('Siba iyi post burundu?')) return;
-    try {
-        // Siba comments zose za post mbere
-        try {
-            const cSnap = await getDocs(collection(db, 'posts', postId, 'comments'));
-            for (const c of cSnap.docs) {
-                try { await deleteDoc(doc(db, 'posts', postId, 'comments', c.id)); } catch(e) {}
-            }
-        } catch(e) {}
-        await deleteDoc(doc(db, 'posts', postId));
-        posts = posts.filter(x => x.id !== postId);
-        renderPosts();
-        showToast('🗑️ Post yasibwe', 'warning');
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-    window.toggleStudentAdmin = async function(studentId) {
-    if (currentUserData?.role !== 'super_admin') { showToast('Super Admin gusa!', 'error'); return; }
-    const m = students.find(x => x.id === studentId);
-    if (!m) return;
-    // Shakisha user ya Firestore
-    const u = users.find(x => x.uid === m.uid || (m.email && x.email && x.email.toLowerCase() === m.email.toLowerCase()));
-    if (!u) {
-        showToast('⚠️ Uyu munyeshuri ntiyiyandikishije (nta Firebase user). Baza muri Firebase Auth ubanze.', 'warning');
-        return;
-    }
-    if (u.role === 'super_admin') { showToast('Ntushobora gukuraho Super Admin', 'error'); return; }
-    const newRole = u.role === 'admin' ? 'student' : 'admin';
-    const actionWord = newRole === 'admin' ? 'kumugira Admin' : 'kumukuraho Admin';
-    if (!confirm(`${actionWord}: ${m.name}?`)) return;
-    try {
-        await updateDoc(doc(db, 'users', u.uid), {
-            role: newRole,
-            roleChangedBy: currentUser.uid,
-            roleChangedAt: serverTimestamp()
-        });
-        // Log audit
-        try {
-            await addDoc(collection(db, 'auditLog'), {
-                action: newRole === 'admin' ? 'PROMOTE_STUDENT' : 'DEMOTE_STUDENT',
-                details: `${m.name} (${m.email || m.number}) → ${newRole}`,
-                performedBy: currentUser.uid,
-                performedByName: currentUserData.name,
-                timestamp: serverTimestamp()
-            });
-        } catch(e) {}
-        showToast(`✅ ${m.name} ubu ni ${newRole === 'admin' ? 'Admin' : 'Umunyeshuri'}`, 'success');
-        await loadAllData();
-        renderStudents();
-        renderUsers();
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-    let newNoteFile = null;
-
-window.renderManageNotes = function() {
-    const list = document.getElementById('manageNotesList'); if (!list) return;
-    if (notes.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta notes</h3></div>`; return; }
-    list.innerHTML = notes.map(n => `<div class="saved-card">
-        <div class="saved-info">
-            <h3><i class="fas fa-book"></i> ${escapeHtml(n.title)}</h3>
-            <div class="saved-meta"><span>${escapeHtml(n.subject || '')}</span><span>${n.level || 'Byose'}</span></div>
-        </div>
-        <div class="saved-actions">
-            <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba"><i class="fas fa-eye"></i></button>
-            <button class="action-btn delete" onclick="deleteNote('${n.id}')" title="Siba"><i class="fas fa-trash"></i></button>
-        </div>
-    </div>`).join('');
-};
-
-window.openAddNoteModal = function() {
-    document.getElementById('noteTitle').value = '';
-    document.getElementById('noteSubject').value = '';
-    document.getElementById('noteLevel').value = '';
-    document.getElementById('noteFilePreview').innerHTML = '';
-    newNoteFile = null;
-    document.getElementById('addNoteModal').classList.add('active');
-};
-
-window.previewNoteFile = function(event) {
-    const file = event.target.files[0]; if (!file) return;
-    newNoteFile = file;
-    document.getElementById('noteFilePreview').innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024).toFixed(1)} KB</div></div></div></div>`;
-};
-
-window.saveNote = async function() {
-    const title = document.getElementById('noteTitle').value.trim();
-    const subject = document.getElementById('noteSubject').value.trim();
-    const level = document.getElementById('noteLevel').value;
-    if (!title || !subject || !newNoteFile) { showToast('Uzuza ibisabwa', 'warning'); return; }
-    try {
-        showToast('⏳ Turashyiraho fishi...', 'info');
-        const url = await uploadToCloudinary(newNoteFile, true);
-        await addDoc(collection(db, 'notes'), {
-            title, subject, level: level || null,
-            fileUrl: url, createdBy: currentUser.uid,
-            createdByName: currentUserData.name, createdAt: serverTimestamp()
-        });
-        showToast('✅ Note yongeweho!', 'success');
-        closeModal('addNoteModal');
-        await loadAllData();
-        renderManageNotes();
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-
-window.deleteNote = async function(id) {
-    if (!confirm('Siba iyi note?')) return;
-    try { await deleteDoc(doc(db, 'notes', id)); showToast('🗑️', 'warning'); await loadAllData(); renderManageNotes(); } catch(e) {}
-};
-    // ============ 1. TYPING INDICATOR (Arimo kwandika) ============
-let typingTimeout = null;
-window.sendTypingStatus = function() {
-    if (!chatCurrentConv || !currentUser) return;
-    // Shyiramo status ko arimo kwandika
-    const convId = chatCurrentConv.type === 'direct' ? chatCurrentConv.key : chatCurrentConv.groupId;
-    const docRef = doc(db, 'typingStatus', convId);
-    
-    setDoc(docRef, { [currentUser.uid]: { name: currentUserData.name, typing: true, updatedAt: Date.now() } }, { merge: true });
-
-    // Niba atinze gushyiramo undi mutumwa, kuraho status
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        setDoc(docRef, { [currentUser.uid]: { typing: false } }, { merge: true });
-    }, 2000);
-};
-
-// Kureba niba undi arimo kwandika (Muri startChatMessagesListener)
-// (Iyi code izajyanwa muri startChatMessagesListener)
-let typingUnsubscribe = null;
-function startTypingListener() {
-    if (typingUnsubscribe) try { typingUnsubscribe(); } catch(e) {}
-    if (!chatCurrentConv) return;
-    const convId = chatCurrentConv.type === 'direct' ? chatCurrentConv.key : chatCurrentConv.groupId;
-    
-    typingUnsubscribe = onSnapshot(doc(db, 'typingStatus', convId), (docSnap) => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            let isTyping = false;
-            Object.keys(data).forEach(uid => {
-                if (uid !== currentUser.uid && data[uid].typing && (Date.now() - data[uid].updatedAt < 5000)) {
-                    isTyping = true;
-                }
-            });
-            const statusEl = document.getElementById('chatMainStatus');
-            if (statusEl) {
-                if (isTyping) statusEl.innerHTML = '<span style="color: var(--primary); font-style: italic;">Arimo kwandika...</span>';
-                else {
-                    // Garuka kuri Online/Offline status
-                    if (chatCurrentConv.type === 'direct') {
-                        const u = users.find(x => x.uid === chatCurrentConv.otherUserId);
-                        statusEl.textContent = u?.isOnline ? '🟢 Online ubu' : 'Offline';
-                    } else {
-                        const g = chatGroups.find(x => x.id === chatCurrentConv.groupId);
-                        statusEl.textContent = `${(g?.members || []).length} members`;
-                    }
-                }
-            }
-        }
-    });
-}
-
-// ============ 2. ATTACHMENTS (Kohereza Ifoto/File) ============
-window.uploadChatFile = async function(event) {
-    const file = event.target.files[0];
-    if (!file || !chatCurrentConv) return;
-    
-    showToast('⏳ Turashyiraho ifoto...', 'info');
-    try {
-        const url = await uploadToCloudinary(file);
-        const data = { 
-            text: '', 
-            mediaUrl: url, 
-            mediaType: file.type.startsWith('image') ? 'image' : 'file',
-            senderId: currentUser.uid, 
-            senderName: currentUserData.name || 'Unknown', 
-            senderPhoto: currentUserData.photo || null, 
-            read: false, 
-            createdAt: serverTimestamp() 
-        };
-        
-        if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
-        else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
-        
-        await addDoc(collection(db, 'chatMessages'), data);
-        showToast('✅ Yoherejwe!', 'success');
-        event.target.value = ''; // Siba input
-    } catch(e) { showToast('❌ ' + e.message, 'error'); }
-};
-
-// ============ 3. VOICE NOTES (Ijwi) ============
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-
-window.toggleVoiceRecord = async function() {
-    const btn = document.getElementById('chatMicBtn');
-    if (!isRecording) {
-        // Tangira gufata ijwi
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            
-            mediaRecorder.ondataavailable = event => { audioChunks.push(event.data); };
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                const file = new File([audioBlob], "voice_note.webm", { type: 'audio/webm' });
-                showToast('⏳ Turashyiraho ijwi...', 'info');
-                try {
-                    const url = await uploadToCloudinary(file, true);
-                    const data = { 
-                        text: '', 
-                        mediaUrl: url, 
-                        mediaType: 'audio',
-                        senderId: currentUser.uid, 
-                        senderName: currentUserData.name || 'Unknown', 
-                        senderPhoto: currentUserData.photo || null, 
-                        read: false, 
-                        createdAt: serverTimestamp() 
-                    };
-                    if (chatCurrentConv.type === 'direct') { data.receiverId = chatCurrentConv.otherUserId; data.isGroup = false; }
-                    else { data.groupId = chatCurrentConv.groupId; data.isGroup = true; }
-                    await addDoc(collection(db, 'chatMessages'), data);
-                } catch(e) { showToast('❌ ' + e.message, 'error'); }
-            };
-            
-            mediaRecorder.start();
-            isRecording = true;
-            btn.innerHTML = '<i class="fas fa-stop"></i>';
-            btn.style.color = 'var(--success)';
-        } catch(e) { showToast('❌ Ntibishoboye gufata ijwi', 'error'); }
-    } else {
-        // Hagarika gufata ijwi
-        mediaRecorder.stop();
-        mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        isRecording = false;
-        btn.innerHTML = '<i class="fas fa-microphone"></i>';
-        btn.style.color = 'var(--danger)';
-    }
-};
-
-// ============ 4. SEARCH IN CHAT ============
-window.toggleChatSearch = function() {
-    const bar = document.getElementById('chatSearchBar');
-    if (bar.style.display === 'none') { bar.style.display = 'block'; document.getElementById('chatSearchMsgInput').focus(); }
-    else { bar.style.display = 'none'; renderChatMessages(); } // Garuka kuri chat isanzwe
-};
-
-window.searchChatMessages = function() {
-    const searchTerm = document.getElementById('chatSearchMsgInput').value.toLowerCase();
-    // Turareba muri chatMessages twahise tugaragaza gusa ibiri muri search
-    if (!searchTerm) { renderChatMessages(); return; }
-    const filtered = chatMessages.filter(m => (m.text || '').toLowerCase().includes(searchTerm));
-    renderChatMessagesWithFilter(filtered);
-};
-
-// Iyi function ni nshya yo kwerekana ibyasakishijwe
-function renderChatMessagesWithFilter(msgs) {
-    const area = document.getElementById('chatMessagesArea');
-    if (msgs.length === 0) { area.innerHTML = '<div style="text-align:center;padding:40px;">Nta butumwa bubonetse.</div>'; return; }
-    // Koresha code imwe ya renderChatMessages ariko ugaragaze gusa filtered
-    // (Ushobora gukoresha copy ya renderChatMessages ariko uhindure chatMessages = msgs)
-    const originalMessages = chatMessages;
-    chatMessages = msgs;
-    renderChatMessages();
-    chatMessages = originalMessages; // Subiza inyuma
-}
-    window.openPaymentModal = function() {
-    document.getElementById('paymentAmount').value = '1000'; // Amafaranga asanzwe
+// ============ PAYMENT LOGIC ============
+window.openPaymentModal = function() {
+    document.getElementById('paymentAmount').value = '1000';
     document.getElementById('paymentPhone').value = '';
     document.getElementById('paymentMethod').value = 'MoMo';
     document.getElementById('paymentModal').classList.add('active');
 };
+
 window.submitPayment = async function() {
     const amount = document.getElementById('paymentAmount').value;
     const phone = document.getElementById('paymentPhone').value.trim();
@@ -3380,11 +2449,9 @@ window.submitPayment = async function() {
     try {
         showToast('⏳ Turakora ubwishyu...', 'info');
         
-        // Kubara itariki yo kurangiza (Ibyumweru 2 = Iminsi 14)
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 14); 
 
-        // 1. Bika ubwishyu muri 'notesPayments' (Ongeraho expiresAt)
         await addDoc(collection(db, 'notesPayments'), {
             studentId: currentUserData.studentId,
             studentName: currentUserData.name,
@@ -3392,17 +2459,15 @@ window.submitPayment = async function() {
             phone: phone,
             method: method,
             status: 'pending',
-            expiresAt: expiryDate.toISOString(), // <-- Igihe kirangira
+            expiresAt: expiryDate.toISOString(),
             createdAt: serverTimestamp()
         });
 
-        // 2. Hindura status ya umunyeshuri muri 'students'
         await updateDoc(doc(db, 'students', currentUserData.studentId), {
             subscriptionStatus: 'pending',
             paymentStatus: 'pending'
         });
 
-        // 3. Hindura status ya user muri 'users'
         await updateDoc(doc(db, 'users', currentUser.uid), {
             subscriptionStatus: 'pending',
             paymentStatus: 'pending'
@@ -3420,6 +2485,19 @@ window.submitPayment = async function() {
         showToast('❌ ' + e.message, 'error');
     }
 };
+
+// ============ PWA ============
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.remove('hidden'); });
+window.installPWA = async function() {
+    const b = document.getElementById('pwaInstallBtn');
+    if (!deferredPrompt) { alert("Kuri iyi browser, kanda 'Add to Home Screen'."); return; }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') { if (b) b.classList.add('hidden'); showToast('✅!', 'success'); }
+    deferredPrompt = null;
+};
+window.addEventListener('appinstalled', () => { const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.add('hidden'); });
 </script>
 </body>
 </html>
