@@ -1247,6 +1247,32 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="qr-display"><div class="qr-title">Iyandikishe</div><div class="qr-subtitle">Scan iyi QR wiyandikishe</div><div id="qr-register-code"></div></div>
     </div>
 </div>
+    <!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-money-bill-wave"></i> Kwishyura Amasomo</h3><button class="close-btn" onclick="closeModal('paymentModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group">
+            <label>Amafaranga (RWF) <span>*</span></label>
+            <input type="number" class="form-control" id="paymentAmount" placeholder="Urugero: 5000">
+        </div>
+        <div class="form-group">
+            <label>Nimero ya Mobile Money (MoMo) <span>*</span></label>
+            <input type="text" class="form-control" id="paymentPhone" placeholder="Urugero: 078XXXXXXX">
+        </div>
+        <div class="form-group">
+            <label>Uburyo bwo Kwishyura</label>
+            <select class="form-control" id="paymentMethod">
+                <option value="MoMo">MTN Mobile Money</option>
+                <option value="Airtel">Airtel Money</option>
+                <option value="Bank">Bank Transfer</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('paymentModal')">Hagarika</button>
+            <button class="btn btn-primary" onclick="submitPayment()"><i class="fas fa-paper-plane"></i> Ohereza Ubwishyu</button>
+        </div>
+    </div>
+</div>
 
 <!-- Add Student -->
 <div class="modal-overlay" id="addStudentModal">
@@ -1824,6 +1850,22 @@ window.submitComment = async function() {
 // ============ ONLINE LEARNING ============
 window.renderMyCourses = function() {
     const grid = document.getElementById('myCoursesGrid'); if (!grid) return;
+    
+    // RABA NIBA YISHYUYE
+    const myStudent = students.find(s => s.id === currentUserData?.studentId);
+    const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
+    
+    // Niba ari umunyeshuri kandi atarishyura
+    if (currentUserData?.role === 'student' && !isPaid) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <div class="icon"><i class="fas fa-lock" style="color:var(--danger);"></i></div>
+                <h3>Nturabona amasomo</h3>
+                <p style="margin-top:10px;">Ugomba kwishyura mbere yo kubona amasomo.</p>
+                <button class="btn btn-primary" onclick="openPaymentModal()" style="margin-top:20px;"><i class="fas fa-money-bill-wave"></i> Ishyura Ubu</button>
+            </div>`;
+        return;
+    }
     const lf = document.getElementById('myCoursesFilterLevel')?.value || '';
     const st = document.getElementById('myCoursesSearch')?.value.toLowerCase().trim() || '';
     let filtered = [...courses];
@@ -2142,13 +2184,55 @@ window.renderMyDashboard = function() {
     renderSubscriptionStatus(m);
     const al = document.getElementById('studentDashboardAnnouncementsList');
     if (al) { const rAnn = announcements.slice(0, 3); al.innerHTML = rAnn.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta matangazo</h3></div>` : rAnn.map(a => `<div class="saved-card" style="cursor:pointer;" onclick="switchPage('announcements', null)"><div class="saved-info"><h3>${escapeHtml(a.title)}</h3><div class="saved-meta"><span>${timeAgo(a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt))}</span></div></div></div>`).join(''); }
-    const cl = document.getElementById('studentDashboardCoursesList');
-    if (cl) { const myCourses = courses.filter(c => !m.level || c.level === m.level).slice(0, 3); cl.innerHTML = myCourses.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta courses</h3></div>` : myCourses.map(c => `<div class="saved-card" style="cursor:pointer;" onclick="openCourse('${c.id}')"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title)}</h3></div><div class="saved-actions"><button class="btn btn-primary btn-sm">Tangira</button></div></div>`).join(''); }
-};
+const cl = document.getElementById('studentDashboardCoursesList');
+if (cl) {
+    // Reba niba yishyuye
+    const myStudent = students.find(s => s.id === currentUserData?.studentId);
+    const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
+
+    if (!isPaid) {
+        cl.innerHTML = `
+            <div class="empty-state" style="padding:30px;">
+                <div class="icon"><i class="fas fa-lock"></i></div>
+                <h3>Nturabona amasomo</h3>
+                <button class="btn btn-primary btn-sm" onclick="openPaymentModal()" style="margin-top:15px;">Ishyura Ubu</button>
+            </div>`;
+    } else {
+        const myCourses = courses.filter(c => !m.level || c.level === m.level).slice(0, 3);
+        cl.innerHTML = myCourses.length === 0 ? `<div class="empty-state" style="padding:30px;"><h3>Nta courses</h3></div>` : myCourses.map(c => `<div class="saved-card" style="cursor:pointer;" onclick="openCourse('${c.id}')"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title)}</h3></div><div class="saved-actions"><button class="btn btn-primary btn-sm">Tangira</button></div></div>`).join('');
+    }
+}
 window.renderSubscriptionStatus = function(m) {
-    const c = document.getElementById('subscriptionStatusContainer'); if (!c) return;
-    if (m.subscriptionStatus === 'active') c.innerHTML = `<div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;"><i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i><h3>Wishyuye!</h3></div>`;
-    else c.innerHTML = `<div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;"><i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i><h3>Nturabona amasomo</h3></div>`;
+    const c = document.getElementById('subscriptionStatusContainer'); 
+    if (!c) return;
+
+    // Reba niba umunyeshuri yishyuye (active) cyangwa niba yarasabye kwishyura (pending)
+    const isPaid = m.subscriptionStatus === 'active' || m.paymentStatus === 'paid';
+    const isPending = m.subscriptionStatus === 'pending' || m.paymentStatus === 'pending';
+
+    if (isPaid) {
+        c.innerHTML = `
+            <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i>
+                <h3 style="color:var(--success); margin-top:10px;">Wishyuye! Urabona amasomo yawe.</h3>
+            </div>`;
+    } else if (isPending) {
+        c.innerHTML = `
+            <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-clock" style="font-size:40px;color:var(--warning);"></i>
+                <h3 style="color:var(--warning); margin-top:10px;">Ubwishyu bwawe buri gukurikiranwa.</h3>
+                <p style="font-size:13px; color:var(--text-secondary);">Tegereza Admin yemeze ubwishyu bwawe.</p>
+            </div>`;
+    } else {
+        // Niba atarishyura, mwereke buto yo kwishyura
+        c.innerHTML = `
+            <div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i>
+                <h3 style="color:var(--danger); margin-top:10px;">Nturabona amasomo kugeza wishyuye.</h3>
+                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Kanda buto hepfo ujye kwishyura amasomo yawe.</p>
+                <button class="btn btn-primary" onclick="openPaymentModal()"><i class="fas fa-money-bill-wave"></i> Ishyura Ubu</button>
+            </div>`;
+    }
 };
 window.renderMyNotes = function() {
     const list = document.getElementById('myNotesList'); if (!list) return;
@@ -2444,7 +2528,47 @@ window.addGrade = async function() {
     } catch(e) {}
 };
 window.deleteGrade = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'grades', id)); showToast('🗑️', 'warning'); await loadAllData(); renderGrades(); } catch(e) {} };
-window.renderNotesPayments = function() { const list = document.getElementById('notesPaymentsList'); list.innerHTML = notesPayments.length === 0 ? `<div class="empty-state"><h3>Nta bwishyu</h3></div>` : notesPayments.map(p => `<div class="saved-card"><div class="saved-info"><h3>${p.studentName}</h3><div class="saved-meta"><span>${p.status}</span></div></div></div>`).join(''); };
+window.renderNotesPayments = function() {
+    const list = document.getElementById('notesPaymentsList'); if (!list) return;
+    if (notesPayments.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta bwishyu</h3></div>`; return; }
+    
+    list.innerHTML = notesPayments.map(p => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3>${escapeHtml(p.studentName)}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-money-bill"></i> ${p.amount} RWF</span>
+                    <span><i class="fas fa-phone"></i> ${p.phone}</span>
+                    <span class="priority-badge ${p.status === 'pending' ? 'high' : 'normal'}">${p.status}</span>
+                </div>
+            </div>
+            <div class="saved-actions">
+                ${p.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="approvePayment('${p.id}', '${p.studentId}')">Emeza</button>` : '<span style="color:var(--success); font-weight:700;">✅ Byemejwe</span>'}
+            </div>
+        </div>
+    `).join('');
+};
+
+window.approvePayment = async function(paymentId, studentId) {
+    if (!confirm('Emeza ubwishyu bwa uyu munyeshuri?')) return;
+    try {
+        // 1. Hindura status muri notesPayments
+        await updateDoc(doc(db, 'notesPayments', paymentId), { status: 'approved' });
+        
+        // 2. Hindura status muri students
+        await updateDoc(doc(db, 'students', studentId), { subscriptionStatus: 'active', paymentStatus: 'paid' });
+        
+        // 3. Reba niba hari user (kugira ngo dashboard ye ibone)
+        const s = students.find(x => x.id === studentId);
+        if (s && s.uid) {
+            await updateDoc(doc(db, 'users', s.uid), { subscriptionStatus: 'active', paymentStatus: 'paid' });
+        }
+        
+        showToast('✅ Ubwishyu bwemejwe!', 'success');
+        await loadAllData();
+        renderNotesPayments();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
 window.renderDepartmentsPage = function() {
     const d = { Science: 0, Arts: 0, Commerce: 0, Technical: 0 };
     students.forEach(m => { if (d[m.department] !== undefined) d[m.department]++; });
@@ -3153,6 +3277,56 @@ function renderChatMessagesWithFilter(msgs) {
     renderChatMessages();
     chatMessages = originalMessages; // Subiza inyuma
 }
+    window.openPaymentModal = function() {
+    document.getElementById('paymentAmount').value = '';
+    document.getElementById('paymentPhone').value = '';
+    document.getElementById('paymentMethod').value = 'MoMo';
+    document.getElementById('paymentModal').classList.add('active');
+};
+
+window.submitPayment = async function() {
+    const amount = document.getElementById('paymentAmount').value;
+    const phone = document.getElementById('paymentPhone').value.trim();
+    const method = document.getElementById('paymentMethod').value;
+    
+    if (!amount || !phone) { showToast('Uzuza amafaranga na nimero', 'warning'); return; }
+    
+    try {
+        showToast('⏳ Turakora ubwishyu...', 'info');
+        
+        // 1. Bika ubwishyu muri 'notesPayments' kugira ngo Admin abone
+        await addDoc(collection(db, 'notesPayments'), {
+            studentId: currentUserData.studentId,
+            studentName: currentUserData.name,
+            amount: Number(amount),
+            phone: phone,
+            method: method,
+            status: 'pending',
+            createdAt: serverTimestamp()
+        });
+
+        // 2. Hindura status ya umunyeshuri muri 'students'
+        await updateDoc(doc(db, 'students', currentUserData.studentId), {
+            subscriptionStatus: 'pending',
+            paymentStatus: 'pending'
+        });
+
+        // 3. Hindura status ya user muri 'users'
+        await updateDoc(doc(db, 'users', currentUser.uid), {
+            subscriptionStatus: 'pending',
+            paymentStatus: 'pending'
+        });
+
+        showToast('✅ Ubwishyu bwoherejwe! Tegereza Admin yemeze.', 'success');
+        closeModal('paymentModal');
+        
+        // 4. Subiza amakuru (Reload page)
+        await loadAllData();
+        renderMyDashboard();
+    } catch(e) {
+        showToast('❌ ' + e.message, 'error');
+    }
+};
 </script>
 </body>
 </html>
