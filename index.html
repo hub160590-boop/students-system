@@ -1107,6 +1107,21 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="form-group" style="margin-bottom:0;"><div style="display:flex;gap:8px;"><input type="text" class="form-control" id="commentInput" placeholder="Andika comment..." onkeypress="if(event.key==='Enter')submitComment()"><button class="btn btn-primary" onclick="submitComment()"><i class="fas fa-paper-plane"></i></button></div></div>
     </div>
 </div>
+    <!-- Notes Viewer -->
+<div class="modal-overlay" id="notesViewerModal">
+    <div class="modal" style="max-width: 900px; width: 95%;">
+        <div class="modal-header">
+            <h3><i class="fas fa-book-open"></i> <span id="notesViewerTitle">Isomo</span></h3>
+            <div style="display:flex;gap:8px;">
+                <a id="notesViewerDownload" class="btn btn-primary btn-sm" href="#" download target="_blank"><i class="fas fa-download"></i> Kurura</a>
+                <button class="close-btn" onclick="closeModal('notesViewerModal')"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div id="notesViewerContent" style="width:100%;min-height:500px;background:var(--bg);border-radius:12px;overflow:hidden;">
+            <div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i> Turashakisha...</div>
+        </div>
+    </div>
+</div>
 
 <!-- Add Course -->
 <div class="modal-overlay" id="addCourseModal">
@@ -1630,6 +1645,7 @@ window.switchPage = function(page, element) {
     if (page === 'manage-assignments') renderManageAssignments();
     if (page === 'manage-quizzes') renderManageQuizzes();
     if (page === 'manage-live') renderManageLive();
+    if (page === 'manage-notes') renderManageNotes();
     if (page === 'submissions') renderSubmissions();
     if (page === 'chat') renderChatList();
     if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
@@ -1680,21 +1696,35 @@ window.renderPosts = function() {
     let filtered = [...posts];
     if (search) filtered = filtered.filter(p => (p.caption || '').toLowerCase().includes(search) || (p.authorName || '').toLowerCase().includes(search));
     if (filtered.length === 0) { list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-newspaper"></i></div><h3>Nta posts</h3><p>Kanda "Shyiraho Post"</p></div>`; return; }
+
+    const isAdminOrSA = currentUserData?.role === 'super_admin' || currentUserData?.role === 'admin';
+
     list.innerHTML = filtered.map(p => {
         const date = p.createdAt?.toDate ? p.createdAt.toDate() : new Date(p.createdAt || Date.now());
         const init = (p.authorName || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
         const av = p.authorPhoto ? `<img src="${p.authorPhoto}">` : `<span>${init}</span>`;
         const likes = Array.isArray(p.likes) ? p.likes : [];
         const isLiked = currentUser && likes.includes(currentUser.uid);
+        const isMine = currentUser && p.authorUid === currentUser.uid;
+        const canDelete = isAdminOrSA || isMine;
+        const canEdit = isMine;
+
         let mediaHtml = '';
         if (p.mediaUrl) {
             if (p.type === 'video') mediaHtml = `<div class="post-media"><video src="${p.mediaUrl}" controls playsinline></video></div>`;
             else mediaHtml = `<div class="post-media"><img src="${p.mediaUrl}" onclick="window.open('${p.mediaUrl}','_blank')" style="cursor:pointer;"></div>`;
         }
+
         return `<div class="post-card" id="post-${p.id}">
             <div class="post-header">
                 <div class="post-avatar">${av}</div>
-                <div class="post-author"><div class="name">${escapeHtml(p.authorName || 'Unknown')}</div><div class="time"><i class="fas fa-clock"></i> ${timeAgo(date)}</div></div>
+                <div class="post-author">
+                    <div class="name">${escapeHtml(p.authorName || 'Unknown')}${isMine ? ' <span style="color:#38bdf8;font-size:11px;">(Wowe)</span>' : ''}</div>
+                    <div class="time"><i class="fas fa-clock"></i> ${timeAgo(date)}</div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                    ${canDelete ? `<button class="action-btn delete" onclick="deletePost('${p.id}')" title="Siba post"><i class="fas fa-trash"></i></button>` : ''}
+                </div>
             </div>
             <div class="post-content">${escapeHtml(p.caption)}</div>
             ${mediaHtml}
@@ -2082,8 +2112,74 @@ window.renderSubscriptionStatus = function(m) {
 };
 window.renderMyNotes = function() {
     const list = document.getElementById('myNotesList'); if (!list) return;
-    if (notes.length === 0) { list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3></div>`; return; }
-    list.innerHTML = notes.map(n => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-book"></i> ${escapeHtml(n.title)}</h3><div class="saved-meta"><span>${escapeHtml(n.subject || '')}</span><span>${n.level}</span></div></div><div class="saved-actions"><a href="${n.fileUrl}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a></div></div>`).join('');
+    if (notes.length === 0) { list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3><p>Nta mafishi yashyizweho</p></div>`; return; }
+    list.innerHTML = notes.map(n => {
+        const ext = (n.fileUrl || '').split('.').pop().split('?')[0].toLowerCase();
+        const isImage = ['jpg','jpeg','png','gif','webp','svg'].includes(ext);
+        const isPdf = ext === 'pdf';
+        const icon = isImage ? 'fa-image' : isPdf ? 'fa-file-pdf' : 'fa-file-alt';
+        const iconColor = isImage ? '#ec4899' : isPdf ? '#ef4444' : '#38bdf8';
+        return `<div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas ${icon}" style="color:${iconColor};"></i> ${escapeHtml(n.title)}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-book"></i> ${escapeHtml(n.subject || 'Isomo')}</span>
+                    <span><i class="fas fa-layer-group"></i> ${n.level || '-'}</span>
+                    ${n.createdAt ? `<span><i class="fas fa-clock"></i> ${timeAgo(n.createdAt?.toDate ? n.createdAt.toDate() : new Date(n.createdAt))}</span>` : ''}
+                </div>
+            </div>
+            <div class="saved-actions">
+                <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba isomo"><i class="fas fa-eye"></i></button>
+                <a href="${n.fileUrl}" download target="_blank" class="action-btn" title="Kurura" style="text-decoration:none;"><i class="fas fa-download"></i></a>
+            </div>
+        </div>`;
+    }).join('');
+};
+    window.viewNote = function(noteId) {
+    const n = notes.find(x => x.id === noteId);
+    if (!n) { showToast('Isomo ntiribonetse', 'error'); return; }
+    const url = n.fileUrl;
+    if (!url) { showToast('Nta fishi ihari', 'warning'); return; }
+
+    document.getElementById('notesViewerTitle').textContent = n.title || 'Isomo';
+    const dlBtn = document.getElementById('notesViewerDownload');
+    dlBtn.href = url;
+    dlBtn.setAttribute('download', (n.title || 'isomo') + '.' + url.split('.').pop().split('?')[0]);
+
+    const ext = url.split('.').pop().split('?')[0].toLowerCase();
+    const container = document.getElementById('notesViewerContent');
+    const isImage = ['jpg','jpeg','png','gif','webp','svg','bmp'].includes(ext);
+    const isPdf = ext === 'pdf';
+    const isVideo = ['mp4','webm','ogg'].includes(ext);
+    const isAudio = ['mp3','wav','ogg','m4a'].includes(ext);
+
+    if (isImage) {
+        container.innerHTML = `<div style="text-align:center;padding:20px;background:#000;min-height:500px;display:flex;align-items:center;justify-content:center;">
+            <img src="${url}" style="max-width:100%;max-height:70vh;object-fit:contain;border-radius:8px;" onerror="this.parentElement.innerHTML='<div style=\\'padding:40px;text-align:center;color:#fff;\\'>Ifoto ntishoboye kuboneka</div>'">
+        </div>`;
+    } else if (isPdf) {
+        container.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0" style="width:100%;height:70vh;border:none;"></iframe>`;
+    } else if (isVideo) {
+        container.innerHTML = `<video src="${url}" controls style="width:100%;max-height:70vh;background:#000;"></video>`;
+    } else if (isAudio) {
+        container.innerHTML = `<div style="padding:40px;text-align:center;"><i class="fas fa-music" style="font-size:80px;color:#38bdf8;margin-bottom:20px;"></i><audio src="${url}" controls style="width:100%;max-width:500px;"></audio></div>`;
+    } else if (ext === 'txt' || ext === 'md' || ext === 'csv') {
+        container.innerHTML = `<div style="padding:40px;text-align:center;"><i class="fas fa-spinner fa-spin" style="font-size:30px;"></i><p style="margin-top:10px;">Turazana...</p></div>`;
+        fetch(url).then(r => r.text()).then(txt => {
+            container.innerHTML = `<pre style="padding:20px;background:var(--bg-card);white-space:pre-wrap;word-wrap:break-word;font-family:monospace;font-size:13px;max-height:70vh;overflow:auto;border-radius:8px;">${escapeHtml(txt)}</pre>`;
+        }).catch(() => {
+            container.innerHTML = `<div style="padding:40px;text-align:center;"><i class="fas fa-exclamation-triangle" style="font-size:50px;color:#f59e0b;"></i><p style="margin-top:16px;">Ntibishoboye kuboneka muri browser. Kanda <strong>Kurura</strong>.</p></div>`;
+        });
+    } else {
+        // Ubwoko butazwi — iframe gerageza
+        container.innerHTML = `<div style="padding:40px;text-align:center;">
+            <i class="fas fa-file" style="font-size:80px;color:#38bdf8;margin-bottom:20px;"></i>
+            <p style="margin-bottom:20px;">Ubwoko bw'iyi fishi ntibushobora kuboneka muri browser.</p>
+            <a href="${url}" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Fungura mu tab nshya</a>
+        </div>`;
+    }
+
+    document.getElementById('notesViewerModal').classList.add('active');
 };
 window.renderMyExams = function() {
     const list = document.getElementById('myExamsList'); if (!list) return;
@@ -2155,11 +2251,28 @@ window.renderStudents = function() {
     const tbody = document.getElementById('studentsBody'); if (!tbody) return;
     let list = students.filter(m => m.status === 'active' || !m.status);
     if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;">Nta munyeshuri</td></tr>`; return; }
+    const isSA = currentUserData?.role === 'super_admin';
     tbody.innerHTML = list.map(m => {
         const init = m.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        return `<tr><td><div class="member-cell-row"><div class="row-avatar">${init}</div><div class="row-info"><div class="name">${m.name}</div></div></div></td><td>${m.number||'-'}</td><td><span class="class-badge">${m.level||'-'}</span></td><td><span class="dept-badge ${(m.department||'').toLowerCase()}">${m.department}</span></td><td><button class="action-btn delete" onclick="deleteStudent('${m.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+        const u = users.find(x => x.uid === m.uid || (m.email && x.email === m.email));
+        const userRole = u?.role || m.role || 'student';
+        const roleBadge = userRole !== 'student'
+            ? `<span class="role-badge ${userRole}">${userRole === 'super_admin' ? 'Super Admin' : 'Admin'}</span>`
+            : '';
+        const promoteBtn = isSA
+            ? `<button class="action-btn edit" onclick="toggleStudentAdmin('${m.id}')" title="${userRole === 'student' ? 'Mugire Admin' : 'Mukureho Admin'}"><i class="fas fa-${userRole === 'student' ? 'user-shield' : 'user-minus'}"></i></button>`
+            : '';
+        return `<tr>
+            <td><div class="member-cell-row"><div class="row-avatar">${init}</div><div class="row-info"><div class="name">${m.name} ${roleBadge}</div></div></div></td>
+            <td>${m.number||'-'}</td>
+            <td><span class="class-badge">${m.level||'-'}</span></td>
+            <td><span class="dept-badge ${(m.department||'').toLowerCase()}">${m.department}</span></td>
+            <td>
+                ${promoteBtn}
+                <button class="action-btn delete" onclick="deleteStudent('${m.id}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
     }).join('');
-};
 window.openAddStudentModal = function() {
     ['newName','newEmail','newNumberInput','newLevel','newDepartment'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('addStudentModal').classList.add('active');
@@ -2190,7 +2303,46 @@ window.approveStudent = async function(id) {
 };
 window.renderUsers = function() {
     const tbody = document.getElementById('usersBody'); if (!tbody) return;
-    tbody.innerHTML = users.map(u => `<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="role-badge ${u.role}">${u.role}</span></td><td>${u.uid !== currentUser.uid ? `<button class="action-btn delete" onclick="deleteUser('${u.uid}')"><i class="fas fa-trash"></i></button>` : ''}</td></tr>`).join('');
+    const isSA = currentUserData?.role === 'super_admin';
+    tbody.innerHTML = users.map(u => {
+        const isMe = u.uid === currentUser.uid;
+        const canDelete = !isMe && (isSA || u.role !== 'super_admin');
+        const roleSelect = isSA && !isMe
+            ? `<select class="filter-select" style="padding:4px 8px;font-size:12px;" onchange="changeUserRoleQuick('${u.uid}', this.value)">
+                 <option value="student" ${u.role==='student'?'selected':''}>Student</option>
+                 <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+                 <option value="super_admin" ${u.role==='super_admin'?'selected':''}>Super Admin</option>
+               </select>`
+            : `<span class="role-badge ${u.role}">${u.role}</span>`;
+        return `<tr>
+            <td>${escapeHtml(u.name||'-')} ${isMe ? '<span style="color:#38bdf8;font-size:11px;">(Wowe)</span>' : ''}</td>
+            <td>${escapeHtml(u.email||'-')}</td>
+            <td>${roleSelect}</td>
+            <td>${canDelete ? `<button class="action-btn delete" onclick="deleteUser('${u.uid}')"><i class="fas fa-trash"></i></button>` : '<span style="color:var(--text-secondary);font-size:12px;">—</span>'}</td>
+        </tr>`;
+    }).join('');
+};
+
+window.changeUserRoleQuick = async function(uid, newRole) {
+    if (currentUserData?.role !== 'super_admin') { showToast('Super Admin gusa!', 'error'); return; }
+    const u = users.find(x => x.uid === uid);
+    if (!u) return;
+    if (!confirm(`Hindura ${u.name} kuva ${u.role} ijye ${newRole}?`)) { renderUsers(); return; }
+    try {
+        await updateDoc(doc(db, 'users', uid), { role: newRole, roleChangedBy: currentUser.uid, roleChangedAt: serverTimestamp() });
+        try {
+            await addDoc(collection(db, 'auditLog'), {
+                action: 'CHANGE_ROLE',
+                details: `${u.email}: ${u.role} → ${newRole}`,
+                performedBy: currentUser.uid,
+                performedByName: currentUserData.name,
+                timestamp: serverTimestamp()
+            });
+        } catch(e) {}
+        showToast('✅ Role yahinduwe', 'success');
+        await loadAllData();
+        renderUsers();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
 };
 window.openAddAdminModal = function() { document.getElementById('newAdminEmail').value = ''; document.getElementById('newAdminName').value = ''; document.getElementById('addAdminModal').classList.add('active'); };
 window.addNewAdmin = async function() {
@@ -2203,7 +2355,19 @@ window.addNewAdmin = async function() {
         await loadAllData(); renderUsers();
     } catch(e) {}
 };
-window.deleteUser = async function(uid) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'users', uid)); showToast('🗑️', 'warning'); await loadAllData(); renderUsers(); } catch(e) {} };
+window.deleteUser = async function(uid) {
+    if (uid === currentUser.uid) { showToast('Ntushobora kwisiba', 'error'); return; }
+    const target = users.find(u => u.uid === uid);
+    if (target?.role === 'super_admin' && currentUserData?.role !== 'super_admin') { showToast('Ntushobora gusiba Super Admin', 'error'); return; }
+    if (target?.role === 'super_admin') { showToast('Ntushobora gusiba Super Admin (mbere ubanze umukureho)', 'error'); return; }
+    if (!confirm(`Siba ${target?.name || 'uyu muntu'}?`)) return;
+    try {
+        await deleteDoc(doc(db, 'users', uid));
+        showToast('🗑️ Yasibwe', 'warning');
+        await loadAllData();
+        renderUsers();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
 window.renderTeachers = function() { document.getElementById('teachersBody').innerHTML = teachers.map(t => `<tr><td>${t.name}</td><td>${t.email||'-'}</td><td>${t.phone||'-'}</td><td>-</td><td><button class="action-btn delete" onclick="deleteTeacher('${t.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join(''); };
 window.openAddTeacherModal = function() { document.getElementById('teacherName').value = ''; document.getElementById('teacherEmail').value = ''; document.getElementById('addTeacherModal').classList.add('active'); };
 window.addTeacher = async function() {
@@ -2656,6 +2820,118 @@ window.installPWA = async function() {
     deferredPrompt = null;
 };
 window.addEventListener('appinstalled', () => { const b = document.getElementById('pwaInstallBtn'); if (b) b.classList.add('hidden'); });
+window.deletePost = async function(postId) {
+    const p = posts.find(x => x.id === postId);
+    if (!p) return;
+    const canDelete = currentUserData?.role === 'super_admin' || currentUserData?.role === 'admin' || p.authorUid === currentUser?.uid;
+    if (!canDelete) { showToast('Ntushobora gusiba iyi post', 'error'); return; }
+    if (!confirm('Siba iyi post burundu?')) return;
+    try {
+        // Siba comments zose za post mbere
+        try {
+            const cSnap = await getDocs(collection(db, 'posts', postId, 'comments'));
+            for (const c of cSnap.docs) {
+                try { await deleteDoc(doc(db, 'posts', postId, 'comments', c.id)); } catch(e) {}
+            }
+        } catch(e) {}
+        await deleteDoc(doc(db, 'posts', postId));
+        posts = posts.filter(x => x.id !== postId);
+        renderPosts();
+        showToast('🗑️ Post yasibwe', 'warning');
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+    window.toggleStudentAdmin = async function(studentId) {
+    if (currentUserData?.role !== 'super_admin') { showToast('Super Admin gusa!', 'error'); return; }
+    const m = students.find(x => x.id === studentId);
+    if (!m) return;
+    // Shakisha user ya Firestore
+    const u = users.find(x => x.uid === m.uid || (m.email && x.email && x.email.toLowerCase() === m.email.toLowerCase()));
+    if (!u) {
+        showToast('⚠️ Uyu munyeshuri ntiyiyandikishije (nta Firebase user). Baza muri Firebase Auth ubanze.', 'warning');
+        return;
+    }
+    if (u.role === 'super_admin') { showToast('Ntushobora gukuraho Super Admin', 'error'); return; }
+    const newRole = u.role === 'admin' ? 'student' : 'admin';
+    const actionWord = newRole === 'admin' ? 'kumugira Admin' : 'kumukuraho Admin';
+    if (!confirm(`${actionWord}: ${m.name}?`)) return;
+    try {
+        await updateDoc(doc(db, 'users', u.uid), {
+            role: newRole,
+            roleChangedBy: currentUser.uid,
+            roleChangedAt: serverTimestamp()
+        });
+        // Log audit
+        try {
+            await addDoc(collection(db, 'auditLog'), {
+                action: newRole === 'admin' ? 'PROMOTE_STUDENT' : 'DEMOTE_STUDENT',
+                details: `${m.name} (${m.email || m.number}) → ${newRole}`,
+                performedBy: currentUser.uid,
+                performedByName: currentUserData.name,
+                timestamp: serverTimestamp()
+            });
+        } catch(e) {}
+        showToast(`✅ ${m.name} ubu ni ${newRole === 'admin' ? 'Admin' : 'Umunyeshuri'}`, 'success');
+        await loadAllData();
+        renderStudents();
+        renderUsers();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+    let newNoteFile = null;
+
+window.renderManageNotes = function() {
+    const list = document.getElementById('manageNotesList'); if (!list) return;
+    if (notes.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta notes</h3></div>`; return; }
+    list.innerHTML = notes.map(n => `<div class="saved-card">
+        <div class="saved-info">
+            <h3><i class="fas fa-book"></i> ${escapeHtml(n.title)}</h3>
+            <div class="saved-meta"><span>${escapeHtml(n.subject || '')}</span><span>${n.level || 'Byose'}</span></div>
+        </div>
+        <div class="saved-actions">
+            <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba"><i class="fas fa-eye"></i></button>
+            <button class="action-btn delete" onclick="deleteNote('${n.id}')" title="Siba"><i class="fas fa-trash"></i></button>
+        </div>
+    </div>`).join('');
+};
+
+window.openAddNoteModal = function() {
+    document.getElementById('noteTitle').value = '';
+    document.getElementById('noteSubject').value = '';
+    document.getElementById('noteLevel').value = '';
+    document.getElementById('noteFilePreview').innerHTML = '';
+    newNoteFile = null;
+    document.getElementById('addNoteModal').classList.add('active');
+};
+
+window.previewNoteFile = function(event) {
+    const file = event.target.files[0]; if (!file) return;
+    newNoteFile = file;
+    document.getElementById('noteFilePreview').innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024).toFixed(1)} KB</div></div></div></div>`;
+};
+
+window.saveNote = async function() {
+    const title = document.getElementById('noteTitle').value.trim();
+    const subject = document.getElementById('noteSubject').value.trim();
+    const level = document.getElementById('noteLevel').value;
+    if (!title || !subject || !newNoteFile) { showToast('Uzuza ibisabwa', 'warning'); return; }
+    try {
+        showToast('⏳ Turashyiraho fishi...', 'info');
+        const url = await uploadToCloudinary(newNoteFile, true);
+        await addDoc(collection(db, 'notes'), {
+            title, subject, level: level || null,
+            fileUrl: url, createdBy: currentUser.uid,
+            createdByName: currentUserData.name, createdAt: serverTimestamp()
+        });
+        showToast('✅ Note yongeweho!', 'success');
+        closeModal('addNoteModal');
+        await loadAllData();
+        renderManageNotes();
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+
+window.deleteNote = async function(id) {
+    if (!confirm('Siba iyi note?')) return;
+    try { await deleteDoc(doc(db, 'notes', id)); showToast('🗑️', 'warning'); await loadAllData(); renderManageNotes(); } catch(e) {}
+};
 </script>
 </body>
 </html>
