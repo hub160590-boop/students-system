@@ -2212,12 +2212,14 @@ window.renderSubscriptionStatus = function(m) {
     const isPending = m.subscriptionStatus === 'pending' || m.paymentStatus === 'pending';
 
     if (isPaid) {
+        // 1. IYO YISHYUYE
         c.innerHTML = `
             <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i>
                 <h3 style="color:var(--success); margin-top:10px;">Wishyuye! Urabona amasomo yawe.</h3>
             </div>`;
     } else if (isPending) {
+        // 2. IYO YOHEREJE UBWSHYU BATEGEREJE KWEMEZWA
         c.innerHTML = `
             <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-clock" style="font-size:40px;color:var(--warning);"></i>
@@ -2225,25 +2227,51 @@ window.renderSubscriptionStatus = function(m) {
                 <p style="font-size:13px; color:var(--text-secondary);">Tegereza Admin yemeze ubwishyu bwawe.</p>
             </div>`;
     } else {
-        // Niba atarishyura, mwereke buto yo kwishyura
+        // 3. IYO ATARISHYURA (Kongeraho MTN Code)
         c.innerHTML = `
             <div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;">
                 <i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i>
                 <h3 style="color:var(--danger); margin-top:10px;">Nturabona amasomo kugeza wishyuye.</h3>
-                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Kanda buto hepfo ujye kwishyura amasomo yawe.</p>
-                <button class="btn btn-primary" onclick="openPaymentModal()"><i class="fas fa-money-bill-wave"></i> Ishyura Ubu</button>
+                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Koresha iyi code ukande kuri telefoni yawe cyangwa ukoporore:</p>
+                
+                <!-- HANO: MTN Code -->
+                <div style="background:var(--bg-card); border:2px dashed var(--primary); padding:12px; border-radius:12px; font-family:monospace; font-size:18px; font-weight:800; color:var(--primary); margin-bottom:16px; letter-spacing:1px;">
+                    *182*8*1*1629789#
+                </div>
+                
+                <!-- Buto yo guhamagara (Dialer) kuri Mobile -->
+                <a href="tel:*182*8*1*1629789%23" class="btn btn-success" style="width:100%; margin-bottom:10px; text-decoration:none; display:flex; justify-content:center; align-items:center; gap:8px;">
+                    <i class="fas fa-phone"></i> Kanda Ujye Kwishyura (Mobile)
+                </a>
+                
+                <!-- Buto yo kwemeza ko yishyuye -->
+                <button class="btn btn-primary" onclick="openPaymentModal()" style="width:100%;">
+                    <i class="fas fa-check-circle"></i> Nishyuye (Ohereza Ubwishyu)
+                </button>
             </div>`;
     }
 };
 window.renderMyNotes = function() {
-    const list = document.getElementById('myNotesList'); if (!list) return;
-    if (notes.length === 0) { list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3><p>Nta mafishi yashyizweho</p></div>`; return; }
+    const list = document.getElementById('myNotesList'); 
+    if (!list) return;
+
+    // 1. Reba niba umunyeshuri yishyuye
+    const myStudent = students.find(s => s.id === currentUserData?.studentId);
+    const isPaid = myStudent?.subscriptionStatus === 'active' || myStudent?.paymentStatus === 'paid';
+
+    if (notes.length === 0) { 
+        list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3><p>Nta mafishi yashyizweho</p></div>`; 
+        return; 
+    }
+
+    // 2. Tanga list ya notes
     list.innerHTML = notes.map(n => {
         const ext = (n.fileUrl || '').split('.').pop().split('?')[0].toLowerCase();
         const isImage = ['jpg','jpeg','png','gif','webp','svg'].includes(ext);
         const isPdf = ext === 'pdf';
         const icon = isImage ? 'fa-image' : isPdf ? 'fa-file-pdf' : 'fa-file-alt';
         const iconColor = isImage ? '#ec4899' : isPdf ? '#ef4444' : '#38bdf8';
+        
         return `<div class="saved-card">
             <div class="saved-info">
                 <h3><i class="fas ${icon}" style="color:${iconColor};"></i> ${escapeHtml(n.title)}</h3>
@@ -2254,8 +2282,14 @@ window.renderMyNotes = function() {
                 </div>
             </div>
             <div class="saved-actions">
-                <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba isomo"><i class="fas fa-eye"></i></button>
-                <a href="${n.fileUrl}" download target="_blank" class="action-btn" title="Kurura" style="text-decoration:none;"><i class="fas fa-download"></i></a>
+                ${isPaid ? `
+                    <!-- Niba yishyuye: Erekana View na Download -->
+                    <button class="action-btn view" onclick="viewNote('${n.id}')" title="Reba isomo"><i class="fas fa-eye"></i></button>
+                    <a href="${n.fileUrl}" download target="_blank" class="action-btn" title="Kurura" style="text-decoration:none;"><i class="fas fa-download"></i></a>
+                ` : `
+                    <!-- Niba atarishyura: Erekana Lock (Ifunze) -->
+                    <button class="action-btn" style="background: var(--danger); color: white;" onclick="openPaymentModal()" title="Ishyura mbere"><i class="fas fa-lock"></i> Ishyura</button>
+                `}
             </div>
         </div>`;
     }).join('');
@@ -3290,7 +3324,8 @@ window.submitPayment = async function() {
     const phone = document.getElementById('paymentPhone').value.trim();
     const method = document.getElementById('paymentMethod').value;
     
-    if (!amount || !phone) { showToast('Uzuza amafaranga na nimero', 'warning'); return; }
+    // Niba umunyeshuri atanditse amafaranga, dushobora kubireka ari 0 cyangwa tukabaza
+    if (!amount) { showToast('Andika amafaranga wishyuye', 'warning'); return; }
     
     try {
         showToast('⏳ Turakora ubwishyu...', 'info');
@@ -3300,7 +3335,7 @@ window.submitPayment = async function() {
             studentId: currentUserData.studentId,
             studentName: currentUserData.name,
             amount: Number(amount),
-            phone: phone,
+            phone: phone || 'Nta nimero yatanzwe',
             method: method,
             status: 'pending',
             createdAt: serverTimestamp()
@@ -3324,6 +3359,7 @@ window.submitPayment = async function() {
         // 4. Subiza amakuru (Reload page)
         await loadAllData();
         renderMyDashboard();
+        renderMyNotes(); // Subiza notes kugira ngo zibe pending
     } catch(e) {
         showToast('❌ ' + e.message, 'error');
     }
