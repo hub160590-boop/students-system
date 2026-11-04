@@ -2340,12 +2340,48 @@ window.renderMyNotes = function() {
 
     document.getElementById('notesViewerModal').classList.add('active');
 };
-window.renderMyExams = function() {
-    const list = document.getElementById('myExamsList'); if (!list) return;
-    const myLevel = currentUserData?.level;
-    let filtered = exams.filter(e => !myLevel || e.level === myLevel);
-    if (filtered.length === 0) { list.innerHTML = `<div class="empty-state"><h3>Nta bizamini</h3></div>`; return; }
-    list.innerHTML = filtered.map(e => `<div class="exam-card ${e.type}"><div class="saved-info"><h3><i class="fas fa-file-alt"></i> ${escapeHtml(e.title)}</h3><div class="saved-meta"><span>${e.subject}</span><span>${formatDate(e.date)}</span></div></div><span class="exam-type-badge ${e.type}">${e.type}</span></div>`).join('');
+window.renderSubscriptionStatus = function(m) {
+    const c = document.getElementById('subscriptionStatusContainer'); 
+    if (!c) return;
+
+    const isPaid = m.subscriptionStatus === 'active' || m.paymentStatus === 'paid';
+    const isPending = m.subscriptionStatus === 'pending' || m.paymentStatus === 'pending';
+
+    if (isPaid) {
+        c.innerHTML = `
+            <div style="background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-check-circle" style="font-size:40px;color:var(--success);"></i>
+                <h3 style="color:var(--success); margin-top:10px;">Wishyuye! Urabona amasomo yawe.</h3>
+                <p style="font-size:13px; color:var(--text-secondary);">Ufite access mu byumweru 2 (Two Weeks Access).</p>
+            </div>`;
+    } else if (isPending) {
+        c.innerHTML = `
+            <div style="background:rgba(245,158,11,0.1);border:1.5px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-clock" style="font-size:40px;color:var(--warning);"></i>
+                <h3 style="color:var(--warning); margin-top:10px;">Ubwishyu bwawe buri gukurikiranwa.</h3>
+                <p style="font-size:13px; color:var(--text-secondary);">Tegereza Admin yemeze ubwishyu bwawe.</p>
+            </div>`;
+    } else {
+        c.innerHTML = `
+            <div style="background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:20px;text-align:center;">
+                <i class="fas fa-lock" style="font-size:40px;color:var(--danger);"></i>
+                <h3 style="color:var(--danger); margin-top:10px;">Nturabona amasomo kugeza wishyuye.</h3>
+                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Kwishyura <strong>1,000 RWF</strong> uhabwe access mu <strong>byumweru 2</strong>. Koresha iyi code:</p>
+                
+                <div style="background:var(--bg-card); border:2px dashed var(--primary); padding:12px; border-radius:12px; font-family:monospace; font-size:18px; font-weight:800; color:var(--primary); margin-bottom:16px; letter-spacing:1px;">
+                    *182*8*1*1629789#
+                </div>
+                
+                <!-- Dialer (Iyo akanda iyi buto kuri telefoni, iyo code ihita yinjira muri dialer) -->
+                <a href="tel:*182*8*1*1629789%23" class="btn btn-success" style="width:100%; margin-bottom:10px; text-decoration:none; display:flex; justify-content:center; align-items:center; gap:8px;">
+                    <i class="fas fa-phone"></i> Kanda Ujye Kwishyura (1,000 RWF)
+                </a>
+                
+                <button class="btn btn-primary" onclick="openPaymentModal()" style="width:100%;">
+                    <i class="fas fa-check-circle"></i> Nishyuye (Ohereza Ubwishyu)
+                </button>
+            </div>`;
+    }
 };
 window.renderAnnouncements = function() {
     const list = document.getElementById('announcementsList'); if (!list) return;
@@ -2587,19 +2623,35 @@ window.renderNotesPayments = function() {
 window.approvePayment = async function(paymentId, studentId) {
     if (!confirm('Emeza ubwishyu bwa uyu munyeshuri?')) return;
     try {
-        // 1. Hindura status muri notesPayments
-        await updateDoc(doc(db, 'notesPayments', paymentId), { status: 'approved' });
+        // 1. Bika itariki yo kurangiza (Ibyumweru 2 = Iminsi 14)
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 14);
+
+        // 2. Hindura status muri notesPayments
+        await updateDoc(doc(db, 'notesPayments', paymentId), { 
+            status: 'approved',
+            approvedAt: serverTimestamp(),
+            expiresAt: expiryDate.toISOString()
+        });
         
-        // 2. Hindura status muri students
-        await updateDoc(doc(db, 'students', studentId), { subscriptionStatus: 'active', paymentStatus: 'paid' });
+        // 3. Hindura status muri students
+        await updateDoc(doc(db, 'students', studentId), { 
+            subscriptionStatus: 'active', 
+            paymentStatus: 'paid',
+            subscriptionExpiresAt: expiryDate.toISOString()
+        });
         
-        // 3. Reba niba hari user (kugira ngo dashboard ye ibone)
+        // 4. Reba niba hari user
         const s = students.find(x => x.id === studentId);
         if (s && s.uid) {
-            await updateDoc(doc(db, 'users', s.uid), { subscriptionStatus: 'active', paymentStatus: 'paid' });
+            await updateDoc(doc(db, 'users', s.uid), { 
+                subscriptionStatus: 'active', 
+                paymentStatus: 'paid',
+                subscriptionExpiresAt: expiryDate.toISOString()
+            });
         }
         
-        showToast('✅ Ubwishyu bwemejwe!', 'success');
+        showToast('✅ Ubwishyu bwemejwe! Umunyeshuri afite access mu byumweru 2.', 'success');
         await loadAllData();
         renderNotesPayments();
     } catch(e) { showToast('❌ ' + e.message, 'error'); }
@@ -3313,31 +3365,34 @@ function renderChatMessagesWithFilter(msgs) {
     chatMessages = originalMessages; // Subiza inyuma
 }
     window.openPaymentModal = function() {
-    document.getElementById('paymentAmount').value = '';
+    document.getElementById('paymentAmount').value = '1000'; // Amafaranga asanzwe
     document.getElementById('paymentPhone').value = '';
     document.getElementById('paymentMethod').value = 'MoMo';
     document.getElementById('paymentModal').classList.add('active');
 };
-
 window.submitPayment = async function() {
     const amount = document.getElementById('paymentAmount').value;
     const phone = document.getElementById('paymentPhone').value.trim();
     const method = document.getElementById('paymentMethod').value;
     
-    // Niba umunyeshuri atanditse amafaranga, dushobora kubireka ari 0 cyangwa tukabaza
-    if (!amount) { showToast('Andika amafaranga wishyuye', 'warning'); return; }
+    if (!amount || !phone) { showToast('Uzuza amafaranga na nimero', 'warning'); return; }
     
     try {
         showToast('⏳ Turakora ubwishyu...', 'info');
         
-        // 1. Bika ubwishyu muri 'notesPayments' kugira ngo Admin abone
+        // Kubara itariki yo kurangiza (Ibyumweru 2 = Iminsi 14)
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 14); 
+
+        // 1. Bika ubwishyu muri 'notesPayments' (Ongeraho expiresAt)
         await addDoc(collection(db, 'notesPayments'), {
             studentId: currentUserData.studentId,
             studentName: currentUserData.name,
             amount: Number(amount),
-            phone: phone || 'Nta nimero yatanzwe',
+            phone: phone,
             method: method,
             status: 'pending',
+            expiresAt: expiryDate.toISOString(), // <-- Igihe kirangira
             createdAt: serverTimestamp()
         });
 
@@ -3356,10 +3411,11 @@ window.submitPayment = async function() {
         showToast('✅ Ubwishyu bwoherejwe! Tegereza Admin yemeze.', 'success');
         closeModal('paymentModal');
         
-        // 4. Subiza amakuru (Reload page)
         await loadAllData();
         renderMyDashboard();
-        renderMyNotes(); // Subiza notes kugira ngo zibe pending
+        renderMyNotes();
+        renderMyCourses();
+        renderMyExams();
     } catch(e) {
         showToast('❌ ' + e.message, 'error');
     }
