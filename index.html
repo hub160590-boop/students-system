@@ -271,7 +271,7 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .comment-body .time { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
 /* ============ MODERN CHAT UI ============ */
-.chat-page-container { display: grid; grid-template-columns: 380px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; height: calc(100vh - 160px); min-height: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.chat-page-container { display: grid; grid-template-columns: 380px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; height: calc(100dvh - 160px); min-height: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
 .chat-sidebar-panel { background: linear-gradient(180deg, #1a1d2e 0%, #252942 100%); display: flex; flex-direction: column; overflow: hidden; position: relative; }
 .chat-sidebar-header { padding: 20px; position: relative; z-index: 2; }
 .chat-sidebar-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -338,7 +338,7 @@ body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: var(--
 .chat-msg-name { font-size: 12px; font-weight: 700; color: #667eea; padding: 0 8px; margin-bottom: 2px; }
 .chat-bubble { padding: 10px 14px; border-radius: 18px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14.5px; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; position: relative; border-bottom-left-radius: 4px; }
 [data-theme="dark"] .chat-bubble { background: #1e293b; color: #e2e8f0; }
-.chat-msg.mine .chat-bubble { background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; border-bottom-left-radius: 18px; border-bottom-right-radius: 4px; }
+.chat-msg.mine .chat-bubble { background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #ffffff; border-bottom-left-radius: 18px; border-bottom-right-radius: 4px; }
 .chat-msg-reply-quote { padding: 6px 10px; background: rgba(0,0,0,0.08); border-left: 3px solid #667eea; border-radius: 8px; margin-bottom: 6px; font-size: 12.5px; }
 .chat-msg.mine .chat-msg-reply-quote { background: rgba(0,0,0,0.15); border-left-color: #ffffff; }
 .chat-msg-reply-quote .reply-name { font-weight: 700; color: #667eea; margin-bottom: 2px; }
@@ -556,7 +556,8 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
     .sidebar.open { transform: translateX(0); }
     .main { padding: 20px; }
     .course-grid { grid-template-columns: 1fr; }
-    .chat-page-container { grid-template-columns: 1fr; height: calc(100vh - 130px); }
+     .chat-page-container { grid-template-columns: 1fr; height: calc(100dvh - 130px); }
+    .chat-messages-area { padding: 16px 4%; }
     .chat-main-panel { display: none; }
     .chat-page-container.show-conv .chat-sidebar-panel { display: none; }
     .chat-page-container.show-conv .chat-main-panel { display: flex; }
@@ -1647,7 +1648,12 @@ window.switchPage = function(page, element) {
     if (page === 'manage-live') renderManageLive();
     
     if (page === 'submissions') renderSubmissions();
-    if (page === 'chat') renderChatList();
+      if (page === 'chat') {
+        renderChatList();
+        document.body.style.overflow = 'hidden'; // Funga scroll ya page yose
+    } else {
+        document.body.style.overflow = ''; // Fungura scroll
+    }
     if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -2723,13 +2729,33 @@ window.clearCurrentChat = async function() {
 window.viewCurrentChatProfile = function() {
     if (!chatCurrentConv) return;
     if (chatCurrentConv.type === 'direct') { const u = users.find(x => x.uid === chatCurrentConv.otherUserId); if (!u) return; showUserProfile(u); }
-    else {
+       else {
         const g = chatGroups.find(x => x.id === chatCurrentConv.groupId); if (!g) return;
-        const memberNames = (g.members || []).map(mid => users.find(u => u.uid === mid)?.name || 'Unknown').join(', ');
-        document.getElementById('viewProfileContent').innerHTML = `<div class="user-profile-view"><div class="avatar-big" style="background: linear-gradient(135deg, #667eea, #764ba2);"><i class="fas fa-users"></i></div><h3>${escapeHtml(g.name)}</h3><p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">${(g.members||[]).length} members</p><div class="info-row"><i class="fas fa-users"></i><span>${escapeHtml(memberNames)}</span></div></div>`;
+        
+        // Tanga list nziza y'abanyamuryango
+        const membersListHtml = (g.members || []).map(mid => {
+            const u = users.find(x => x.uid === mid);
+            const name = u?.name || 'Unknown';
+            const init = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+            const av = u?.photo ? `<img src="${u.photo}">` : `<span>${init}</span>`;
+            return `<div class="info-row" style="margin-bottom: 6px;">
+                        <div class="chat-conv-avatar" style="width: 36px; height: 36px; font-size: 13px; margin-right: 10px;">${av}</div>
+                        <div style="flex: 1;"><strong>${escapeHtml(name)}</strong></div>
+                    </div>`;
+        }).join('');
+
+        document.getElementById('viewProfileContent').innerHTML = `
+            <div class="user-profile-view">
+                <div class="avatar-big" style="background: linear-gradient(135deg, #667eea, #764ba2);"><i class="fas fa-users"></i></div>
+                <h3>${escapeHtml(g.name)}</h3>
+                <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 24px;">${(g.members||[]).length} members</p>
+                <h4 style="text-align: left; margin-bottom: 12px; font-size: 15px; color: var(--text-secondary);">Abanyamuryango:</h4>
+                <div style="max-height: 300px; overflow-y: auto; text-align: left;">
+                    ${membersListHtml}
+                </div>
+            </div>`;
         document.getElementById('viewProfileModal').classList.add('active');
     }
-};
 function showUserProfile(u) {
     const init = (u.name || '?').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
     const av = u.photo ? `<img src="${u.photo}">` : init;
