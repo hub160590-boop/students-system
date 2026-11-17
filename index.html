@@ -394,7 +394,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 @keyframes pulse-install { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
 .install-btn-floating.hidden { display: none !important; }
 
-.exam-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; border-left: 4px solid var(--primary); }
+.exam-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; border-left: 4px solid var(--primary); margin-bottom: 16px; }
 .exam-type-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
 .exam-type-badge.cat { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
 .exam-type-badge.midterm { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
@@ -734,7 +734,20 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             </div>
 
             <div class="page" id="page-my-exams">
-                <div class="page-header"><div><h1>📝 Ibizamini Byanjye</h1><p>Reba no gukurura ibizamini byakozwe</p></div></div>
+                <div class="page-header">
+                    <div><h1>📝 Ibizamini Byanjye</h1><p>Reba, soma cyangwa ukurure ibizamini byakozwe</p></div>
+                </div>
+                <div class="filter-bar">
+                    <div class="filter-group" style="width: 100%;">
+                        <select class="filter-select" id="myExamsFilterType" onchange="renderMyExams()">
+                            <option value="">📋 Ubwoko: Byose</option>
+                            <option value="cat">CAT</option>
+                            <option value="midterm">Midterm</option>
+                            <option value="final">Final</option>
+                        </select>
+                        <div class="search-box" style="flex:1;"><i class="fas fa-search"></i><input type="text" id="myExamsSearch" placeholder="Shakisha ibizamini..." oninput="renderMyExams()"></div>
+                    </div>
+                </div>
                 <div class="saved-list" id="myExamsList"></div>
             </div>
 
@@ -750,7 +763,12 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             </div>
 
             <div class="page" id="page-my-notes">
-                <div class="page-header"><div><h1>📚 Amasomo Yanjye</h1><p>Reba no gukurura amafishi y'amasomo</p></div></div>
+                <div class="page-header"><div><h1>📚 Amasomo Yanjye (Notes)</h1><p>Reba no gukurura amafishi y'amasomo</p></div></div>
+                <div class="filter-bar">
+                    <div class="filter-group" style="width: 100%;">
+                        <div class="search-box" style="flex:1;"><i class="fas fa-search"></i><input type="text" id="myNotesSearch" placeholder="Shakisha amasomo..." oninput="renderMyNotes()"></div>
+                    </div>
+                </div>
                 <div class="saved-list" id="myNotesList"></div>
             </div>
 
@@ -849,6 +867,23 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
 <!-- ============ MODALS ============ -->
 
+<!-- View Document (Universal Previewer) -->
+<div class="modal-overlay" id="documentViewerModal">
+    <div class="modal" style="max-width: 1000px; width: 96%;">
+        <div class="modal-header">
+            <h3><i class="fas fa-file-alt"></i> <span id="documentViewerTitle">Document</span></h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <a id="documentViewerDownload" class="btn btn-primary btn-sm" href="#" download target="_blank"><i class="fas fa-download"></i> Kurura</a>
+                <a id="documentViewerNewTab" class="btn btn-outline btn-sm" href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Fungura</a>
+                <button class="close-btn" onclick="closeModal('documentViewerModal')"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div id="documentViewerContent" style="width:100%;min-height:600px;background:var(--bg);border-radius:12px;overflow:hidden;">
+            <div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i> Turashakisha...</div>
+        </div>
+    </div>
+</div>
+
 <!-- Edit Message -->
 <div class="modal-overlay" id="editMessageModal">
     <div class="modal">
@@ -884,22 +919,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="modal-header"><h3><i class="fas fa-comments"></i> Comments</h3><button class="close-btn" onclick="closeModal('commentsModal')"><i class="fas fa-times"></i></button></div>
         <div id="commentsList" style="max-height:400px;overflow-y:auto;margin-bottom:16px;"></div>
         <div class="form-group" style="margin-bottom:0;"><div style="display:flex;gap:8px;"><input type="text" class="form-control" id="commentInput" placeholder="Andika comment..." onkeypress="if(event.key==='Enter')submitComment()"><button class="btn btn-primary" onclick="submitComment()"><i class="fas fa-paper-plane"></i></button></div></div>
-    </div>
-</div>
-
-<!-- Notes Viewer -->
-<div class="modal-overlay" id="notesViewerModal">
-    <div class="modal" style="max-width: 900px; width: 95%;">
-        <div class="modal-header">
-            <h3><i class="fas fa-book-open"></i> <span id="notesViewerTitle">Isomo</span></h3>
-            <div style="display:flex;gap:8px;">
-                <a id="notesViewerDownload" class="btn btn-primary btn-sm" href="#" download target="_blank"><i class="fas fa-download"></i> Kurura</a>
-                <button class="close-btn" onclick="closeModal('notesViewerModal')"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-        <div id="notesViewerContent" style="width:100%;min-height:500px;background:var(--bg);border-radius:12px;overflow:hidden;">
-            <div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i> Turashakisha...</div>
-        </div>
     </div>
 </div>
 
@@ -964,6 +983,20 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         <div class="form-group"><label>Itariki n'Igihe <span>*</span></label><input type="datetime-local" class="form-control" id="liveDateTime"></div>
         <div class="form-group"><label>Meeting Link <span>*</span></label><input type="url" class="form-control" id="liveMeetingLink"></div>
         <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addLiveModal')">Hagarika</button><button class="btn btn-live" onclick="saveLive()"><i class="fas fa-save"></i> Bika</button></div>
+    </div>
+</div>
+
+<!-- Add Exam -->
+<div class="modal-overlay" id="addExamModal">
+    <div class="modal">
+        <div class="modal-header"><h3><i class="fas fa-file-alt"></i> Ongeraho Ikizamini</h3><button class="close-btn" onclick="closeModal('addExamModal')"><i class="fas fa-times"></i></button></div>
+        <div class="form-group"><label>Umutwe <span>*</span></label><input type="text" class="form-control" id="examTitle"></div>
+        <div class="form-group"><label>Isomo <span>*</span></label><input type="text" class="form-control" id="examSubject"></div>
+        <div class="form-group"><label>Ubwoko <span>*</span></label><select class="form-control" id="examType"><option value="cat">CAT</option><option value="midterm">Midterm</option><option value="final">Final</option></select></div>
+        <div class="form-group"><label>Itariki <span>*</span></label><input type="date" class="form-control" id="examDate"></div>
+        <div class="form-group"><label>Urwego</label><select class="form-control" id="examLevel"><option value="">-- Byose --</option><option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option><option value="S6">S6</option><option value="University">University</option></select></div>
+        <div class="form-group"><label>File (PDF, Word, PPT, Image)</label><div class="file-upload-area" onclick="document.getElementById('examFileInput').click()"><div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="upload-text"><strong>Kanda hano</strong> cyangwa ukurura file</div></div><input type="file" id="examFileInput" class="hidden-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png" onchange="previewExamFile(event)"><div class="uploaded-files-list" id="examFilePreview"></div></div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal('addExamModal')">Hagarika</button><button class="btn btn-primary" onclick="saveExam()"><i class="fas fa-save"></i> Bika</button></div>
     </div>
 </div>
 
@@ -1128,6 +1161,7 @@ let courses = [], lessons = [], assignments = [], submissions = [], quizzes = []
 let announcementsUnsubscribe = null, notificationsUnsubscribe = null, postsUnsubscribe = null;
 let newPostMedia = null, currentPostIdForComments = null;
 let deptChartInstance = null;
+let pendingExamFile = null;
 
 let currentCourseId = null, currentLessonIndex = 0, courseLessons = [], courseProgress = {};
 let quizQuestions = [], currentQuiz = null, quizAnswers = {};
@@ -1166,7 +1200,9 @@ async function uploadToCloudinary(file, isRaw = false) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    const endpoint = isRaw ? 'auto/upload' : 'image/upload';
+    let endpoint = 'image/upload';
+    if (isRaw) endpoint = 'raw/upload';
+    else if (file.type && file.type.startsWith('video/')) endpoint = 'video/upload';
     const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${endpoint}`;
     const response = await fetch(url, { method: 'POST', body: formData });
     if (!response.ok) throw new Error('Upload yananiwe');
@@ -1183,6 +1219,72 @@ function getInitials(name) {
     if (!name) return '?';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 }
+function getFileExtension(url) {
+    if (!url) return '';
+    try {
+        const clean = url.split('?')[0].split('#')[0];
+        return clean.split('.').pop().toLowerCase();
+    } catch(e) { return ''; }
+}
+
+// ==================== UNIVERSAL DOCUMENT VIEWER ====================
+window.openDocumentViewer = function(url, title) {
+    if (!url) { showToast('Nta file ihari', 'warning'); return; }
+    document.getElementById('documentViewerTitle').textContent = title || 'Document';
+    document.getElementById('documentViewerDownload').href = url;
+    document.getElementById('documentViewerNewTab').href = url;
+    
+    const content = document.getElementById('documentViewerContent');
+    const ext = getFileExtension(url);
+    const encoded = encodeURIComponent(url);
+    
+    // Images
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) {
+        content.innerHTML = `<div style="text-align:center;padding:20px;"><img src="${url}" style="max-width:100%;max-height:70vh;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);" alt="${escapeHtml(title)}"></div>`;
+    }
+    // PDF — render inline via iframe (browser native)
+    else if (ext === 'pdf') {
+        content.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0" style="width:100%;height:70vh;border:none;background:white;"></iframe>`;
+    }
+    // Office docs (Word/Excel/PPT) — use Google Docs Viewer or Microsoft Office viewer
+    else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) {
+        const gviewer = `https://docs.google.com/viewer?url=${encoded}&embedded=true`;
+        content.innerHTML = `
+            <div style="text-align:center;padding:10px;background:rgba(56,189,248,0.08);font-size:12.5px;color:var(--text-secondary);border-radius:8px;margin-bottom:8px;">
+                <i class="fas fa-info-circle"></i> Iyi file (${ext.toUpperCase()}) irakoreshwa na Google Docs Viewer. Niba idasohotse, kanda "Kurura" cyangwa "Fungura".
+            </div>
+            <iframe src="${gviewer}" style="width:100%;height:65vh;border:none;background:white;border-radius:8px;"></iframe>
+        `;
+    }
+    // Video
+    else if (['mp4', 'webm', 'ogg', 'mov'].includes(ext)) {
+        content.innerHTML = `<video controls src="${url}" style="width:100%;max-height:70vh;border-radius:8px;background:#000;"></video>`;
+    }
+    // Audio
+    else if (['mp3', 'wav', 'ogg'].includes(ext)) {
+        content.innerHTML = `<div style="text-align:center;padding:40px;"><audio controls src="${url}" style="width:100%;max-width:500px;"></audio></div>`;
+    }
+    // Text
+    else if (['txt', 'md', 'csv', 'json', 'xml', 'html'].includes(ext)) {
+        content.innerHTML = `<iframe src="${url}" style="width:100%;height:70vh;border:none;background:white;border-radius:8px;"></iframe>`;
+    }
+    // Unknown — offer download
+    else {
+        content.innerHTML = `
+            <div style="text-align:center;padding:60px 20px;">
+                <i class="fas fa-file" style="font-size:60px;color:var(--primary);opacity:0.5;margin-bottom:16px;display:block;"></i>
+                <h3 style="margin-bottom:8px;">Ubwoko bwa file ntabwo bushobora kubonwa hano</h3>
+                <p style="color:var(--text-secondary);margin-bottom:20px;">Kanda buto yo gukurura kugirango ubone iyi file.</p>
+                <a href="${url}" download target="_blank" class="btn btn-primary"><i class="fas fa-download"></i> Kurura</a>
+            </div>
+        `;
+    }
+    
+    document.getElementById('documentViewerModal').classList.add('active');
+};
+
+// Backwards-compatible alias
+window.viewNote = window.openDocumentViewer;
 
 // ==================== AUTH ====================
 function showAuthError(msg) { 
@@ -1277,9 +1379,7 @@ function setupUserUI() {
     const headerName = document.getElementById('headerName');
     const headerRole = document.getElementById('headerRole');
     
-    if (headerAvatar) {
-        headerAvatar.innerHTML = photo ? `<img src="${photo}" alt="">` : getInitials(name);
-    }
+    if (headerAvatar) headerAvatar.innerHTML = photo ? `<img src="${photo}" alt="">` : getInitials(name);
     if (headerName) headerName.textContent = name.split(' ')[0];
     if (headerRole) {
         headerRole.textContent = role.replace('_', ' ').toUpperCase();
@@ -1300,7 +1400,6 @@ function setupUserUI() {
     if (profileInputName) profileInputName.value = name;
     if (profileInputPhone) profileInputPhone.value = currentUserData.phone || '';
     
-    // Toggle admin-only / student-only elements
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = (role === 'admin' || role === 'super_admin' || role === 'teacher') ? '' : 'none';
     });
@@ -1311,7 +1410,6 @@ function setupUserUI() {
         el.style.display = (role === 'super_admin') ? '' : 'none';
     });
     
-    // Default page
     if (role === 'student') {
         switchPage('my-dashboard', null);
     } else {
@@ -1335,7 +1433,6 @@ window.toggleTheme = function() {
         if (icon) icon.className = 'fas fa-sun';
     }
 };
-// Set initial theme icon
 (function() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const icon = document.getElementById('themeIcon');
@@ -1358,11 +1455,9 @@ window.switchPage = function(pageId, clickedEl) {
         clickedEl.classList.add('active');
     }
     
-    // Close mobile sidebar
     const sidebar = document.getElementById('sidebar');
     if (sidebar && window.innerWidth <= 900) sidebar.classList.remove('open');
     
-    // Refresh relevant data when navigating
     const renderMap = {
         'dashboard': renderDashboardStats,
         'my-dashboard': renderStudentDashboard,
@@ -1527,7 +1622,6 @@ function renderStudentDashboard() {
         `;
     }
     
-    // Subscription status
     const subContainer = document.getElementById('subscriptionStatusContainer');
     if (subContainer) {
         const myPayment = notesPayments.find(p => p.studentId === currentUser?.uid || p.studentEmail === currentUser?.email);
@@ -1548,7 +1642,6 @@ function renderStudentDashboard() {
         }
     }
     
-    // Recent announcements
     const annList = document.getElementById('studentDashboardAnnouncementsList');
     if (annList) {
         const recent = [...announcements].sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 3);
@@ -1565,7 +1658,6 @@ function renderStudentDashboard() {
         }
     }
     
-    // Courses
     const courseList = document.getElementById('studentDashboardCoursesList');
     if (courseList) {
         const myLevel = currentUserData.level || '';
@@ -1790,12 +1882,21 @@ function renderMyNotes() {
     const list = document.getElementById('myNotesList');
     if (!list) return;
     const myLevel = currentUserData?.level || '';
-    const filtered = notes.filter(n => !myLevel || !n.level || n.level === myLevel);
+    const search = (document.getElementById('myNotesSearch')?.value || '').toLowerCase();
+    let filtered = notes.filter(n => !myLevel || !n.level || n.level === myLevel);
+    if (search) {
+        filtered = filtered.filter(n => 
+            (n.title || '').toLowerCase().includes(search) ||
+            (n.subject || '').toLowerCase().includes(search)
+        );
+    }
     if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3></div>';
+        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo abonetse</h3></div>';
         return;
     }
-    list.innerHTML = filtered.map(n => `
+    list.innerHTML = filtered.map(n => {
+        const fileUrl = n.fileUrl || n.url || '';
+        return `
         <div class="saved-card">
             <div class="saved-info">
                 <h3><i class="fas fa-book"></i> ${escapeHtml(n.title || '-')}</h3>
@@ -1805,35 +1906,70 @@ function renderMyNotes() {
                 </div>
             </div>
             <div class="saved-actions">
-                <button class="action-btn view" onclick="viewNote('${n.fileUrl || ''}', '${escapeHtml(n.title || 'Isomo')}')"><i class="fas fa-eye"></i></button>
-                <a class="action-btn view" href="${n.fileUrl || '#'}" download target="_blank"><i class="fas fa-download"></i></a>
+                ${fileUrl ? `
+                    <button class="action-btn view" title="Reba" onclick="openDocumentViewer('${fileUrl.replace(/'/g, "\\'")}', '${escapeHtml(n.title || 'Isomo').replace(/'/g, "\\'")}')"><i class="fas fa-eye"></i></button>
+                    <a class="action-btn view" title="Kurura" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i></a>
+                ` : '<span style="font-size:12px;color:var(--text-secondary);">Nta file</span>'}
             </div>
         </div>
-    `).join('');
+    `}).join('');
 }
 
+// ==================== MY EXAMS (FIXED with View + Download) ====================
 function renderMyExams() {
     const list = document.getElementById('myExamsList');
     if (!list) return;
-    if (exams.length === 0) {
-        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini</h3></div>';
+    const filterType = document.getElementById('myExamsFilterType')?.value || '';
+    const search = (document.getElementById('myExamsSearch')?.value || '').toLowerCase();
+    const myLevel = currentUserData?.level || '';
+    
+    let filtered = exams.filter(e => {
+        if (filterType && e.type !== filterType) return false;
+        if (myLevel && e.level && e.level !== myLevel) return false;
+        if (search) {
+            const hay = ((e.title || '') + ' ' + (e.subject || '')).toLowerCase();
+            if (!hay.includes(search)) return false;
+        }
+        return true;
+    });
+    
+    if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini abonetse</h3><p style="margin-top:8px;">Gerageza guhindura filter cyangwa search.</p></div>';
         return;
     }
-    list.innerHTML = exams.map(e => `
+    
+    filtered.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    
+    list.innerHTML = filtered.map(e => {
+        const fileUrl = e.fileUrl || e.url || '';
+        const safeTitle = (e.title || 'Ikizamini').replace(/'/g, "\\'");
+        const safeUrl = fileUrl.replace(/'/g, "\\'");
+        const ext = getFileExtension(fileUrl);
+        const fileIcon = ['pdf'].includes(ext) ? 'fa-file-pdf' : ['doc','docx'].includes(ext) ? 'fa-file-word' : ['ppt','pptx'].includes(ext) ? 'fa-file-powerpoint' : ['jpg','jpeg','png','gif','webp'].includes(ext) ? 'fa-file-image' : 'fa-file';
+        return `
         <div class="exam-card">
-            <div>
+            <div style="flex:1;min-width:200px;">
                 <h3 style="font-size:17px;font-weight:800;margin-bottom:6px;">${escapeHtml(e.title || '-')}</h3>
                 <div class="saved-meta" style="margin-bottom:8px;">
                     <span><i class="fas fa-book"></i> ${escapeHtml(e.subject || '-')}</span>
                     <span class="exam-type-badge ${(e.type || 'cat').toLowerCase()}">${(e.type || 'CAT').toUpperCase()}</span>
                     <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                    ${e.level ? `<span><i class="fas fa-layer-group"></i> ${escapeHtml(e.level)}</span>` : ''}
+                    ${fileUrl ? `<span><i class="fas ${fileIcon}"></i> ${ext.toUpperCase()}</span>` : '<span style="color:var(--warning);"><i class="fas fa-exclamation-triangle"></i> Nta file</span>'}
                 </div>
             </div>
-            ${e.fileUrl ? `<a class="btn btn-primary btn-sm" href="${e.fileUrl}" download target="_blank"><i class="fas fa-download"></i> Kurura</a>` : ''}
+            <div class="saved-actions">
+                ${fileUrl ? `
+                    <button class="btn btn-sm btn-primary" onclick="openDocumentViewer('${safeUrl}', '${safeTitle}')"><i class="fas fa-eye"></i> Reba</button>
+                    <a class="btn btn-sm btn-success" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i> Kurura</a>
+                ` : ''}
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
+// ==================== POSTS ====================
 function renderPosts() {
     const list = document.getElementById('postsList');
     if (!list) return;
@@ -2370,6 +2506,14 @@ window.rejectPayment = async function(id) {
 window.openAddStudentModal = function() { document.getElementById('addStudentModal').classList.add('active'); };
 window.openAddTeacherModal = function() { document.getElementById('addTeacherModal').classList.add('active'); };
 window.openAddAdminModal = function() { document.getElementById('addAdminModal').classList.add('active'); };
+window.openAddExamModal = function() {
+    pendingExamFile = null;
+    document.getElementById('examTitle').value = '';
+    document.getElementById('examSubject').value = '';
+    document.getElementById('examDate').value = '';
+    document.getElementById('examFilePreview').innerHTML = '';
+    document.getElementById('addExamModal').classList.add('active');
+};
 window.openAddGradeModal = function() {
     const sel = document.getElementById('gradeStudentId');
     if (sel) {
@@ -2415,7 +2559,6 @@ window.openNotificationsModal = function() {
         `).join('');
     }
     document.getElementById('notificationsModal').classList.add('active');
-    // Mark all as read
     notifications.filter(n => !n.read).forEach(async n => {
         try { await updateDoc(doc(db, 'notifications', n.id), { read: true }); } catch(e) {}
     });
@@ -2485,6 +2628,16 @@ window.previewPostMedia = function(event) {
     if (!file) return;
     newPostMedia = file;
     const preview = document.getElementById('postMediaPreview');
+    if (preview) {
+        preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+    }
+};
+
+window.previewExamFile = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    pendingExamFile = file;
+    const preview = document.getElementById('examFilePreview');
     if (preview) {
         preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
     }
@@ -2619,6 +2772,37 @@ window.saveLive = async function() {
         closeModal('addLiveModal');
         renderManageLive();
     } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveExam = async function() {
+    const title = document.getElementById('examTitle').value.trim();
+    const subject = document.getElementById('examSubject').value.trim();
+    const type = document.getElementById('examType').value;
+    const date = document.getElementById('examDate').value;
+    const level = document.getElementById('examLevel').value;
+    if (!title || !subject || !date) { showToast('Uzuza ibisabwa', 'error'); return; }
+    
+    try {
+        let fileUrl = '';
+        if (pendingExamFile) {
+            showToast('Turahindura file...', 'info');
+            const isRaw = !pendingExamFile.type.startsWith('image/');
+            fileUrl = await uploadToCloudinary(pendingExamFile, isRaw);
+        }
+        const data = {
+            title, subject, type, date, level,
+            fileUrl,
+            fileName: pendingExamFile?.name || '',
+            authorId: currentUser.uid,
+            authorName: currentUserData.name || currentUser.email
+        };
+        const ref = await addDoc(collection(db, 'exams'), { ...data, createdAt: serverTimestamp() });
+        exams.push({ id: ref.id, ...data });
+        showToast('Ikizamini cyashyizweho!', 'success');
+        closeModal('addExamModal');
+        pendingExamFile = null;
+        if (document.getElementById('page-my-exams').classList.contains('active')) renderMyExams();
+    } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); }
 };
 
 window.savePost = async function() {
@@ -2836,7 +3020,6 @@ window.markAllAnnouncementsAsRead = function() {
     showToast('Amatangazo yose asomwe', 'success');
 };
 
-// Post interactions
 window.toggleLike = async function(postId) {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
@@ -2894,22 +3077,6 @@ window.submitComment = async function() {
     } catch(e) { showToast('Ikibazo', 'error'); }
 };
 
-window.viewNote = function(url, title) {
-    document.getElementById('notesViewerTitle').textContent = title;
-    document.getElementById('notesViewerDownload').href = url;
-    const content = document.getElementById('notesViewerContent');
-    if (!url) {
-        content.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">Nta file</div>';
-    } else if (url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-        content.innerHTML = `<img src="${url}" style="width:100%;">`;
-    } else if (url.match(/\.pdf$/i)) {
-        content.innerHTML = `<iframe src="${url}" style="width:100%;height:600px;border:none;"></iframe>`;
-    } else {
-        content.innerHTML = `<div style="text-align:center;padding:40px;"><a href="${url}" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Fungura</a></div>`;
-    }
-    document.getElementById('notesViewerModal').classList.add('active');
-};
-
 // ==================== PWA ====================
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -2936,7 +3103,6 @@ window.addEventListener('appinstalled', () => {
     if (btn) btn.classList.add('hidden');
 });
 
-// ==================== INIT ====================
 console.log('MINDBOOK loaded ✓');
 </script>
 </body>
