@@ -463,6 +463,200 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 .fa-spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .hidden-input { display: none !important; }
+        /* ==================== CAMPUS ELECTION STYLES ==================== */
+.candidate-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.candidate-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+}
+.candidate-photo-wrap {
+    height: 220px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.candidate-photo-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.candidate-photo-wrap .candidate-initials {
+    font-size: 64px; font-weight: 900; color: white;
+}
+.candidate-position-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.75); color: white;
+    padding: 6px 14px; border-radius: 50px;
+    font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+}
+.candidate-vote-count {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--gradient-2); color: white;
+    padding: 6px 12px; border-radius: 50px;
+    font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; gap: 6px;
+}
+.candidate-body {
+    padding: 18px 20px; flex: 1;
+    display: flex; flex-direction: column;
+}
+.candidate-name {
+    font-size: 18px; font-weight: 800;
+    margin-bottom: 4px;
+}
+.candidate-slogan {
+    font-size: 12.5px; color: var(--text-secondary);
+    font-style: italic; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+}
+.candidate-manifesto {
+    font-size: 13px; line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.candidate-actions {
+    display: flex; gap: 8px; margin-top: auto;
+}
+.vote-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: var(--gradient-2);
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+.vote-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+}
+.vote-btn:disabled {
+    opacity: 0.6; cursor: not-allowed;
+    background: var(--text-secondary);
+}
+.vote-btn.voted {
+    background: linear-gradient(135deg, #64748b, #475569);
+}
+.vote-btn.voted:hover { transform: none; box-shadow: none; }
+.candidate-admin-actions {
+    display: flex; gap: 6px;
+}
+.election-results-position {
+    margin-bottom: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+.election-results-position h4 {
+    font-size: 17px; font-weight: 800;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--primary);
+}
+.election-results-position h4 i { color: var(--warning); }
+.result-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+.result-row:last-child { border-bottom: none; }
+.result-rank {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+    flex-shrink: 0;
+}
+.result-row.top-1 .result-rank {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white; border-color: transparent;
+}
+.result-row.top-2 .result-rank {
+    background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+    color: white; border-color: transparent;
+}
+.result-row.top-3 .result-rank {
+    background: linear-gradient(135deg, #fb923c, #ea580c);
+    color: white; border-color: transparent;
+}
+.result-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--gradient-1); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    overflow: hidden; flex-shrink: 0;
+}
+.result-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.result-info { flex: 1; min-width: 0; }
+.result-info .name { font-weight: 700; font-size: 14px; }
+.result-info .slogan {
+    font-size: 12px; color: var(--text-secondary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.result-bar-wrap { flex: 2; }
+.result-bar {
+    height: 10px; background: var(--border);
+    border-radius: 50px; overflow: hidden;
+    margin-bottom: 4px;
+}
+.result-bar-fill {
+    height: 100%;
+    background: var(--gradient-2);
+    border-radius: 50px;
+    transition: width 0.8s ease;
+}
+.result-count {
+    display: flex; justify-content: space-between;
+    font-size: 11.5px; color: var(--text-secondary);
+    font-weight: 600;
+}
+.result-vote-count {
+    font-weight: 800; color: var(--success);
+    font-size: 15px; flex-shrink: 0;
+    min-width: 60px; text-align: right;
+}
+.no-candidates-msg {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-secondary);
+}
+.no-candidates-msg i {
+    font-size: 50px; color: var(--primary);
+    opacity: 0.3; margin-bottom: 14px;
+    display: block;
+}
+.empty-election-position {
+    padding: 16px; text-align: center;
+    color: var(--text-secondary);
+    font-style: italic; font-size: 13px;
+}
     </style>
 </head>
 <body>
@@ -675,6 +869,16 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
             <button class="close-btn" onclick="closeModal('candidateDetailsModal')"><i class="fas fa-times"></i></button>
         </div>
         <div id="candidateDetailsContent"></div>
+    </div>
+</div>
+            <!-- ==================== ELECTION RESULTS MODAL ==================== -->
+<div class="modal-overlay" id="electionResultsModal">
+    <div class="modal" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3><i class="fas fa-chart-bar"></i> Amajwi y'Amatora</h3>
+            <button class="close-btn" onclick="closeModal('electionResultsModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="electionResultsContent" style="max-height:70vh;overflow-y:auto;"></div>
     </div>
 </div>
             <div class="page" id="page-feed">
@@ -997,12 +1201,26 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                 <div class="settings-card"><h3><i class="fas fa-palette"></i> Ibara</h3><button class="btn btn-outline" onclick="toggleTheme()"><i class="fas fa-adjust"></i> Dark / Light</button></div>
                 <div class="settings-card"><h3><i class="fas fa-bell"></i> Notifications</h3><button class="btn btn-primary" onclick="enableNotifications()"><i class="fas fa-bell"></i> Fungura</button></div>
             </div>
-            <!-- ==================== MANAGE ELECTIONS (Admin) ==================== -->
+          <!-- ==================== MANAGE ELECTIONS (Admin) ==================== -->
 <div class="page" id="page-manage-elections">
     <div class="page-header">
         <div><h1>🗳️ Gucunga Amatora</h1><p>Shyiraho abanyeshuri biyamamariza imyanya itandukanye</p></div>
-        <button class="btn btn-primary" onclick="openAddCandidateModal()"><i class="fas fa-plus"></i> Ongeraho Umukandida</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-outline" onclick="renderManageElections()"><i class="fas fa-sync"></i> Refresh</button>
+            <button class="btn btn-success" onclick="openElectionResultsModal()"><i class="fas fa-chart-bar"></i> Reba Amajwi</button>
+            <button class="btn btn-primary" onclick="openAddCandidateModal()"><i class="fas fa-plus"></i> Ongeraho Umukandida</button>
+        </div>
     </div>
+    <div class="filter-bar">
+        <div class="filter-group" style="width: 100%;">
+            <select class="filter-select" id="manageElectionsFilterPosition" onchange="renderManageElections()">
+                <option value="">🏛️ Imyanya: Yose</option>
+            </select>
+            <div class="search-box" style="flex:1;"><i class="fas fa-search"></i><input type="text" id="manageElectionsSearch" placeholder="Shakisha abakandida..." oninput="renderManageElections()"></div>
+        </div>
+    </div>
+    <div class="course-grid" id="manageElectionsGrid"></div>
+</div>
     <div class="filter-bar">
         <div class="filter-group" style="width: 100%;">
             <select class="filter-select" id="manageElectionsFilterPosition" onchange="renderManageElections()">
@@ -1018,6 +1236,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 <div class="page" id="page-elections">
     <div class="page-header">
         <div><h1>🗳️ Campus Election</h1><p>Reba abanyeshuri bagenzi bawe biyamamariza imyanya itandukanye</p></div>
+        <button class="btn btn-success" onclick="openElectionResultsModal()"><i class="fas fa-chart-bar"></i> Reba Amajwi</button>
     </div>
     <div class="filter-bar">
         <div class="filter-group" style="width: 100%;">
@@ -1028,9 +1247,6 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
         </div>
     </div>
     <div class="course-grid" id="electionsGrid"></div>
-</div>
-        </main>
-    </div>
 </div>
 
 <!-- ============ MODALS ============ -->
@@ -1316,6 +1532,15 @@ let currentUser = null;
 let currentUserData = null;
 let students = [], users = [], teachers = [], grades = [], notes = [],
     notesPayments = [], announcements = [], exams = [], posts = [], notifications = [];
+    // ==================== ELECTION STATE ====================
+let candidates = [];
+let votes = [];
+
+const ELECTION_POSITIONS = [
+    "President", "Vice President", "Secretary General", "Treasurer",
+    "Academic Minister", "Sports Minister", "Discipline Minister",
+    "Information Minister", "Health Minister", "Gender Minister"
+];
 let courses = [], lessons = [], assignments = [], submissions = [], quizzes = [],
     quizResults = [], liveClasses = [], candidates = [];
 
@@ -2849,6 +3074,552 @@ console.log('✅ MINDBOOK loaded — no duplicates, elections ready');
         showToast("Ntibyakunze gutora. Ongera ugerageze.", "error");
     }
 };
+    // ==================== ELECTION DATA LOADERS ====================
+async function loadCandidates() {
+    try {
+        const snap = await getDocs(collection(db, "candidates"));
+        candidates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (e) {
+        console.error("Error loading candidates:", e);
+        candidates = [];
+    }
+}
+
+async function loadVotes() {
+    try {
+        const snap = await getDocs(collection(db, "votes"));
+        votes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (e) {
+        console.error("Error loading votes:", e);
+        votes = [];
+    }
+}
+
+// ==================== OPEN ADD CANDIDATE MODAL ====================
+function openAddCandidateModal() {
+    document.getElementById('candidateModalTitle').textContent = 'Ongeraho Umukandida';
+    document.getElementById('candidateEditId').value = '';
+    document.getElementById('candidateStudentId').value = '';
+    document.getElementById('candidatePosition').value = '';
+    document.getElementById('candidateManifesto').value = '';
+    document.getElementById('candidateSlogan').value = '';
+    document.getElementById('candidateElectionYear').value = new Date().getFullYear();
+    document.getElementById('candidatePhotoPreviewContainer').innerHTML =
+        '<div class="photo-placeholder"><i class="fas fa-camera"></i></div>';
+    document.getElementById('candidatePhotoInput').value = '';
+
+    const sel = document.getElementById('candidateStudentId');
+    sel.innerHTML = '<option value="">-- Hitamo Umunyeshuri --</option>';
+    students.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = `${s.name || 'N/A'} (${s.number || s.email || ''})`;
+        opt.dataset.name = s.name || '';
+        opt.dataset.photo = s.photo || '';
+        opt.dataset.level = s.level || '';
+        sel.appendChild(opt);
+    });
+
+    openModal('addCandidateModal');
+}
+
+// ==================== AUTO-FILL FROM STUDENT ====================
+function fillCandidateFromStudent() {
+    const sel = document.getElementById('candidateStudentId');
+    const opt = sel.options[sel.selectedIndex];
+    if (!opt || !opt.value) return;
+    if (opt.dataset.photo) {
+        document.getElementById('candidatePhotoPreviewContainer').innerHTML =
+            `<img src="${opt.dataset.photo}" class="photo-preview" alt="candidate">`;
+    }
+}
+
+// ==================== PREVIEW CANDIDATE PHOTO ====================
+function previewCandidatePhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('Ifoto ni nini cyane (max 5MB)', 'error');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('candidatePhotoPreviewContainer').innerHTML =
+            `<img src="${e.target.result}" class="photo-preview" alt="candidate">`;
+    };
+    reader.readAsDataURL(file);
+}
+
+// ==================== UPLOAD CANDIDATE PHOTO (Cloudinary) ====================
+async function uploadCandidatePhoto(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: 'POST', body: formData }
+    );
+    const data = await res.json();
+    return data.secure_url;
+}
+
+// ==================== SAVE CANDIDATE ====================
+async function saveCandidate() {
+    const editId = document.getElementById('candidateEditId').value;
+    const studentId = document.getElementById('candidateStudentId').value;
+    const position = document.getElementById('candidatePosition').value;
+    const manifesto = document.getElementById('candidateManifesto').value.trim();
+    const slogan = document.getElementById('candidateSlogan').value.trim();
+    const electionYear = document.getElementById('candidateElectionYear').value;
+    const photoInput = document.getElementById('candidatePhotoInput');
+
+    if (!studentId || !position) {
+        showToast('Uzuza Umunyeshuri na Position', 'error');
+        return;
+    }
+
+    const student = students.find(s => s.id === studentId);
+    if (!student) {
+        showToast('Umunyeshuri ntaboneka', 'error');
+        return;
+    }
+
+    showToast('Turabika umukandida...', 'info');
+
+    try {
+        let photoUrl = student.photo || '';
+        if (photoInput.files && photoInput.files[0]) {
+            photoUrl = await uploadCandidatePhoto(photoInput.files[0]);
+        }
+
+        const candidateData = {
+            studentId: studentId,
+            studentName: student.name || '',
+            studentNumber: student.number || '',
+            level: student.level || '',
+            department: student.department || '',
+            position: position,
+            manifesto: manifesto,
+            slogan: slogan,
+            electionYear: electionYear,
+            photo: photoUrl,
+            updatedAt: serverTimestamp()
+        };
+
+        if (editId) {
+            await updateDoc(doc(db, "candidates", editId), candidateData);
+            showToast('Umukandida yahinduwe!', 'success');
+        } else {
+            // Check if student already candidate for this position
+            const existing = candidates.find(c =>
+                c.studentId === studentId &&
+                c.position === position &&
+                c.electionYear === electionYear
+            );
+            if (existing) {
+                showToast('Uyu munyeshuri asanzwe ari umukandida kuri iyi myanya', 'error');
+                return;
+            }
+            candidateData.createdAt = serverTimestamp();
+            candidateData.voteCount = 0;
+            await addDoc(collection(db, "candidates"), candidateData);
+            showToast('Umukandida yongeweho!', 'success');
+        }
+
+        closeModal('addCandidateModal');
+        await loadCandidates();
+        renderManageElections();
+        renderElections();
+    } catch (e) {
+        console.error(e);
+        showToast('Ikibazo: ' + e.message, 'error');
+    }
+}
+
+// ==================== RENDER MANAGE ELECTIONS (Admin) ====================
+function renderManageElections() {
+    const grid = document.getElementById('manageElectionsGrid');
+    if (!grid) return;
+
+    const filterPos = document.getElementById('manageElectionsFilterPosition').value;
+    const search = (document.getElementById('manageElectionsSearch').value || '').toLowerCase();
+
+    // Fill positions filter
+    const posSel = document.getElementById('manageElectionsFilterPosition');
+    if (posSel.options.length <= 1) {
+        ELECTION_POSITIONS.forEach(p => {
+            const o = document.createElement('option');
+            o.value = p; o.textContent = p;
+            posSel.appendChild(o);
+        });
+    }
+
+    let list = [...candidates];
+    if (filterPos) list = list.filter(c => c.position === filterPos);
+    if (search) list = list.filter(c =>
+        (c.studentName || '').toLowerCase().includes(search) ||
+        (c.position || '').toLowerCase().includes(search) ||
+        (c.slogan || '').toLowerCase().includes(search)
+    );
+
+    if (list.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <div class="icon"><i class="fas fa-vote-yea"></i></div>
+                <h3>Nta bakandida barabonetse</h3>
+                <p>Kanda "Ongeraho Umukandida" utangire</p>
+            </div>`;
+        return;
+    }
+
+    grid.innerHTML = list.map(c => {
+        const voteCount = votes.filter(v => v.candidateId === c.id).length;
+        const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        const photoHtml = c.photo
+            ? `<img src="${c.photo}" alt="${c.studentName}">`
+            : `<div class="candidate-initials">${initials}</div>`;
+        return `
+            <div class="candidate-card">
+                <div class="candidate-photo-wrap">
+                    ${photoHtml}
+                    <span class="candidate-position-badge">${c.position}</span>
+                    <span class="candidate-vote-count"><i class="fas fa-check-circle"></i> ${voteCount}</span>
+                </div>
+                <div class="candidate-body">
+                    <div class="candidate-name">${c.studentName}</div>
+                    <div class="candidate-slogan"><i class="fas fa-quote-left"></i> ${c.slogan || 'Nta slogan'}</div>
+                    <div class="candidate-manifesto">${c.manifesto || 'Nta manifesto yatanzwe'}</div>
+                    <div class="candidate-actions">
+                        <button class="btn btn-outline btn-sm" style="flex:1;" onclick="viewCandidateDetails('${c.id}')">
+                            <i class="fas fa-eye"></i> Reba
+                        </button>
+                        <button class="btn btn-warning btn-sm" onclick="editCandidate('${c.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCandidate('${c.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+// ==================== RENDER ELECTIONS (Students View) ====================
+function renderElections() {
+    const grid = document.getElementById('electionsGrid');
+    if (!grid) return;
+
+    const filterPos = document.getElementById('electionsFilterPosition').value;
+    const search = (document.getElementById('electionsSearch').value || '').toLowerCase();
+
+    const posSel = document.getElementById('electionsFilterPosition');
+    if (posSel.options.length <= 1) {
+        ELECTION_POSITIONS.forEach(p => {
+            const o = document.createElement('option');
+            o.value = p; o.textContent = p;
+            posSel.appendChild(o);
+        });
+    }
+
+    let list = [...candidates];
+    if (filterPos) list = list.filter(c => c.position === filterPos);
+    if (search) list = list.filter(c =>
+        (c.studentName || '').toLowerCase().includes(search) ||
+        (c.position || '').toLowerCase().includes(search)
+    );
+
+    if (list.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <div class="icon"><i class="fas fa-vote-yea"></i></div>
+                <h3>Nta bakandida barabonetse</h3>
+                <p>Nta mukandida uraboneka kuri iyi myanya</p>
+            </div>`;
+        return;
+    }
+
+    const myId = currentUser ? currentUser.uid : null;
+
+    grid.innerHTML = list.map(c => {
+        const voteCount = votes.filter(v => v.candidateId === c.id).length;
+        const hasVoted = votes.some(v =>
+            v.candidateId === c.id &&
+            v.voterId === myId
+        );
+        // Check if student already voted for this position
+        const votedForPosition = votes.some(v =>
+            v.voterId === myId &&
+            v.position === c.position
+        );
+        const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        const photoHtml = c.photo
+            ? `<img src="${c.photo}" alt="${c.studentName}">`
+            : `<div class="candidate-initials">${initials}</div>`;
+
+        let btnLabel, btnClass, disabled;
+        if (hasVoted) {
+            btnLabel = '<i class="fas fa-check-circle"></i> Wamaze Gutora';
+            btnClass = 'voted';
+            disabled = true;
+        } else if (votedForPosition) {
+            btnLabel = '<i class="fas fa-ban"></i> Wamaze Gutora Kuri Iyi Myanya';
+            btnClass = 'voted';
+            disabled = true;
+        } else {
+            btnLabel = '<i class="fas fa-vote-yea"></i> VOTE';
+            btnClass = '';
+            disabled = false;
+        }
+
+        return `
+            <div class="candidate-card">
+                <div class="candidate-photo-wrap">
+                    ${photoHtml}
+                    <span class="candidate-position-badge">${c.position}</span>
+                    <span class="candidate-vote-count"><i class="fas fa-check-circle"></i> ${voteCount}</span>
+                </div>
+                <div class="candidate-body">
+                    <div class="candidate-name">${c.studentName}</div>
+                    <div class="candidate-slogan"><i class="fas fa-quote-left"></i> ${c.slogan || 'Nta slogan'}</div>
+                    <div class="candidate-manifesto">${c.manifesto || 'Nta manifesto yatanzwe'}</div>
+                    <div class="candidate-actions">
+                        <button class="vote-btn ${btnClass}" ${disabled ? 'disabled' : ''} onclick="castVote('${c.id}')">
+                            ${btnLabel}
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+// ==================== VIEW CANDIDATE DETAILS ====================
+function viewCandidateDetails(id) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+    const voteCount = votes.filter(v => v.candidateId === c.id).length;
+    const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+    const photoHtml = c.photo
+        ? `<img src="${c.photo}" style="width:100%;height:240px;object-fit:cover;border-radius:14px;" alt="">`
+        : `<div style="width:100%;height:240px;background:var(--gradient-1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:white;">${initials}</div>`;
+
+    document.getElementById('candidateDetailsContent').innerHTML = `
+        ${photoHtml}
+        <div style="padding:16px 4px;">
+            <h2 style="font-size:22px;font-weight:800;margin-bottom:4px;">${c.studentName}</h2>
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">
+                <i class="fas fa-id-card"></i> ${c.studentNumber || '-'} · ${c.level || '-'} · ${c.department || '-'}
+            </div>
+            <div style="margin-bottom:10px;">
+                <span class="priority-badge normal" style="font-size:11px;padding:5px 12px;">
+                    <i class="fas fa-flag"></i> ${c.position}
+                </span>
+                <span class="priority-badge urgent" style="font-size:11px;padding:5px 12px;margin-left:6px;">
+                    <i class="fas fa-check-circle"></i> ${voteCount} amajwi
+                </span>
+            </div>
+            <div style="font-size:14px;line-height:1.7;margin-top:16px;padding:14px;background:var(--bg);border-radius:12px;">
+                <div style="font-weight:700;margin-bottom:6px;color:var(--primary);">
+                    <i class="fas fa-quote-left"></i> Slogan
+                </div>
+                <div style="font-style:italic;margin-bottom:14px;">${c.slogan || 'Nta slogan'}</div>
+                <div style="font-weight:700;margin-bottom:6px;color:var(--primary);">
+                    <i class="fas fa-scroll"></i> Manifesto
+                </div>
+                <div>${c.manifesto || 'Nta manifesto yatanzwe'}</div>
+            </div>
+        </div>`;
+    openModal('candidateDetailsModal');
+}
+
+// ==================== EDIT CANDIDATE ====================
+function editCandidate(id) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+    openAddCandidateModal();
+    document.getElementById('candidateModalTitle').textContent = 'Hindura Umukandida';
+    document.getElementById('candidateEditId').value = c.id;
+    document.getElementById('candidateStudentId').value = c.studentId || '';
+    document.getElementById('candidatePosition').value = c.position || '';
+    document.getElementById('candidateManifesto').value = c.manifesto || '';
+    document.getElementById('candidateSlogan').value = c.slogan || '';
+    document.getElementById('candidateElectionYear').value = c.electionYear || new Date().getFullYear();
+    if (c.photo) {
+        document.getElementById('candidatePhotoPreviewContainer').innerHTML =
+            `<img src="${c.photo}" class="photo-preview" alt="">`;
+    }
+}
+
+// ==================== DELETE CANDIDATE ====================
+async function deleteCandidate(id) {
+    if (!confirm('Uremeza gusiba uyu mukandida? Amajwi ye azasibwa.')) return;
+    try {
+        await deleteDoc(doc(db, "candidates", id));
+        // Delete all votes for this candidate
+        const voteSnap = await getDocs(collection(db, "votes"));
+        for (const v of voteSnap.docs) {
+            if (v.data().candidateId === id) {
+                await deleteDoc(doc(db, "votes", v.id));
+            }
+        }
+        showToast('Umukandida yasibwe!', 'success');
+        await loadCandidates();
+        await loadVotes();
+        renderManageElections();
+        renderElections();
+    } catch (e) {
+        showToast('Ikibazo: ' + e.message, 'error');
+    }
+}
+
+// ==================== CAST VOTE ====================
+async function castVote(candidateId) {
+    if (!currentUser) {
+        showToast('Ugomba kwinjira mbere', 'error');
+        return;
+    }
+    const c = candidates.find(x => x.id === candidateId);
+    if (!c) return;
+
+    // Check if already voted for this position
+    const alreadyVoted = votes.some(v =>
+        v.voterId === currentUser.uid &&
+        v.position === c.position
+    );
+    if (alreadyVoted) {
+        showToast('Wamaze gutora kuri iyi myanya', 'warning');
+        return;
+    }
+
+    if (!confirm(`Uremeza gutora ${c.studentName} kuri ${c.position}?`)) return;
+
+    try {
+        await addDoc(collection(db, "votes"), {
+            candidateId: candidateId,
+            candidateName: c.studentName,
+            position: c.position,
+            voterId: currentUser.uid,
+            voterName: currentUserData?.name || currentUser.email || 'Unknown',
+            voterEmail: currentUser.email || '',
+            createdAt: serverTimestamp()
+        });
+
+        // Increment voteCount on candidate
+        const candRef = doc(db, "candidates", candidateId);
+        const candSnap = await getDoc(candRef);
+        if (candSnap.exists()) {
+            await updateDoc(candRef, {
+                voteCount: (candSnap.data().voteCount || 0) + 1
+            });
+        }
+
+        // Confetti
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        showToast('✅ Ijwi ryawe ryakiriwe! Murakoze gutora.', 'success');
+        await loadCandidates();
+        await loadVotes();
+        renderElections();
+        renderManageElections();
+    } catch (e) {
+        console.error(e);
+        showToast('Ikibazo: ' + e.message, 'error');
+    }
+}
+
+// ==================== ELECTION RESULTS ====================
+function openElectionResultsModal() {
+    renderElectionResults();
+    openModal('electionResultsModal');
+}
+
+function renderElectionResults() {
+    const container = document.getElementById('electionResultsContent');
+    if (!container) return;
+
+    if (candidates.length === 0) {
+        container.innerHTML = `
+            <div class="no-candidates-msg">
+                <i class="fas fa-vote-yea"></i>
+                <h3>Nta bakandida barabonetse</h3>
+                <p>Nta matora arabaho ubu</p>
+            </div>`;
+        return;
+    }
+
+    const totalVotes = votes.length;
+    let html = `
+        <div style="background:var(--bg);padding:16px;border-radius:12px;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <div><i class="fas fa-users" style="color:var(--primary);"></i> <strong>Abakandida:</strong> ${candidates.length}</div>
+            <div><i class="fas fa-vote-yea" style="color:var(--success);"></i> <strong>Amajwi yose:</strong> ${totalVotes}</div>
+            <div><i class="fas fa-flag" style="color:var(--warning);"></i> <strong>Imyanya:</strong> ${new Set(candidates.map(c => c.position)).size}</div>
+        </div>`;
+
+    // Group by position
+    const grouped = {};
+    candidates.forEach(c => {
+        if (!grouped[c.position]) grouped[c.position] = [];
+        grouped[c.position].push(c);
+    });
+
+    Object.keys(grouped).forEach(pos => {
+        const posCandidates = grouped[pos]
+            .map(c => ({
+                ...c,
+                count: votes.filter(v => v.candidateId === c.id).length
+            }))
+            .sort((a, b) => b.count - a.count);
+
+        const posTotal = posCandidates.reduce((s, c) => s + c.count, 0);
+        const maxCount = posCandidates[0]?.count || 0;
+
+        html += `
+            <div class="election-results-position">
+                <h4><i class="fas fa-flag"></i> ${pos} <span style="font-size:12px;color:var(--text-secondary);font-weight:600;margin-left:auto;">${posTotal} amajwi</span></h4>
+                ${posCandidates.length === 0 ? '<div class="empty-election-position">Nta bakandida</div>' :
+                posCandidates.map((c, idx) => {
+                    const pct = posTotal > 0 ? Math.round((c.count / posTotal) * 100) : 0;
+                    const barPct = maxCount > 0 ? Math.round((c.count / maxCount) * 100) : 0;
+                    const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+                    const avatar = c.photo
+                        ? `<img src="${c.photo}" alt="">`
+                        : initials;
+                    return `
+                        <div class="result-row ${idx === 0 && c.count > 0 ? 'top-1' : idx === 1 && c.count > 0 ? 'top-2' : idx === 2 && c.count > 0 ? 'top-3' : ''}">
+                            <div class="result-rank">${idx + 1}</div>
+                            <div class="result-avatar">${avatar}</div>
+                            <div class="result-info">
+                                <div class="name">${c.studentName} ${idx === 0 && c.count > 0 ? '👑' : ''}</div>
+                                <div class="slogan">${c.slogan || ''}</div>
+                            </div>
+                            <div class="result-bar-wrap">
+                                <div class="result-bar">
+                                    <div class="result-bar-fill" style="width:${barPct}%;"></div>
+                                </div>
+                                <div class="result-count">
+                                    <span>${pct}%</span>
+                                    <span>${c.count} amajwi</span>
+                                </div>
+                            </div>
+                            <div class="result-vote-count">${c.count}</div>
+                        </div>`;
+                }).join('')}
+            </div>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// ==================== REFRESH ON PAGE SWITCH ====================
+// Ongeraho muri switchPage function yawe:
+// if (pageId === 'manage-elections') { renderManageElections(); }
+// if (pageId === 'elections') { renderElections(); }
 </script>
 </body>
 </html>
