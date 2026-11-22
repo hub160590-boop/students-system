@@ -3143,6 +3143,8 @@ function previewCandidatePhoto(event) {
         return;
     }
     const reader = new FileReader();
+    
+    // HANO: Koresha backticks neza
     reader.onload = (e) => {
         document.getElementById('candidatePhotoPreviewContainer').innerHTML =
             `<img src="${e.target.result}" class="photo-preview" alt="candidate">`;
@@ -3240,11 +3242,10 @@ async function saveCandidate() {
 function renderManageElections() {
     const grid = document.getElementById('manageElectionsGrid');
     if (!grid) return;
-
     const filterPos = document.getElementById('manageElectionsFilterPosition').value;
     const search = (document.getElementById('manageElectionsSearch').value || '').toLowerCase();
 
-    // Fill positions filter
+    // Fill filter positions
     const posSel = document.getElementById('manageElectionsFilterPosition');
     if (posSel.options.length <= 1) {
         ELECTION_POSITIONS.forEach(p => {
@@ -3256,28 +3257,22 @@ function renderManageElections() {
 
     let list = [...candidates];
     if (filterPos) list = list.filter(c => c.position === filterPos);
-    if (search) list = list.filter(c =>
-        (c.studentName || '').toLowerCase().includes(search) ||
-        (c.position || '').toLowerCase().includes(search) ||
-        (c.slogan || '').toLowerCase().includes(search)
-    );
+    if (search) list = list.filter(c => (c.studentName || '').toLowerCase().includes(search) || (c.position || '').toLowerCase().includes(search) || (c.slogan || '').toLowerCase().includes(search));
 
     if (list.length === 0) {
-        grid.innerHTML = `
-            <div class="empty-state" style="grid-column:1/-1;">
-                <div class="icon"><i class="fas fa-vote-yea"></i></div>
-                <h3>Nta bakandida barabonetse</h3>
-                <p>Kanda "Ongeraho Umukandida" utangire</p>
-            </div>`;
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="icon"><i class="fas fa-vote-yea"></i></div><h3>Nta bakandida barabonetse</h3><p>Kanda "Ongeraho Umukandida" utangire</p></div>`;
         return;
     }
 
     grid.innerHTML = list.map(c => {
         const voteCount = votes.filter(v => v.candidateId === c.id).length;
         const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
-        const photoHtml = c.photo
-            ? `<img src="${c.photo}" alt="${c.studentName}">`
+        
+        // HANO: Backticks zikoreshwa neza kuri photo
+        const photoHtml = c.photo 
+            ? `<img src="${c.photo}" alt="${c.studentName}">` 
             : `<div class="candidate-initials">${initials}</div>`;
+        
         return `
             <div class="candidate-card">
                 <div class="candidate-photo-wrap">
@@ -3304,7 +3299,6 @@ function renderManageElections() {
             </div>`;
     }).join('');
 }
-
 // ==================== RENDER ELECTIONS (Students View) ====================
 function renderElections() {
     const grid = document.getElementById('electionsGrid');
@@ -3392,46 +3386,74 @@ function renderElections() {
             </div>`;
     }).join('');
 }
+function renderElections() {
+    const grid = document.getElementById('electionsGrid');
+    if (!grid) return;
+    const filterPos = document.getElementById('electionsFilterPosition').value;
+    const search = (document.getElementById('electionsSearch').value || '').toLowerCase();
 
-// ==================== VIEW CANDIDATE DETAILS ====================
-function viewCandidateDetails(id) {
-    const c = candidates.find(x => x.id === id);
-    if (!c) return;
-    const voteCount = votes.filter(v => v.candidateId === c.id).length;
-    const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
-    const photoHtml = c.photo
-        ? `<img src="${c.photo}" style="width:100%;height:240px;object-fit:cover;border-radius:14px;" alt="">`
-        : `<div style="width:100%;height:240px;background:var(--gradient-1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:white;">${initials}</div>`;
+    const posSel = document.getElementById('electionsFilterPosition');
+    if (posSel.options.length <= 1) {
+        ELECTION_POSITIONS.forEach(p => {
+            const o = document.createElement('option');
+            o.value = p; o.textContent = p;
+            posSel.appendChild(o);
+        });
+    }
 
-    document.getElementById('candidateDetailsContent').innerHTML = `
-        ${photoHtml}
-        <div style="padding:16px 4px;">
-            <h2 style="font-size:22px;font-weight:800;margin-bottom:4px;">${c.studentName}</h2>
-            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">
-                <i class="fas fa-id-card"></i> ${c.studentNumber || '-'} · ${c.level || '-'} · ${c.department || '-'}
-            </div>
-            <div style="margin-bottom:10px;">
-                <span class="priority-badge normal" style="font-size:11px;padding:5px 12px;">
-                    <i class="fas fa-flag"></i> ${c.position}
-                </span>
-                <span class="priority-badge urgent" style="font-size:11px;padding:5px 12px;margin-left:6px;">
-                    <i class="fas fa-check-circle"></i> ${voteCount} amajwi
-                </span>
-            </div>
-            <div style="font-size:14px;line-height:1.7;margin-top:16px;padding:14px;background:var(--bg);border-radius:12px;">
-                <div style="font-weight:700;margin-bottom:6px;color:var(--primary);">
-                    <i class="fas fa-quote-left"></i> Slogan
+    let list = [...candidates];
+    if (filterPos) list = list.filter(c => c.position === filterPos);
+    if (search) list = list.filter(c => (c.studentName || '').toLowerCase().includes(search) || (c.position || '').toLowerCase().includes(search));
+
+    if (list.length === 0) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="icon"><i class="fas fa-vote-yea"></i></div><h3>Nta bakandida barabonetse</h3><p>Nta mukandida uraboneka kuri iyi myanya</p></div>`;
+        return;
+    }
+    const myId = currentUser ? currentUser.uid : null;
+
+    grid.innerHTML = list.map(c => {
+        const voteCount = votes.filter(v => v.candidateId === c.id).length;
+        const hasVoted = votes.some(v => v.candidateId === c.id && v.voterId === myId);
+        const votedForPosition = votes.some(v => v.voterId === myId && v.position === c.position);
+        const initials = (c.studentName || '?').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        
+        // HANO: Backticks zikoreshwa neza
+        const photoHtml = c.photo 
+            ? `<img src="${c.photo}" alt="${c.studentName}">` 
+            : `<div class="candidate-initials">${initials}</div>`;
+
+        let btnLabel, btnClass, disabled;
+        if (hasVoted) { 
+            btnLabel = '<i class="fas fa-check-circle"></i> Wamaze Gutora'; 
+            btnClass = 'voted'; disabled = true; 
+        } else if (votedForPosition) { 
+            btnLabel = '<i class="fas fa-ban"></i> Wamaze Gutora Kuri Iyi Myanya'; 
+            btnClass = 'voted'; disabled = true; 
+        } else { 
+            btnLabel = '<i class="fas fa-vote-yea"></i> VOTE'; 
+            btnClass = ''; disabled = false; 
+        }
+
+        return `
+            <div class="candidate-card">
+                <div class="candidate-photo-wrap">
+                    ${photoHtml}
+                    <span class="candidate-position-badge">${c.position}</span>
+                    <span class="candidate-vote-count"><i class="fas fa-check-circle"></i> ${voteCount}</span>
                 </div>
-                <div style="font-style:italic;margin-bottom:14px;">${c.slogan || 'Nta slogan'}</div>
-                <div style="font-weight:700;margin-bottom:6px;color:var(--primary);">
-                    <i class="fas fa-scroll"></i> Manifesto
+                <div class="candidate-body">
+                    <div class="candidate-name">${c.studentName}</div>
+                    <div class="candidate-slogan"><i class="fas fa-quote-left"></i> ${c.slogan || 'Nta slogan'}</div>
+                    <div class="candidate-manifesto">${c.manifesto || 'Nta manifesto yatanzwe'}</div>
+                    <div class="candidate-actions">
+                        <button class="vote-btn ${btnClass}" ${disabled ? 'disabled' : ''} onclick="castVote('${c.id}')">
+                            ${btnLabel}
+                        </button>
+                    </div>
                 </div>
-                <div>${c.manifesto || 'Nta manifesto yatanzwe'}</div>
-            </div>
-        </div>`;
-    openModal('candidateDetailsModal');
+            </div>`;
+    }).join('');
 }
-
 // ==================== EDIT CANDIDATE ====================
 function editCandidate(id) {
     const c = candidates.find(x => x.id === id);
