@@ -1519,36 +1519,67 @@ onAuthStateChanged(auth, async (user) => {
 
 function setupUserUI() {
     if (!currentUserData) return;
+    
     const name = currentUserData.name || currentUserData.fullName || currentUserData.email || 'User';
     const role = currentUserData.role || 'student';
     const photo = currentUserData.photoURL || currentUserData.photo || '';
+    
+    // --- 1. Kuvugurura Header ---
     const headerAvatar = document.getElementById('headerAvatar');
     const headerName = document.getElementById('headerName');
     const headerRole = document.getElementById('headerRole');
+    
     if (headerAvatar) headerAvatar.innerHTML = photo ? `<img src="${photo}" alt="">` : getInitials(name);
     if (headerName) headerName.textContent = name.split(' ')[0];
-    if (headerRole) { headerRole.textContent = role.replace('_', ' ').toUpperCase(); headerRole.className = 'role-badge ' + role; }
+    if (headerRole) { 
+        headerRole.textContent = role.replace('_', ' ').toUpperCase(); 
+        headerRole.className = 'role-badge ' + role; 
+    }
+
+    // --- 2. Kuvugurura Profile Page ---
     const profileName = document.getElementById('profileName');
     const profileEmail = document.getElementById('profileEmail');
     const profileRole = document.getElementById('profileRoleBadge');
     const profileAvatar = document.getElementById('profileAvatarContent');
     const profileInputName = document.getElementById('profileInputName');
     const profileInputPhone = document.getElementById('profileInputPhone');
+    
     if (profileName) profileName.textContent = name;
     if (profileEmail) profileEmail.textContent = currentUserData.email || '';
-    if (profileRole) { profileRole.textContent = role.replace('_', ' ').toUpperCase(); profileRole.className = 'role-badge ' + role; }
+    if (profileRole) { 
+        profileRole.textContent = role.replace('_', ' ').toUpperCase(); 
+        profileRole.className = 'role-badge ' + role; 
+    }
     if (profileAvatar) profileAvatar.innerHTML = photo ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : getInitials(name);
     if (profileInputName) profileInputName.value = name;
     if (profileInputPhone) profileInputPhone.value = currentUserData.phone || '';
+
+    // --- 3. Kwerekana cyangwa guhisha amabuto (Nav Items) ---
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = (role === 'admin' || role === 'super_admin' || role === 'teacher') ? '' : 'none';
     });
-    document.querySelectorAll('.student-only').forEach(el => { el.style.display = (role === 'student') ? '' : 'none'; });
-    document.querySelectorAll('.super-admin-only').forEach(el => { el.style.display = (role === 'super_admin') ? '' : 'none'; });
-    if (role === 'student') switchPage('my-dashboard', null);
-    else switchPage('dashboard', null);
-}
+    document.querySelectorAll('.student-only').forEach(el => { 
+        el.style.display = (role === 'student') ? '' : 'none'; 
+    });
+    document.querySelectorAll('.super-admin-only').forEach(el => { 
+        el.style.display = (role === 'super_admin') ? '' : 'none'; 
+    });
 
+    // --- 4. GUFUNGURA AMAKURU Y'AMATORA (IKIBUZO GIKOMEYE) ---
+    // Turabaza Firestore niba hari abakandida, hanyuma tujye kuri Dashboard
+    loadCandidates().then(() => {
+        if (role === 'student') {
+            switchPage('my-dashboard', null);
+        } else {
+            switchPage('dashboard', null);
+        }
+    }).catch((err) => {
+        console.error("Ikibazo mu gufungura abakandida:", err);
+        // Niba habaye ikibazo, tujye kuri dashboard ariko tugaragaze ikibazo
+        if (role === 'student') switchPage('my-dashboard', null);
+        else switchPage('dashboard', null);
+    });
+}
 // ==================== THEME ====================
 window.toggleTheme = function() {
     const html = document.documentElement;
@@ -1783,14 +1814,12 @@ function populatePositionFilters() {
         sel.value = current;
     });
 }
-
 function renderElections() {
     const grid = document.getElementById("electionsGrid");
     if (!grid) return;
 
     const filterPos = document.getElementById("electionsFilterPosition")?.value || "";
     const search = (document.getElementById("electionsSearch")?.value || "").toLowerCase().trim();
-    const currentRole = currentUserData?.role || "student";
 
     let filtered = candidates.filter(c => {
         if (filterPos && c.position !== filterPos) return false;
@@ -1815,7 +1844,7 @@ function renderElections() {
         const photo = c.photo || c.photoUrl;
         const num = c.studentNumber || c.classLevel || "—";
         
-        // Reba niba uyu munyeshuri yamaze gutora kuri iyi myanya
+        // Reba niba uyu munyeshuri yamaze gutora
         const hasVoted = c.voters && c.voters.includes(currentUser?.uid);
 
         return `
@@ -2785,6 +2814,35 @@ console.log('✅ MINDBOOK loaded — no duplicates, elections ready');
         
         // Subirira kugaragaza abakandida kugira ngo buto ihite ihinduka
         await loadCandidates();
+        
+    } catch (error) {
+        console.error("Vote error:", error);
+        showToast("Ntibyakunze gutora. Ongera ugerageze.", "error");
+    }
+};
+    window.voteForCandidate = async function(candidateId) {
+    if (!currentUser) {
+        showToast("Ugomba kuba winjiye muri sisitemu kugira ngo utore", "error");
+        return;
+    }
+
+    if (!confirm("Urabyumva neza ko ushaka gutora uyu mukandida? Ntushobora guhindura nyuma.")) return;
+
+    try {
+        const candidateRef = doc(db, 'candidates', candidateId);
+        
+        // Koresha Firestore Increment kugira ngo utazakora amakosa
+        const { increment, arrayUnion } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
+        
+        await updateDoc(candidateRef, {
+            votes: increment(1),
+            voters: arrayUnion(currentUser.uid)
+        });
+
+        showToast("Amajwi yawe yabitswe neza! Murakoze.", "success");
+        if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        
+        await loadCandidates(); // Subirira kugaragaza amajwi mashya
         
     } catch (error) {
         console.error("Vote error:", error);
