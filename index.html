@@ -1824,8 +1824,7 @@ function renderElections() {
     let filtered = candidates.filter(c => {
         if (filterPos && c.position !== filterPos) return false;
         if (search) {
-            const name = c.studentName || c.fullName || c.name || "";
-            const hay = `${name} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
+            const hay = `${c.studentName || c.fullName || ""} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
             if (!hay.includes(search)) return false;
         }
         return true;
@@ -1835,38 +1834,40 @@ function renderElections() {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
             <div class="icon"><i class="fas fa-vote-yea"></i></div>
             <h3>Nta bakandida barabonetse</h3>
-            <p>Nta muntu wiyamamaje ku myanya ubu cyangwa nta murongo wabonetse muri sisitemu.</p>
+            <p>Nta muntu wiyamamaje ku myanya ubu.</p>
         </div>`;
         return;
     }
 
     grid.innerHTML = filtered.map(c => {
-        // REBA AMAZINA YOSE ASHOBOKA
-        const name = c.studentName || c.fullName || c.name || "Umukandida";
-        const photo = c.photo || c.photoUrl || "https://via.placeholder.com/150";
-        const num = c.studentNumber || c.number || "—";
+        const name = c.studentName || c.fullName || "Umukandida";
+        const photo = c.photo || c.photoUrl;
+        const num = c.studentNumber || c.classLevel || "—";
+        
+        // Reba niba uyu munyeshuri yamaze gutora
         const hasVoted = c.voters && c.voters.includes(currentUser?.uid);
 
         return `
         <div class="course-card">
             <div class="course-cover" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);">
-                <img src="${photo}" alt="${escapeHtml(name)}" style="object-fit:cover;">
-                <span class="course-level-badge">${c.position || "Umukandida"}</span>
+                ${photo ? `<img src="${photo}" alt="${escapeHtml(name)}">` : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
+                <span class="course-level-badge">${POSITION_ICONS[c.position] || ''} ${escapeHtml(c.position || "Umukandida")}</span>
             </div>
             <div class="course-body">
                 <h3>${escapeHtml(name)}</h3>
                 <div class="course-subject"><i class="fas fa-id-card"></i> ${escapeHtml(num)}</div>
-                ${c.slogan ? `<p style="font-size:12.5px;color:var(--text-secondary);font-style:italic;">"${escapeHtml(c.slogan)}"</p>` : ""}
+                ${c.slogan ? `<p style="font-size:12.5px;color:var(--text-secondary);font-style:italic;margin-bottom:10px;">"${escapeHtml(c.slogan)}"</p>` : ""}
                 
-                <div class="course-footer" style="flex-direction: column; align-items: stretch; gap: 8px; border-top: none; margin-top: 10px;">
+                <div class="course-footer" style="flex-direction: column; align-items: stretch; gap: 8px; border-top: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-calendar"></i> ${c.electionYear || "2025"}</span>
-                        <span class="btn btn-sm btn-outline" onclick="viewCandidateDetails('${c.id}')" style="padding: 4px 10px; font-size: 11px;"><i class="fas fa-eye"></i> Reba</span>
+                        <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || "2025")}</span>
+                        <span class="btn btn-sm btn-outline" onclick="event.stopPropagation(); viewCandidateDetails('${c.id}')" style="padding: 4px 10px; font-size: 11px;"><i class="fas fa-eye"></i> Reba</span>
                     </div>
                     
+                    <!-- Buto ya Tora -->
                     ${hasVoted 
                         ? `<button class="btn btn-sm" style="background:var(--success); color:white; width:100%; cursor:not-allowed;" disabled><i class="fas fa-check"></i> Wamaze Gutora</button>`
-                        : `<button class="btn btn-sm btn-primary" onclick="voteForCandidate('${c.id}')" style="width:100%;"><i class="fas fa-vote-yea"></i> Tora Uyu</button>`
+                        : `<button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); voteForCandidate('${c.id}')" style="width:100%;"><i class="fas fa-vote-yea"></i> Tora Uyu</button>`
                     }
                 </div>
             </div>
