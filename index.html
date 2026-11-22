@@ -3432,63 +3432,7 @@ window.renderManageElections = function() {
     `).join('');
 };
 
-// ==================== RENDER ELECTIONS (Students View) ====================
-window.renderElections = function() {
-    const grid = document.getElementById('electionsGrid');
-    if (!grid) return;
-    
-    const filterPos = document.getElementById('electionsFilterPosition')?.value || '';
-    const search = (document.getElementById('electionsSearch')?.value || '').toLowerCase();
-    
-    const posSelect = document.getElementById('electionsFilterPosition');
-    if (posSelect && posSelect.options.length <= 1) {
-        Object.keys(POSITION_ICONS).forEach(p => {
-            posSelect.innerHTML += `<option value="${p}">${POSITION_ICONS[p]} ${p}</option>`;
-        });
-    }
-    
-    let filtered = candidates.filter(c => {
-        if (filterPos && c.position !== filterPos) return false;
-        if (search && !(c.studentName || '').toLowerCase().includes(search) && 
-            !(c.position || '').toLowerCase().includes(search)) return false;
-        return true;
-    });
-    
-    if (filtered.length === 0) {
-        grid.innerHTML = `
-            <div class="empty-state" style="grid-column: 1/-1;">
-                <div class="icon"><i class="fas fa-poll"></i></div>
-                <h3>Nta bakandida bahari</h3>
-                <p>Amatora azatangira vuba</p>
-            </div>`;
-        return;
-    }
-    
-    filtered.sort((a, b) => (a.position || '').localeCompare(b.position || ''));
-    
-    grid.innerHTML = filtered.map(c => `
-        <div class="course-card" onclick="openCandidateDetails('${c.id}')">
-            <div class="course-cover" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                ${c.photo 
-                    ? `<img src="${c.photo}" alt="${escapeHtml(c.studentName)}" style="object-fit: cover;">` 
-                    : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
-                <div class="course-level-badge">${POSITION_ICONS[c.position] || '🏛️'} ${escapeHtml(c.position || '')}</div>
-            </div>
-            <div class="course-body">
-                <h3>${escapeHtml(c.studentName || 'Nta izina')}</h3>
-                <div class="course-subject">
-                    <i class="fas fa-id-card"></i> ${escapeHtml(c.studentNumber || '-')} · 
-                    ${escapeHtml(c.studentLevel || '-')}
-                </div>
-                ${c.slogan ? `<div style="font-size: 12.5px; font-style: italic; color: var(--purple); margin-bottom: 8px;">"${escapeHtml(c.slogan)}"</div>` : ''}
-                <div class="course-footer">
-                    <div class="course-meta"><span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || '-')}</span></div>
-                    <span style="font-size:12px; color: var(--purple); font-weight:700;">Reba <i class="fas fa-arrow-right"></i></span>
-                </div>
-            </div>
-        </div>
-    `).join('');
-};
+
 
 // ==================== CANDIDATE DETAILS ====================
 window.openCandidateDetails = function(id) {
@@ -3558,6 +3502,410 @@ window.previewExamFile = function(event) {
     document.getElementById('examFilePreview').innerHTML = 
         `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><span class="name">${escapeHtml(file.name)}</span></div></div>`;
 };
+    // ==================== ELECTIONS - STUDENT VIEW ====================
+
+let candidates = [];
+
+// ==== SHAKISHA ABAKANDIDA MU FIRESTORE ====
+async function loadCandidates() {
+    try {
+        const snap = await getDocs(collection(db, "candidates"));
+        candidates = [];
+        snap.forEach(d => {
+            candidates.push({ id: d.id, ...d.data() });
+        });
+        console.log("✅ Abakandida bafunze:", candidates.length);
+        populatePositionFilters();
+        renderElections();
+        renderManageElections();
+    } catch (err) {
+        console.error("❌ Ikibazo mu gufungura abakandida:", err);
+        showToast("Ntibishobotse gufungura abakandida", "error");
+    }
+}
+
+// ==== UZUZA FILTRE Y'IMYANYA ====
+function populatePositionFilters() {
+    const positions = [...new Set(candidates.map(c => c.position).filter(Boolean))];
+    const selectors = [
+        "electionsFilterPosition",
+        "manageElectionsFilterPosition"
+    ];
+    selectors.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const current = sel.value;
+        sel.innerHTML = '<option value="">🏛️ Imyanya: Yose</option>';
+        positions.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p;
+            opt.textContent = p;
+            sel.appendChild(opt);
+        });
+        sel.value = current;
+    });
+}
+
+// ==== RENDER AMATORA (STUDENTS) ====
+function renderElections() {
+    const grid = document.getElementById("electionsGrid");
+    if (!grid) return;
+
+    const filterPos = document.getElementById("electionsFilterPosition")?.value || "";
+    const search = (document.getElementById("electionsSearch")?.value || "").toLowerCase();
+
+    let filtered = candidates.filter(c => {
+        if (filterPos && c.position !== filterPos) return false;
+        if (search) {
+            const hay = `${c.fullName || ""} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
+            if (!hay.includes(search)) return false;
+        }
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="icon"><i class="fas fa-vote-yea"></i></div>
+                <h3>Nta bakandida barabonetse</h3>
+                <p>Nta muntu wiyamamaje ku myanya ubu.</p>
+            </div>`;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(c => `
+        <div class="course-card" onclick="viewCandidateDetails('${c.id}')">
+            <div class="course-cover" style="background: linear-gradient(135deg,#38bdf8,#0ea5e9);">
+                ${c.photoUrl
+                    ? `<img src="${c.photoUrl}" alt="${escapeHtml(c.fullName)}">`
+                    : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
+                <span class="course-level-badge">${escapeHtml(c.position || "Umukandida")}</span>
+            </div>
+            <div class="course-body">
+                <h3>${escapeHtml(c.fullName || "Umukandida")}</h3>
+                <div class="course-subject">
+                    <i class="fas fa-id-card"></i>
+                    ${escapeHtml(c.studentNumber || c.classLevel || "—")}
+                </div>
+                ${c.slogan ? `<p style="font-size:12.5px;color:var(--text-secondary);font-style:italic;margin-bottom:10px;">
+                    "${escapeHtml(c.slogan)}"
+                </p>` : ""}
+                <div class="course-footer">
+                    <div class="course-meta">
+                        <span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || "2025")}</span>
+                    </div>
+                    <span class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> Reba</span>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+// ==== RENDER AMATORA (ADMIN) ====
+function renderManageElections() {
+    const grid = document.getElementById("manageElectionsGrid");
+    if (!grid) return;
+
+    const filterPos = document.getElementById("manageElectionsFilterPosition")?.value || "";
+    const search = (document.getElementById("manageElectionsSearch")?.value || "").toLowerCase();
+
+    let filtered = candidates.filter(c => {
+        if (filterPos && c.position !== filterPos) return false;
+        if (search) {
+            const hay = `${c.fullName || ""} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
+            if (!hay.includes(search)) return false;
+        }
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="icon"><i class="fas fa-vote-yea"></i></div>
+                <h3>Nta bakandida barabonetse</h3>
+                <p>Kanda "Ongeraho Umukandida" kugira utangire.</p>
+            </div>`;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(c => `
+        <div class="course-card">
+            <div class="course-cover" style="background: linear-gradient(135deg,#8b5cf6,#a78bfa);">
+                ${c.photoUrl
+                    ? `<img src="${c.photoUrl}" alt="${escapeHtml(c.fullName)}">`
+                    : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
+                <span class="course-level-badge">${escapeHtml(c.position || "")}</span>
+            </div>
+            <div class="course-body">
+                <h3>${escapeHtml(c.fullName || "—")}</h3>
+                <div class="course-subject">
+                    <i class="fas fa-id-card"></i>
+                    ${escapeHtml(c.studentNumber || "—")}
+                </div>
+                <div class="course-footer">
+                    <div class="course-meta">
+                        <span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || "2025")}</span>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                        <button class="action-btn edit" onclick="editCandidate('${c.id}')" title="Hindura">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" onclick="deleteCandidate('${c.id}')" title="Siba">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+    // ==================== SAVE CANDIDATE ====================
+let pendingCandidatePhoto = null;
+
+function openAddCandidateModal() {
+    document.getElementById("candidateEditId").value = "";
+    document.getElementById("candidateModalTitle").textContent = "Ongeraho Umukandida";
+    document.getElementById("candidateStudentId").value = "";
+    document.getElementById("candidatePosition").value = "";
+    document.getElementById("candidateManifesto").value = "";
+    document.getElementById("candidateSlogan").value = "";
+    document.getElementById("candidateElectionYear").value = "2025";
+    document.getElementById("candidatePhotoPreviewContainer").innerHTML =
+        '<div class="photo-placeholder"><i class="fas fa-camera"></i></div>';
+    pendingCandidatePhoto = null;
+
+    // Uzuza list y'abanyeshuri
+    const sel = document.getElementById("candidateStudentId");
+    sel.innerHTML = '<option value="">-- Hitamo Umunyeshuri --</option>';
+    students.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = `${s.fullName || s.name || "—"} (${s.studentNumber || s.number || "—"})`;
+        sel.appendChild(opt);
+    });
+
+    openModal("addCandidateModal");
+}
+
+function fillCandidateFromStudent() {
+    const id = document.getElementById("candidateStudentId").value;
+    const s = students.find(x => x.id === id);
+    if (!s) return;
+    // Ntacyo dukeneye guhindura hano, ariko dushobora kwandika izina
+    console.log("Umunyeshuri yahiswemo:", s);
+}
+
+function previewCandidatePhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+        showToast("Ifoto ni nini cyane (max 5MB)", "error");
+        return;
+    }
+    pendingCandidatePhoto = file;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById("candidatePhotoPreviewContainer").innerHTML =
+            `<img src="${e.target.result}" class="photo-preview" alt="preview">`;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function saveCandidate() {
+    const editId = document.getElementById("candidateEditId").value;
+    const studentId = document.getElementById("candidateStudentId").value;
+    const position = document.getElementById("candidatePosition").value;
+    const manifesto = document.getElementById("candidateManifesto").value.trim();
+    const slogan = document.getElementById("candidateSlogan").value.trim();
+    const electionYear = document.getElementById("candidateElectionYear").value.trim();
+
+    if (!studentId || !position) {
+        showToast("Uzuza umunyeshuri n'icyo yiyamamariza", "warning");
+        return;
+    }
+
+    const student = students.find(s => s.id === studentId);
+    if (!student) {
+        showToast("Umunyeshuri ntabonetse", "error");
+        return;
+    }
+
+    // Reba niba umunyeshuri asanzwe ari umukandida
+    if (!editId) {
+        const existing = candidates.find(c => c.studentId === studentId && c.position === position);
+        if (existing) {
+            showToast("Uyu munyeshuri asanzwe yiyamamaje kuri iyi myanya", "warning");
+            return;
+        }
+    }
+
+    try {
+        let photoUrl = null;
+        if (pendingCandidatePhoto) {
+            photoUrl = await uploadToCloudinary(pendingCandidatePhoto);
+        }
+
+        const data = {
+            studentId,
+            fullName: student.fullName || student.name || "",
+            studentNumber: student.studentNumber || student.number || "",
+            classLevel: student.level || student.classLevel || "",
+            position,
+            manifesto,
+            slogan,
+            electionYear,
+            photoUrl: photoUrl || (editId ? candidates.find(c => c.id === editId)?.photoUrl : null),
+            updatedAt: serverTimestamp()
+        };
+
+        if (editId) {
+            await updateDoc(doc(db, "candidates", editId), data);
+            showToast("Umukandida yahinduwe neza", "success");
+        } else {
+            data.createdAt = serverTimestamp();
+            await addDoc(collection(db, "candidates"), data);
+            showToast("Umukandida yongeweho neza", "success");
+            if (typeof confetti === "function") {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+            }
+        }
+
+        closeModal("addCandidateModal");
+        await loadCandidates();
+    } catch (err) {
+        console.error("❌ Save candidate error:", err);
+        showToast("Ikibazo mu kubika umukandida", "error");
+    }
+}
+
+// ==== HINDURA ====
+function editCandidate(id) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById("candidateEditId").value = c.id;
+    document.getElementById("candidateModalTitle").textContent = "Hindura Umukandida";
+
+    const sel = document.getElementById("candidateStudentId");
+    sel.innerHTML = '<option value="">-- Hitamo Umunyeshuri --</option>';
+    students.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = `${s.fullName || s.name || "—"} (${s.studentNumber || s.number || "—"})`;
+        sel.appendChild(opt);
+    });
+    sel.value = c.studentId || "";
+
+    document.getElementById("candidatePosition").value = c.position || "";
+    document.getElementById("candidateManifesto").value = c.manifesto || "";
+    document.getElementById("candidateSlogan").value = c.slogan || "";
+    document.getElementById("candidateElectionYear").value = c.electionYear || "2025";
+
+    if (c.photoUrl) {
+        document.getElementById("candidatePhotoPreviewContainer").innerHTML =
+            `<img src="${c.photoUrl}" class="photo-preview" alt="preview">`;
+    }
+    pendingCandidatePhoto = null;
+    openModal("addCandidateModal");
+}
+
+// ==== SIBA ====
+async function deleteCandidate(id) {
+    if (!confirm("Urashaka gusiba uyu mukandida?")) return;
+    try {
+        await deleteDoc(doc(db, "candidates", id));
+        showToast("Umukandida yasibwe", "success");
+        await loadCandidates();
+    } catch (err) {
+        console.error(err);
+        showToast("Ntibyakunze gusiba", "error");
+    }
+}
+
+// ==== REBA DETAILS ====
+function viewCandidateDetails(id) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+    const html = `
+        <div style="text-align:center;margin-bottom:18px;">
+            ${c.photoUrl
+                ? `<img src="${c.photoUrl}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);">`
+                : `<div class="member-profile-avatar" style="margin:0 auto;"><i class="fas fa-user-tie"></i></div>`}
+            <h3 style="margin-top:14px;font-size:20px;font-weight:800;">${escapeHtml(c.fullName || "—")}</h3>
+            <p style="color:var(--primary);font-weight:700;margin-top:4px;">${escapeHtml(c.position || "")}</p>
+            ${c.slogan ? `<p style="font-style:italic;color:var(--text-secondary);margin-top:8px;">"${escapeHtml(c.slogan)}"</p>` : ""}
+        </div>
+        <div style="background:var(--bg);padding:16px;border-radius:12px;margin-bottom:14px;">
+            <p style="font-size:13px;color:var(--text-secondary);">
+                <strong>Nimero:</strong> ${escapeHtml(c.studentNumber || "—")}<br>
+                <strong>Umwaka:</strong> ${escapeHtml(c.electionYear || "2025")}
+            </p>
+        </div>
+        ${c.manifesto ? `
+            <div style="background:var(--bg);padding:16px;border-radius:12px;">
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:8px;"><i class="fas fa-scroll"></i> Manifesto</h4>
+                <p style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(c.manifesto)}</p>
+            </div>` : ""}
+        <div class="modal-actions" style="margin-top:18px;">
+            <button class="btn btn-outline" onclick="closeModal('candidateDetailsModal')">Funga</button>
+        </div>
+    `;
+    document.getElementById("candidateDetailsContent").innerHTML = html;
+    openModal("candidateDetailsModal");
+}
+    // ==================== HELPERS ====================
+function openModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.classList.add("active");
+}
+
+function closeModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.classList.remove("active");
+}
+
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function showToast(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    if (!container) return;
+    const toast = document.createElement("div");
+    toast.className = "toast " + (type === "error" ? "error" : type === "warning" ? "warning" : "");
+    const icon = type === "error" ? "fa-exclamation-circle"
+        : type === "warning" ? "fa-exclamation-triangle"
+        : "fa-check-circle";
+    toast.innerHTML = `
+        <div class="toast-icon"><i class="fas ${icon}"></i></div>
+        <div>${escapeHtml(message)}</div>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 400);
+    }, 3500);
+}
+
+// ==================== CLOUDINARY UPLOAD ====================
+async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+        method: "POST",
+        body: formData
+    });
+    const data = await res.json();
+    if (!data.secure_url) throw new Error("Upload yananiwe");
+    return data.secure_url;
+}
 </script>
 </body>
 </html>
