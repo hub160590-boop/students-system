@@ -3612,6 +3612,29 @@ function renderElectionResults() {
 // Ongeraho muri switchPage function yawe:
 // if (pageId === 'manage-elections') { renderManageElections(); }
 // if (pageId === 'elections') { renderElections(); }
+        function openDocumentViewer(url, title, isPdf = true) {
+    document.getElementById('documentViewerTitle').textContent = title;
+    const downloadBtn = document.getElementById('documentViewerDownload');
+    const newTabBtn = document.getElementById('documentViewerNewTab');
+    const content = document.getElementById('documentViewerContent');
+
+    // HANO: Koresha backticks ( ` ) neza
+    downloadBtn.href = url;
+    downloadBtn.download = title;
+    newTabBtn.href = url;
+
+    if (isPdf) {
+        content.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0" style="width:100%;height:600px;border:none;"></iframe>`;
+    } else {
+        content.innerHTML = `
+            <div style="text-align:center;padding:40px;">
+                <i class="fas fa-file-alt" style="font-size:60px;color:var(--primary);margin-bottom:20px;"></i>
+                <h3>${title}</h3>
+                <a href="${url}" target="_blank" class="btn btn-primary"><i class="fas fa-download"></i> Kurura</a>
+            </div>`;
+    }
+    openModal('documentViewerModal');
+}
 </script>
 </body>
 </html>
