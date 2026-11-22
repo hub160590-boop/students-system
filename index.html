@@ -1284,6 +1284,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
 <div class="toast-container" id="toastContainer"></div>
 
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import {
     getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
@@ -1311,20 +1312,16 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// ==================== GLOBAL STATE (ONLY ONCE!) ====================
 let currentUser = null;
 let currentUserData = null;
-let students = [], users = [], teachers = [], grades = [], notes = [],
-    notesPayments = [], announcements = [], exams = [], posts = [], notifications = [];
-let courses = [], lessons = [], assignments = [], submissions = [], quizzes = [],
-    quizResults = [], liveClasses = [], candidates = [];
-
+let students = [], users = [], teachers = [], grades = [], notes = [], notesPayments = [], announcements = [], exams = [], posts = [], notifications = [];
+let courses = [], lessons = [], assignments = [], submissions = [], quizzes = [], quizResults = [], liveClasses = [];
 let announcementsUnsubscribe = null, notificationsUnsubscribe = null, postsUnsubscribe = null;
 let newPostMedia = null, currentPostIdForComments = null;
 let deptChartInstance = null;
 let pendingExamFile = null;
 let pendingNoteFile = null;
-let pendingCandidatePhoto = null;
+
 let currentCourseId = null, currentLessonIndex = 0, courseLessons = [], courseProgress = {};
 let quizQuestions = [], currentQuiz = null, quizAnswers = {};
 
@@ -1340,37 +1337,15 @@ window.showToast = function(message, type = 'success') {
     setTimeout(() => toast.classList.add('show'), 10);
     setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
 };
-
-function escapeHtml(text) {
-    if (text === null || text === undefined) return '';
-    const div = document.createElement('div');
-    div.textContent = String(text);
-    return div.innerHTML;
-}
-
-window.closeModal = function(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-};
-
-window.openModal = function(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
-};
-
-document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('active');
-}));
-
+window.closeModal = function(id) { const el = document.getElementById(id); if (el) el.classList.remove('active'); };
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); }));
 window.formatDate = function(d) {
     if (!d) return '-';
-    try {
-        const dt = new Date(d);
-        if (isNaN(dt.getTime())) return '-';
+    try { const dt = new Date(d); if (isNaN(dt.getTime())) return '-';
         return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
     } catch(e) { return '-'; }
 };
-
+function escapeHtml(text) { if (text === null || text === undefined) return ''; const div = document.createElement('div'); div.textContent = String(text); return div.innerHTML; }
 function timeAgo(date) {
     if (!date) return '-';
     const now = new Date(), diff = Math.floor((now - date) / 1000);
@@ -1380,7 +1355,6 @@ function timeAgo(date) {
     if (diff < 604800) return `${Math.floor(diff / 86400)} iminsi ishize`;
     return formatDate(date);
 }
-
 async function uploadToCloudinary(file, isRaw = false) {
     const formData = new FormData();
     formData.append('file', file);
@@ -1394,26 +1368,22 @@ async function uploadToCloudinary(file, isRaw = false) {
     const data = await response.json();
     return data.secure_url;
 }
-
 function getYouTubeEmbed(url) {
     if (!url) return null;
     const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
     if (match && match[2].length === 11) return `https://www.youtube.com/embed/${match[2]}`;
     return url;
 }
-
 function getInitials(name) {
     if (!name) return '?';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 }
-
 function getFileExtension(url) {
     if (!url) return '';
-    try { const clean = url.split('?')[0].split('#')[0]; return clean.split('.').pop().toLowerCase(); }
-    catch(e) { return ''; }
+    try { const clean = url.split('?')[0].split('#')[0]; return clean.split('.').pop().toLowerCase(); } catch(e) { return ''; }
 }
 
-// ==================== DOCUMENT VIEWER ====================
+// ==================== UNIVERSAL DOCUMENT VIEWER ====================
 window.openDocumentViewer = function(url, title) {
     if (!url) { showToast('Nta file ihari', 'warning'); return; }
     document.getElementById('documentViewerTitle').textContent = title || 'Document';
@@ -1423,51 +1393,58 @@ window.openDocumentViewer = function(url, title) {
     const ext = getFileExtension(url);
     const encoded = encodeURIComponent(url);
     if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) {
-        content.innerHTML = `<div style="text-align:center;padding:20px;"><img src="${url}" style="max-width:100%;max-height:70vh;border-radius:8px;" alt="${escapeHtml(title)}"></div>`;
+        content.innerHTML = `<div style="text-align:center;padding:20px;"><img src="${url}" style="max-width:100%;max-height:70vh;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);" alt="${escapeHtml(title)}"></div>`;
     } else if (ext === 'pdf') {
         content.innerHTML = `<iframe src="${url}#toolbar=1&navpanes=0" style="width:100%;height:70vh;border:none;background:white;"></iframe>`;
     } else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) {
         const gviewer = `https://docs.google.com/viewer?url=${encoded}&embedded=true`;
-        content.innerHTML = `<iframe src="${gviewer}" style="width:100%;height:65vh;border:none;background:white;border-radius:8px;"></iframe>`;
+        content.innerHTML = `
+            <div style="text-align:center;padding:10px;background:rgba(56,189,248,0.08);font-size:12.5px;color:var(--text-secondary);border-radius:8px;margin-bottom:8px;">
+                <i class="fas fa-info-circle"></i> Iyi file (${ext.toUpperCase()}) irakoreshwa na Google Docs Viewer.
+            </div>
+            <iframe src="${gviewer}" style="width:100%;height:65vh;border:none;background:white;border-radius:8px;"></iframe>
+        `;
     } else if (['mp4', 'webm', 'ogg', 'mov'].includes(ext)) {
         content.innerHTML = `<video controls src="${url}" style="width:100%;max-height:70vh;border-radius:8px;background:#000;"></video>`;
     } else if (['mp3', 'wav'].includes(ext)) {
         content.innerHTML = `<div style="text-align:center;padding:40px;"><audio controls src="${url}" style="width:100%;max-width:500px;"></audio></div>`;
+    } else if (['txt', 'md', 'csv', 'json', 'xml', 'html'].includes(ext)) {
+        content.innerHTML = `<iframe src="${url}" style="width:100%;height:70vh;border:none;background:white;border-radius:8px;"></iframe>`;
     } else {
-        content.innerHTML = `<div style="text-align:center;padding:60px 20px;"><i class="fas fa-file" style="font-size:60px;color:var(--primary);opacity:0.5;margin-bottom:16px;display:block;"></i><h3>Ntibishobora kubonwa</h3><a href="${url}" download target="_blank" class="btn btn-primary"><i class="fas fa-download"></i> Kurura</a></div>`;
+        content.innerHTML = `
+            <div style="text-align:center;padding:60px 20px;">
+                <i class="fas fa-file" style="font-size:60px;color:var(--primary);opacity:0.5;margin-bottom:16px;display:block;"></i>
+                <h3 style="margin-bottom:8px;">Ubwoko bwa file ntabwo bushobora kubonwa hano</h3>
+                <a href="${url}" download target="_blank" class="btn btn-primary"><i class="fas fa-download"></i> Kurura</a>
+            </div>
+        `;
     }
     document.getElementById('documentViewerModal').classList.add('active');
 };
 window.viewNote = window.openDocumentViewer;
 
 // ==================== AUTH ====================
-function showAuthError(msg) {
+function showAuthError(msg) { 
     const el = document.getElementById('authError');
     const txt = document.getElementById('authErrorText');
     if (el && txt) { txt.textContent = msg; el.classList.add('active'); }
 }
-
 window.handleLogin = async function() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
+    const email = document.getElementById('loginEmail').value.trim(), password = document.getElementById('loginPassword').value;
     const btn = document.getElementById('loginBtn');
     if (!email || !password) { showAuthError('Uzuza email na ijambo'); return; }
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turakwinjiza...</span>';
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        showAuthError('Email cyangwa ijambo sibyo');
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>INJIRA</span>';
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Turakwinjiza...</span>';
+    try { await signInWithEmailAndPassword(auth, email, password); }
+    catch (error) { 
+        showAuthError('Email cyangwa ijambo sibyo'); 
+        btn.disabled = false; 
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>INJIRA</span>'; 
     }
 };
-
 window.openForgotPasswordModal = function() {
     document.getElementById('forgotEmailInput').value = '';
     document.getElementById('forgotPasswordModal').classList.add('active');
 };
-
 window.sendResetPasswordEmail = async function() {
     const email = document.getElementById('forgotEmailInput').value.trim();
     if (!email) { showToast('Andika email yawe', 'error'); return; }
@@ -1477,7 +1454,6 @@ window.sendResetPasswordEmail = async function() {
         closeModal('forgotPasswordModal');
     } catch (error) { showToast('Ntibyakunze. Reba email yawe.', 'error'); }
 };
-
 window.forceLogout = async function() {
     if (!confirm('Ufite icyizere ko ushaka gusohoka?')) return;
     try { await signOut(auth); } catch(e) { console.error(e); }
@@ -1506,7 +1482,6 @@ onAuthStateChanged(auth, async (user) => {
         if (appEl) appEl.classList.add('active');
         setupUserUI();
         await loadAllData();
-        await loadCandidates();
         startRealtimeListeners();
     } else {
         currentUser = null;
@@ -1519,67 +1494,36 @@ onAuthStateChanged(auth, async (user) => {
 
 function setupUserUI() {
     if (!currentUserData) return;
-    
     const name = currentUserData.name || currentUserData.fullName || currentUserData.email || 'User';
     const role = currentUserData.role || 'student';
     const photo = currentUserData.photoURL || currentUserData.photo || '';
-    
-    // --- 1. Kuvugurura Header ---
     const headerAvatar = document.getElementById('headerAvatar');
     const headerName = document.getElementById('headerName');
     const headerRole = document.getElementById('headerRole');
-    
     if (headerAvatar) headerAvatar.innerHTML = photo ? `<img src="${photo}" alt="">` : getInitials(name);
     if (headerName) headerName.textContent = name.split(' ')[0];
-    if (headerRole) { 
-        headerRole.textContent = role.replace('_', ' ').toUpperCase(); 
-        headerRole.className = 'role-badge ' + role; 
-    }
-
-    // --- 2. Kuvugurura Profile Page ---
+    if (headerRole) { headerRole.textContent = role.replace('_', ' ').toUpperCase(); headerRole.className = 'role-badge ' + role; }
     const profileName = document.getElementById('profileName');
     const profileEmail = document.getElementById('profileEmail');
     const profileRole = document.getElementById('profileRoleBadge');
     const profileAvatar = document.getElementById('profileAvatarContent');
     const profileInputName = document.getElementById('profileInputName');
     const profileInputPhone = document.getElementById('profileInputPhone');
-    
     if (profileName) profileName.textContent = name;
     if (profileEmail) profileEmail.textContent = currentUserData.email || '';
-    if (profileRole) { 
-        profileRole.textContent = role.replace('_', ' ').toUpperCase(); 
-        profileRole.className = 'role-badge ' + role; 
-    }
+    if (profileRole) { profileRole.textContent = role.replace('_', ' ').toUpperCase(); profileRole.className = 'role-badge ' + role; }
     if (profileAvatar) profileAvatar.innerHTML = photo ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : getInitials(name);
     if (profileInputName) profileInputName.value = name;
     if (profileInputPhone) profileInputPhone.value = currentUserData.phone || '';
-
-    // --- 3. Kwerekana cyangwa guhisha amabuto (Nav Items) ---
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = (role === 'admin' || role === 'super_admin' || role === 'teacher') ? '' : 'none';
     });
-    document.querySelectorAll('.student-only').forEach(el => { 
-        el.style.display = (role === 'student') ? '' : 'none'; 
-    });
-    document.querySelectorAll('.super-admin-only').forEach(el => { 
-        el.style.display = (role === 'super_admin') ? '' : 'none'; 
-    });
-
-    // --- 4. GUFUNGURA AMAKURU Y'AMATORA (IKIBUZO GIKOMEYE) ---
-    // Turabaza Firestore niba hari abakandida, hanyuma tujye kuri Dashboard
-    loadCandidates().then(() => {
-        if (role === 'student') {
-            switchPage('my-dashboard', null);
-        } else {
-            switchPage('dashboard', null);
-        }
-    }).catch((err) => {
-        console.error("Ikibazo mu gufungura abakandida:", err);
-        // Niba habaye ikibazo, tujye kuri dashboard ariko tugaragaze ikibazo
-        if (role === 'student') switchPage('my-dashboard', null);
-        else switchPage('dashboard', null);
-    });
+    document.querySelectorAll('.student-only').forEach(el => { el.style.display = (role === 'student') ? '' : 'none'; });
+    document.querySelectorAll('.super-admin-only').forEach(el => { el.style.display = (role === 'super_admin') ? '' : 'none'; });
+    if (role === 'student') switchPage('my-dashboard', null);
+    else switchPage('dashboard', null);
 }
+
 // ==================== THEME ====================
 window.toggleTheme = function() {
     const html = document.documentElement;
@@ -1596,7 +1540,6 @@ window.toggleTheme = function() {
         if (icon) icon.className = 'fas fa-sun';
     }
 };
-
 (function() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const icon = document.getElementById('themeIcon');
@@ -1619,12 +1562,6 @@ window.switchPage = function(pageId, clickedEl) {
     }
     const sidebar = document.getElementById('sidebar');
     if (sidebar && window.innerWidth <= 900) sidebar.classList.remove('open');
-
-    // ==== AMATORA: Fungura abakandida ====
-    if (pageId === 'elections' || pageId === 'manage-elections') {
-        loadCandidates();
-    }
-
     const renderMap = {
         'dashboard': renderDashboardStats,
         'my-dashboard': renderStudentDashboard,
@@ -1695,8 +1632,7 @@ async function loadAllData() {
 window.refreshAllData = async function() {
     showToast('Turakuvana amakuru mashya...', 'info');
     await loadAllData();
-    await loadCandidates();
-    showToast(`Yavanywe! Notes: ${notes.length} | Exams: ${exams.length} | Courses: ${courses.length} | Candidates: ${candidates.length}`, 'success');
+    showToast(`Yavanywe! Notes: ${notes.length} | Exams: ${exams.length} | Courses: ${courses.length} | Lessons: ${lessons.length}`, 'success');
     const activePage = document.querySelector('.page.active');
     if (activePage) {
         const pageId = activePage.id.replace('page-', '');
@@ -1704,11 +1640,20 @@ window.refreshAllData = async function() {
             'my-notes': renderMyNotes, 'my-exams': renderMyExams,
             'my-courses': renderMyCourses, 'manage-notes': renderManageNotes,
             'manage-exams': renderManageExams, 'manage-courses': renderManageCourses,
-            'manage-lessons': renderManageLessons, 'elections': renderElections,
-            'manage-elections': renderManageElections
+            'manage-lessons': renderManageLessons
         };
         if (map[pageId]) map[pageId]();
     }
+};
+
+// ==================== DEBUG ====================
+window.debugFirebaseData = async function() {
+    console.log('=== FIREBASE DATA CHECK ===');
+    console.log('📚 NOTES (' + notes.length + '):', notes);
+    console.log('📝 EXAMS (' + exams.length + '):', exams);
+    console.log('🎓 COURSES (' + courses.length + '):', courses);
+    console.log('📖 LESSONS (' + lessons.length + '):', lessons);
+    showToast(`📚 ${notes.length} Notes | 📝 ${exams.length} Exams | 🎓 ${courses.length} Courses | 📖 ${lessons.length} Lessons`, 'info');
 };
 
 function updateCounters() {
@@ -1773,331 +1718,6 @@ function renderDashboardStats() {
     }
 }
 
-// ==================== ====================================================
-// ==================== AMATORA (ELECTIONS) — CODE YUZUYE ================
-// ==================== ====================================================
-
-const POSITION_ICONS = {
-    'President': '👑', 'Vice President': '⭐', 'Secretary General': '📋',
-    'Treasurer': '💰', 'Academic Minister': '📚', 'Sports Minister': '⚽',
-    'Discipline Minister': '🛡️', 'Information Minister': '📢',
-    'Health Minister': '🏥', 'Gender Minister': '👥'
-};
-
-async function loadCandidates() {
-    try {
-        const snap = await getDocs(collection(db, 'candidates'));
-        candidates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        console.log("✅ Abakandida bafunze:", candidates.length);
-        populatePositionFilters();
-        renderElections();
-        renderManageElections();
-    } catch (err) {
-        console.error("❌ Load candidates error:", err);
-        showToast("Ntibishobotse gufungura abakandida", "error");
-    }
-}
-
-function populatePositionFilters() {
-    const positions = [...new Set(candidates.map(c => c.position).filter(Boolean))];
-    ["electionsFilterPosition", "manageElectionsFilterPosition"].forEach(id => {
-        const sel = document.getElementById(id);
-        if (!sel) return;
-        const current = sel.value;
-        sel.innerHTML = '<option value="">🏛️ Imyanya: Yose</option>';
-        positions.forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p;
-            opt.textContent = p;
-            sel.appendChild(opt);
-        });
-        sel.value = current;
-    });
-}
-function renderElections() {
-    const grid = document.getElementById("electionsGrid");
-    if (!grid) return;
-
-    const filterPos = document.getElementById("electionsFilterPosition")?.value || "";
-    const search = (document.getElementById("electionsSearch")?.value || "").toLowerCase().trim();
-
-    let filtered = candidates.filter(c => {
-        if (filterPos && c.position !== filterPos) return false;
-        if (search) {
-            const hay = `${c.studentName || c.fullName || ""} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
-            if (!hay.includes(search)) return false;
-        }
-        return true;
-    });
-
-    if (filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-            <div class="icon"><i class="fas fa-vote-yea"></i></div>
-            <h3>Nta bakandida barabonetse</h3>
-            <p>Nta muntu wiyamamaje ku myanya ubu.</p>
-        </div>`;
-        return;
-    }
-
-    grid.innerHTML = filtered.map(c => {
-        const name = c.studentName || c.fullName || "Umukandida";
-        const photo = c.photo || c.photoUrl;
-        const num = c.studentNumber || c.classLevel || "—";
-        
-        // Reba niba uyu munyeshuri yamaze gutora
-        const hasVoted = c.voters && c.voters.includes(currentUser?.uid);
-
-        return `
-        <div class="course-card">
-            <div class="course-cover" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);">
-                ${photo ? `<img src="${photo}" alt="${escapeHtml(name)}">` : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
-                <span class="course-level-badge">${POSITION_ICONS[c.position] || ''} ${escapeHtml(c.position || "Umukandida")}</span>
-            </div>
-            <div class="course-body">
-                <h3>${escapeHtml(name)}</h3>
-                <div class="course-subject"><i class="fas fa-id-card"></i> ${escapeHtml(num)}</div>
-                ${c.slogan ? `<p style="font-size:12.5px;color:var(--text-secondary);font-style:italic;margin-bottom:10px;">"${escapeHtml(c.slogan)}"</p>` : ""}
-                
-                <div class="course-footer" style="flex-direction: column; align-items: stretch; gap: 8px; border-top: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || "2025")}</span>
-                        <span class="btn btn-sm btn-outline" onclick="event.stopPropagation(); viewCandidateDetails('${c.id}')" style="padding: 4px 10px; font-size: 11px;"><i class="fas fa-eye"></i> Reba</span>
-                    </div>
-                    
-                    <!-- Buto ya Tora -->
-                    ${hasVoted 
-                        ? `<button class="btn btn-sm" style="background:var(--success); color:white; width:100%; cursor:not-allowed;" disabled><i class="fas fa-check"></i> Wamaze Gutora</button>`
-                        : `<button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); voteForCandidate('${c.id}')" style="width:100%;"><i class="fas fa-vote-yea"></i> Tora Uyu</button>`
-                    }
-                </div>
-            </div>
-        </div>`;
-    }).join("");
-}
-function renderManageElections() {
-    const grid = document.getElementById("manageElectionsGrid");
-    if (!grid) return;
-
-    const filterPos = document.getElementById("manageElectionsFilterPosition")?.value || "";
-    const search = (document.getElementById("manageElectionsSearch")?.value || "").toLowerCase().trim();
-
-    let filtered = candidates.filter(c => {
-        if (filterPos && c.position !== filterPos) return false;
-        if (search) {
-            const hay = `${c.studentName || c.fullName || ""} ${c.position || ""} ${c.slogan || ""}`.toLowerCase();
-            if (!hay.includes(search)) return false;
-        }
-        return true;
-    });
-
-    if (filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-            <div class="icon"><i class="fas fa-vote-yea"></i></div>
-            <h3>Nta bakandida barabonetse</h3>
-            <p>Kanda "Ongeraho Umukandida" kugira utangire.</p>
-        </div>`;
-        return;
-    }
-
-    // Gutondeka abakandida ukurikije amajwi (uwatsinze mbere)
-    filtered.sort((a, b) => (b.votes || 0) - (a.votes || 0));
-
-    grid.innerHTML = filtered.map(c => {
-        const name = c.studentName || c.fullName || "—";
-        const photo = c.photo || c.photoUrl;
-        const num = c.studentNumber || "—";
-        const voteCount = c.votes || 0;
-
-        return `
-        <div class="course-card">
-            <div class="course-cover" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);">
-                ${photo ? `<img src="${photo}" alt="${escapeHtml(name)}">` : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
-                <span class="course-level-badge">${POSITION_ICONS[c.position] || ''} ${escapeHtml(c.position || "")}</span>
-                <!-- Badge y'amajwi -->
-                <span class="course-level-badge" style="left: auto; right: 12px; background: var(--success); font-size: 13px; padding: 5px 14px;">
-                    <i class="fas fa-vote-yea"></i> ${voteCount} Amajwi
-                </span>
-            </div>
-            <div class="course-body">
-                <h3>${escapeHtml(name)}</h3>
-                <div class="course-subject"><i class="fas fa-id-card"></i> ${escapeHtml(num)}</div>
-                <div class="course-footer">
-                    <div class="course-meta"><span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || "2025")}</span></div>
-                    <div style="display:flex;gap:6px;">
-                        <button class="action-btn edit" onclick="event.stopPropagation();editCandidate('${c.id}')" title="Hindura"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete" onclick="event.stopPropagation();deleteCandidate('${c.id}')" title="Siba"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    }).join("");
-}
-window.openAddCandidateModal = function(editId = null) {
-    const modal = document.getElementById('addCandidateModal');
-    modal.classList.add('active');
-
-    document.getElementById('candidateEditId').value = editId || '';
-    document.getElementById('candidateModalTitle').textContent = editId ? 'Hindura Umukandida' : 'Ongeraho Umukandida';
-
-    const sel = document.getElementById('candidateStudentId');
-    sel.innerHTML = '<option value="">-- Hitamo Umunyeshuri --</option>';
-    students.filter(s => s.status !== 'pending').forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.id;
-        opt.textContent = `${s.name || s.fullName || "—"} (${s.number || s.studentNumber || "—"})`;
-        sel.appendChild(opt);
-    });
-
-    document.getElementById('candidatePhotoPreviewContainer').innerHTML = '<div class="photo-placeholder"><i class="fas fa-camera"></i></div>';
-    pendingCandidatePhoto = null;
-
-    if (editId) {
-        const c = candidates.find(x => x.id === editId);
-        if (c) {
-            sel.value = c.studentId || '';
-            document.getElementById('candidatePosition').value = c.position || '';
-            document.getElementById('candidateManifesto').value = c.manifesto || '';
-            document.getElementById('candidateSlogan').value = c.slogan || '';
-            document.getElementById('candidateElectionYear').value = c.electionYear || '2025';
-            const photo = c.photo || c.photoUrl;
-            if (photo) {
-                document.getElementById('candidatePhotoPreviewContainer').innerHTML = `<img src="${photo}" class="photo-preview" alt="">`;
-            }
-        }
-    } else {
-        sel.value = '';
-        document.getElementById('candidatePosition').value = '';
-        document.getElementById('candidateManifesto').value = '';
-        document.getElementById('candidateSlogan').value = '';
-        document.getElementById('candidateElectionYear').value = '2025';
-    }
-};
-
-window.previewCandidatePhoto = function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { showToast("Ifoto ni nini cyane (max 5MB)", "error"); return; }
-    pendingCandidatePhoto = file;
-    const reader = new FileReader();
-    reader.onload = e => {
-        document.getElementById('candidatePhotoPreviewContainer').innerHTML = `<img src="${e.target.result}" class="photo-preview" alt="">`;
-    };
-    reader.readAsDataURL(file);
-};
-
-window.fillCandidateFromStudent = function() { /* Auto-fill niba bishaka */ };
-
-window.saveCandidate = async function() {
-    const editId = document.getElementById('candidateEditId').value;
-    const studentId = document.getElementById('candidateStudentId').value;
-    const position = document.getElementById('candidatePosition').value;
-    const manifesto = document.getElementById('candidateManifesto').value.trim();
-    const slogan = document.getElementById('candidateSlogan').value.trim();
-    const electionYear = document.getElementById('candidateElectionYear').value.trim() || '2025';
-
-    if (!studentId) { showToast('Hitamo umunyeshuri', 'warning'); return; }
-    if (!position) { showToast('Hitamo icyo ari kwiyamamariza', 'warning'); return; }
-
-    const student = students.find(s => s.id === studentId);
-    if (!student) { showToast('Umunyeshuri ntabonetse', 'error'); return; }
-
-    if (!editId) {
-        const existing = candidates.find(c => c.studentId === studentId && c.position === position);
-        if (existing) { showToast('Uyu munyeshuri asanzwe yiyamamaje kuri iyi myanya', 'warning'); return; }
-    }
-
-    try {
-        showToast('Birakoreshwa...', 'info');
-        let photoUrl = null;
-        if (pendingCandidatePhoto) photoUrl = await uploadToCloudinary(pendingCandidatePhoto);
-
-        const data = {
-            studentId,
-            studentName: student.name || student.fullName || '',
-            fullName: student.name || student.fullName || '',
-            studentNumber: student.number || student.studentNumber || '',
-            classLevel: student.level || student.classLevel || '',
-            studentLevel: student.level || '',
-            studentDepartment: student.department || '',
-            position, manifesto, slogan, electionYear,
-            photo: photoUrl || (editId ? candidates.find(c => c.id === editId)?.photo : null),
-            photoUrl: photoUrl || (editId ? candidates.find(c => c.id === editId)?.photoUrl : null),
-            updatedAt: serverTimestamp()
-        };
-
-        if (editId) {
-            await updateDoc(doc(db, 'candidates', editId), data);
-            showToast("Umukandida yahinduwe neza", "success");
-        } else {
-            data.createdAt = serverTimestamp();
-            data.addedBy = currentUser?.uid || '';
-            await addDoc(collection(db, 'candidates'), data);
-            showToast("Umukandida yongeweho neza", "success");
-            if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-        }
-
-        closeModal('addCandidateModal');
-        await loadCandidates();
-    } catch (err) {
-        console.error("❌ Save candidate error:", err);
-        showToast("Ikibazo mu kubika: " + err.message, "error");
-    }
-};
-
-window.editCandidate = function(id) {
-    openAddCandidateModal(id);
-};
-
-window.deleteCandidate = async function(id) {
-    if (!confirm("Urashaka gusiba uyu mukandida?")) return;
-    try {
-        await deleteDoc(doc(db, 'candidates', id));
-        showToast("Umukandida yasibwe", "success");
-        await loadCandidates();
-    } catch (err) {
-        console.error(err);
-        showToast("Ntibyakunze gusiba", "error");
-    }
-};
-
-window.viewCandidateDetails = function(id) {
-    const c = candidates.find(x => x.id === id);
-    if (!c) return;
-    const name = c.studentName || c.fullName || '—';
-    const photo = c.photo || c.photoUrl;
-    const html = `
-        <div style="text-align:center;margin-bottom:18px;">
-            ${photo
-                ? `<img src="${photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);">`
-                : `<div class="member-profile-avatar" style="margin:0 auto;"><i class="fas fa-user-tie"></i></div>`}
-            <h3 style="margin-top:14px;font-size:20px;font-weight:800;">${escapeHtml(name)}</h3>
-            <p style="color:var(--primary);font-weight:700;margin-top:4px;">${POSITION_ICONS[c.position] || ''} ${escapeHtml(c.position || "")}</p>
-            ${c.slogan ? `<p style="font-style:italic;color:var(--text-secondary);margin-top:8px;">"${escapeHtml(c.slogan)}"</p>` : ""}
-        </div>
-        <div style="background:var(--bg);padding:16px;border-radius:12px;margin-bottom:14px;">
-            <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
-                <strong>Nimero:</strong> ${escapeHtml(c.studentNumber || "—")}<br>
-                <strong>Umwaka:</strong> ${escapeHtml(c.studentLevel || c.classLevel || "—")}<br>
-                <strong>Ishami:</strong> ${escapeHtml(c.studentDepartment || "—")}<br>
-                <strong>Umwaka w'Amatora:</strong> ${escapeHtml(c.electionYear || "2025")}
-            </p>
-        </div>
-        ${c.manifesto ? `<div style="background:var(--bg);padding:16px;border-radius:12px;">
-            <h4 style="font-size:14px;font-weight:700;margin-bottom:8px;"><i class="fas fa-scroll"></i> Manifesto</h4>
-            <p style="white-space:pre-wrap;font-size:14px;line-height:1.7;">${escapeHtml(c.manifesto)}</p>
-        </div>` : ""}
-        <div class="modal-actions" style="margin-top:18px;">
-            <button class="btn btn-outline" onclick="closeModal('candidateDetailsModal')">Funga</button>
-        </div>
-    `;
-    document.getElementById('candidateDetailsContent').innerHTML = html;
-    document.getElementById('candidateDetailsModal').classList.add('active');
-};
-
-// ==================== ====================================================
-// ==================== REMAINING RENDER FUNCTIONS =======================
-// ==================== ====================================================
-
 function renderStudentDashboard() {
     if (!currentUserData) return;
     const name = currentUserData.name || currentUserData.fullName || currentUserData.email || 'Umunyeshuri';
@@ -2124,9 +1744,19 @@ function renderStudentDashboard() {
     if (subContainer) {
         const myPayment = notesPayments.find(p => p.studentId === currentUser?.uid || p.studentEmail === currentUser?.email);
         if (!myPayment || myPayment.status === 'pending') {
-            subContainer.innerHTML = `<div class="readonly-notice" style="border-left-color:var(--warning);background:rgba(245,158,11,0.08);"><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i><span>Ntabwo wishyuye amasomo. <a onclick="document.getElementById('paymentModal').classList.add('active')" style="color:var(--warning);font-weight:700;cursor:pointer;text-decoration:underline;">Kanda hano kwishyura</a></span></div>`;
+            subContainer.innerHTML = `
+                <div class="readonly-notice" style="border-left-color: var(--warning); background: rgba(245,158,11,0.08);">
+                    <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                    <span>Ntabwo wishyuye amasomo. <a onclick="document.getElementById('paymentModal').classList.add('active')" style="color: var(--warning); font-weight:700; cursor:pointer; text-decoration:underline;">Kanda hano kwishyura</a></span>
+                </div>
+            `;
         } else if (myPayment.status === 'approved') {
-            subContainer.innerHTML = `<div class="readonly-notice" style="border-left-color:var(--success);background:rgba(16,185,129,0.08);"><i class="fas fa-check-circle" style="color:var(--success);"></i><span>Wishyuye amasomo neza!</span></div>`;
+            subContainer.innerHTML = `
+                <div class="readonly-notice" style="border-left-color: var(--success); background: rgba(16,185,129,0.08);">
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    <span>Wishyuye amasomo neza!</span>
+                </div>
+            `;
         }
     }
     const annList = document.getElementById('studentDashboardAnnouncementsList');
@@ -2161,11 +1791,13 @@ function renderStudentDashboard() {
     }
 }
 
+// ==================== MANAGE NOTES ====================
 function renderManageNotes() {
     const list = document.getElementById('manageNotesList');
     if (!list) return;
     const totalEl = document.getElementById('manageNotesTotal');
     if (totalEl) totalEl.textContent = notes.length;
+    
     if (notes.length === 0) {
         list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-book-open"></i></div><h3>Nta masomo yashyizweho</h3><p style="margin-top:8px;">Kanda "Ongeraho Isomo" ubanze.</p></div>';
         return;
@@ -2192,8 +1824,12 @@ function renderManageNotes() {
 
 window.deleteNote = async function(id) {
     if (!confirm('Siba iyi somo?')) return;
-    try { await deleteDoc(doc(db, 'notes', id)); notes = notes.filter(n => n.id !== id); renderManageNotes(); showToast('Yasibwe', 'success'); }
-    catch(e) { showToast('Ikibazo', 'error'); }
+    try {
+        await deleteDoc(doc(db, 'notes', id));
+        notes = notes.filter(n => n.id !== id);
+        renderManageNotes();
+        showToast('Yasibwe', 'success');
+    } catch(e) { showToast('Ikibazo', 'error'); }
 };
 
 window.openAddNoteModal = function() {
@@ -2211,7 +1847,9 @@ window.previewNoteFile = function(event) {
     if (!file) return;
     pendingNoteFile = file;
     const preview = document.getElementById('noteFilePreview');
-    if (preview) preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+    if (preview) {
+        preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+    }
 };
 
 window.saveNote = async function() {
@@ -2219,13 +1857,17 @@ window.saveNote = async function() {
     const subject = document.getElementById('noteSubject').value.trim();
     const level = document.getElementById('noteLevel').value;
     const description = document.getElementById('noteDescription').value.trim();
-    if (!title || !subject) { showToast("Uzuza umutwe n'isomo", 'error'); return; }
+    if (!title || !subject) { showToast('Uzuza umutwe n\'isomo', 'error'); return; }
     if (!pendingNoteFile) { showToast('Shyiraho file (PDF, Word, PPT)', 'error'); return; }
     try {
         showToast('Turahindura file...', 'info');
         const isRaw = !pendingNoteFile.type.startsWith('image/');
         const fileUrl = await uploadToCloudinary(pendingNoteFile, isRaw);
-        const data = { title, subject, level, description, fileUrl, fileName: pendingNoteFile.name, uploadedBy: currentUserData.name || currentUser.email };
+        const data = {
+            title, subject, level, description, fileUrl,
+            fileName: pendingNoteFile.name,
+            uploadedBy: currentUserData.name || currentUser.email
+        };
         const ref = await addDoc(collection(db, 'notes'), { ...data, createdAt: serverTimestamp() });
         notes.push({ id: ref.id, ...data });
         showToast('Isomo ryashyizweho!', 'success');
@@ -2235,24 +1877,40 @@ window.saveNote = async function() {
     } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); }
 };
 
+// ==================== MY NOTES (SHOW ALL) ====================
 function renderMyNotes() {
     const list = document.getElementById('myNotesList');
     if (!list) return;
     const totalEl = document.getElementById('myNotesTotal');
     if (totalEl) totalEl.textContent = notes.length;
+    
     const filterLevel = document.getElementById('myNotesFilterLevel')?.value || '';
     const search = (document.getElementById('myNotesSearch')?.value || '').toLowerCase();
+    
+    // SHOW ALL NOTES by default (no automatic level filter)
     let filtered = [...notes];
     if (filterLevel) filtered = filtered.filter(n => n.level === filterLevel);
-    if (search) filtered = filtered.filter(n => (n.title || '').toLowerCase().includes(search) || (n.subject || '').toLowerCase().includes(search));
+    if (search) {
+        filtered = filtered.filter(n => 
+            (n.title || '').toLowerCase().includes(search) ||
+            (n.subject || '').toLowerCase().includes(search) ||
+            (n.level || '').toLowerCase().includes(search)
+        );
+    }
     filtered.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    
     if (filtered.length === 0) {
-        list.innerHTML = `<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo abonetse</h3></div>`;
+        list.innerHTML = `<div class="empty-state">
+            <div class="icon"><i class="fas fa-book"></i></div>
+            <h3>Nta masomo abonetse</h3>
+            <p style="margin-top:8px;">${notes.length > 0 ? `Hari amasomo ${notes.length} ariko ntahuye na filter.` : 'Nta masomo yashyizweho.'}</p>
+        </div>`;
         return;
     }
     list.innerHTML = filtered.map(n => {
         const fileUrl = n.fileUrl || n.url || '';
         const ext = getFileExtension(fileUrl);
+        const fileIcon = ext === 'pdf' ? 'fa-file-pdf' : ['doc','docx'].includes(ext) ? 'fa-file-word' : ['ppt','pptx'].includes(ext) ? 'fa-file-powerpoint' : ['jpg','jpeg','png','gif'].includes(ext) ? 'fa-file-image' : 'fa-file';
         return `
         <div class="saved-card">
             <div class="saved-info">
@@ -2260,31 +1918,37 @@ function renderMyNotes() {
                 <div class="saved-meta">
                     <span><i class="fas fa-book"></i> ${escapeHtml(n.subject || '-')}</span>
                     <span><i class="fas fa-layer-group"></i> ${escapeHtml(n.level || 'Byose')}</span>
+                    ${fileUrl ? `<span><i class="fas ${fileIcon}"></i> ${ext.toUpperCase()}</span>` : ''}
                 </div>
             </div>
             <div class="saved-actions">
                 ${fileUrl ? `
-                    <button class="action-btn view" onclick="openDocumentViewer('${fileUrl.replace(/'/g, "\\'")}', '${escapeHtml(n.title || 'Isomo').replace(/'/g, "\\'")}')"><i class="fas fa-eye"></i></button>
-                    <a class="action-btn view" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i></a>
-                ` : ''}
+                    <button class="action-btn view" title="Reba" onclick="openDocumentViewer('${fileUrl.replace(/'/g, "\\'")}', '${escapeHtml(n.title || 'Isomo').replace(/'/g, "\\'")}')"><i class="fas fa-eye"></i></button>
+                    <a class="action-btn view" title="Kurura" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i></a>
+                ` : '<span style="font-size:12px;color:var(--text-secondary);">Nta file</span>'}
             </div>
         </div>
     `}).join('');
 }
 
+// ==================== MANAGE EXAMS ====================
 function renderManageExams() {
     const list = document.getElementById('manageExamsList');
     if (!list) return;
     const totalEl = document.getElementById('manageExamsTotal');
     if (totalEl) totalEl.textContent = exams.length;
+    
     const filterType = document.getElementById('manageExamsFilterType')?.value || '';
     const search = (document.getElementById('manageExamsSearch')?.value || '').toLowerCase();
     let filtered = [...exams];
     if (filterType) filtered = filtered.filter(e => e.type === filterType);
-    if (search) filtered = filtered.filter(e => (e.title || '').toLowerCase().includes(search) || (e.subject || '').toLowerCase().includes(search));
+    if (search) filtered = filtered.filter(e => 
+        (e.title || '').toLowerCase().includes(search) || (e.subject || '').toLowerCase().includes(search)
+    );
     filtered.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    
     if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini</h3></div>';
+        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini</h3><p style="margin-top:8px;">Kanda "Ongeraho Ikizamini" ubanze.</p></div>';
         return;
     }
     list.innerHTML = filtered.map(e => {
@@ -2297,20 +1961,25 @@ function renderManageExams() {
                     <span><i class="fas fa-book"></i> ${escapeHtml(e.subject || '-')}</span>
                     <span class="exam-type-badge ${(e.type || 'cat').toLowerCase()}">${(e.type || 'CAT').toUpperCase()}</span>
                     <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                    ${e.level ? `<span><i class="fas fa-layer-group"></i> ${escapeHtml(e.level)}</span>` : ''}
                 </div>
             </div>
             <div class="saved-actions">
                 ${fileUrl ? `<button class="action-btn view" onclick="openDocumentViewer('${fileUrl.replace(/'/g, "\\'")}', '${escapeHtml(e.title || 'Ikizamini').replace(/'/g, "\\'")}')"><i class="fas fa-eye"></i></button>` : ''}
                 <button class="action-btn delete" onclick="deleteExam('${e.id}')"><i class="fas fa-trash"></i></button>
             </div>
-        </div>`;
-    }).join('');
+        </div>
+    `}).join('');
 }
 
 window.deleteExam = async function(id) {
     if (!confirm('Siba iki kizamini?')) return;
-    try { await deleteDoc(doc(db, 'exams', id)); exams = exams.filter(e => e.id !== id); renderManageExams(); showToast('Yasibwe', 'success'); }
-    catch(e) { showToast('Ikibazo', 'error'); }
+    try {
+        await deleteDoc(doc(db, 'exams', id));
+        exams = exams.filter(e => e.id !== id);
+        renderManageExams();
+        showToast('Yasibwe', 'success');
+    } catch(e) { showToast('Ikibazo', 'error'); }
 };
 
 window.openAddExamModal = function() {
@@ -2328,7 +1997,9 @@ window.previewExamFile = function(event) {
     if (!file) return;
     pendingExamFile = file;
     const preview = document.getElementById('examFilePreview');
-    if (preview) preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+    if (preview) {
+        preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+    }
 };
 
 window.saveExam = async function() {
@@ -2345,7 +2016,12 @@ window.saveExam = async function() {
             const isRaw = !pendingExamFile.type.startsWith('image/');
             fileUrl = await uploadToCloudinary(pendingExamFile, isRaw);
         }
-        const data = { title, subject, type, date, level, fileUrl, fileName: pendingExamFile?.name || '', authorId: currentUser.uid, authorName: currentUserData.name || currentUser.email };
+        const data = {
+            title, subject, type, date, level, fileUrl,
+            fileName: pendingExamFile?.name || '',
+            authorId: currentUser.uid,
+            authorName: currentUserData.name || currentUser.email
+        };
         const ref = await addDoc(collection(db, 'exams'), { ...data, createdAt: serverTimestamp() });
         exams.push({ id: ref.id, ...data });
         showToast('Ikizamini cyashyizweho!', 'success');
@@ -2355,27 +2031,40 @@ window.saveExam = async function() {
     } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); }
 };
 
+// ==================== MY EXAMS (SHOW ALL) ====================
 function renderMyExams() {
     const list = document.getElementById('myExamsList');
     if (!list) return;
     const totalEl = document.getElementById('myExamsTotal');
     if (totalEl) totalEl.textContent = exams.length;
+    
     const filterType = document.getElementById('myExamsFilterType')?.value || '';
     const filterLevel = document.getElementById('myExamsFilterLevel')?.value || '';
     const search = (document.getElementById('myExamsSearch')?.value || '').toLowerCase();
+    
+    // SHOW ALL EXAMS by default (no automatic level filter)
     let filtered = [...exams];
     if (filterType) filtered = filtered.filter(e => e.type === filterType);
     if (filterLevel) filtered = filtered.filter(e => e.level === filterLevel);
-    if (search) filtered = filtered.filter(e => ((e.title || '') + ' ' + (e.subject || '')).toLowerCase().includes(search));
+    if (search) filtered = filtered.filter(e => 
+        ((e.title || '') + ' ' + (e.subject || '')).toLowerCase().includes(search)
+    );
     filtered.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    
     if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-alt"></i></div><h3>Nta bizamini abonetse</h3></div>';
+        list.innerHTML = `<div class="empty-state">
+            <div class="icon"><i class="fas fa-file-alt"></i></div>
+            <h3>Nta bizamini abonetse</h3>
+            <p style="margin-top:8px;">${exams.length > 0 ? `Hari ibizamini ${exams.length} ariko ntahuye na filter.` : 'Nta bizamini byashyizweho.'}</p>
+        </div>`;
         return;
     }
     list.innerHTML = filtered.map(e => {
         const fileUrl = e.fileUrl || e.url || '';
         const safeTitle = (e.title || 'Ikizamini').replace(/'/g, "\\'");
         const safeUrl = fileUrl.replace(/'/g, "\\'");
+        const ext = getFileExtension(fileUrl);
+        const fileIcon = ext === 'pdf' ? 'fa-file-pdf' : ['doc','docx'].includes(ext) ? 'fa-file-word' : ['ppt','pptx'].includes(ext) ? 'fa-file-powerpoint' : ['jpg','jpeg','png','gif'].includes(ext) ? 'fa-file-image' : 'fa-file';
         return `
         <div class="exam-card">
             <div style="flex:1;min-width:200px;">
@@ -2384,16 +2073,22 @@ function renderMyExams() {
                     <span><i class="fas fa-book"></i> ${escapeHtml(e.subject || '-')}</span>
                     <span class="exam-type-badge ${(e.type || 'cat').toLowerCase()}">${(e.type || 'CAT').toUpperCase()}</span>
                     <span><i class="fas fa-calendar"></i> ${formatDate(e.date)}</span>
+                    ${e.level ? `<span><i class="fas fa-layer-group"></i> ${escapeHtml(e.level)}</span>` : ''}
+                    ${fileUrl ? `<span><i class="fas ${fileIcon}"></i> ${ext.toUpperCase()}</span>` : '<span style="color:var(--warning);"><i class="fas fa-exclamation-triangle"></i> Nta file</span>'}
                 </div>
             </div>
             <div class="saved-actions">
-                ${fileUrl ? `<button class="btn btn-sm btn-primary" onclick="openDocumentViewer('${safeUrl}', '${safeTitle}')"><i class="fas fa-eye"></i> Reba</button>
-                <a class="btn btn-sm btn-success" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i> Kurura</a>` : ''}
+                ${fileUrl ? `
+                    <button class="btn btn-sm btn-primary" onclick="openDocumentViewer('${safeUrl}', '${safeTitle}')"><i class="fas fa-eye"></i> Reba</button>
+                    <a class="btn btn-sm btn-success" href="${fileUrl}" download target="_blank"><i class="fas fa-download"></i> Kurura</a>
+                ` : ''}
             </div>
-        </div>`;
+        </div>
+        `;
     }).join('');
 }
 
+// ==================== STUDENTS, TEACHERS, USERS ====================
 function renderStudents() {
     const body = document.getElementById('studentsBody');
     if (!body) return;
@@ -2466,8 +2161,16 @@ function renderGrades() {
     if (grades.length === 0) { body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;">Nta manota</td></tr>'; return; }
     body.innerHTML = grades.map(g => {
         const grade = g.marks >= 80 ? 'A' : g.marks >= 70 ? 'B' : g.marks >= 60 ? 'C' : g.marks >= 50 ? 'D' : 'F';
-        return `<tr><td>${escapeHtml(g.studentName || '-')}</td><td>${escapeHtml(g.subject || '-')}</td><td><strong>${g.marks || 0}</strong>%</td><td><span class="grade-badge grade-${grade}">${grade}</span></td><td>${formatDate(g.date)}</td><td><button class="action-btn delete" onclick="deleteGrade('${g.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
-    }).join('');
+        return `
+        <tr>
+            <td>${escapeHtml(g.studentName || '-')}</td>
+            <td>${escapeHtml(g.subject || '-')}</td>
+            <td><strong>${g.marks || 0}</strong>%</td>
+            <td><span class="grade-badge grade-${grade}">${grade}</span></td>
+            <td>${formatDate(g.date)}</td>
+            <td><button class="action-btn delete" onclick="deleteGrade('${g.id}')"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `}).join('');
 }
 
 function renderDepartments() {
@@ -2497,7 +2200,12 @@ function renderPhotos() {
     if (!grid) return;
     const withPhotos = students.filter(s => s.photoURL || s.photo);
     if (withPhotos.length === 0) { grid.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-camera"></i></div><h3>Nta mafoto</h3></div>'; return; }
-    grid.innerHTML = withPhotos.map(s => `<div class="photo-card"><img src="${s.photoURL || s.photo}" alt="${escapeHtml(s.name)}"><div class="photo-info"><div class="photo-name">${escapeHtml(s.name || '-')}</div></div></div>`).join('');
+    grid.innerHTML = withPhotos.map(s => `
+        <div class="photo-card">
+            <img src="${s.photoURL || s.photo}" alt="${escapeHtml(s.name)}">
+            <div class="photo-info"><div class="photo-name">${escapeHtml(s.name || '-')}</div></div>
+        </div>
+    `).join('');
 }
 
 function renderAnnouncements() {
@@ -2507,7 +2215,12 @@ function renderAnnouncements() {
     const sorted = [...announcements].sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
     list.innerHTML = sorted.map(a => `
         <div class="announcement-card priority-${a.priority || 'normal'}">
-            <div class="announcement-header"><div class="announcement-title-row"><h3 class="announcement-title">${escapeHtml(a.title || '-')}</h3><span class="priority-badge ${a.priority || 'normal'}">${(a.priority || 'normal').toUpperCase()}</span></div></div>
+            <div class="announcement-header">
+                <div class="announcement-title-row">
+                    <h3 class="announcement-title">${escapeHtml(a.title || '-')}</h3>
+                    <span class="priority-badge ${a.priority || 'normal'}">${(a.priority || 'normal').toUpperCase()}</span>
+                </div>
+            </div>
             <div class="announcement-meta"><span><i class="fas fa-clock"></i> ${timeAgo(a.createdAt?.toDate?.() || a.createdAt || new Date())}</span></div>
             <div class="announcement-content">${escapeHtml(a.content || '')}</div>
             ${(currentUserData?.role !== 'student') ? `<div class="announcement-actions"><button class="btn btn-sm btn-danger" onclick="deleteAnnouncement('${a.id}')"><i class="fas fa-trash"></i> Siba</button></div>` : ''}
@@ -2530,7 +2243,10 @@ function renderNotesPayments() {
                 </div>
             </div>
             <div class="saved-actions">
-                ${p.status === 'pending' ? `<button class="btn btn-sm btn-success" onclick="approvePayment('${p.id}')"><i class="fas fa-check"></i> Emeza</button><button class="btn btn-sm btn-danger" onclick="rejectPayment('${p.id}')"><i class="fas fa-times"></i> Hakanira</button>` : `<span class="role-badge ${p.status === 'approved' ? 'admin' : 'super_admin'}">${(p.status || 'pending').toUpperCase()}</span>`}
+                ${p.status === 'pending' ? `
+                    <button class="btn btn-sm btn-success" onclick="approvePayment('${p.id}')"><i class="fas fa-check"></i> Emeza</button>
+                    <button class="btn btn-sm btn-danger" onclick="rejectPayment('${p.id}')"><i class="fas fa-times"></i> Hakanira</button>
+                ` : `<span class="role-badge ${p.status === 'approved' ? 'admin' : 'super_admin'}">${(p.status || 'pending').toUpperCase()}</span>`}
             </div>
         </div>
     `).join('');
@@ -2550,7 +2266,13 @@ function renderPosts() {
         const liked = (p.likes || []).includes(currentUser?.uid);
         return `
         <div class="post-card">
-            <div class="post-header"><div class="post-avatar">${getInitials(p.authorName)}</div><div class="post-author"><div class="name">${escapeHtml(p.authorName || '-')}</div><div class="time">${timeAgo(p.createdAt?.toDate?.() || p.createdAt || new Date())}</div></div></div>
+            <div class="post-header">
+                <div class="post-avatar">${getInitials(p.authorName)}</div>
+                <div class="post-author">
+                    <div class="name">${escapeHtml(p.authorName || '-')}</div>
+                    <div class="time">${timeAgo(p.createdAt?.toDate?.() || p.createdAt || new Date())}</div>
+                </div>
+            </div>
             <div class="post-content">${escapeHtml(p.caption || '')}</div>
             ${p.mediaUrl ? (p.type === 'video' ? `<div class="post-media"><video controls src="${p.mediaUrl}"></video></div>` : `<div class="post-media"><img src="${p.mediaUrl}" alt=""></div>`) : ''}
             <div class="post-actions">
@@ -2558,43 +2280,104 @@ function renderPosts() {
                 <button class="post-action-btn" onclick="openComments('${p.id}')"><i class="fas fa-comment"></i> ${(p.comments || []).length}</button>
                 ${currentUserData?.role !== 'student' ? `<button class="post-action-btn" onclick="deletePost('${p.id}')"><i class="fas fa-trash"></i></button>` : ''}
             </div>
-        </div>`;
-    }).join('');
+        </div>
+    `}).join('');
 }
 
 function renderManageCourses() {
     const list = document.getElementById('manageCoursesList');
     if (!list) return;
     if (courses.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-graduation-cap"></i></div><h3>Nta courses</h3></div>'; return; }
-    list.innerHTML = courses.map(c => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title || '-')}</h3><div class="saved-meta"><span><i class="fas fa-book"></i> ${escapeHtml(c.subject || '-')}</span><span><i class="fas fa-layer-group"></i> ${escapeHtml(c.level || '-')}</span></div></div><div class="saved-actions"><button class="action-btn edit" onclick="editCourse('${c.id}')"><i class="fas fa-edit"></i></button><button class="action-btn delete" onclick="deleteCourse('${c.id}')"><i class="fas fa-trash"></i></button></div></div>`).join('');
+    list.innerHTML = courses.map(c => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-graduation-cap"></i> ${escapeHtml(c.title || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-book"></i> ${escapeHtml(c.subject || '-')}</span>
+                    <span><i class="fas fa-layer-group"></i> ${escapeHtml(c.level || '-')}</span>
+                    <span><i class="fas fa-chalkboard-teacher"></i> ${escapeHtml(c.teacher || '-')}</span>
+                </div>
+            </div>
+            <div class="saved-actions">
+                <button class="action-btn edit" onclick="editCourse('${c.id}')"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete" onclick="deleteCourse('${c.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderManageLessons() {
     const list = document.getElementById('manageLessonsList');
     if (!list) return;
     if (lessons.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-list-ol"></i></div><h3>Nta lessons</h3></div>'; return; }
-    list.innerHTML = lessons.map(l => { const course = courses.find(c => c.id === l.courseId); return `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-book"></i> ${escapeHtml(l.title || '-')}</h3><div class="saved-meta"><span><i class="fas fa-graduation-cap"></i> ${escapeHtml(course?.title || '-')}</span></div></div><div class="saved-actions"><button class="action-btn delete" onclick="deleteLesson('${l.id}')"><i class="fas fa-trash"></i></button></div></div>`; }).join('');
+    list.innerHTML = lessons.map(l => {
+        const course = courses.find(c => c.id === l.courseId);
+        return `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-book"></i> ${escapeHtml(l.title || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-graduation-cap"></i> ${escapeHtml(course?.title || '-')}</span>
+                    <span><i class="fas fa-clock"></i> ${l.duration || 0} min</span>
+                </div>
+            </div>
+            <div class="saved-actions"><button class="action-btn delete" onclick="deleteLesson('${l.id}')"><i class="fas fa-trash"></i></button></div>
+        </div>
+    `}).join('');
 }
 
 function renderManageAssignments() {
     const list = document.getElementById('manageAssignmentsList');
     if (!list) return;
     if (assignments.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-tasks"></i></div><h3>Nta mirimo</h3></div>'; return; }
-    list.innerHTML = assignments.map(a => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-tasks"></i> ${escapeHtml(a.title || '-')}</h3><div class="saved-meta"><span><i class="fas fa-calendar"></i> ${formatDate(a.dueDate)}</span></div></div><div class="saved-actions"><button class="action-btn delete" onclick="deleteAssignment('${a.id}')"><i class="fas fa-trash"></i></button></div></div>`).join('');
+    list.innerHTML = assignments.map(a => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-tasks"></i> ${escapeHtml(a.title || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-calendar"></i> ${formatDate(a.dueDate)}</span>
+                    <span><i class="fas fa-layer-group"></i> ${escapeHtml(a.level || '-')}</span>
+                </div>
+            </div>
+            <div class="saved-actions"><button class="action-btn delete" onclick="deleteAssignment('${a.id}')"><i class="fas fa-trash"></i></button></div>
+        </div>
+    `).join('');
 }
 
 function renderManageQuizzes() {
     const list = document.getElementById('manageQuizzesList');
     if (!list) return;
     if (quizzes.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-question-circle"></i></div><h3>Nta quizzes</h3></div>'; return; }
-    list.innerHTML = quizzes.map(q => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-question-circle"></i> ${escapeHtml(q.title || '-')}</h3><div class="saved-meta"><span><i class="fas fa-clock"></i> ${q.timeLimit || 0} min</span></div></div><div class="saved-actions"><button class="action-btn delete" onclick="deleteQuiz('${q.id}')"><i class="fas fa-trash"></i></button></div></div>`).join('');
+    list.innerHTML = quizzes.map(q => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-question-circle"></i> ${escapeHtml(q.title || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-clock"></i> ${q.timeLimit || 0} min</span>
+                    <span><i class="fas fa-list"></i> ${(q.questions || []).length} ibibazo</span>
+                </div>
+            </div>
+            <div class="saved-actions"><button class="action-btn delete" onclick="deleteQuiz('${q.id}')"><i class="fas fa-trash"></i></button></div>
+        </div>
+    `).join('');
 }
 
 function renderManageLive() {
     const list = document.getElementById('manageLiveList');
     if (!list) return;
     if (liveClasses.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-video"></i></div><h3>Nta live classes</h3></div>'; return; }
-    list.innerHTML = liveClasses.map(l => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-video"></i> ${escapeHtml(l.title || '-')}</h3><div class="saved-meta"><span><i class="fas fa-calendar"></i> ${formatDate(l.dateTime)}</span></div></div><div class="saved-actions"><button class="action-btn delete" onclick="deleteLive('${l.id}')"><i class="fas fa-trash"></i></button></div></div>`).join('');
+    list.innerHTML = liveClasses.map(l => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-video"></i> ${escapeHtml(l.title || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-calendar"></i> ${formatDate(l.dateTime)}</span>
+                    <a href="${l.meetingLink || '#'}" target="_blank" style="color:var(--primary);"><i class="fas fa-link"></i> Kwinjira</a>
+                </div>
+            </div>
+            <div class="saved-actions"><button class="action-btn delete" onclick="deleteLive('${l.id}')"><i class="fas fa-trash"></i></button></div>
+        </div>
+    `).join('');
 }
 
 function renderMyCourses() {
@@ -2602,11 +2385,35 @@ function renderMyCourses() {
     if (!grid) return;
     const filterLevel = document.getElementById('myCoursesFilterLevel')?.value || '';
     const search = (document.getElementById('myCoursesSearch')?.value || '').toLowerCase();
+    // SHOW ALL COURSES by default
     let filtered = [...courses];
     if (filterLevel) filtered = filtered.filter(c => c.level === filterLevel);
-    if (search) filtered = filtered.filter(c => (c.title || '').toLowerCase().includes(search) || (c.subject || '').toLowerCase().includes(search));
+    if (search) filtered = filtered.filter(c => 
+        (c.title || '').toLowerCase().includes(search) || (c.subject || '').toLowerCase().includes(search)
+    );
     if (filtered.length === 0) { grid.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-graduation-cap"></i></div><h3>Nta masomo</h3></div>'; return; }
-    grid.innerHTML = filtered.map(c => { const cLessons = lessons.filter(l => l.courseId === c.id); return `<div class="course-card" onclick="openCoursePlayer('${c.id}')"><div class="course-cover"><div class="course-cover-icon"><i class="fas fa-graduation-cap"></i></div><span class="course-level-badge">${escapeHtml(c.level || '-')}</span></div><div class="course-body"><h3>${escapeHtml(c.title || '-')}</h3><div class="course-subject"><i class="fas fa-book"></i> ${escapeHtml(c.subject || '-')}</div><div class="course-footer"><div class="course-meta"><span><i class="fas fa-list-ol"></i> ${cLessons.length} lessons</span></div></div></div></div>`; }).join('');
+    grid.innerHTML = filtered.map(c => {
+        const cLessons = lessons.filter(l => l.courseId === c.id);
+        const progress = Math.min(100, Math.round(Math.random() * 80) + 10);
+        return `
+        <div class="course-card" onclick="openCoursePlayer('${c.id}')">
+            <div class="course-cover">
+                <div class="course-cover-icon"><i class="fas fa-graduation-cap"></i></div>
+                <span class="course-level-badge">${escapeHtml(c.level || '-')}</span>
+            </div>
+            <div class="course-body">
+                <h3>${escapeHtml(c.title || '-')}</h3>
+                <div class="course-subject"><i class="fas fa-book"></i> ${escapeHtml(c.subject || '-')}</div>
+                <div class="course-progress">
+                    <div class="course-progress-bar"><div class="course-progress-fill" style="width:${progress}%;"></div></div>
+                    <div class="course-progress-text"><span>Progress</span><span>${progress}%</span></div>
+                </div>
+                <div class="course-footer">
+                    <div class="course-meta"><span><i class="fas fa-list-ol"></i> ${cLessons.length} lessons</span></div>
+                </div>
+            </div>
+        </div>
+    `}).join('');
 }
 
 window.openCoursePlayer = function(courseId) {
@@ -2627,7 +2434,13 @@ function renderPlayerLessonList() {
     const list = document.getElementById('playerLessonList');
     if (!list) return;
     if (courseLessons.length === 0) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:13px;">Nta masomo</div>'; return; }
-    list.innerHTML = courseLessons.map((l, i) => `<div class="lesson-list-item ${i === currentLessonIndex ? 'active' : ''}" onclick="loadLesson(${i})"><div class="lesson-num">${i + 1}</div><div class="lesson-title">${escapeHtml(l.title || '-')}</div></div>`).join('');
+    list.innerHTML = courseLessons.map((l, i) => `
+        <div class="lesson-list-item ${i === currentLessonIndex ? 'active' : ''}" onclick="loadLesson(${i})">
+            <div class="lesson-num">${i + 1}</div>
+            <div class="lesson-title">${escapeHtml(l.title || '-')}</div>
+            <div class="lesson-duration">${l.duration || 0}min</div>
+        </div>
+    `).join('');
 }
 
 function renderCurrentLesson() {
@@ -2636,7 +2449,22 @@ function renderCurrentLesson() {
     if (courseLessons.length === 0) { container.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-book"></i></div><h3>Nta masomo</h3></div>'; return; }
     const lesson = courseLessons[currentLessonIndex];
     const embed = getYouTubeEmbed(lesson.videoUrl);
-    container.innerHTML = `<div class="lesson-viewer"><div class="lesson-viewer-header"><h2>${currentLessonIndex + 1}. ${escapeHtml(lesson.title || '-')}</h2></div><div class="lesson-viewer-body">${embed ? `<div class="lesson-video-container"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}<div class="lesson-content-text">${escapeHtml(lesson.content || 'Nta bisobanuro.')}</div><div class="lesson-nav"><button class="btn btn-outline" onclick="loadLesson(${currentLessonIndex - 1})" ${currentLessonIndex === 0 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Ibanza</button><button class="btn btn-primary" onclick="loadLesson(${currentLessonIndex + 1})" ${currentLessonIndex === courseLessons.length - 1 ? 'disabled' : ''}>Ikurikira <i class="fas fa-arrow-right"></i></button></div></div></div>`;
+    container.innerHTML = `
+        <div class="lesson-viewer">
+            <div class="lesson-viewer-header">
+                <h2>${currentLessonIndex + 1}. ${escapeHtml(lesson.title || '-')}</h2>
+                <span class="class-badge">${lesson.duration || 0} min</span>
+            </div>
+            <div class="lesson-viewer-body">
+                ${embed ? `<div class="lesson-video-container"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
+                <div class="lesson-content-text">${escapeHtml(lesson.content || 'Nta bisobanuro.')}</div>
+                <div class="lesson-nav">
+                    <button class="btn btn-outline" onclick="loadLesson(${currentLessonIndex - 1})" ${currentLessonIndex === 0 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i> Ibanza</button>
+                    <button class="btn btn-primary" onclick="loadLesson(${currentLessonIndex + 1})" ${currentLessonIndex === courseLessons.length - 1 ? 'disabled' : ''}>Ikurikira <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    `;
     const progress = courseLessons.length > 0 ? Math.round(((currentLessonIndex + 1) / courseLessons.length) * 100) : 0;
     const fill = document.getElementById('playerProgressFill');
     const txt = document.getElementById('playerProgressText');
@@ -2654,20 +2482,47 @@ window.loadLesson = function(index) {
 function renderMyAssignments() {
     const list = document.getElementById('myAssignmentsList');
     if (!list) return;
-    const filtered = assignments;
+    const myLevel = currentUserData?.level || '';
+    const filtered = assignments.filter(a => !myLevel || !a.level || a.level === myLevel);
     if (filtered.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-tasks"></i></div><h3>Nta mirimo</h3></div>'; return; }
     list.innerHTML = filtered.map(a => {
         const submitted = submissions.find(s => s.assignmentId === a.id && s.studentId === currentUser?.uid);
         const isOverdue = a.dueDate && new Date(a.dueDate) < new Date() && !submitted;
-        return `<div class="assignment-card ${submitted ? 'submitted' : isOverdue ? 'overdue' : ''}"><div class="assignment-header"><h3>${escapeHtml(a.title || '-')}</h3></div><div class="assignment-meta"><span><i class="fas fa-calendar"></i> ${formatDate(a.dueDate)}</span></div><div class="assignment-desc">${escapeHtml(a.description || '')}</div>${submitted ? '<span class="role-badge admin">YAROEREJWE</span>' : `<button class="btn btn-primary btn-sm" onclick="openSubmitAssignment('${a.id}')"><i class="fas fa-upload"></i> Ohereza</button>`}</div>`;
-    }).join('');
+        return `
+        <div class="assignment-card ${submitted ? 'submitted' : isOverdue ? 'overdue' : ''}">
+            <div class="assignment-header">
+                <h3>${escapeHtml(a.title || '-')}</h3>
+                <span class="class-badge">${escapeHtml(a.level || '-')}</span>
+            </div>
+            <div class="assignment-meta">
+                <span><i class="fas fa-calendar"></i> ${formatDate(a.dueDate)}</span>
+                <span><i class="fas fa-clock"></i> ${isOverdue ? 'Yarenze igihe' : submitted ? 'Yoherejwe' : 'Igihe kiracyahari'}</span>
+            </div>
+            <div class="assignment-desc">${escapeHtml(a.description || '')}</div>
+            ${submitted ? '<span class="role-badge admin">YAROEREJWE</span>' : `<button class="btn btn-primary btn-sm" onclick="openSubmitAssignment('${a.id}')"><i class="fas fa-upload"></i> Ohereza</button>`}
+        </div>
+    `}).join('');
 }
 
 function renderMyQuizzes() {
     const list = document.getElementById('myQuizzesList');
     if (!list) return;
     if (quizzes.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-question-circle"></i></div><h3>Nta bibazo</h3></div>'; return; }
-    list.innerHTML = quizzes.map(q => `<div class="quiz-card"><div class="quiz-header"><h4>${escapeHtml(q.title || '-')}</h4></div><div class="quiz-meta"><span><i class="fas fa-clock"></i> ${q.timeLimit || 15} min</span></div><button class="btn btn-primary btn-sm" onclick="startQuiz('${q.id}')"><i class="fas fa-play"></i> Tangira</button></div>`).join('');
+    list.innerHTML = quizzes.map(q => {
+        const course = courses.find(c => c.id === q.courseId);
+        return `
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <h4>${escapeHtml(q.title || '-')}</h4>
+                <span class="class-badge">${(q.questions || []).length} ibibazo</span>
+            </div>
+            <div class="quiz-meta">
+                <span><i class="fas fa-graduation-cap"></i> ${escapeHtml(course?.title || '-')}</span>
+                <span><i class="fas fa-clock"></i> ${q.timeLimit || 15} min</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="startQuiz('${q.id}')"><i class="fas fa-play"></i> Tangira</button>
+        </div>
+    `}).join('');
 }
 
 window.startQuiz = function(quizId) {
@@ -2675,9 +2530,28 @@ window.startQuiz = function(quizId) {
     if (!quiz) return;
     currentQuiz = quiz;
     quizAnswers = {};
+    const course = courses.find(c => c.id === quiz.courseId);
     document.getElementById('quizTakerTitle').textContent = '❓ ' + (quiz.title || 'Quiz');
+    document.getElementById('quizTakerSubject').textContent = course?.title || '-';
     const container = document.getElementById('quizTakerContainer');
-    container.innerHTML = `<div class="settings-card"><div>${(quiz.questions || []).map((q, qi) => `<div class="quiz-question"><div class="question-text">${qi + 1}. ${escapeHtml(q.question || '')}</div>${(q.options || []).map((opt, oi) => `<div class="quiz-option" onclick="selectQuizOption(${qi}, ${oi}, this)"><div class="option-letter">${String.fromCharCode(65 + oi)}</div><span>${escapeHtml(opt)}</span></div>`).join('')}</div>`).join('')}<button class="btn btn-primary" onclick="submitQuiz()"><i class="fas fa-check"></i> Ohereza</button></div></div>`;
+    container.innerHTML = `
+        <div class="settings-card">
+            <div id="quizQuestionsArea">
+                ${(quiz.questions || []).map((q, qi) => `
+                    <div class="quiz-question">
+                        <div class="question-text">${qi + 1}. ${escapeHtml(q.question || '')}</div>
+                        ${(q.options || []).map((opt, oi) => `
+                            <div class="quiz-option" onclick="selectQuizOption(${qi}, ${oi}, this)">
+                                <div class="option-letter">${String.fromCharCode(65 + oi)}</div>
+                                <span>${escapeHtml(opt)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('')}
+                <button class="btn btn-primary" onclick="submitQuiz()"><i class="fas fa-check"></i> Ohereza Ibisubizo</button>
+            </div>
+        </div>
+    `;
     switchPage('quiz-taker', null);
 };
 
@@ -2696,10 +2570,24 @@ window.submitQuiz = async function() {
     const score = questions.length > 0 ? Math.round((correct / questions.length) * 100) : 0;
     const passed = score >= 50;
     try {
-        await addDoc(collection(db, 'quizResults'), { quizId: currentQuiz.id, quizTitle: currentQuiz.title, studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email, score, total: questions.length, correct, passed, createdAt: serverTimestamp() });
+        await addDoc(collection(db, 'quizResults'), {
+            quizId: currentQuiz.id, quizTitle: currentQuiz.title,
+            studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email,
+            score, total: questions.length, correct, passed, createdAt: serverTimestamp()
+        });
     } catch(e) { console.error(e); }
     const container = document.getElementById('quizTakerContainer');
-    container.innerHTML = `<div class="quiz-result"><div class="score-circle ${passed ? 'pass' : 'fail'}"><div class="score-num">${score}%</div><div class="score-label">${correct}/${questions.length}</div></div><h3>${passed ? '🎉 Waratsinze!' : '😢 Ntibyagenze neza'}</h3><button class="btn btn-primary" onclick="switchPage('my-quizzes', null)"><i class="fas fa-arrow-left"></i> Subira</button></div>`;
+    container.innerHTML = `
+        <div class="quiz-result">
+            <div class="score-circle ${passed ? 'pass' : 'fail'}">
+                <div class="score-num">${score}%</div>
+                <div class="score-label">${correct}/${questions.length}</div>
+            </div>
+            <h3>${passed ? '🎉 Waratsinze!' : '😢 Ntibyagenze neza'}</h3>
+            <p style="color:var(--text-secondary);margin-bottom:20px;">${passed ? 'Wabonye amanota meza!' : 'Gerageza ukundi.'}</p>
+            <button class="btn btn-primary" onclick="switchPage('my-quizzes', null)"><i class="fas fa-arrow-left"></i> Subira</button>
+        </div>
+    `;
     if (passed) { try { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); } catch(e) {} }
 };
 
@@ -2707,147 +2595,968 @@ function renderLiveClasses() {
     const list = document.getElementById('liveClassesList');
     if (!list) return;
     if (liveClasses.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-video"></i></div><h3>Nta live classes</h3></div>'; return; }
-    list.innerHTML = liveClasses.map(l => { const course = courses.find(c => c.id === l.courseId); return `<div class="live-class-card"><h3>🎥 ${escapeHtml(l.title || '-')} <span class="live-indicator"><span class="dot"></span> LIVE</span></h3><div class="live-meta"><span><i class="fas fa-graduation-cap"></i> ${escapeHtml(course?.title || '-')}</span><span><i class="fas fa-calendar"></i> ${formatDate(l.dateTime)}</span></div><a class="btn btn-live" href="${l.meetingLink || '#'}" target="_blank"><i class="fas fa-video"></i> Injira</a></div>`; }).join('');
+    list.innerHTML = liveClasses.map(l => {
+        const course = courses.find(c => c.id === l.courseId);
+        return `
+        <div class="live-class-card">
+            <h3>🎥 ${escapeHtml(l.title || '-')} <span class="live-indicator"><span class="dot"></span> LIVE</span></h3>
+            <div class="live-meta">
+                <span><i class="fas fa-graduation-cap"></i> ${escapeHtml(course?.title || '-')}</span>
+                <span><i class="fas fa-calendar"></i> ${formatDate(l.dateTime)}</span>
+            </div>
+            <a class="btn btn-live" href="${l.meetingLink || '#'}" target="_blank"><i class="fas fa-video"></i> Injira mu Live</a>
+        </div>
+    `}).join('');
 }
 
 function renderSubmissions() {
     const list = document.getElementById('submissionsList');
     if (!list) return;
     if (submissions.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-inbox"></i></div><h3>Nta mirimo yoherejwe</h3></div>'; return; }
-    list.innerHTML = submissions.map(s => `<div class="saved-card"><div class="saved-info"><h3><i class="fas fa-user"></i> ${escapeHtml(s.studentName || '-')}</h3><div class="saved-meta"><span><i class="fas fa-tasks"></i> ${escapeHtml(s.assignmentTitle || '-')}</span></div><p style="font-size:13px;color:var(--text-secondary);margin-top:8px;">${escapeHtml(s.text || '')}</p></div></div>`).join('');
+    list.innerHTML = submissions.map(s => `
+        <div class="saved-card">
+            <div class="saved-info">
+                <h3><i class="fas fa-user"></i> ${escapeHtml(s.studentName || '-')}</h3>
+                <div class="saved-meta">
+                    <span><i class="fas fa-tasks"></i> ${escapeHtml(s.assignmentTitle || '-')}</span>
+                    <span><i class="fas fa-clock"></i> ${formatDate(s.createdAt?.toDate?.() || s.createdAt || new Date())}</span>
+                </div>
+                <p style="font-size:13px;color:var(--text-secondary);margin-top:8px;">${escapeHtml(s.text || '')}</p>
+            </div>
+        </div>
+    `).join('');
 }
 
 // ==================== DELETE ACTIONS ====================
-window.deleteStudent = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'students', id)); students = students.filter(s => s.id !== id); renderStudents(); updateCounters(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.approveStudent = async function(id) { try { await updateDoc(doc(db, 'students', id), { status: 'active' }); students = students.map(s => s.id === id ? { ...s, status: 'active' } : s); renderPending(); updateCounters(); showToast('Yemejwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.rejectStudent = async function(id) { if (!confirm('Hakanira?')) return; try { await deleteDoc(doc(db, 'students', id)); students = students.filter(s => s.id !== id); renderPending(); updateCounters(); showToast('Yahakaniwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteTeacher = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'teachers', id)); teachers = teachers.filter(t => t.id !== id); renderTeachers(); updateCounters(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteUser = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'users', id)); users = users.filter(u => u.id !== id); renderUsers(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteGrade = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'grades', id)); grades = grades.filter(g => g.id !== id); renderGrades(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteAnnouncement = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'announcements', id)); announcements = announcements.filter(a => a.id !== id); renderAnnouncements(); updateCounters(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deletePost = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'posts', id)); posts = posts.filter(p => p.id !== id); renderPosts(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteCourse = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'courses', id)); courses = courses.filter(c => c.id !== id); renderManageCourses(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteLesson = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'lessons', id)); lessons = lessons.filter(l => l.id !== id); renderManageLessons(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteAssignment = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'assignments', id)); assignments = assignments.filter(a => a.id !== id); renderManageAssignments(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteQuiz = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'quizzes', id)); quizzes = quizzes.filter(q => q.id !== id); renderManageQuizzes(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.deleteLive = async function(id) { if (!confirm('Siba?')) return; try { await deleteDoc(doc(db, 'liveClasses', id)); liveClasses = liveClasses.filter(l => l.id !== id); renderManageLive(); showToast('Yasibwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.approvePayment = async function(id) { try { await updateDoc(doc(db, 'notesPayments', id), { status: 'approved' }); notesPayments = notesPayments.map(p => p.id === id ? { ...p, status: 'approved' } : p); renderNotesPayments(); updateCounters(); showToast('Yemejwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.rejectPayment = async function(id) { try { await updateDoc(doc(db, 'notesPayments', id), { status: 'rejected' }); notesPayments = notesPayments.map(p => p.id === id ? { ...p, status: 'rejected' } : p); renderNotesPayments(); updateCounters(); showToast('Yahakaniwe', 'success'); } catch(e) { showToast('Ikibazo', 'error'); } };
+window.deleteStudent = async function(id) {
+    if (!confirm('Siba uyu munyeshuri?')) return;
+    try { await deleteDoc(doc(db, 'students', id)); students = students.filter(s => s.id !== id); renderStudents(); updateCounters(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.approveStudent = async function(id) {
+    try { await updateDoc(doc(db, 'students', id), { status: 'active' }); students = students.map(s => s.id === id ? { ...s, status: 'active' } : s); renderPending(); updateCounters(); showToast('Yemejwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.rejectStudent = async function(id) {
+    if (!confirm('Hakanira uyu?')) return;
+    try { await deleteDoc(doc(db, 'students', id)); students = students.filter(s => s.id !== id); renderPending(); updateCounters(); showToast('Yahakaniwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteTeacher = async function(id) {
+    if (!confirm('Siba uyu mwarimu?')) return;
+    try { await deleteDoc(doc(db, 'teachers', id)); teachers = teachers.filter(t => t.id !== id); renderTeachers(); updateCounters(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteUser = async function(id) {
+    if (!confirm('Siba uyu?')) return;
+    try { await deleteDoc(doc(db, 'users', id)); users = users.filter(u => u.id !== id); renderUsers(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteGrade = async function(id) {
+    if (!confirm('Siba aya manota?')) return;
+    try { await deleteDoc(doc(db, 'grades', id)); grades = grades.filter(g => g.id !== id); renderGrades(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteAnnouncement = async function(id) {
+    if (!confirm('Siba itangazo?')) return;
+    try { await deleteDoc(doc(db, 'announcements', id)); announcements = announcements.filter(a => a.id !== id); renderAnnouncements(); updateCounters(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deletePost = async function(id) {
+    if (!confirm('Siba iyi post?')) return;
+    try { await deleteDoc(doc(db, 'posts', id)); posts = posts.filter(p => p.id !== id); renderPosts(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteCourse = async function(id) {
+    if (!confirm('Siba iyi course?')) return;
+    try { await deleteDoc(doc(db, 'courses', id)); courses = courses.filter(c => c.id !== id); renderManageCourses(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteLesson = async function(id) {
+    if (!confirm('Siba iyi lesson?')) return;
+    try { await deleteDoc(doc(db, 'lessons', id)); lessons = lessons.filter(l => l.id !== id); renderManageLessons(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteAssignment = async function(id) {
+    if (!confirm('Siba iyi assignment?')) return;
+    try { await deleteDoc(doc(db, 'assignments', id)); assignments = assignments.filter(a => a.id !== id); renderManageAssignments(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteQuiz = async function(id) {
+    if (!confirm('Siba iyi quiz?')) return;
+    try { await deleteDoc(doc(db, 'quizzes', id)); quizzes = quizzes.filter(q => q.id !== id); renderManageQuizzes(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.deleteLive = async function(id) {
+    if (!confirm('Siba iyi live?')) return;
+    try { await deleteDoc(doc(db, 'liveClasses', id)); liveClasses = liveClasses.filter(l => l.id !== id); renderManageLive(); showToast('Yasibwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.approvePayment = async function(id) {
+    try { await updateDoc(doc(db, 'notesPayments', id), { status: 'approved' }); notesPayments = notesPayments.map(p => p.id === id ? { ...p, status: 'approved' } : p); renderNotesPayments(); updateCounters(); showToast('Yemejwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
+window.rejectPayment = async function(id) {
+    try { await updateDoc(doc(db, 'notesPayments', id), { status: 'rejected' }); notesPayments = notesPayments.map(p => p.id === id ? { ...p, status: 'rejected' } : p); renderNotesPayments(); updateCounters(); showToast('Yahakaniwe', 'success'); }
+    catch(e) { showToast('Ikibazo', 'error'); }
+};
 
 // ==================== MODAL OPENERS ====================
 window.openAddStudentModal = function() { document.getElementById('addStudentModal').classList.add('active'); };
 window.openAddTeacherModal = function() { document.getElementById('addTeacherModal').classList.add('active'); };
 window.openAddAdminModal = function() { document.getElementById('addAdminModal').classList.add('active'); };
-window.openAddGradeModal = function() { const sel = document.getElementById('gradeStudentId'); if (sel) sel.innerHTML = '<option value="">-- Hitamo --</option>' + students.map(s => `<option value="${s.id}" data-name="${escapeHtml(s.name || '')}">${escapeHtml(s.name || '-')}</option>`).join(''); document.getElementById('addGradeModal').classList.add('active'); };
-window.openAddAnnouncementModal = function() { document.getElementById('annTitle').value = ''; document.getElementById('annContent').value = ''; document.getElementById('addAnnouncementModal').classList.add('active'); };
-window.openAddPostModal = function() { document.getElementById('postCaption').value = ''; document.getElementById('postMediaPreview').innerHTML = ''; newPostMedia = null; document.getElementById('addPostModal').classList.add('active'); };
-window.openQRRegisterModal = function() { const container = document.getElementById('qr-register-code'); if (!container) return; container.innerHTML = ''; const url = window.location.origin + '/student-register.html'; try { new QRCode(container, { text: url, width: 200, height: 200 }); } catch(e) { container.textContent = url; } document.getElementById('qrRegisterModal').classList.add('active'); };
-window.openNotificationsModal = function() { const list = document.getElementById('notificationsList'); if (!list) return; if (notifications.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">Nta notifications</div>'; else list.innerHTML = notifications.map(n => `<div class="notification-item"><div class="notification-content"><div class="title">${escapeHtml(n.title || '-')}</div><div class="body">${escapeHtml(n.body || '')}</div><div class="time">${timeAgo(n.createdAt?.toDate?.() || n.createdAt || new Date())}</div></div></div>`).join(''); document.getElementById('notificationsModal').classList.add('active'); };
-window.markAllAnnouncementsAsRead = function() { showToast('Amatangazo yose asomwe', 'success'); };
+window.openAddGradeModal = function() {
+    const sel = document.getElementById('gradeStudentId');
+    if (sel) sel.innerHTML = '<option value="">-- Hitamo --</option>' + students.map(s => `<option value="${s.id}" data-name="${escapeHtml(s.name || '')}">${escapeHtml(s.name || '-')}</option>`).join('');
+    document.getElementById('addGradeModal').classList.add('active');
+};
+window.openAddAnnouncementModal = function() {
+    document.getElementById('annTitle').value = '';
+    document.getElementById('annContent').value = '';
+    document.getElementById('addAnnouncementModal').classList.add('active');
+};
+window.openAddPostModal = function() {
+    document.getElementById('postCaption').value = '';
+    document.getElementById('postMediaPreview').innerHTML = '';
+    newPostMedia = null;
+    document.getElementById('addPostModal').classList.add('active');
+};
+window.openQRRegisterModal = function() {
+    const container = document.getElementById('qr-register-code');
+    if (!container) return;
+    container.innerHTML = '';
+    const url = window.location.origin + '/student-register.html';
+    try { new QRCode(container, { text: url, width: 200, height: 200 }); } catch(e) { container.textContent = url; }
+    document.getElementById('qrRegisterModal').classList.add('active');
+};
+window.openNotificationsModal = function() {
+    const list = document.getElementById('notificationsList');
+    if (!list) return;
+    if (notifications.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">Nta notifications</div>';
+    else list.innerHTML = notifications.map(n => `
+        <div class="notification-item">
+            <div class="notification-content">
+                <div class="title">${escapeHtml(n.title || '-')}</div>
+                <div class="body">${escapeHtml(n.body || '')}</div>
+                <div class="time">${timeAgo(n.createdAt?.toDate?.() || n.createdAt || new Date())}</div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('notificationsModal').classList.add('active');
+    notifications.filter(n => !n.read).forEach(async n => {
+        try { await updateDoc(doc(db, 'notifications', n.id), { read: true }); } catch(e) {}
+    });
+    setTimeout(updateCounters, 500);
+};
 
 function fillCourseSelects() {
     const opts = '<option value="">-- Hitamo --</option>' + courses.map(c => `<option value="${c.id}">${escapeHtml(c.title || '-')}</option>`).join('');
-    ['lessonCourseId', 'assignmentCourseId', 'quizCourseId', 'liveCourseId'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = opts; });
+    ['lessonCourseId', 'assignmentCourseId', 'quizCourseId', 'liveCourseId'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = opts;
+    });
 }
 
 window.openAddLessonModal = function() { fillCourseSelects(); document.getElementById('addLessonModal').classList.add('active'); };
 window.openAddAssignmentModal = function() { fillCourseSelects(); document.getElementById('addAssignmentModal').classList.add('active'); };
-window.openAddQuizModal = function() { fillCourseSelects(); quizQuestions = []; document.getElementById('quizQuestionsContainer').innerHTML = ''; addQuizQuestion(); document.getElementById('addQuizModal').classList.add('active'); };
+window.openAddQuizModal = function() {
+    fillCourseSelects();
+    quizQuestions = [];
+    document.getElementById('quizQuestionsContainer').innerHTML = '';
+    addQuizQuestion();
+    document.getElementById('addQuizModal').classList.add('active');
+};
 window.openAddLiveModal = function() { fillCourseSelects(); document.getElementById('addLiveModal').classList.add('active'); };
-window.openAddCourseModal = function() { document.getElementById('courseEditId').value = ''; ['courseTitle','courseSubject','courseLevel','courseTeacher','courseDescription'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); document.getElementById('addCourseModal').classList.add('active'); };
-window.editCourse = function(id) { const c = courses.find(x => x.id === id); if (!c) return; document.getElementById('courseEditId').value = id; document.getElementById('courseTitle').value = c.title || ''; document.getElementById('courseSubject').value = c.subject || ''; document.getElementById('courseLevel').value = c.level || ''; document.getElementById('courseTeacher').value = c.teacher || ''; document.getElementById('courseDescription').value = c.description || ''; document.getElementById('addCourseModal').classList.add('active'); };
-window.addQuizQuestion = function() { const container = document.getElementById('quizQuestionsContainer'); if (!container) return; const idx = container.children.length; const div = document.createElement('div'); div.className = 'quiz-question'; div.style.marginBottom = '10px'; div.innerHTML = `<input type="text" class="form-control" placeholder="Ikibazo ${idx + 1}" style="margin-bottom:8px;" data-q="question"><input type="text" class="form-control" placeholder="Option A" style="margin-bottom:6px;" data-q="opt0"><input type="text" class="form-control" placeholder="Option B" style="margin-bottom:6px;" data-q="opt1"><input type="text" class="form-control" placeholder="Option C" style="margin-bottom:6px;" data-q="opt2"><input type="text" class="form-control" placeholder="Option D" style="margin-bottom:6px;" data-q="opt3"><select class="form-control" data-q="correct"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select>`; container.appendChild(div); };
-window.previewPostMedia = function(event) { const file = event.target.files[0]; if (!file) return; newPostMedia = file; const preview = document.getElementById('postMediaPreview'); if (preview) preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`; };
-window.openSubmitAssignment = function(id) { document.getElementById('submitAssignmentId').value = id; document.getElementById('submitAssignmentText').value = ''; document.getElementById('submitAssignmentModal').classList.add('active'); };
+window.openAddCourseModal = function() {
+    document.getElementById('courseEditId').value = '';
+    ['courseTitle','courseSubject','courseLevel','courseTeacher','courseDescription'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('addCourseModal').classList.add('active');
+};
+window.editCourse = function(id) {
+    const c = courses.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('courseEditId').value = id;
+    document.getElementById('courseTitle').value = c.title || '';
+    document.getElementById('courseSubject').value = c.subject || '';
+    document.getElementById('courseLevel').value = c.level || '';
+    document.getElementById('courseTeacher').value = c.teacher || '';
+    document.getElementById('courseDescription').value = c.description || '';
+    document.getElementById('addCourseModal').classList.add('active');
+};
 
-// ==================== SAVE ACTIONS ====================
-window.submitAssignment = async function() { const assignmentId = document.getElementById('submitAssignmentId').value; const text = document.getElementById('submitAssignmentText').value.trim(); const assignment = assignments.find(a => a.id === assignmentId); if (!text) { showToast('Andika ibisobanuro', 'error'); return; } try { await addDoc(collection(db, 'submissions'), { assignmentId, assignmentTitle: assignment?.title || '', studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email, text, status: 'new', createdAt: serverTimestamp() }); submissions.push({ assignmentId, studentId: currentUser.uid, text }); showToast('Umurimo woherejwe!', 'success'); closeModal('submitAssignmentModal'); renderMyAssignments(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveCourse = async function() { const editId = document.getElementById('courseEditId').value; const data = { title: document.getElementById('courseTitle').value.trim(), subject: document.getElementById('courseSubject').value.trim(), level: document.getElementById('courseLevel').value, teacher: document.getElementById('courseTeacher').value.trim(), description: document.getElementById('courseDescription').value.trim() }; if (!data.title || !data.subject || !data.level) { showToast('Uzuza ibisabwa', 'error'); return; } try { if (editId) { await updateDoc(doc(db, 'courses', editId), data); courses = courses.map(c => c.id === editId ? { ...c, ...data } : c); } else { const ref = await addDoc(collection(db, 'courses'), { ...data, createdAt: serverTimestamp() }); courses.push({ id: ref.id, ...data }); } showToast('Byabitswe', 'success'); closeModal('addCourseModal'); renderManageCourses(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveLesson = async function() { const data = { courseId: document.getElementById('lessonCourseId').value, title: document.getElementById('lessonTitle').value.trim(), content: document.getElementById('lessonContent').value.trim(), videoUrl: document.getElementById('lessonVideoUrl').value.trim(), duration: parseInt(document.getElementById('lessonDuration').value) || 30 }; if (!data.courseId || !data.title) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'lessons'), { ...data, createdAt: serverTimestamp() }); lessons.push({ id: ref.id, ...data }); showToast('Byabitswe', 'success'); closeModal('addLessonModal'); renderManageLessons(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveAssignment = async function() { const data = { courseId: document.getElementById('assignmentCourseId').value, title: document.getElementById('assignmentTitle').value.trim(), description: document.getElementById('assignmentDesc').value.trim(), dueDate: document.getElementById('assignmentDueDate').value, level: document.getElementById('assignmentLevel').value }; if (!data.title || !data.level) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'assignments'), { ...data, createdAt: serverTimestamp() }); assignments.push({ id: ref.id, ...data }); showToast('Byabitswe', 'success'); closeModal('addAssignmentModal'); renderManageAssignments(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveQuiz = async function() { const container = document.getElementById('quizQuestionsContainer'); const qs = []; container.querySelectorAll('.quiz-question').forEach(div => { const q = div.querySelector('[data-q="question"]')?.value.trim(); const opts = [0,1,2,3].map(i => div.querySelector(`[data-q="opt${i}"]`)?.value.trim()); const correct = parseInt(div.querySelector('[data-q="correct"]')?.value || 0); if (q && opts.every(o => o)) qs.push({ question: q, options: opts, correct }); }); if (qs.length === 0) { showToast('Ongeraho ikibazo', 'error'); return; } const data = { courseId: document.getElementById('quizCourseId').value, title: document.getElementById('quizTitle').value.trim(), timeLimit: parseInt(document.getElementById('quizTimeLimit').value) || 15, questions: qs }; if (!data.courseId || !data.title) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'quizzes'), { ...data, createdAt: serverTimestamp() }); quizzes.push({ id: ref.id, ...data }); showToast('Byabitswe', 'success'); closeModal('addQuizModal'); renderManageQuizzes(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveLive = async function() { const data = { courseId: document.getElementById('liveCourseId').value, title: document.getElementById('liveTitle').value.trim(), dateTime: document.getElementById('liveDateTime').value, meetingLink: document.getElementById('liveMeetingLink').value.trim() }; if (!data.courseId || !data.title || !data.meetingLink) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'liveClasses'), { ...data, createdAt: serverTimestamp() }); liveClasses.push({ id: ref.id, ...data }); showToast('Byabitswe', 'success'); closeModal('addLiveModal'); renderManageLive(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.savePost = async function() { const caption = document.getElementById('postCaption').value.trim(); const type = document.getElementById('postType').value; if (!caption && !newPostMedia) { showToast('Andika caption', 'error'); return; } try { let mediaUrl = ''; if (newPostMedia) mediaUrl = await uploadToCloudinary(newPostMedia); const data = { caption, type, mediaUrl, authorId: currentUser.uid, authorName: currentUserData.name || currentUser.email, likes: [], comments: [], createdAt: serverTimestamp() }; const ref = await addDoc(collection(db, 'posts'), data); posts.push({ id: ref.id, ...data }); showToast('Byashyizweho!', 'success'); closeModal('addPostModal'); renderPosts(); } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); } };
-window.saveAnnouncement = async function() { const data = { title: document.getElementById('annTitle').value.trim(), content: document.getElementById('annContent').value.trim(), priority: document.getElementById('annPriority').value, authorName: currentUserData.name || currentUser.email, read: false }; if (!data.title || !data.content) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'announcements'), { ...data, createdAt: serverTimestamp() }); announcements.push({ id: ref.id, ...data }); showToast('Byatangajwe!', 'success'); closeModal('addAnnouncementModal'); renderAnnouncements(); updateCounters(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.addGrade = async function() { const sel = document.getElementById('gradeStudentId'); const studentId = sel.value; const studentName = sel.options[sel.selectedIndex]?.dataset.name || ''; const data = { studentId, studentName, subject: document.getElementById('gradeSubject').value.trim(), marks: parseFloat(document.getElementById('gradeMarks').value) || 0, date: document.getElementById('gradeDate').value }; if (!studentId || !data.subject || !data.date) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'grades'), { ...data, createdAt: serverTimestamp() }); grades.push({ id: ref.id, ...data }); showToast('Byabitswe', 'success'); closeModal('addGradeModal'); renderGrades(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.addStudent = async function() { const data = { name: document.getElementById('newName').value.trim(), email: document.getElementById('newEmail').value.trim(), number: document.getElementById('newNumberInput').value.trim(), level: document.getElementById('newLevel').value, department: document.getElementById('newDepartment').value, status: 'active', role: 'student' }; if (!data.name || !data.email) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'students'), { ...data, createdAt: serverTimestamp() }); students.push({ id: ref.id, ...data }); showToast('Yongeweho', 'success'); closeModal('addStudentModal'); renderStudents(); updateCounters(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.addTeacher = async function() { const data = { name: document.getElementById('teacherName').value.trim(), email: document.getElementById('teacherEmail').value.trim(), role: 'teacher', subjects: [] }; if (!data.name || !data.email) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'teachers'), { ...data, createdAt: serverTimestamp() }); teachers.push({ id: ref.id, ...data }); showToast('Yongeweho', 'success'); closeModal('addTeacherModal'); renderTeachers(); updateCounters(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.addNewAdmin = async function() { const data = { name: document.getElementById('newAdminName').value.trim(), email: document.getElementById('newAdminEmail').value.trim(), role: 'admin' }; if (!data.name || !data.email) { showToast('Uzuza', 'error'); return; } try { const ref = await addDoc(collection(db, 'users'), { ...data, createdAt: serverTimestamp() }); users.push({ id: ref.id, ...data }); showToast('Yongeweho', 'success'); closeModal('addAdminModal'); renderUsers(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.submitPayment = async function() { const amount = parseFloat(document.getElementById('paymentAmount').value) || 0; const phone = document.getElementById('paymentPhone').value.trim(); const method = document.getElementById('paymentMethod').value; if (!amount || !phone) { showToast('Uzuza', 'error'); return; } try { await addDoc(collection(db, 'notesPayments'), { studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email, studentEmail: currentUser.email, amount, phone, method, status: 'pending', createdAt: serverTimestamp() }); showToast('Ubwishyu bwoherejwe!', 'success'); closeModal('paymentModal'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.saveProfile = async function() { const name = document.getElementById('profileInputName').value.trim(); const phone = document.getElementById('profileInputPhone').value.trim(); if (!name) { showToast('Andika amazina', 'error'); return; } try { const coll = currentUserData.role === 'student' ? 'students' : 'users'; await updateDoc(doc(db, coll, currentUser.uid), { name, phone }); currentUserData.name = name; currentUserData.phone = phone; setupUserUI(); showToast('Byabitswe', 'success'); } catch(e) { try { await setDoc(doc(db, 'users', currentUser.uid), { name, phone, email: currentUser.email, role: currentUserData.role }, { merge: true }); currentUserData.name = name; currentUserData.phone = phone; setupUserUI(); showToast('Byabitswe', 'success'); } catch(e2) { showToast('Ikibazo', 'error'); } } };
-window.changePassword = async function() { const oldPw = document.getElementById('oldPassword').value; const newPw = document.getElementById('newPassword').value; if (!oldPw || !newPw) { showToast('Uzuza', 'error'); return; } if (newPw.length < 6) { showToast('Ijambo rigomba kuba nibura 6', 'error'); return; } try { const cred = EmailAuthProvider.credential(currentUser.email, oldPw); await reauthenticateWithCredential(currentUser, cred); await updatePassword(currentUser, newPw); showToast('Ijambo ryahinduwe!', 'success'); document.getElementById('oldPassword').value = ''; document.getElementById('newPassword').value = ''; } catch(e) { showToast('Ijambo rya kera sibyo', 'error'); } };
-window.uploadProfilePhoto = async function(event) { const file = event.target.files[0]; if (!file) return; try { showToast('Turahindura...', 'info'); const url = await uploadToCloudinary(file); const coll = currentUserData.role === 'student' ? 'students' : 'users'; try { await updateDoc(doc(db, coll, currentUser.uid), { photoURL: url }); } catch(e) { await setDoc(doc(db, 'users', currentUser.uid), { photoURL: url, email: currentUser.email, role: currentUserData.role }, { merge: true }); } currentUserData.photoURL = url; setupUserUI(); showToast('Ifoto yahinduwe!', 'success'); } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); } };
-window.saveSettings = async function() { const name = document.getElementById('schoolName').value.trim(); try { localStorage.setItem('school_name', name); } catch(e) {} const sub = document.getElementById('schoolNameSubtitle'); if (sub) sub.textContent = name.toUpperCase(); showToast('Byabitswe', 'success'); };
-window.enableNotifications = async function() { if (!('Notification' in window)) { showToast('Browser ntiyemera', 'warning'); return; } try { const perm = await Notification.requestPermission(); if (perm === 'granted') showToast('Zifunguwe!', 'success'); else showToast('Ntibyemerewe', 'warning'); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.toggleLike = async function(postId) { const post = posts.find(p => p.id === postId); if (!post) return; const likes = post.likes || []; const hasLiked = likes.includes(currentUser.uid); const newLikes = hasLiked ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid]; try { await updateDoc(doc(db, 'posts', postId), { likes: newLikes }); post.likes = newLikes; renderPosts(); } catch(e) { showToast('Ikibazo', 'error'); } };
-window.openComments = function(postId) { currentPostIdForComments = postId; const post = posts.find(p => p.id === postId); if (!post) return; const list = document.getElementById('commentsList'); const comments = post.comments || []; if (comments.length === 0) list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nta comments</div>'; else list.innerHTML = comments.map(c => `<div class="comment-item"><div class="comment-avatar">${getInitials(c.authorName)}</div><div class="comment-body"><div class="name">${escapeHtml(c.authorName || '-')}</div><div class="text">${escapeHtml(c.text || '')}</div></div></div>`).join(''); document.getElementById('commentsModal').classList.add('active'); };
-window.submitComment = async function() { const text = document.getElementById('commentInput').value.trim(); if (!text) return; const post = posts.find(p => p.id === currentPostIdForComments); if (!post) return; const comments = post.comments || []; const newComment = { authorId: currentUser.uid, authorName: currentUserData.name || currentUser.email, text, createdAt: new Date().toISOString() }; try { await updateDoc(doc(db, 'posts', currentPostIdForComments), { comments: [...comments, newComment] }); post.comments = [...comments, newComment]; document.getElementById('commentInput').value = ''; openComments(currentPostIdForComments); renderPosts(); } catch(e) { showToast('Ikibazo', 'error'); } };
+window.addQuizQuestion = function() {
+    const container = document.getElementById('quizQuestionsContainer');
+    if (!container) return;
+    const idx = container.children.length;
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.style.marginBottom = '10px';
+    div.innerHTML = `
+        <input type="text" class="form-control" placeholder="Ikibazo ${idx + 1}" style="margin-bottom:8px;" data-q="question">
+        <input type="text" class="form-control" placeholder="Option A" style="margin-bottom:6px;" data-q="opt0">
+        <input type="text" class="form-control" placeholder="Option B" style="margin-bottom:6px;" data-q="opt1">
+        <input type="text" class="form-control" placeholder="Option C" style="margin-bottom:6px;" data-q="opt2">
+        <input type="text" class="form-control" placeholder="Option D" style="margin-bottom:6px;" data-q="opt3">
+        <select class="form-control" data-q="correct">
+            <option value="0">Correct: A</option>
+            <option value="1">Correct: B</option>
+            <option value="2">Correct: C</option>
+            <option value="3">Correct: D</option>
+        </select>
+    `;
+    container.appendChild(div);
+};
+
+window.previewPostMedia = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    newPostMedia = file;
+    const preview = document.getElementById('postMediaPreview');
+    if (preview) preview.innerHTML = `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><div><div class="name">${escapeHtml(file.name)}</div><div class="size">${(file.size/1024/1024).toFixed(2)} MB</div></div></div></div>`;
+};
+
+window.openSubmitAssignment = function(id) {
+    document.getElementById('submitAssignmentId').value = id;
+    document.getElementById('submitAssignmentText').value = '';
+    document.getElementById('submitAssignmentModal').classList.add('active');
+};
+
+window.submitAssignment = async function() {
+    const assignmentId = document.getElementById('submitAssignmentId').value;
+    const text = document.getElementById('submitAssignmentText').value.trim();
+    const assignment = assignments.find(a => a.id === assignmentId);
+    if (!text) { showToast('Andika ibisobanuro', 'error'); return; }
+    try {
+        await addDoc(collection(db, 'submissions'), {
+            assignmentId, assignmentTitle: assignment?.title || '',
+            studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email,
+            text, status: 'new', createdAt: serverTimestamp()
+        });
+        submissions.push({ assignmentId, studentId: currentUser.uid, text });
+        showToast('Umurimo woherejwe!', 'success');
+        closeModal('submitAssignmentModal');
+        renderMyAssignments();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveCourse = async function() {
+    const editId = document.getElementById('courseEditId').value;
+    const data = {
+        title: document.getElementById('courseTitle').value.trim(),
+        subject: document.getElementById('courseSubject').value.trim(),
+        level: document.getElementById('courseLevel').value,
+        teacher: document.getElementById('courseTeacher').value.trim(),
+        description: document.getElementById('courseDescription').value.trim()
+    };
+    if (!data.title || !data.subject || !data.level) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        if (editId) {
+            await updateDoc(doc(db, 'courses', editId), data);
+            courses = courses.map(c => c.id === editId ? { ...c, ...data } : c);
+        } else {
+            const ref = await addDoc(collection(db, 'courses'), { ...data, createdAt: serverTimestamp() });
+            courses.push({ id: ref.id, ...data });
+        }
+        showToast('Byabitswe', 'success');
+        closeModal('addCourseModal');
+        renderManageCourses();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveLesson = async function() {
+    const data = {
+        courseId: document.getElementById('lessonCourseId').value,
+        title: document.getElementById('lessonTitle').value.trim(),
+        content: document.getElementById('lessonContent').value.trim(),
+        videoUrl: document.getElementById('lessonVideoUrl').value.trim(),
+        duration: parseInt(document.getElementById('lessonDuration').value) || 30
+    };
+    if (!data.courseId || !data.title) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'lessons'), { ...data, createdAt: serverTimestamp() });
+        lessons.push({ id: ref.id, ...data });
+        showToast('Byabitswe', 'success');
+        closeModal('addLessonModal');
+        renderManageLessons();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveAssignment = async function() {
+    const data = {
+        courseId: document.getElementById('assignmentCourseId').value,
+        title: document.getElementById('assignmentTitle').value.trim(),
+        description: document.getElementById('assignmentDesc').value.trim(),
+        dueDate: document.getElementById('assignmentDueDate').value,
+        level: document.getElementById('assignmentLevel').value
+    };
+    if (!data.title || !data.level) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'assignments'), { ...data, createdAt: serverTimestamp() });
+        assignments.push({ id: ref.id, ...data });
+        showToast('Byabitswe', 'success');
+        closeModal('addAssignmentModal');
+        renderManageAssignments();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveQuiz = async function() {
+    const container = document.getElementById('quizQuestionsContainer');
+    const qs = [];
+    container.querySelectorAll('.quiz-question').forEach(div => {
+        const q = div.querySelector('[data-q="question"]')?.value.trim();
+        const opts = [0,1,2,3].map(i => div.querySelector(`[data-q="opt${i}"]`)?.value.trim());
+        const correct = parseInt(div.querySelector('[data-q="correct"]')?.value || 0);
+        if (q && opts.every(o => o)) qs.push({ question: q, options: opts, correct });
+    });
+    if (qs.length === 0) { showToast('Ongeraho nibura ikibazo kimwe', 'error'); return; }
+    const data = {
+        courseId: document.getElementById('quizCourseId').value,
+        title: document.getElementById('quizTitle').value.trim(),
+        timeLimit: parseInt(document.getElementById('quizTimeLimit').value) || 15,
+        questions: qs
+    };
+    if (!data.courseId || !data.title) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'quizzes'), { ...data, createdAt: serverTimestamp() });
+        quizzes.push({ id: ref.id, ...data });
+        showToast('Byabitswe', 'success');
+        closeModal('addQuizModal');
+        renderManageQuizzes();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveLive = async function() {
+    const data = {
+        courseId: document.getElementById('liveCourseId').value,
+        title: document.getElementById('liveTitle').value.trim(),
+        dateTime: document.getElementById('liveDateTime').value,
+        meetingLink: document.getElementById('liveMeetingLink').value.trim()
+    };
+    if (!data.courseId || !data.title || !data.meetingLink) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'liveClasses'), { ...data, createdAt: serverTimestamp() });
+        liveClasses.push({ id: ref.id, ...data });
+        showToast('Byabitswe', 'success');
+        closeModal('addLiveModal');
+        renderManageLive();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.savePost = async function() {
+    const caption = document.getElementById('postCaption').value.trim();
+    const type = document.getElementById('postType').value;
+    if (!caption && !newPostMedia) { showToast('Andika caption cyangwa shyiraho ifoto', 'error'); return; }
+    try {
+        let mediaUrl = '';
+        if (newPostMedia) {
+            showToast('Turahindura ifoto...', 'info');
+            mediaUrl = await uploadToCloudinary(newPostMedia);
+        }
+        const data = { caption, type, mediaUrl, authorId: currentUser.uid, authorName: currentUserData.name || currentUser.email, likes: [], comments: [], createdAt: serverTimestamp() };
+        const ref = await addDoc(collection(db, 'posts'), data);
+        posts.push({ id: ref.id, ...data });
+        showToast('Byashyizweho!', 'success');
+        closeModal('addPostModal');
+        renderPosts();
+    } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); }
+};
+
+window.saveAnnouncement = async function() {
+    const data = {
+        title: document.getElementById('annTitle').value.trim(),
+        content: document.getElementById('annContent').value.trim(),
+        priority: document.getElementById('annPriority').value,
+        authorName: currentUserData.name || currentUser.email,
+        read: false
+    };
+    if (!data.title || !data.content) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'announcements'), { ...data, createdAt: serverTimestamp() });
+        announcements.push({ id: ref.id, ...data });
+        showToast('Byatangajwe!', 'success');
+        closeModal('addAnnouncementModal');
+        renderAnnouncements();
+        updateCounters();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.addGrade = async function() {
+    const sel = document.getElementById('gradeStudentId');
+    const studentId = sel.value;
+    const studentName = sel.options[sel.selectedIndex]?.dataset.name || '';
+    const data = {
+        studentId, studentName,
+        subject: document.getElementById('gradeSubject').value.trim(),
+        marks: parseFloat(document.getElementById('gradeMarks').value) || 0,
+        date: document.getElementById('gradeDate').value
+    };
+    if (!studentId || !data.subject || !data.date) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'grades'), { ...data, createdAt: serverTimestamp() });
+        grades.push({ id: ref.id, ...data });
+        showToast('Byabitswe', 'success');
+        closeModal('addGradeModal');
+        renderGrades();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.addStudent = async function() {
+    const data = {
+        name: document.getElementById('newName').value.trim(),
+        email: document.getElementById('newEmail').value.trim(),
+        number: document.getElementById('newNumberInput').value.trim(),
+        level: document.getElementById('newLevel').value,
+        department: document.getElementById('newDepartment').value,
+        status: 'active', role: 'student'
+    };
+    if (!data.name || !data.email) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'students'), { ...data, createdAt: serverTimestamp() });
+        students.push({ id: ref.id, ...data });
+        showToast('Yongeweho', 'success');
+        closeModal('addStudentModal');
+        renderStudents();
+        updateCounters();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.addTeacher = async function() {
+    const data = {
+        name: document.getElementById('teacherName').value.trim(),
+        email: document.getElementById('teacherEmail').value.trim(),
+        role: 'teacher', subjects: []
+    };
+    if (!data.name || !data.email) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'teachers'), { ...data, createdAt: serverTimestamp() });
+        teachers.push({ id: ref.id, ...data });
+        showToast('Yongeweho', 'success');
+        closeModal('addTeacherModal');
+        renderTeachers();
+        updateCounters();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.addNewAdmin = async function() {
+    const data = {
+        name: document.getElementById('newAdminName').value.trim(),
+        email: document.getElementById('newAdminEmail').value.trim(),
+        role: 'admin'
+    };
+    if (!data.name || !data.email) { showToast('Uzuza ibisabwa', 'error'); return; }
+    try {
+        const ref = await addDoc(collection(db, 'users'), { ...data, createdAt: serverTimestamp() });
+        users.push({ id: ref.id, ...data });
+        showToast('Yongeweho', 'success');
+        closeModal('addAdminModal');
+        renderUsers();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.submitPayment = async function() {
+    const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+    const phone = document.getElementById('paymentPhone').value.trim();
+    const method = document.getElementById('paymentMethod').value;
+    if (!amount || !phone) { showToast('Uzuza amafaranga na telefone', 'error'); return; }
+    try {
+        await addDoc(collection(db, 'notesPayments'), {
+            studentId: currentUser.uid, studentName: currentUserData.name || currentUser.email,
+            studentEmail: currentUser.email, amount, phone, method,
+            status: 'pending', createdAt: serverTimestamp()
+        });
+        showToast('Ubwishyu bwoherejwe!', 'success');
+        closeModal('paymentModal');
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.saveProfile = async function() {
+    const name = document.getElementById('profileInputName').value.trim();
+    const phone = document.getElementById('profileInputPhone').value.trim();
+    if (!name) { showToast('Andika amazina', 'error'); return; }
+    try {
+        const coll = currentUserData.role === 'student' ? 'students' : 'users';
+        await updateDoc(doc(db, coll, currentUser.uid), { name, phone });
+        currentUserData.name = name;
+        currentUserData.phone = phone;
+        setupUserUI();
+        showToast('Byabitswe', 'success');
+    } catch(e) {
+        try {
+            await setDoc(doc(db, 'users', currentUser.uid), { name, phone, email: currentUser.email, role: currentUserData.role }, { merge: true });
+            currentUserData.name = name;
+            currentUserData.phone = phone;
+            setupUserUI();
+            showToast('Byabitswe', 'success');
+        } catch(e2) { showToast('Ikibazo', 'error'); }
+    }
+};
+
+window.changePassword = async function() {
+    const oldPw = document.getElementById('oldPassword').value;
+    const newPw = document.getElementById('newPassword').value;
+    if (!oldPw || !newPw) { showToast('Uzuza amagambo yose', 'error'); return; }
+    if (newPw.length < 6) { showToast('Ijambo rishya rigomba kuba nibura inyuguti 6', 'error'); return; }
+    try {
+        const cred = EmailAuthProvider.credential(currentUser.email, oldPw);
+        await reauthenticateWithCredential(currentUser, cred);
+        await updatePassword(currentUser, newPw);
+        showToast('Ijambo ryahinduwe!', 'success');
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+    } catch(e) { showToast('Ijambo rya kera sibyo', 'error'); }
+};
+
+window.uploadProfilePhoto = async function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+        showToast('Turahindura ifoto...', 'info');
+        const url = await uploadToCloudinary(file);
+        const coll = currentUserData.role === 'student' ? 'students' : 'users';
+        try { await updateDoc(doc(db, coll, currentUser.uid), { photoURL: url }); }
+        catch(e) { await setDoc(doc(db, 'users', currentUser.uid), { photoURL: url, email: currentUser.email, role: currentUserData.role }, { merge: true }); }
+        currentUserData.photoURL = url;
+        setupUserUI();
+        showToast('Ifoto yahinduwe!', 'success');
+    } catch(e) { showToast('Ikibazo: ' + e.message, 'error'); }
+};
+
+window.saveSettings = async function() {
+    const name = document.getElementById('schoolName').value.trim();
+    try { localStorage.setItem('school_name', name); } catch(e) {}
+    const sub = document.getElementById('schoolNameSubtitle');
+    if (sub) sub.textContent = name.toUpperCase();
+    showToast('Byabitswe', 'success');
+};
+
+window.enableNotifications = async function() {
+    if (!('Notification' in window)) { showToast('Browser yawe ntiyemera notifications', 'warning'); return; }
+    try {
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') showToast('Notifications zifunguwe!', 'success');
+        else showToast('Ntibyemerewe', 'warning');
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.markAllAnnouncementsAsRead = function() { showToast('Amatangazo yose asomwe', 'success'); };
+
+window.toggleLike = async function(postId) {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    const likes = post.likes || [];
+    const hasLiked = likes.includes(currentUser.uid);
+    const newLikes = hasLiked ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
+    try {
+        await updateDoc(doc(db, 'posts', postId), { likes: newLikes });
+        post.likes = newLikes;
+        renderPosts();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
+
+window.openComments = function(postId) {
+    currentPostIdForComments = postId;
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    const list = document.getElementById('commentsList');
+    const comments = post.comments || [];
+    if (comments.length === 0) list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nta comments</div>';
+    else list.innerHTML = comments.map(c => `
+        <div class="comment-item">
+            <div class="comment-avatar">${getInitials(c.authorName)}</div>
+            <div class="comment-body">
+                <div class="name">${escapeHtml(c.authorName || '-')}</div>
+                <div class="text">${escapeHtml(c.text || '')}</div>
+                <div class="time">${timeAgo(c.createdAt || new Date())}</div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('commentsModal').classList.add('active');
+};
+
+window.submitComment = async function() {
+    const text = document.getElementById('commentInput').value.trim();
+    if (!text) return;
+    const post = posts.find(p => p.id === currentPostIdForComments);
+    if (!post) return;
+    const comments = post.comments || [];
+    const newComment = { authorId: currentUser.uid, authorName: currentUserData.name || currentUser.email, text, createdAt: new Date().toISOString() };
+    try {
+        await updateDoc(doc(db, 'posts', currentPostIdForComments), { comments: [...comments, newComment] });
+        post.comments = [...comments, newComment];
+        document.getElementById('commentInput').value = '';
+        openComments(currentPostIdForComments);
+        renderPosts();
+    } catch(e) { showToast('Ikibazo', 'error'); }
+};
 
 // ==================== PWA ====================
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const btn = document.getElementById('pwaInstallBtn'); if (btn) btn.classList.remove('hidden'); });
-window.installPWA = async function() { if (!deferredPrompt) { showToast('Ntibishobora', 'warning'); return; } deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { showToast('App yashyizwe!', 'success'); const btn = document.getElementById('pwaInstallBtn'); if (btn) btn.classList.add('hidden'); } deferredPrompt = null; };
-window.addEventListener('appinstalled', () => { const btn = document.getElementById('pwaInstallBtn'); if (btn) btn.classList.add('hidden'); });
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('pwaInstallBtn');
+    if (btn) btn.classList.remove('hidden');
+});
+window.installPWA = async function() {
+    if (!deferredPrompt) { showToast('App yarafunguwe cyangwa ntishobora', 'warning'); return; }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+        showToast('App yashyizwe kuri device!', 'success');
+        const btn = document.getElementById('pwaInstallBtn');
+        if (btn) btn.classList.add('hidden');
+    }
+    deferredPrompt = null;
+};
+window.addEventListener('appinstalled', () => {
+    const btn = document.getElementById('pwaInstallBtn');
+    if (btn) btn.classList.add('hidden');
+});
 
-console.log('✅ MINDBOOK loaded — no duplicates, elections ready');
-    window.voteForCandidate = async function(candidateId) {
-    if (!currentUser) {
-        showToast("Ugomba kuba winjiye muri sisitemu kugira ngo utore", "error");
+console.log('MINDBOOK loaded ✓');
+    // ==================== ELECTIONS DATA ====================
+let candidates = [];
+let pendingCandidatePhoto = null;
+let electionsUnsubscribe = null;
+
+const POSITION_ICONS = {
+    'President': '👑',
+    'Vice President': '⭐',
+    'Secretary General': '📋',
+    'Treasurer': '💰',
+    'Academic Minister': '📚',
+    'Sports Minister': '⚽',
+    'Discipline Minister': '🛡️',
+    'Information Minister': '📢',
+    'Health Minister': '🏥',
+    'Gender Minister': '👥'
+};
+
+// ==================== CANDIDATE PHOTO PREVIEW ====================
+window.previewCandidatePhoto = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('Ifoto ni nini cyane (max 5MB)', 'error');
         return;
     }
+    pendingCandidatePhoto = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('candidatePhotoPreviewContainer').innerHTML = 
+            `<img src="${e.target.result}" class="photo-preview" alt="Preview">`;
+    };
+    reader.readAsDataURL(file);
+};
 
-    if (!confirm("Urabyumva neza ko ushaka gutora uyu mukandida? Ntushobora guhindura nyuma.")) return;
-
-    try {
-        const candidateRef = doc(db, 'candidates', candidateId);
-        
-        // Koresha Firestore Increment kugira ngo utazakora amakosa mu gihe abantu benshi batora icyarimwe
-        const { increment, arrayUnion } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
-        
-        await updateDoc(candidateRef, {
-            votes: increment(1),
-            voters: arrayUnion(currentUser.uid) // Bika ID y'uwatoye kugira ngo hatabaho kwikora kabiri
-        });
-
-        showToast("Amajwi yawe yabitswe neza! Murakoze.", "success");
-        if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        
-        // Subirira kugaragaza abakandida kugira ngo buto ihite ihinduka
-        await loadCandidates();
-        
-    } catch (error) {
-        console.error("Vote error:", error);
-        showToast("Ntibyakunze gutora. Ongera ugerageze.", "error");
+window.fillCandidateFromStudent = function() {
+    const studentId = document.getElementById('candidateStudentId').value;
+    if (!studentId) return;
+    const student = students.find(s => s.id === studentId);
+    if (student && student.photo) {
+        document.getElementById('candidatePhotoPreviewContainer').innerHTML = 
+            `<img src="${student.photo}" class="photo-preview" alt="Preview">`;
+        pendingCandidatePhoto = null;
     }
 };
-    window.voteForCandidate = async function(candidateId) {
-    if (!currentUser) {
-        showToast("Ugomba kuba winjiye muri sisitemu kugira ngo utore", "error");
+
+// ==================== OPEN ADD CANDIDATE MODAL ====================
+window.openAddCandidateModal = function(editId = null) {
+    const modal = document.getElementById('addCandidateModal');
+    modal.classList.add('active');
+    
+    const studentSelect = document.getElementById('candidateStudentId');
+    studentSelect.innerHTML = '<option value="">-- Hitamo Umunyeshuri --</option>';
+    students.filter(s => s.status === 'active').forEach(s => {
+        studentSelect.innerHTML += `<option value="${s.id}">${escapeHtml(s.name)} - ${escapeHtml(s.number || '')}</option>`;
+    });
+    
+    document.getElementById('candidateModalTitle').textContent = editId ? 'Hindura Umukandida' : 'Ongeraho Umukandida';
+    document.getElementById('candidateEditId').value = editId || '';
+    pendingCandidatePhoto = null;
+    document.getElementById('candidatePhotoPreviewContainer').innerHTML = 
+        '<div class="photo-placeholder"><i class="fas fa-camera"></i></div>';
+    
+    if (editId) {
+        const c = candidates.find(x => x.id === editId);
+        if (c) {
+            studentSelect.value = c.studentId || '';
+            document.getElementById('candidatePosition').value = c.position || '';
+            document.getElementById('candidateManifesto').value = c.manifesto || '';
+            document.getElementById('candidateSlogan').value = c.slogan || '';
+            document.getElementById('candidateElectionYear').value = c.electionYear || '2025';
+            if (c.photo) {
+                document.getElementById('candidatePhotoPreviewContainer').innerHTML = 
+                    `<img src="${c.photo}" class="photo-preview" alt="Preview">`;
+            }
+        }
+    } else {
+        document.getElementById('candidatePosition').value = '';
+        document.getElementById('candidateManifesto').value = '';
+        document.getElementById('candidateSlogan').value = '';
+        document.getElementById('candidateElectionYear').value = '2025';
+    }
+};
+
+// ==================== SAVE CANDIDATE ====================
+window.saveCandidate = async function() {
+    const editId = document.getElementById('candidateEditId').value;
+    const studentId = document.getElementById('candidateStudentId').value;
+    const position = document.getElementById('candidatePosition').value;
+    const manifesto = document.getElementById('candidateManifesto').value.trim();
+    const slogan = document.getElementById('candidateSlogan').value.trim();
+    const electionYear = document.getElementById('candidateElectionYear').value.trim();
+    
+    if (!studentId) { showToast('Hitamo umunyeshuri', 'error'); return; }
+    if (!position) { showToast('Hitamo icyo ari kwiyamamariza', 'error'); return; }
+    
+    const student = students.find(s => s.id === studentId);
+    if (!student) { showToast('Umunyeshuri ntabonetse', 'error'); return; }
+    
+    try {
+        showToast('Birakoreshwa...', 'info');
+        
+        let photoUrl = '';
+        if (pendingCandidatePhoto) {
+            photoUrl = await uploadToCloudinary(pendingCandidatePhoto);
+        } else if (editId) {
+            const existing = candidates.find(x => x.id === editId);
+            photoUrl = existing?.photo || student.photo || '';
+        } else {
+            photoUrl = student.photo || '';
+        }
+        
+        const data = {
+            studentId,
+            studentName: student.name || '',
+            studentNumber: student.number || '',
+            studentLevel: student.level || '',
+            studentDepartment: student.department || '',
+            position,
+            manifesto,
+            slogan,
+            electionYear,
+            photo: photoUrl,
+            updatedAt: serverTimestamp()
+        };
+        
+        if (editId) {
+            await updateDoc(doc(db, 'candidates', editId), data);
+            showToast('Umukandida yahinduwe neza!', 'success');
+        } else {
+            data.createdAt = serverTimestamp();
+            data.addedBy = currentUser?.uid || '';
+            await addDoc(collection(db, 'candidates'), data);
+            showToast('Umukandida yongeweho neza!', 'success');
+        }
+        
+        closeModal('addCandidateModal');
+        await loadCandidates();
+    } catch (err) {
+        console.error('Save candidate error:', err);
+        showToast('Ikosa: ' + err.message, 'error');
+    }
+};
+
+// ==================== LOAD CANDIDATES ====================
+async function loadCandidates() {
+    try {
+        const snap = await getDocs(collection(db, 'candidates'));
+        candidates = [];
+        snap.forEach(d => candidates.push({ id: d.id, ...d.data() }));
+        renderManageElections();
+        renderElections();
+    } catch (err) {
+        console.error('Load candidates error:', err);
+    }
+}
+
+// ==================== RENDER MANAGE ELECTIONS (Admin) ====================
+window.renderManageElections = function() {
+    const grid = document.getElementById('manageElectionsGrid');
+    if (!grid) return;
+    
+    const filterPos = document.getElementById('manageElectionsFilterPosition')?.value || '';
+    const search = (document.getElementById('manageElectionsSearch')?.value || '').toLowerCase();
+    
+    const posSelect = document.getElementById('manageElectionsFilterPosition');
+    if (posSelect && posSelect.options.length <= 1) {
+        Object.keys(POSITION_ICONS).forEach(p => {
+            posSelect.innerHTML += `<option value="${p}">${POSITION_ICONS[p]} ${p}</option>`;
+        });
+    }
+    
+    let filtered = candidates.filter(c => {
+        if (filterPos && c.position !== filterPos) return false;
+        if (search && !(c.studentName || '').toLowerCase().includes(search) && 
+            !(c.position || '').toLowerCase().includes(search)) return false;
+        return true;
+    });
+    
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="icon"><i class="fas fa-vote-yea"></i></div>
+                <h3>Nta bakandida bahari</h3>
+                <p>Kanda "Ongeraho Umukandida" ubanze</p>
+            </div>`;
         return;
     }
+    
+    filtered.sort((a, b) => (a.position || '').localeCompare(b.position || ''));
+    
+    grid.innerHTML = filtered.map(c => `
+        <div class="course-card" style="cursor: default;">
+            <div class="course-cover" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                ${c.photo 
+                    ? `<img src="${c.photo}" alt="${escapeHtml(c.studentName)}" style="object-fit: cover;">` 
+                    : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
+                <div class="course-level-badge">${POSITION_ICONS[c.position] || '🏛️'} ${escapeHtml(c.position || '')}</div>
+            </div>
+            <div class="course-body">
+                <h3>${escapeHtml(c.studentName || 'Nta izina')}</h3>
+                <div class="course-subject">
+                    <i class="fas fa-id-card"></i> ${escapeHtml(c.studentNumber || '-')} · 
+                    ${escapeHtml(c.studentLevel || '-')} · ${escapeHtml(c.studentDepartment || '-')}
+                </div>
+                ${c.slogan ? `<div style="font-size: 12.5px; font-style: italic; color: var(--purple); margin-bottom: 8px;">"${escapeHtml(c.slogan)}"</div>` : ''}
+                <div class="course-footer">
+                    <div class="course-meta"><span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || '-')}</span></div>
+                    <div style="display:flex; gap:6px;">
+                        <button class="action-btn edit" onclick="openAddCandidateModal('${c.id}')" title="Hindura"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteCandidate('${c.id}')" title="Siba"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+};
 
-    if (!confirm("Urabyumva neza ko ushaka gutora uyu mukandida? Ntushobora guhindura nyuma.")) return;
-
-    try {
-        const candidateRef = doc(db, 'candidates', candidateId);
-        
-        // Koresha Firestore Increment kugira ngo utazakora amakosa
-        const { increment, arrayUnion } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
-        
-        await updateDoc(candidateRef, {
-            votes: increment(1),
-            voters: arrayUnion(currentUser.uid)
+// ==================== RENDER ELECTIONS (Students View) ====================
+window.renderElections = function() {
+    const grid = document.getElementById('electionsGrid');
+    if (!grid) return;
+    
+    const filterPos = document.getElementById('electionsFilterPosition')?.value || '';
+    const search = (document.getElementById('electionsSearch')?.value || '').toLowerCase();
+    
+    const posSelect = document.getElementById('electionsFilterPosition');
+    if (posSelect && posSelect.options.length <= 1) {
+        Object.keys(POSITION_ICONS).forEach(p => {
+            posSelect.innerHTML += `<option value="${p}">${POSITION_ICONS[p]} ${p}</option>`;
         });
-
-        showToast("Amajwi yawe yabitswe neza! Murakoze.", "success");
-        if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        
-        await loadCandidates(); // Subirira kugaragaza amajwi mashya
-        
-    } catch (error) {
-        console.error("Vote error:", error);
-        showToast("Ntibyakunze gutora. Ongera ugerageze.", "error");
     }
+    
+    let filtered = candidates.filter(c => {
+        if (filterPos && c.position !== filterPos) return false;
+        if (search && !(c.studentName || '').toLowerCase().includes(search) && 
+            !(c.position || '').toLowerCase().includes(search)) return false;
+        return true;
+    });
+    
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="icon"><i class="fas fa-poll"></i></div>
+                <h3>Nta bakandida bahari</h3>
+                <p>Amatora azatangira vuba</p>
+            </div>`;
+        return;
+    }
+    
+    filtered.sort((a, b) => (a.position || '').localeCompare(b.position || ''));
+    
+    grid.innerHTML = filtered.map(c => `
+        <div class="course-card" onclick="openCandidateDetails('${c.id}')">
+            <div class="course-cover" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                ${c.photo 
+                    ? `<img src="${c.photo}" alt="${escapeHtml(c.studentName)}" style="object-fit: cover;">` 
+                    : `<div class="course-cover-icon"><i class="fas fa-user-tie"></i></div>`}
+                <div class="course-level-badge">${POSITION_ICONS[c.position] || '🏛️'} ${escapeHtml(c.position || '')}</div>
+            </div>
+            <div class="course-body">
+                <h3>${escapeHtml(c.studentName || 'Nta izina')}</h3>
+                <div class="course-subject">
+                    <i class="fas fa-id-card"></i> ${escapeHtml(c.studentNumber || '-')} · 
+                    ${escapeHtml(c.studentLevel || '-')}
+                </div>
+                ${c.slogan ? `<div style="font-size: 12.5px; font-style: italic; color: var(--purple); margin-bottom: 8px;">"${escapeHtml(c.slogan)}"</div>` : ''}
+                <div class="course-footer">
+                    <div class="course-meta"><span><i class="fas fa-calendar"></i> ${escapeHtml(c.electionYear || '-')}</span></div>
+                    <span style="font-size:12px; color: var(--purple); font-weight:700;">Reba <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+};
+
+// ==================== CANDIDATE DETAILS ====================
+window.openCandidateDetails = function(id) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+    
+    const modal = document.getElementById('candidateDetailsModal');
+    const content = document.getElementById('candidateDetailsContent');
+    
+    content.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            ${c.photo 
+                ? `<img src="${c.photo}" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--purple); box-shadow: 0 8px 25px rgba(139,92,246,0.4);">` 
+                : `<div style="width: 140px; height: 140px; border-radius: 50%; background: var(--gradient-purple); color: white; display: flex; align-items: center; justify-content: center; font-size: 50px; margin: 0 auto; border: 4px solid white;"><i class="fas fa-user-tie"></i></div>`}
+            <h2 style="font-size: 22px; font-weight: 800; margin-top: 16px; margin-bottom: 6px;">${escapeHtml(c.studentName || 'Nta izina')}</h2>
+            <div style="display: inline-block; padding: 6px 16px; background: rgba(139,92,246,0.15); color: var(--purple); border-radius: 50px; font-size: 13px; font-weight: 700;">
+                ${POSITION_ICONS[c.position] || '🏛️'} ${escapeHtml(c.position || '')}
+            </div>
+            ${c.slogan ? `<p style="font-style: italic; color: var(--text-secondary); margin-top: 12px; font-size: 14px;">"${escapeHtml(c.slogan)}"</p>` : ''}
+        </div>
+        
+        <div class="settings-card" style="margin-bottom: 16px;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;"><i class="fas fa-info-circle"></i> Amakuru</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+                <div><strong>Nimero:</strong> ${escapeHtml(c.studentNumber || '-')}</div>
+                <div><strong>Umwaka:</strong> ${escapeHtml(c.studentLevel || '-')}</div>
+                <div><strong>Ishami:</strong> ${escapeHtml(c.studentDepartment || '-')}</div>
+                <div><strong>Umwaka w'Amatora:</strong> ${escapeHtml(c.electionYear || '-')}</div>
+            </div>
+        </div>
+        
+        ${c.manifesto ? `
+        <div class="settings-card" style="margin-bottom: 0;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;"><i class="fas fa-scroll"></i> Manifesto</h3>
+            <div style="font-size: 14px; line-height: 1.7; white-space: pre-wrap;">${escapeHtml(c.manifesto)}</div>
+        </div>
+        ` : ''}
+    `;
+    
+    modal.classList.add('active');
+};
+
+// ==================== DELETE CANDIDATE ====================
+window.deleteCandidate = async function(id) {
+    if (!confirm('Urabyumva neza ko ushaka gusiba uyu mukandida?')) return;
+    try {
+        await deleteDoc(doc(db, 'candidates', id));
+        showToast('Umukandida yasibwe!', 'success');
+        await loadCandidates();
+    } catch (err) {
+        console.error('Delete candidate error:', err);
+        showToast('Ikosa: ' + err.message, 'error');
+    }
+};
+    window.previewNoteFile = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    pendingNoteFile = file;
+    document.getElementById('noteFilePreview').innerHTML = 
+        `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><span class="name">${escapeHtml(file.name)}</span></div></div>`;
+};
+
+window.previewExamFile = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    pendingExamFile = file;
+    document.getElementById('examFilePreview').innerHTML = 
+        `<div class="uploaded-file-item"><div class="info"><i class="fas fa-file"></i><span class="name">${escapeHtml(file.name)}</span></div></div>`;
 };
 </script>
 </body>
