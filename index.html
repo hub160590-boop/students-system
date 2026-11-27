@@ -556,7 +556,21 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 .fa-spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .hidden-input { display: none !important; }
-    </style>
+    
+/* ===== PROFILE, GALLERY & MESSAGING ENHANCEMENTS ===== */
+.row-avatar img,.post-avatar img,.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.photo-card img.profile-photo{height:190px;object-fit:cover}
+.message-layout{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:18px}
+.message-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;min-width:0}
+.message-list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}
+.message-bubble{max-width:82%;padding:12px 15px;border-radius:15px;background:var(--bg);border:1px solid var(--border);align-self:flex-start;overflow-wrap:anywhere}
+.message-bubble.mine{align-self:flex-end;background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.35)}
+.message-meta{font-size:11px;color:var(--text-secondary);margin-top:5px}
+.message-compose{display:flex;gap:8px;margin-top:14px}
+.message-compose input{flex:1;min-width:0}
+@media(max-width:760px){.message-layout{grid-template-columns:1fr}.message-compose{flex-direction:column}}
+
+</style>
 </head>
 <body>
 
@@ -656,6 +670,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 
             <div class="nav-label"></div>
             <div class="nav-item" onclick="switchPage('feed', this)"><i class="fas fa-newspaper"></i><span>VIDEOS & Feed</span></div>
+            <div class="nav-item" onclick="switchPage('messages', this)"><i class="fas fa-comments"></i><span>Ubutumwa</span><span class="count" id="sidebarUnreadMessages" style="display:none;">0</span></div>
             <div class="nav-item" onclick="switchPage('announcements', this)"><i class="fas fa-bullhorn"></i><span>Amatangazo</span><span class="count" id="sidebarAnnouncementCount" style="display:none;">0</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-notes', this)" style="display: none;"><i class="fas fa-book"></i><span>Amasomo Yanjye</span></div>
             <div class="nav-item student-only" onclick="switchPage('my-exams', this)" style="display: none;"><i class="fas fa-file-alt"></i><span>Ibizamini Byanjye</span></div>
@@ -1001,6 +1016,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     <h3><i class="fas fa-user-edit"></i> Hindura Profile</h3>
                     <div class="form-group"><label>Amazina</label><input type="text" class="form-control" id="profileInputName"></div>
                     <div class="form-group"><label>Telefone</label><input type="text" class="form-control" id="profileInputPhone"></div>
+                    <div class="form-group"><label>Bio / Ibyerekeye wowe</label><textarea class="form-control" id="profileInputBio" rows="3" maxlength="300" placeholder="Andika amagambo make akuvugaho..."></textarea></div>
                     <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Bika</button>
                 </div>
                 <div class="settings-card">
@@ -1047,6 +1063,18 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
                     </div>
                 </div>
                 <div class="course-grid" id="electionsGrid"></div>
+            </div>
+
+            <div class="page" id="page-messages">
+                <div class="page-header"><div><h1>💬 Ubutumwa</h1><p>Ganira n’abandi bakoresha MINDBOOK</p></div><button class="btn btn-outline" onclick="loadMessages()"><i class="fas fa-sync"></i> Refresh</button></div>
+                <div class="message-layout">
+                    <div class="message-panel"><h3 style="margin-bottom:12px;">Ohereza ubutumwa</h3>
+                        <div class="form-group"><label>Hitamo uwo wandikira</label><select class="form-control" id="messageRecipient"><option value="">-- Hitamo umukoresha --</option></select></div>
+                        <div class="form-group"><label>Ubutumwa</label><textarea class="form-control" id="messageText" rows="4" maxlength="2000" placeholder="Andika ubutumwa..."></textarea></div>
+                        <button class="btn btn-primary" style="width:100%;" onclick="sendDirectMessage()"><i class="fas fa-paper-plane"></i> Ohereza</button>
+                    </div>
+                    <div class="message-panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3>Ubutumwa bwawe</h3><span class="role-badge student" id="messageCount">0</span></div><div class="message-list" id="messageList"><div class="empty-state">Nta butumwa buraboneka.</div></div></div>
+                </div>
             </div>
         </main>
     </div>
@@ -1346,7 +1374,7 @@ tbody tr:hover { background: rgba(56, 189, 248, 0.04); }
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import {
     getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
-    serverTimestamp, setDoc, getDoc, onSnapshot
+    serverTimestamp, setDoc, getDoc, onSnapshot, query, where
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import {
     getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
@@ -1372,7 +1400,7 @@ const auth = getAuth(firebaseApp);
 
 let currentUser = null;
 let currentUserData = null;
-let students = [], users = [], teachers = [], grades = [], notes = [], notesPayments = [], announcements = [], exams = [], posts = [], notifications = [];
+let students = [], users = [], teachers = [], grades = [], notes = [], notesPayments = [], announcements = [], exams = [], posts = [], notifications = [], messages = [];
 let courses = [], lessons = [], assignments = [], submissions = [], quizzes = [], liveClasses = [], candidates = [];
 
 // ==================== UTILITIES ====================
@@ -1494,6 +1522,8 @@ window.switchPage = function(name, el) {
     if (name === 'elections') renderElections();
     if (name === 'manage-elections') renderManageElections();
     if (name === 'profile') renderProfile();
+    if (name === 'photos') renderPhotos();
+    if (name === 'messages') renderMessages();
 };
 
 // ==================== MY COURSES (WITH LOCK) ====================
@@ -1699,7 +1729,7 @@ window.renderPosts = function() {
     list.innerHTML = items.map(p => `
         <div class="post-card">
             <div class="post-header">
-                <div class="post-avatar">${(p.authorName||'?').charAt(0).toUpperCase()}</div>
+                <div class="post-avatar">${p.authorPhotoUrl ? `<img src="${mbSafeUrl(p.authorPhotoUrl)}" alt="">` : (p.authorName||'?').charAt(0).toUpperCase()}</div>
                 <div class="post-author">
                     <div class="name">${p.authorName || 'Unknown'}</div>
                     <div class="time">${p.createdAt?.toDate ? new Date(p.createdAt.toDate()).toLocaleString() : 'Now'}</div>
@@ -1876,7 +1906,11 @@ window.refreshAllData = async function() {
     renderMyCourses();
     renderMyExams();
     renderMyNotes();
+    await Promise.all([loadNotifications(), loadMessages()]);
     renderPosts();
+    renderPhotos();
+    renderNotifications();
+    if (document.getElementById('page-profile')?.classList.contains('active')) renderProfile();
 };
 
 // ==================== AUTH STATE ====================
@@ -1903,7 +1937,8 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('headerName').textContent = currentUserData.name || 'User';
         document.getElementById('headerRole').textContent = currentUserData.role || 'student';
         document.getElementById('headerRole').className = 'role-badge ' + (currentUserData.role || 'student');
-        document.getElementById('headerAvatar').textContent = (currentUserData.name || '?').charAt(0).toUpperCase();
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar) headerAvatar.innerHTML = currentUserData.photoUrl ? `<img src="${mbSafeUrl(currentUserData.photoUrl)}" alt="Profile">` : (currentUserData.name || '?').charAt(0).toUpperCase();
         // Show/hide admin-only / student-only
         const isAdmin = ['admin','super_admin','teacher'].includes(currentUserData.role);
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
@@ -2018,7 +2053,7 @@ window.renderStudents = function() {
     const body = document.getElementById('studentsBody');
     if (!body) return;
     if (!students.length) { body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;">Nta munyeshuri</td></tr>'; return; }
-    body.innerHTML = students.map(s => `<tr><td><div class="member-cell-row"><div class="row-avatar">${(s.name||'?').charAt(0).toUpperCase()}</div><div class="row-info"><div class="name">${s.name}</div></div></div></td><td>${s.number||'-'}</td><td>${s.level||'-'}</td><td><span class="dept-badge ${(s.department||'').toLowerCase()}">${s.department||'-'}</span></td><td><button class="action-btn delete" onclick="deleteStudent('${s.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+    body.innerHTML = students.map(s => `<tr><td><div class="member-cell-row"><div class="row-avatar">${(s.photoUrl || users.find(u => (u.email||'').toLowerCase() === (s.email||'').toLowerCase())?.photoUrl) ? `<img src="${mbSafeUrl(s.photoUrl || users.find(u => (u.email||'').toLowerCase() === (s.email||'').toLowerCase())?.photoUrl)}" alt="">` : (s.name||'?').charAt(0).toUpperCase()}</div><div class="row-info"><div class="name">${mbEscape(s.name||'')}</div></div></div></td><td>${mbEscape(s.number||'-')}</td><td>${mbEscape(s.level||'-')}</td><td><span class="dept-badge">${mbEscape(s.department||'-')}</span></td><td><button class="action-btn delete" onclick="deleteStudent('${s.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
 };
 
 window.renderTeachers = function() {
@@ -2032,7 +2067,7 @@ window.renderUsers = function() {
     const body = document.getElementById('usersBody');
     if (!body) return;
     if (!users.length) { body.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:30px;">Nta mukoresha</td></tr>'; return; }
-    body.innerHTML = users.map(u => `<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="role-badge ${u.role}">${u.role||'student'}</span></td><td><button class="action-btn delete" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+    body.innerHTML = users.map(u => `<tr><td><div class="member-cell-row"><div class="row-avatar">${u.photoUrl ? `<img src="${mbSafeUrl(u.photoUrl)}" alt="">` : (u.name||'?').charAt(0).toUpperCase()}</div><div class="row-info"><div class="name">${mbEscape(u.name||'-')}</div></div></div></td><td>${mbEscape(u.email||'-')}</td><td><span class="role-badge ${mbEscape(u.role||'student')}">${mbEscape(u.role||'student')}</span></td><td><button class="action-btn delete" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
 };
 
 window.renderGrades = function() {
@@ -2242,7 +2277,7 @@ window.openAddTeacherModal = function() { openModal('addTeacherModal'); };
 window.openAddAdminModal = function() { openModal('addAdminModal'); };
 window.openAddAnnouncementModal = function() { openModal('addAnnouncementModal'); };
 window.openAddGradeModal = function() { openModal('addGradeModal'); };
-window.openNotificationsModal = function() { openModal('notificationsModal'); };
+window.openNotificationsModal = async function() { await loadNotifications(); openModal('notificationsModal'); };
 window.openForgotPasswordModal = function() { openModal('forgotPasswordModal'); };
 window.openQRRegisterModal = function() { openModal('qrRegisterModal'); };
 window.openAddCandidateModal = function() { openModal('addCandidateModal'); };
@@ -2279,6 +2314,409 @@ window.deleteStudent = async function(id) { if (!confirm('Siba umunyeshuri?')) r
 window.deleteTeacher = async function(id) { if (!confirm('Siba umwarimu?')) return; try { await deleteDoc(doc(db, 'teachers', id)); toast('Yasibwe', 'success'); refreshAllData(); } catch(e) {} };
 window.deleteUser = async function(id) { if (!confirm('Siba umukoresha?')) return; try { await deleteDoc(doc(db, 'users', id)); toast('Yasibwe', 'success'); refreshAllData(); } catch(e) {} };
 window.deleteGrade = async function(id) { if (!confirm('Siba amanota?')) return; try { await deleteDoc(doc(db, 'grades', id)); toast('Yasibwe', 'success'); refreshAllData(); } catch(e) {} };
+
+// ==================== REPAIRED MISSING HANDLERS ====================
+// Common helpers. These are deliberately defensive so missing optional
+// controls do not crash the application.
+const mbValue = (id, fallback = '') => document.getElementById(id)?.value?.trim?.() ?? fallback;
+const mbFile = (id) => document.getElementById(id)?.files?.[0] || null;
+const mbSetText = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value ?? ''; };
+const mbSetValue = (id, value) => { const el = document.getElementById(id); if (el) el.value = value ?? ''; };
+const mbDoc = (name, data) => addDoc(collection(db, name), { ...data, createdAt: serverTimestamp() });
+const mbUpload = async (file) => {
+    if (!file) return '';
+    if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) throw new Error('Cloudinary ntabwo yateguwe.');
+    const form = new FormData();
+    form.append('file', file);
+    form.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, { method: 'POST', body: form });
+    const result = await response.json();
+    if (!response.ok || !result.secure_url) throw new Error(result.error?.message || 'Upload yanze.');
+    return result.secure_url;
+};
+const mbRefresh = async (modalId) => {
+    if (modalId) closeModal(modalId);
+    await refreshAllData();
+};
+const mbRequireAdmin = () => {
+    if (!currentUser || !['admin', 'super_admin'].includes(currentUserData?.role)) {
+        toast('Nta burenganzira ufite bwo gukora iki gikorwa.', 'error');
+        return false;
+    }
+    return true;
+};
+const mbEscape = (value='') => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const mbSafeUrl = (value='') => { try { const u = new URL(value, location.href); return ['https:','http:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
+window.renderPhotos = function () {
+    const grid = document.getElementById('photoGrid'); if (!grid) return;
+    const people = new Map();
+    [...users, ...students].forEach(person => {
+        const key = person.uid || person.userId || person.email || person.id;
+        if (!key) return;
+        const previous = people.get(key) || {};
+        people.set(key, { ...previous, ...person, photoUrl: person.photoUrl || person.photoURL || person.profilePhotoUrl || previous.photoUrl });
+    });
+    const list = [...people.values()].filter(p => p.photoUrl);
+    if (!list.length) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><h3>Nta mafoto ya profile araboneka</h3><p>Abanyamuryango bashyireho amafoto yabo kuri Profile.</p></div>'; return; }
+    grid.innerHTML = list.map(p => `<div class="photo-card"><img class="profile-photo" loading="lazy" src="${mbSafeUrl(p.photoUrl)}" alt="Profile photo"><div class="photo-info"><div class="photo-name">${mbEscape(p.name || p.fullName || 'Member')}</div><div class="message-meta">${mbEscape(p.role || 'student')} · ${mbEscape(p.email || '')}</div></div></div>`).join('');
+};
+window.renderNotifications = function () {
+    const list = document.getElementById('notificationsList'); if (!list) return;
+    const mine = notifications.filter(n => n.userId === currentUser?.uid).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    if (!mine.length) { list.innerHTML = '<div class="empty-state">Nta notification nshya.</div>'; return; }
+    list.innerHTML = mine.map(n => `<div class="notification-item"><div class="notification-content"><div class="title">${mbEscape(n.title || 'Notification')}</div><div class="body">${mbEscape(n.body || '')}</div><div class="message-meta">${n.read ? 'Yasomwe' : 'Ntarasomwa'}</div></div></div>`).join('');
+};
+window.loadMessages = async function () {
+    if (!currentUser) return;
+    try {
+        const [sent, received] = await Promise.all([
+            getDocs(query(collection(db, 'messages'), where('senderId', '==', currentUser.uid))),
+            getDocs(query(collection(db, 'messages'), where('receiverId', '==', currentUser.uid)))
+        ]);
+        const byId = new Map();
+        [sent, received].forEach(snap => snap.forEach(d => byId.set(d.id, { id: d.id, ...d.data() })));
+        messages.splice(0, messages.length, ...byId.values());
+        renderMessages();
+    } catch (e) { console.error(e); toast('Kuzana ubutumwa byanze. Reba Firestore Rules.', 'error'); }
+};
+window.loadNotifications = async function () {
+    if (!currentUser) return;
+    try {
+        const snap = await getDocs(query(collection(db, 'notifications'), where('userId', '==', currentUser.uid)));
+        notifications.splice(0, notifications.length, ...snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        renderNotifications();
+    } catch (e) { console.error(e); toast('Kuzana notifications byanze. Reba Firestore Rules.', 'error'); }
+};
+window.renderMessages = function () {
+    const select = document.getElementById('messageRecipient'), list = document.getElementById('messageList');
+    if (!select || !list || !currentUser) return;
+    const current = select.value;
+    select.innerHTML = '<option value="">-- Hitamo umukoresha --</option>' + users.filter(u => u.id !== currentUser.uid).map(u => `<option value="${mbEscape(u.id)}">${mbEscape(u.name || u.email || 'User')} (${mbEscape(u.role || 'student')})</option>`).join('');
+    if (current && users.some(u => u.id === current)) select.value = current;
+    const mine = messages.filter(m => m.senderId === currentUser.uid || m.receiverId === currentUser.uid).sort((a,b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+    mbSetText('messageCount', mine.length);
+    list.innerHTML = mine.length ? mine.map(m => `<div class="message-bubble ${m.senderId === currentUser.uid ? 'mine' : ''}"><div>${mbEscape(m.text || '')}</div><div class="message-meta">${m.senderId === currentUser.uid ? 'Wowe' : mbEscape(m.senderName || 'User')} · ${m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString() : 'Ubu'}</div></div>`).join('') : '<div class="empty-state">Nta butumwa urabona.</div>' ;
+    list.scrollTop = list.scrollHeight;
+};
+window.sendDirectMessage = async function () {
+    if (!currentUser) return;
+    const receiverId = mbValue('messageRecipient'), textValue = mbValue('messageText');
+    if (!receiverId || !textValue) return toast('Hitamo uwo wandikira kandi wandike ubutumwa.', 'error');
+    const receiver = users.find(u => u.id === receiverId); if (!receiver) return toast('Uwo muntu ntiyabonetse. Refresh.', 'error');
+    try {
+        await mbDoc('messages', { senderId: currentUser.uid, senderName: currentUserData?.name || currentUser.email, receiverId, receiverName: receiver.name || receiver.email || 'User', text: textValue, read: false });
+        await mbDoc('notifications', { userId: receiverId, title: 'Ubutumwa bushya', body: `${currentUserData?.name || 'Umukoresha'} yakwoherereje ubutumwa.`, type: 'message', read: false });
+        mbSetValue('messageText', ''); await loadMessages(); toast('Ubutumwa bwoherejwe.', 'success');
+    } catch (e) { console.error(e); toast('Kohereza ubutumwa byanze: ' + e.message, 'error'); }
+};
+
+
+let mbPostMediaFile = null;
+let mbStudentPostMediaFile = null;
+let mbCandidatePhotoFile = null;
+let mbExamFile = null;
+let mbNoteFile = null;
+let mbInstallPrompt = null;
+
+window.previewNoteFile = (event) => { mbNoteFile = event.target.files?.[0] || null; };
+window.previewExamFile = (event) => { mbExamFile = event.target.files?.[0] || null; };
+window.previewPostMedia = (event, student = false) => {
+    const file = event?.target?.files?.[0] || null;
+    if (student) mbStudentPostMediaFile = file; else mbPostMediaFile = file;
+};
+window.previewCandidatePhoto = (event) => {
+    mbCandidatePhotoFile = event.target.files?.[0] || null;
+    const holder = document.getElementById('candidatePhotoPreviewContainer');
+    if (holder && mbCandidatePhotoFile) {
+        const url = URL.createObjectURL(mbCandidatePhotoFile);
+        holder.innerHTML = `<img src="${url}" alt="Candidate photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    }
+};
+
+window.saveCourse = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('courseTitle');
+    if (!title) return toast('Andika izina rya course.', 'error');
+    const data = { title, subject: mbValue('courseSubject'), level: mbValue('courseLevel'), teacher: mbValue('courseTeacher'), description: mbValue('courseDescription'), updatedAt: serverTimestamp() };
+    try {
+        const id = mbValue('courseEditId');
+        if (id) await updateDoc(doc(db, 'courses', id), data); else await mbDoc('courses', data);
+        toast('Course yabitswe neza.', 'success'); await mbRefresh('addCourseModal');
+    } catch (e) { console.error(e); toast('Kubika course byanze: ' + e.message, 'error'); }
+};
+window.saveLesson = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('lessonTitle');
+    if (!title) return toast('Andika izina rya lesson.', 'error');
+    try {
+        await mbDoc('lessons', { courseId: mbValue('lessonCourseId'), title, content: mbValue('lessonContent'), videoUrl: mbValue('lessonVideoUrl'), duration: Number(mbValue('lessonDuration', '0')) || 0 });
+        toast('Lesson yabitswe.', 'success'); await mbRefresh('addLessonModal');
+    } catch (e) { console.error(e); toast('Kubika lesson byanze: ' + e.message, 'error'); }
+};
+window.saveAssignment = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('assignmentTitle');
+    if (!title) return toast('Andika umutwe w’umurimo.', 'error');
+    try {
+        await mbDoc('assignments', { courseId: mbValue('assignmentCourseId'), title, description: mbValue('assignmentDesc'), dueDate: mbValue('assignmentDueDate'), level: mbValue('assignmentLevel') });
+        toast('Umurimo wabitswe.', 'success'); await mbRefresh('addAssignmentModal');
+    } catch (e) { console.error(e); toast('Kubika umurimo byanze: ' + e.message, 'error'); }
+};
+window.addQuizQuestion = function () {
+    const host = document.getElementById('quizQuestionsContainer');
+    if (!host) return;
+    const index = host.querySelectorAll('[data-quiz-question]').length;
+    const item = document.createElement('div');
+    item.dataset.quizQuestion = '1';
+    item.className = 'form-group';
+    item.innerHTML = `<label>Ikibazo ${index + 1}</label><input class="form-control mb-q-text" placeholder="Andika ikibazo"><input class="form-control mb-q-a" placeholder="Igisubizo A"><input class="form-control mb-q-b" placeholder="Igisubizo B"><input class="form-control mb-q-c" placeholder="Igisubizo C"><input class="form-control mb-q-d" placeholder="Igisubizo D"><select class="form-control mb-q-correct"><option value="0">Igisubizo A</option><option value="1">Igisubizo B</option><option value="2">Igisubizo C</option><option value="3">Igisubizo D</option></select>`;
+    host.appendChild(item);
+};
+window.saveQuiz = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('quizTitle');
+    const host = document.getElementById('quizQuestionsContainer');
+    const questions = [...(host?.querySelectorAll('[data-quiz-question]') || [])].map(el => ({
+        question: el.querySelector('.mb-q-text')?.value.trim() || '',
+        options: ['a','b','c','d'].map(k => el.querySelector('.mb-q-' + k)?.value.trim() || ''),
+        correctAnswer: Number(el.querySelector('.mb-q-correct')?.value || 0)
+    })).filter(q => q.question && q.options.every(Boolean));
+    if (!title || !questions.length) return toast('Shyiramo umutwe n’ibibazo byuzuye.', 'error');
+    try {
+        await mbDoc('quizzes', { courseId: mbValue('quizCourseId'), title, timeLimit: Number(mbValue('quizTimeLimit', '0')) || 0, questions });
+        toast('Quiz yabitswe.', 'success'); await mbRefresh('addQuizModal');
+    } catch (e) { console.error(e); toast('Kubika quiz byanze: ' + e.message, 'error'); }
+};
+window.saveLive = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('liveTitle');
+    if (!title) return toast('Andika izina rya live class.', 'error');
+    try {
+        await mbDoc('liveClasses', { courseId: mbValue('liveCourseId'), title, dateTime: mbValue('liveDateTime'), meetingLink: mbValue('liveMeetingLink') });
+        toast('Live class yabitswe.', 'success'); await mbRefresh('addLiveModal');
+    } catch (e) { console.error(e); toast('Kubika live byanze: ' + e.message, 'error'); }
+};
+window.addStudent = async function () {
+    if (!mbRequireAdmin()) return;
+    const name = mbValue('newName'), email = mbValue('newEmail');
+    if (!name || !email) return toast('Amazina na email birakenewe.', 'error');
+    try {
+        await mbDoc('students', { name, email, number: mbValue('newNumberInput'), level: mbValue('newLevel'), department: mbValue('newDepartment'), status: 'active' });
+        toast('Umunyeshuri yongeweho.', 'success'); await mbRefresh('addStudentModal');
+    } catch (e) { console.error(e); toast('Kongeramo umunyeshuri byanze: ' + e.message, 'error'); }
+};
+window.addTeacher = async function () {
+    if (!mbRequireAdmin()) return;
+    const name = mbValue('teacherName'), email = mbValue('teacherEmail');
+    if (!name || !email) return toast('Amazina na email birakenewe.', 'error');
+    try {
+        await mbDoc('teachers', { name, email });
+        toast('Umwarimu yongeweho.', 'success'); await mbRefresh('addTeacherModal');
+    } catch (e) { console.error(e); toast('Kongeramo umwarimu byanze: ' + e.message, 'error'); }
+};
+window.addNewAdmin = async function () {
+    if (!currentUser || currentUserData?.role !== 'super_admin') return toast('Super Admin gusa ni we wemerewe.', 'error');
+    const email = mbValue('newAdminEmail').toLowerCase(), name = mbValue('newAdminName');
+    if (!email || !name) return toast('Amazina na email birakenewe.', 'error');
+    // Creating another Auth account from a client session signs out the current user.
+    // Create a pending role request instead; a trusted Cloud Function must provision Auth users.
+    try {
+        await mbDoc('adminRequests', { email, name, requestedBy: currentUser.uid, status: 'pending' });
+        toast('Ubusabe bwo kongeramo Admin bwoherejwe.', 'success'); closeModal('addAdminModal');
+    } catch (e) { console.error(e); toast('Ubusabe bwanze: ' + e.message, 'error'); }
+};
+window.addGrade = async function () {
+    if (!mbRequireAdmin()) return;
+    const studentId = mbValue('gradeStudentId'), subject = mbValue('gradeSubject');
+    const marks = Number(mbValue('gradeMarks'));
+    if (!studentId || !subject || !Number.isFinite(marks) || marks < 0 || marks > 100) return toast('Hitamo umunyeshuri, isomo n’amanota 0–100.', 'error');
+    try {
+        await mbDoc('grades', { studentId, subject, marks, date: mbValue('gradeDate') });
+        toast('Amanota yabitswe.', 'success'); await mbRefresh('addGradeModal');
+    } catch (e) { console.error(e); toast('Kubika amanota byanze: ' + e.message, 'error'); }
+};
+window.submitPayment = async function () {
+    if (!currentUser) return toast('Banza winjire.', 'error');
+    const amount = Number(mbValue('paymentAmount')), phone = mbValue('paymentPhone'), method = mbValue('paymentMethod');
+    if (!Number.isFinite(amount) || amount <= 0 || !phone || !method) return toast('Uzuza amafaranga, telefone n’uburyo bwo kwishyura.', 'error');
+    try {
+        await mbDoc('notesPayments', { userId: currentUser.uid, userName: currentUserData?.name || currentUser.email, amount, phone, method, status: 'pending', contentName: mbValue('paymentContentName', 'amasomo') });
+        toast('Ubusabe bwo kwishyura bwoherejwe. Tegereza kwemezwa.', 'success');
+        closeModal('paymentModal');
+    } catch (e) { console.error(e); toast('Kohereza ubwishyu byanze: ' + e.message, 'error'); }
+};
+window.saveAnnouncement = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('annTitle'), content = mbValue('annContent');
+    if (!title || !content) return toast('Umutwe n’ubutumwa birakenewe.', 'error');
+    try { await mbDoc('announcements', { title, content, priority: mbValue('annPriority', 'normal'), createdBy: currentUser.uid }); toast('Itangazo ryabitswe.', 'success'); await mbRefresh('addAnnouncementModal'); }
+    catch (e) { console.error(e); toast('Kubika itangazo byanze: ' + e.message, 'error'); }
+};
+window.sendResetPasswordEmail = async function () {
+    const email = mbValue('forgotEmailInput');
+    if (!email) return toast('Andika email yawe.', 'error');
+    try { await sendPasswordResetEmail(auth, email); toast('Reba email yawe kugira ngo uhindure ijambo ry’ibanga.', 'success'); closeModal('forgotPasswordModal'); }
+    catch (e) { console.error(e); toast('Kohereza email byanze: ' + e.message, 'error'); }
+};
+window.renderProfile = function () {
+    if (!currentUser) return;
+    const data = currentUserData || {};
+    mbSetText('profileName', data.name || 'User');
+    mbSetText('profileEmail', currentUser.email || data.email || '');
+    mbSetText('profileRoleBadge', data.role || 'student');
+    mbSetValue('profileInputName', data.name || '');
+    mbSetValue('profileInputPhone', data.phone || '');
+    mbSetValue('profileInputBio', data.bio || '');
+    const holder = document.getElementById('profileAvatarContent');
+    if (holder) holder.innerHTML = data.photoUrl ? `<img src="${mbSafeUrl(data.photoUrl)}" alt="Profile photo">` : mbEscape((data.name || 'U').charAt(0).toUpperCase());
+};
+window.saveProfile = async function () {
+    if (!currentUser) return;
+    const name = mbValue('profileInputName'), phone = mbValue('profileInputPhone'), bio = mbValue('profileInputBio');
+    if (!name) return toast('Amazina arakenewe.', 'error');
+    try {
+        const profile = { name, phone, bio, email: currentUser.email || '', updatedAt: serverTimestamp() };
+        await setDoc(doc(db, 'users', currentUser.uid), profile, { merge: true });
+        currentUserData = { ...currentUserData, ...profile };
+        mbSetText('headerName', name);
+        renderProfile();
+        toast('Profile yabitswe.', 'success');
+    } catch (e) { console.error(e); toast('Kubika profile byanze: ' + e.message, 'error'); }
+};
+window.changePassword = async function () {
+    if (!currentUser) return;
+    const oldPassword = mbValue('oldPassword'), newPassword = mbValue('newPassword');
+    if (!oldPassword || newPassword.length < 6) return toast('Uzuza ijambo rya kera n’irisha (nibura inyuguti 6).', 'error');
+    try {
+        const credential = EmailAuthProvider.credential(currentUser.email, oldPassword);
+        await reauthenticateWithCredential(currentUser, credential);
+        await updatePassword(currentUser, newPassword);
+        mbSetValue('oldPassword', ''); mbSetValue('newPassword', '');
+        toast('Ijambo ry’ibanga ryahinduwe.', 'success');
+    } catch (e) { console.error(e); toast('Guhindura ijambo ry’ibanga byanze: ' + e.message, 'error'); }
+};
+window.saveSettings = async function () {
+    if (!mbRequireAdmin()) return;
+    try { await setDoc(doc(db, 'settings', 'general'), { schoolName: mbValue('schoolName', 'Ishuri Ryacu'), updatedAt: serverTimestamp() }, { merge: true }); toast('Igenamiterere ryabitswe.', 'success'); }
+    catch (e) { console.error(e); toast('Kubika igenamiterere byanze: ' + e.message, 'error'); }
+};
+window.enableNotifications = async function () {
+    if (!('Notification' in window)) return toast('Browser yawe ntiyemera notifications.', 'error');
+    const permission = await Notification.requestPermission();
+    toast(permission === 'granted' ? 'Notifications zafunguwe.' : 'Ntiwemeye notifications.', permission === 'granted' ? 'success' : 'warning');
+};
+window.installPWA = async function () {
+    if (!mbInstallPrompt) return toast('Install ntiraboneka. Fungura menu ya browser uhitemo Install app.', 'warning');
+    mbInstallPrompt.prompt();
+    await mbInstallPrompt.userChoice;
+    mbInstallPrompt = null;
+    document.getElementById('pwaInstallBtn')?.classList.add('hidden');
+};
+window.markAllAnnouncementsAsRead = async function () {
+    if (!currentUser) return;
+    try {
+        await mbDoc('announcementReads', { userId: currentUser.uid, readAt: serverTimestamp() });
+        toast('Byashyizweho ko wasomye amatangazo.', 'success');
+    } catch (e) { console.error(e); toast('Ntibyashobotse.', 'error'); }
+};
+window.fillCandidateFromStudent = function () {
+    const select = document.getElementById('candidateStudentId');
+    const student = students.find(x => x.id === select?.value);
+    if (!student) return;
+    const nameInput = document.getElementById('candidateStudentName');
+    if (nameInput) nameInput.value = student.name || '';
+};
+window.saveCandidate = async function () {
+    if (!mbRequireAdmin()) return;
+    const studentId = mbValue('candidateStudentId');
+    const student = students.find(x => x.id === studentId);
+    const name = mbValue('candidateStudentName') || student?.name || '';
+    const position = mbValue('candidatePosition');
+    if (!name || !position) return toast('Hitamo umunyeshuri kandi wandike umwanya.', 'error');
+    try {
+        const photoUrl = mbCandidatePhotoFile ? await mbUpload(mbCandidatePhotoFile) : '';
+        const data = { studentId, studentName: name, position, photoUrl };
+        const editId = mbValue('candidateEditId');
+        if (editId) await updateDoc(doc(db, 'candidates', editId), data); else await mbDoc('candidates', data);
+        mbCandidatePhotoFile = null; toast('Umukandida yabitswe.', 'success'); await mbRefresh('addCandidateModal');
+    } catch (e) { console.error(e); toast('Kubika umukandida byanze: ' + e.message, 'error'); }
+};
+window.saveNote = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('noteTitle');
+    if (!title) return toast('Andika umutwe w’isomo.', 'error');
+    try {
+        const fileUrl = mbNoteFile ? await mbUpload(mbNoteFile) : '';
+        await mbDoc('notes', { title, subject: mbValue('noteSubject'), level: mbValue('noteLevel'), description: mbValue('noteDescription'), fileUrl });
+        mbNoteFile = null; toast('Isomo ryabitswe.', 'success'); await mbRefresh('addNoteModal');
+    } catch (e) { console.error(e); toast('Kubika isomo byanze: ' + e.message, 'error'); }
+};
+window.saveExam = async function () {
+    if (!mbRequireAdmin()) return;
+    const title = mbValue('examTitle');
+    if (!title) return toast('Andika umutwe w’ikizamini.', 'error');
+    try {
+        const fileUrl = mbExamFile ? await mbUpload(mbExamFile) : '';
+        await mbDoc('exams', { title, subject: mbValue('examSubject'), type: mbValue('examType'), date: mbValue('examDate'), level: mbValue('examLevel'), fileUrl });
+        mbExamFile = null; toast('Ikizamini cyabitswe.', 'success'); await mbRefresh('addExamModal');
+    } catch (e) { console.error(e); toast('Kubika ikizamini byanze: ' + e.message, 'error'); }
+};
+window.savePost = async function () {
+    if (!mbRequireAdmin()) return;
+    const caption = mbValue('postCaption');
+    if (!caption || !mbPostMediaFile) return toast('Andika ubutumwa kandi uhitemo ifoto/video.', 'error');
+    try {
+        const mediaUrl = await mbUpload(mbPostMediaFile);
+        await mbDoc('posts', { caption, type: mbValue('postType'), mediaUrl, authorId: currentUser.uid, authorName: currentUserData?.name || '', authorPhotoUrl: currentUserData?.photoUrl || '', authorRole: currentUserData?.role || 'admin', likes: 0, likedBy: [], commentsCount: 0 });
+        mbPostMediaFile = null; toast('Post yashyizweho.', 'success'); await mbRefresh('addPostModal'); renderPosts();
+    } catch (e) { console.error(e); toast('Gushyiraho post byanze: ' + e.message, 'error'); }
+};
+window.openStudentPostModal = () => openModal('studentPostModal');
+window.saveEditMessage = async function () {
+    if (!currentUser) return;
+    const id = mbValue('editMessageId'), message = mbValue('editMessageText');
+    if (!id || !message) return toast('Ubutumwa ntibushobora kuba ubusa.', 'error');
+    try { await updateDoc(doc(db, 'messages', id), { text: message, editedAt: serverTimestamp() }); closeModal('editMessageModal'); toast('Ubutumwa bwahinduwe.', 'success'); }
+    catch (e) { console.error(e); toast('Guhindura ubutumwa byanze: ' + e.message, 'error'); }
+};
+window.submitComment = async function () {
+    if (!currentUser) return toast('Banza winjire.', 'error');
+    const postId = window.currentCommentPostId, textValue = mbValue('commentInput');
+    if (!postId || !textValue) return toast('Andika igitekerezo.', 'error');
+    try { await mbDoc('comments', { postId, text: textValue, userId: currentUser.uid, userName: currentUserData?.name || currentUser.email }); mbSetValue('commentInput', ''); toast('Igitekerezo cyoherejwe.', 'success'); }
+    catch (e) { console.error(e); toast('Kohereza igitekerezo byanze: ' + e.message, 'error'); }
+};
+window.uploadProfilePhoto = async function (event) {
+    const file = event.target.files?.[0];
+    if (!file || !currentUser) return;
+    if (!file.type.startsWith('image/')) return toast('Hitamo ifoto gusa.', 'error');
+    if (file.size > 5 * 1024 * 1024) return toast('Ifoto ntigomba kurenza 5MB.', 'error');
+    try {
+        const photoUrl = await mbUpload(file);
+        await setDoc(doc(db, 'users', currentUser.uid), { photoUrl, updatedAt: serverTimestamp() }, { merge: true });
+        currentUserData = { ...currentUserData, photoUrl };
+        renderProfile();
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar) headerAvatar.innerHTML = `<img src="${mbSafeUrl(photoUrl)}" alt="Profile">`;
+        await refreshAllData();
+        toast('Ifoto ya profile yahinduwe.', 'success');
+    } catch (e) { console.error(e); toast('Gushyiraho ifoto byanze: ' + e.message, 'error'); }
+    finally { event.target.value = ''; }
+};
+window.saveStudentPost = window.saveStudentPost || async function () {
+    const caption = mbValue('studentPostCaption'), type = mbValue('studentPostType');
+    if (!currentUser || !caption || !mbStudentPostMediaFile) return toast('Banza winjire, wandike ubutumwa kandi uhitemo media.', 'error');
+    try {
+        const mediaUrl = await mbUpload(mbStudentPostMediaFile);
+        await mbDoc('posts', { caption, type, mediaUrl, authorId: currentUser.uid, authorName: currentUserData?.name || '', authorPhotoUrl: currentUserData?.photoUrl || '', authorRole: 'student', likes: 0, likedBy: [], commentsCount: 0 });
+        mbStudentPostMediaFile = null; closeModal('studentPostModal'); toast('Post yashyizweho.', 'success'); renderPosts();
+    } catch (e) { console.error(e); toast('Gushyiraho post byanze: ' + e.message, 'error'); }
+};
+window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault(); mbInstallPrompt = event;
+    document.getElementById('pwaInstallBtn')?.classList.remove('hidden');
+});
+
 </script>
 </body>
 </html>
