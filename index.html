@@ -2108,18 +2108,86 @@ window.renderNotesPayments = function() {
         </div>`).join('');
 };
 
+
 window.approvePayment = async function(id) {
     try {
-        const payment = notesPayments.find(p => p.id === id);
-        if (!payment) return;
-        await updateDoc(doc(db, 'notesPayments', id), { status: 'approved' });
-        if (payment.userId) {
-            await updateDoc(doc(db, 'users', payment.userId), { subscriptionStatus: 'active', hasPaid: true });
+        const user = auth.currentUser;
+
+        if (!user) {
+            throw new Error('Nta mukoresha winjiye.');
         }
-        toast('Byemejwe', 'success');
-        refreshAllData();
-    } catch(e) { toast('Habaye ikibazo', 'error'); }
+
+        // Reba niba ari Super Admin
+        const userSnap = await getDoc(doc(db, 'users', user.uid));
+        const studentSnap = await getDoc(doc(db, 'students', user.uid));
+
+        const userRole = userSnap.exists()
+            ? userSnap.data().role
+            : null;
+
+        const studentRole = studentSnap.exists()
+            ? studentSnap.data().role
+            : null;
+
+        if (userRole !== 'super_admin' &&
+            studentRole !== 'super_admin') {
+            throw new Error('Super Admin gusa ni we wemerewe.');
+        }
+
+        const paymentRef = doc(db, 'notesPayments', id);
+        const paymentSnap = await getDoc(paymentRef);
+
+        if (!paymentSnap.exists()) {
+            throw new Error('Payment ntibonetse.');
+        }
+
+        const payment = paymentSnap.data();
+
+        if (!payment.userId) {
+            throw new Error('Payment nta userId ifite.');
+        }
+
+        if (payment.status === 'approved') {
+            throw new Error('Ubu bwishyu bwamaze kwemezwa.');
+        }
+
+        const studentRef = doc(db, 'users', payment.userId);
+        const studentUserSnap = await getDoc(studentRef);
+
+        if (!studentUserSnap.exists()) {
+            throw new Error('User wishyuye ntabonetse muri users.');
+        }
+
+        // Updates zombi zikorwa icyarimwe
+        const batch = writeBatch(db);
+
+        batch.update(paymentRef, {
+            status: 'approved',
+            reviewedBy: user.uid,
+            reviewedAt: serverTimestamp(),
+            adminNote: 'Payment verified and approved'
+        });
+
+        batch.update(studentRef, {
+            subscriptionStatus: 'active',
+            hasPaid: true,
+            updatedAt: serverTimestamp()
+        });
+
+        await batch.commit();
+
+        toast('Ubwishyu bwemejwe neza!', 'success');
+
+        if (typeof refreshAllData === 'function') {
+            await refreshAllData();
+        }
+
+    } catch (error) {
+        console.error('PAYMENT APPROVAL ERROR:', error);
+        toast('Habaye ikibazo: ' + (error.message || error.code), 'error');
+    }
 };
+
 
 window.renderAnnouncements = function() {
     const list = document.getElementById('announcementsList');
